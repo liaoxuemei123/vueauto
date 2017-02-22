@@ -1,41 +1,47 @@
 <template>
-    <div class="nav-bar" flex="main:left cross:center">
+    <div class="search" flex="dir:left cross:center">
         <div class="left-button button" @click="goBack">
             <i class="iconfont icon-back"></i>
         </div>
-        <div class="title">
-            {{title}}
+        <div class="search-bar">
+            <form @submit.prevent="search">
+                <input :type="type" :placeholder="placeholder" :value="key"/>
+            </form>
         </div>
         <div class="right-button button" @click="onRight">
-            {{rightContent}}
         </div>
     </div>
 </template>
 <script>
     import { mapMutations } from 'vuex';
-    export default{
-        data(){
+    export default {
+        data () {
             return {
-
+                key:''
             }
         },
         props:{
-            title:String,
+            type:{
+                type:String,
+                default:'text'
+            },
+            placeholder:{
+                type:String,
+                default:''
+            },
             onRight:{
                 type:Function,
                 default:function(){
                     return ;
                 }
-            },
-            rightContent:{
-                type:String,
-                default:''
             }
-            
         },
         methods:{
             goBack:function(){
                 this.popPage(this);
+            },
+            search:function(){
+
             },
             ...mapMutations([
                 'popPage'
@@ -44,7 +50,7 @@
     }
 </script>
 <style scoped lang="less">
-    .nav-bar{
+    .search{
         height:2.1rem;
         background-color:#fff;
         box-shadow: 0px 1px 5px #aaa;
@@ -53,17 +59,29 @@
             height: 2.1rem;
             line-height:2.1rem;
             text-align:left;
-            width:20%;
-            font-size:0.6rem;
+            width:10%;
             .iconfont{
                 margin-left:0.3rem;
                 font-size:0.8rem;
             }
         }
-        .title{
-            text-align:center;
-            width:60%;
-            font-size:0.7rem;
+        .search-bar{
+            font-size: 0.64rem;
+            margin: 0;
+            height: 2.1rem;
+            text-align: center;
+            line-height: 2.1rem;
+            width:80%;
+            input{
+                font-family: "Microsoft YaHei";
+                width:90%;
+                padding:0.32rem 0.64rem;
+                border:none;
+                border-radius: 0.85rem;
+                background-color:#eee;
+                text-align: center;
+                outline:none;
+            }
         }
     }
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <div class="btn-com" @click="onClick">
+    <div class="btn-com" @click="onClick" :style="{'background-color':background}">
         <i class="iconfont" :class="icon"></i><span>{{title}}</span>
     </div>
 </template>
@@ -24,6 +24,10 @@
             title:{
                 type:String,
                 default:'确定'
+            },
+            background:{
+                type:String,
+                default:"#fc4c1d"
             }
         }
     }

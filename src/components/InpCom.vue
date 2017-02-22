@@ -35,3 +35,30 @@
         }
     }
 </script>
+<style scoped lang="less">
+    .inp-com{
+        height: 1.9rem;
+        line-height: 1.9rem;
+        background-color:#fff;
+        width: 100%;
+        input{
+            border:none;
+            height:100%;
+            width:90%;
+            background-color:transparent;
+            font-size:0.5rem;
+            text-align:right;
+            padding:0.2rem 5%;
+            outline: none;
+        };
+        span{
+            font-size:0.68rem;
+            color:#333;
+        };
+        i.iconfont{
+            font-size:0.68rem;
+            margin:0 0.2rem 0 0.32rem;
+            color:#ff5500;
+        }
+    }
+</style>
