@@ -5,6 +5,14 @@
             :onRight="goStore"
         />
         <div class="page-content">
+            <div class="input-control">
+                <inp-com
+                    title="车牌号"
+                    type="text"
+                    icon="icon-plate"
+                    placeholder="请输入车牌号"
+                />
+            </div>
             <div class="button-control">
                  <btn-com
                     title="确定"
@@ -16,6 +24,7 @@
 <script>
     import NavBar from '../components/NavBar';
     import BtnCom from '../components/BtnCom';
+    import InpCom from '../components/InpCom';
     import { mapMutations } from 'vuex';
     export default{
         data () {
@@ -34,7 +43,8 @@
         },
         components:{
             NavBar,
-            BtnCom
+            BtnCom,
+            InpCom,
         }
     }
 </script>
