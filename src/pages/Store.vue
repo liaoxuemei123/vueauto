@@ -50,6 +50,46 @@
                         address: '重庆市南岸区弹子石国际社区福民路38号9层',
                         phone: '2431-3445287'
                     },
+                    {
+                        id:4,
+                        url: 'https://zos.alipayobjects.com/rmsportal/dKbkpPXKfvZzWCM.png',
+                        storeName: '重庆市名驿长安汽车4S店',
+                        distance: '4.2km',
+                        address: '重庆市南岸区弹子石国际社区福民路38号9层',
+                        phone: '2431-3445287'
+                    },
+                    {
+                        id:5,
+                        url: 'https://zos.alipayobjects.com/rmsportal/XmwCzSeJiqpkuMB.png',
+                        storeName: '重庆市名驿长安汽车4S店',
+                        distance: '4.2km',
+                        address: '重庆市南岸区弹子石国际社区福民路38号9层',
+                        phone: '2431-3445287'
+                    },
+                    {
+                        id:6,
+                        url: 'https://zos.alipayobjects.com/rmsportal/hfVtzEhPzTUewPm.png',
+                        storeName: '重庆市名驿长安汽车4S店',
+                        distance: '4.2km',
+                        address: '重庆市南岸区弹子石国际社区福民路38号9层',
+                        phone: '2431-3445287'
+                    },
+                    {
+                        id:7,
+                        url: 'https://zos.alipayobjects.com/rmsportal/hfVtzEhPzTUewPm.png',
+                        storeName: '重庆市名驿长安汽车4S店',
+                        distance: '4.2km',
+                        address: '重庆市南岸区弹子石国际社区福民路38号9层',
+                        phone: '2431-3445287'
+                    },
+                    {
+                        id:8,
+                        url: 'https://zos.alipayobjects.com/rmsportal/hfVtzEhPzTUewPm.png',
+                        storeName: '重庆市名驿长安汽车4S店',
+                        distance: '4.2km',
+                        address: '重庆市南岸区弹子石国际社区福民路38号9层',
+                        phone: '2431-3445287'
+                    },
                 ],
                 select:0,
             }
@@ -62,7 +102,7 @@
         methods:{
             selectItem:function(id){
                 this.select = id;
-                console.log(id);
+                //console.log(id);
             }
         }
     }

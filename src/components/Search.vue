@@ -5,7 +5,7 @@
         </div>
         <div class="search-bar">
             <form @submit.prevent="search">
-                <input :type="type" :placeholder="placeholder" :value="key"/>
+                <input :type="type" :placeholder="placeholder" :value="key" @input="changeSearch"/>
             </form>
         </div>
         <div class="right-button button" @click="onRight">
@@ -41,7 +41,11 @@
                 this.popPage(this);
             },
             search:function(){
-
+                console.log(this.key);
+            },
+            changeSearch:function(e){
+                var target = $(e.target);
+                this.key = target.val();
             },
             ...mapMutations([
                 'popPage'
