@@ -6,7 +6,7 @@
         <div class="page-content">
             <div class="store-list">
                 <div class="store-item" v-for="(item, index) in storelist">
-                    <store-item :item="item"/>
+                    <store-item :item="item" :onClick="selectItem.bind(this, item.id)" :active="item.id == select"/>
                 </div>
             </div>
         </div>
@@ -27,6 +27,7 @@
             return {
                 storelist:[
                     {
+                        id:1,
                         url: 'https://zos.alipayobjects.com/rmsportal/dKbkpPXKfvZzWCM.png',
                         storeName: '重庆市名驿长安汽车4S店',
                         distance: '4.2km',
@@ -34,6 +35,7 @@
                         phone: '2431-3445287'
                     },
                     {
+                        id:2,
                         url: 'https://zos.alipayobjects.com/rmsportal/XmwCzSeJiqpkuMB.png',
                         storeName: '重庆市名驿长安汽车4S店',
                         distance: '4.2km',
@@ -41,19 +43,27 @@
                         phone: '2431-3445287'
                     },
                     {
+                        id:3,
                         url: 'https://zos.alipayobjects.com/rmsportal/hfVtzEhPzTUewPm.png',
                         storeName: '重庆市名驿长安汽车4S店',
                         distance: '4.2km',
                         address: '重庆市南岸区弹子石国际社区福民路38号9层',
                         phone: '2431-3445287'
                     },
-                ]
+                ],
+                select:0,
             }
         },
         components:{
             Search,
             BtnCom,
             StoreItem
+        },
+        methods:{
+            selectItem:function(id){
+                this.select = id;
+                console.log(id);
+            }
         }
     }
 </script>

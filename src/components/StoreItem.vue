@@ -1,7 +1,8 @@
 <template>
-    <div class="item-container" flex="dir:left cross:center box:first">
+    <div class="item-container" flex="dir:left cross:center box:first" @click="onClick">
         <div class="select" flex="main:right cross:center">
-            <i class="iconfont icon-select"></i>
+            <i class="iconfont icon-select" v-if="active"></i>
+            <i class="iconfont icon-circle active" v-else="active"></i>
         </div>
         <div class="store-info" flex="dir:left cross:center box:first">
             <div class="store-url">
@@ -33,6 +34,16 @@
             item:{
                 type:Object,
                 default:{}
+            },
+            onClick:{
+                type:Function,
+                default:function(){
+                    return 
+                }
+            },
+            active:{
+                type:Boolean,
+                default:false
             }
         }
     }
@@ -49,6 +60,9 @@
             height: 3.42rem;
             .iconfont{
                 font-size: 0.85rem;
+                color:#fc4c1d;
+            }
+            .active{
                 color:#aaa;
             }
         }
