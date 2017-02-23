@@ -5,7 +5,7 @@
         />
         <div class="page-content">
             <div class="set-item" v-for="(item, index) in setlist">
-                <set-item :item="item" />
+                <set-item :item="item"  :onClick="viewDetail.bind(this,item.id)"/>
             </div>
         </div>
     </div>
@@ -13,20 +13,21 @@
 <script>
     import Search from '../components/Search';
     import SetItem from '../components/SetItem';
+    import { mapMutations } from 'vuex';
     export default {
         data () {
             return {
                 setlist:[
                     {
                         id:1,
-                        url: 'https://zos.alipayobjects.com/rmsportal/dKbkpPXKfvZzWCM.png',
+                        url: 'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=2197052797,2441326896&fm=58',
                         carType:'乘用车',
                         carName:'CS75 1.6手动',
                         setName:'A套餐（买二送一）',
                     },
                     {
                         id:2,
-                        url: 'https://zos.alipayobjects.com/rmsportal/XmwCzSeJiqpkuMB.png',
+                        url: 'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=2197052797,2441326896&fm=58',
                         carType:'乘用车',
                         carName:'瑞驰 GDI手动',
                         setName:'B套餐（买三送一）',
@@ -47,7 +48,7 @@
                     },
                     {
                         id:5,
-                        url: 'https://zos.alipayobjects.com/rmsportal/dKbkpPXKfvZzWCM.png',
+                        url: 'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=2197052797,2441326896&fm=58',
                         carType:'乘用车',
                         carName:'CS75 1.6手动',
                         setName:'A套餐（买二送一）',
@@ -79,6 +80,14 @@
         components:{
             Search,
             SetItem
+        },
+        methods:{
+            viewDetail:function(id){
+                this.pushPage({name:"setdetail",vue:this,params:{id:id}});
+            },
+            ...mapMutations([
+                'pushPage'
+            ])
         }
     }
 </script>

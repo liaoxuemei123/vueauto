@@ -25,12 +25,12 @@ export default {
 	position:relative;
 }
 .push-enter-active {
-	transition: all .3s ease;
+	transition: all .2s ease-in;
 	transform: translate3d(0%,0,0);
 	z-index:1001;
 }
 .push-leave-active {
-	transition: all .3s ease;
+	transition: all .2s ease-in;
 	transform: translate3d(0%,0,0);
 	z-index: 1000;
 }
@@ -44,12 +44,12 @@ export default {
 }
 
 .pop-enter-active {
-	transition: all .3s ease;
+	transition: all .2s ease-in;
 	transform: translate3d(0%,0,0);
 	z-index:1000
 }
 .pop-leave-active {
-	transition: all .3s ease-out;
+	transition: all .2s ease-in;
 	transform: translate3d(100%,0,0);
 	z-index: 1001;
 }

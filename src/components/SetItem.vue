@@ -1,5 +1,5 @@
 <template>
-    <div class="set-container" :style="{'background-image':'url(' + item.url + ')'}">
+    <div class="set-container" :style="{'background-image':'url(' + item.url + ')'}" @click="onClick">
         <div class="set-info" flex="dir:top cross:top box:mean">
             <div class="line">
                 <span class="car-type">{{item.carType}}</span>
@@ -22,6 +22,12 @@
             item:{
                 type:Object,
                 default:{}
+            },
+            onClick:{
+                type:Function,
+                default:function(){
+                    return ;
+                }
             }
         }
     }
@@ -30,7 +36,7 @@
     .set-container{
         height:100%;
         width:100%;
-        background-position:top center;
+        background-position:1.2rem 1rem;
         background-repeat:no-repeat;
         background-size:60%;
         background-blend-mode:multiply;

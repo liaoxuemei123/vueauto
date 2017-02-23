@@ -64,6 +64,7 @@
             line-height:2.1rem;
             text-align:left;
             width:10%;
+            font-size:0.6rem;
             .iconfont{
                 margin-left:0.3rem;
                 font-size:0.8rem;

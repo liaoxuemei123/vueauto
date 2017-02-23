@@ -9,9 +9,14 @@ const store = new Vuex.Store({
     },
     mutations:{
         pushPage:function(state,options){
-            state.pageStack.push(options.path);
+            state.pageStack.push(options.name);
             state.mode = 'push';
-            options.vue.$router.push(options.path);
+            if(options.params){
+                options.vue.$router.push({name:options.name,params:options.params});
+            }else{
+                options.vue.$router.push({name:options.name});
+            }
+           
         },
         popPage:function(state,vue){
             state.pageStack.pop();

@@ -38,5 +38,6 @@
         width:100%;
         line-height: 1.9rem;
         text-align: center;
+        border-radius:3px;
     }
 </style>

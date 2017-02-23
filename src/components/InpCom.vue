@@ -3,8 +3,9 @@
         <div>
             <i class="iconfont" :class="icon"></i><span>{{title}}</span>
         </div>
-        <div>
-            <input :type="type" :placeholder="placeholder">
+        <div flex="dir:left box:last cross:center">
+            <input :type="type" :placeholder="placeholder" :class="{'arrow':rightArrow}">
+            <i class="iconfont icon-go arrow" v-if="rightArrow"></i>
         </div>
     </div>
 </template>
@@ -31,6 +32,10 @@
             placeholder:{
                 type:String,
                 default:''
+            },
+            rightArrow:{
+                type:Boolean,
+                default:false
             }
         }
     }
@@ -51,6 +56,9 @@
             padding:0.2rem 5%;
             outline: none;
         };
+        input.arrow{
+            padding-right:0;
+        }
         span{
             font-size:0.68rem;
             color:#333;
@@ -59,6 +67,12 @@
             font-size:0.68rem;
             margin:0 0.2rem 0 0.32rem;
             color:#ff5500;
+        }
+        i.iconfont.arrow{
+            color:#cfcfcf;
+            margin:0;
+            margin-right:0.2rem;
+            font-size:0.7rem;
         }
     }
 </style>

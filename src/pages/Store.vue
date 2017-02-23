@@ -102,7 +102,6 @@
         methods:{
             selectItem:function(id){
                 this.select = id;
-                //console.log(id);
             }
         }
     }

@@ -54,15 +54,14 @@
     export default{
         data () {
             return {
-
             }
         },
         methods:{
             goStore:function(){
-                this.pushPage({path:"store",vue:this});
+                this.pushPage({name:"store",vue:this});
             },
             goMaintain:function(){
-                this.pushPage({path:"maintainset",vue:this});
+                this.pushPage({name:"maintainset",vue:this});
             },
             ...mapMutations([
                 'pushPage'
