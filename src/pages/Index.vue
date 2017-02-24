@@ -9,19 +9,20 @@
             <mt-datetime-picker
                 ref="datepicker"
                 type="date"
-                v-model="pickerValue">
+                v-model="pickerValue"
+                @confirm="onDateConfirm">
             </mt-datetime-picker>
             <div class="input-control">
-                <inp-com title="车牌号" type="text" icon="icon-plate" placeholder="请输入车牌号"/>
+                <inp-com title="车牌号" type="text" icon="icon-plate" placeholder="请输入车牌号" :onBlur="updatePlate.bind(this)" :value="subscribeInfo.plate"/>
             </div>
             <div class="input-control">
-                <inp-com title="预约时间" type="text" icon="icon-time" placeholder="请选择到店时间" :onClick="selectTime"/>
+                <inp-com title="预约时间" :readonly="true" type="text" icon="icon-time" placeholder="请选择到店时间" :onClick="selectTime" :value="subscribeInfo.time"/>
             </div>
             <div class="input-control">
-                <inp-com title="4S店选择" type="text" icon="icon-store" placeholder="请选择服务商"/>
+                <inp-com title="4S店选择" type="text" icon="icon-store" placeholder="请选择服务商" :onClick="goStore" :value="subscribeInfo.storeId"/>
             </div>
             <div class="input-control">
-                <inp-com title="预约里程" type="text" icon="icon-mile" placeholder="里程"/>
+                <inp-com title="预约里程" type="number" icon="icon-mile" placeholder="里程" :onBlur="updateMile.bind(this)" :value="subscribeInfo.mile"/>
                 <div class="explain">
                     客户留言预约描述客户留言预约描述客户留言预约描述客户
                     留言预约描述客户留言预约描述客户留言预约描述客户留言
@@ -29,13 +30,13 @@
                 </div>
             </div>
             <div class="input-control">
-                <inp-com title="联系人" type="text" icon="icon-contact" placeholder="联系人"/>
+                <inp-com title="联系人" type="text" icon="icon-contact" placeholder="联系人" :value="subscribeInfo.contact"/>
             </div>
             <div class="input-control">
-                <inp-com title="联系电话" type="text" icon="icon-phone" placeholder="联系电话"/>
+                <inp-com title="联系电话" type="number" icon="icon-phone" placeholder="联系电话" :value="subscribeInfo.phone"/>
             </div>
             <div class="input-control">
-                <inp-com title="预约描述" type="text" icon="icon-comment" placeholder="预约描述"/>
+                <inp-com title="预约描述" type="text" icon="icon-comment" placeholder="预约描述" :value="subscribeInfo.description"/>
                 <div class="explain">
                     客户留言预约描述客户留言预约描述客户留言预约描述客户
                     留言预约描述客户留言预约描述客户留言预约描述客户留言
@@ -45,7 +46,7 @@
             <div class="button-control">
                  <btn-com
                     title="确定预约"
-                    :onClick="goStore"
+                    :onClick="saveInfo"
                 />
             </div>
         </div>
@@ -55,12 +56,18 @@
     import NavBar from '../components/NavBar';
     import BtnCom from '../components/BtnCom';
     import InpCom from '../components/InpCom';
-    import { mapMutations } from 'vuex';
+    import { mapMutations, mapState } from 'vuex';
+    import Tool from '../utils/Tool'
     export default{
         data () {
             return {
-                pickerValue:'2015-01-05'
+                pickerValue:Tool.getCurrentDate(),
             }
+        },
+        computed:{
+            ...mapState([
+                'subscribeInfo',
+            ])
         },
         methods:{
             goStore:function(){
@@ -72,8 +79,23 @@
             selectTime:function(){
                 this.$refs.datepicker.open();
             },
+            updatePlate:function(e){
+                var target = $(e.target);
+                this.subscribeInfo.plate = target.val();
+            },
+            updateMile:function(e){
+                var target = $(e.target);
+                this.subscribeInfo.mile = target.val();
+            },
+            onDateConfirm:function(val){
+                console.log(this.subscribeInfo);
+                this.subscribeInfo.time = Tool.formatDate(val);
+            },
+            saveInfo:function(e){
+                
+            },
             ...mapMutations([
-                'pushPage'
+                'pushPage','updateSubscribeInfo'
             ])
         },
         components:{

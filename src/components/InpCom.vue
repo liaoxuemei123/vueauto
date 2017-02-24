@@ -4,7 +4,7 @@
             <i class="iconfont" :class="icon"></i><span>{{title}}</span>
         </div>
         <div flex="dir:left box:last cross:center">
-            <input :type="type" :placeholder="placeholder" :class="{'arrow':rightArrow}">
+            <input :type="type" :placeholder="placeholder" :class="{'arrow':rightArrow}" @blur="onBlur" :value="value" :readonly="readonly">
             <i class="iconfont icon-go arrow" v-if="rightArrow"></i>
         </div>
     </div>
@@ -13,13 +13,20 @@
     export default{
         data () {
             return {
-
             }
         },
         props:{
             icon:{
                 type:String,
                 default:'',
+            },
+            value:{
+                type:String,
+                default:'',
+            },
+            readonly:{
+                type:Boolean,
+                default:false,
             },
             title:{
                 type:String,
@@ -38,6 +45,12 @@
                 default:false
             },
             onClick:{
+                type:Function,
+                default:function(){
+                    return;
+                }
+            },
+            onBlur:{
                 type:Function,
                 default:function(){
                     return;

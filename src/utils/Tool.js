@@ -123,14 +123,6 @@ Tool.get = function (pathname, data, success, error) {
 };
 
 
-
-/**
- * 获取今天的日期 XXXX-XX-XX;
- */
-Tool.getCurrentDate = function(){
-    var now = new Date();
-    return this.formateDate(now);
-}
 /**
  * 时间格式化 支持date、time、onlytime三种格式，传入的日期可以是时间戳也可以是时间字符串;
  */
@@ -156,6 +148,15 @@ Tool.formatDate = function(str,type='date'){
             return h + ':' + min + ':' + s;
     }   
 }
+/**
+ * 获取今天的日期 XXXX-XX-XX;
+ */
+Tool.getCurrentDate = function(){
+    var now = new Date();
+    return this.formatDate(now);
+}
+
+
 /**
  * 本地存储
  */
