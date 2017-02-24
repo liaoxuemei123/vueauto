@@ -6,7 +6,7 @@
         </div>
         <div class="store-info" flex="dir:left cross:center box:first">
             <div class="store-url">
-                <img :src="item.url"/>
+                <img v-lazy="item.url"/>
             </div>
             <div class="info-content" flex="dir:top cross:top box:mean">
                 <div class="line" flex="dir:left cross:center main:justify">
@@ -73,9 +73,16 @@
                 width: 2.56rem;
                 border-radius: 5px;
                 overflow: hidden;
+                background-color:#ccc;
                 img{
                     width: 100%;
                     height: 100%;
+                }
+                img[lazy=loading] {
+                    width:50%;
+                    height:50%;
+                    margin-left:25%;
+                    margin-top:25%;
                 }
             }
             .info-content{

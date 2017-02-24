@@ -106,6 +106,7 @@
                 display:inline-block;
                 margin-bottom:0.15rem;
                 background-color:#fff;
+                box-shadow:0px 2px 3px #ccc;
             }
             .set-item:nth-child(2n){
                 margin-left:2%;

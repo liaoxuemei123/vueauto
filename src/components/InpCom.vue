@@ -1,5 +1,5 @@
 <template>
-    <div class="inp-com" flex="dir:left box:mean cross:center">
+    <div class="inp-com" flex="dir:left box:mean cross:center" @click="onClick">
         <div>
             <i class="iconfont" :class="icon"></i><span>{{title}}</span>
         </div>
@@ -36,6 +36,12 @@
             rightArrow:{
                 type:Boolean,
                 default:false
+            },
+            onClick:{
+                type:Function,
+                default:function(){
+                    return;
+                }
             }
         }
     }

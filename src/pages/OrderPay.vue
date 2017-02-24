@@ -115,6 +115,7 @@
             }
             .payment-mode{
                 margin-top:0.4rem;
+                box-shadow:0px 2px 3px #ccc;
                 .payment-item{
                     height:2.56rem;
                     background-color:#fff;

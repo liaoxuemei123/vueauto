@@ -6,11 +6,16 @@
             rightContent="保养套餐"
         />
         <div class="page-content">
+            <mt-datetime-picker
+                ref="datepicker"
+                type="date"
+                v-model="pickerValue">
+            </mt-datetime-picker>
             <div class="input-control">
                 <inp-com title="车牌号" type="text" icon="icon-plate" placeholder="请输入车牌号"/>
             </div>
             <div class="input-control">
-                <inp-com title="预约时间" type="text" icon="icon-time" placeholder="请选择到店时间"/>
+                <inp-com title="预约时间" type="text" icon="icon-time" placeholder="请选择到店时间" :onClick="selectTime"/>
             </div>
             <div class="input-control">
                 <inp-com title="4S店选择" type="text" icon="icon-store" placeholder="请选择服务商"/>
@@ -54,6 +59,7 @@
     export default{
         data () {
             return {
+                pickerValue:'2015-01-05'
             }
         },
         methods:{
@@ -62,6 +68,9 @@
             },
             goMaintain:function(){
                 this.pushPage({name:"maintainset",vue:this});
+            },
+            selectTime:function(){
+                this.$refs.datepicker.open();
             },
             ...mapMutations([
                 'pushPage'
