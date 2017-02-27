@@ -54,7 +54,6 @@
 <script>
     import NavBar from '../components/NavBar';
     import BtnCom from '../components/BtnCom';
-    import { mapMutations } from 'vuex';
     export default {
         data () {
             return {
@@ -84,11 +83,8 @@
         },
         methods:{
             goPersonInfo:function(){
-                this.pushPage({name:'personinfo',vue:this});
+                this.$router.push({name:'personinfo'});
             },
-            ...mapMutations([
-                'pushPage'
-            ])
         }
     }
 </script>

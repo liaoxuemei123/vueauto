@@ -13,7 +13,6 @@
 <script>
     import Search from '../components/Search';
     import SetItem from '../components/SetItem';
-    import { mapMutations } from 'vuex';
     export default {
         data () {
             return {
@@ -83,11 +82,8 @@
         },
         methods:{
             viewDetail:function(id){
-                this.pushPage({name:"setdetail",vue:this,params:{id:id}});
-            },
-            ...mapMutations([
-                'pushPage'
-            ])
+                this.$router.push({name:'setdetail'});
+            }
         }
     }
 </script>

@@ -4,7 +4,7 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
     state:{
-        pageStack:['/'],
+        pageStack:[],
         mode:'push',
         subscribeInfo:{//预约信息
             plate:'',
@@ -17,22 +17,14 @@ const store = new Vuex.Store({
         }
     },
     mutations:{
-        pushPage:function(state,options){
-            state.pageStack.push(options.name);
-            state.mode = 'push';
-            if(options.params){
-                options.vue.$router.push({name:options.name,params:options.params});
-            }else{
-                options.vue.$router.push({name:options.name});
-            }
-           
+        SET_MODE:function(state,mode){
+            state.mode = mode;
         },
-        popPage:function(state,vue){
+        PUSH_PAGE:function(state,page){
+            state.pageStack.push(page);
+        },
+        POP_PAGE:function(state){
             state.pageStack.pop();
-            state.mode = 'pop';
-            if(state.pageStack.length >= 0){
-                vue.$router.go(-1);
-            }
         },
         updateSubscribeInfo:function(state,params){
             var keys = Object.keys(params)
@@ -43,6 +35,14 @@ const store = new Vuex.Store({
             console.log(state.subscribeInfo);
         }
     },
+    getters:{
+        pageStack:function(state, getters){
+            return state.pageStack;
+        },
+        subscribeInfo:function(state, getters){
+            return state.subscribeInfo;
+        }
+    }
 
 })
 

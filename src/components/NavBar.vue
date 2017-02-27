@@ -12,7 +12,6 @@
     </div>
 </template>
 <script>
-    import { mapMutations } from 'vuex';
     export default{
         data(){
             return {
@@ -35,11 +34,8 @@
         },
         methods:{
             goBack:function(){
-                this.popPage(this);
-            },
-            ...mapMutations([
-                'popPage'
-            ])
+                this.$router.go(-1);
+            }
         }
     }
 </script>

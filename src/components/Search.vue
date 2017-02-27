@@ -13,7 +13,6 @@
     </div>
 </template>
 <script>
-    import { mapMutations } from 'vuex';
     export default {
         data () {
             return {
@@ -38,7 +37,7 @@
         },
         methods:{
             goBack:function(){
-                this.popPage(this);
+                this.$router.go(-1);
             },
             search:function(){
                 console.log(this.key);
@@ -47,9 +46,6 @@
                 var target = $(e.target);
                 this.key = target.val();
             },
-            ...mapMutations([
-                'popPage'
-            ])
         }
     }
 </script>

@@ -34,7 +34,6 @@
     import NavBar from '../components/NavBar';
     import BtnCom from '../components/BtnCom';
     import InpCom from '../components/InpCom';
-    import { mapMutations } from 'vuex';
     export default {
         data () {
             return {
@@ -48,11 +47,8 @@
         },
         methods:{
             goConfirmOrder:function(){
-                this.pushPage({name:'confirmorder',vue:this});
-            },
-            ...mapMutations([
-                'pushPage'
-            ])
+                this.$router.push({name:'confirmorder'});
+            }
         }
     }
 </script>

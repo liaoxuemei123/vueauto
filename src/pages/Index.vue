@@ -71,10 +71,10 @@
         },
         methods:{
             goStore:function(){
-                this.pushPage({name:"store",vue:this});
+                this.$router.push({name:'store'});
             },
             goMaintain:function(){
-                this.pushPage({name:"maintainset",vue:this});
+                this.$router.push({name:'maintainset'});
             },
             selectTime:function(){
                 this.$refs.datepicker.open();
@@ -88,14 +88,13 @@
                 this.subscribeInfo.mile = target.val();
             },
             onDateConfirm:function(val){
-                console.log(this.subscribeInfo);
                 this.subscribeInfo.time = Tool.formatDate(val);
             },
             saveInfo:function(e){
                 
             },
             ...mapMutations([
-                'pushPage','updateSubscribeInfo'
+                'updateSubscribeInfo',
             ])
         },
         components:{

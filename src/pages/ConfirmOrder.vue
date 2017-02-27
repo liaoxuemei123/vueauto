@@ -109,11 +109,8 @@
         },
         methods:{
             goPay:function(){
-                this.pushPage({name:'orderpay',vue:this});
-            },
-            ...mapMutations([
-                'pushPage'
-            ])
+                this.$router.push({name:'orderpay'});
+            }
         }
     }
 </script>
