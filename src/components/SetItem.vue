@@ -1,12 +1,20 @@
 <template>
-    <div class="set-container" :style="{'background-image':'url(' + item.url + ')'}" @click="onClick">
+    <div class="set-container" @click="onClick" flex="dir:top box:first">
+        <div class="set-image">
+            <div class="image-container">
+                <img v-lazy="item.url">
+            </div>
+        </div>
         <div class="set-info" flex="dir:top cross:top box:mean">
             <div class="line">
-                <span class="car-type">{{item.carType}}</span>
-                <span class="car-name">{{item.carName}}</span>
+                <span class="times">{{item.times}}</span>
+                <span class="des1">{{item.des1}}</span>
             </div>
             <div class="line">
-                <span class="set-name">{{item.setName}}</span>
+                <span class="des2">{{item.des2}}</span>
+            </div>
+            <div class="line">
+                <span class="range">{{item.range}}</span>
             </div>
         </div>
     </div>
@@ -36,30 +44,48 @@
     .set-container{
         height:100%;
         width:100%;
-        background-position:1.2rem 1rem;
-        background-repeat:no-repeat;
-        background-size:60%;
-        background-blend-mode:multiply;
         position:relative;
+        .set-image{
+            background-color:#ccc;
+            .image-container{
+                height:5.1rem;
+                width:100%;
+                position:relative;
+                img{
+                    width:100%;
+                    height:100%;;
+                }
+                img[lazy=loading] {
+                    position:absolute;
+                    top:37.5%;
+                    left:37.5%;
+                    width:25%;
+                    height:25%;
+                }
+            }
+        }
         .set-info{
-            position:absolute;
-            bottom:0;
-            height:1.6rem;
-            margin:0.6rem 0.5rem;
-            .car-type{
+            height:1.2rem;
+            padding:0.2rem 0.5rem;
+            background-color:#fff;
+            .times{
                 font-size:0.43rem;
                 color:#fff;
                 background-color:#fc4c1d;
                 padding:0rem 0.1rem;
                 border-radius:0.1rem;
             }
-            .car-name{
+            .des1{
                 font-size:0.64rem;
                 color:#333;
             }
-            .set-name{
+            .des2{
                 font-size:0.51rem;
                 color:#333;
+            }
+            .range{
+                color:#fc4c1d;
+                width:100%;
             }
         }
     }

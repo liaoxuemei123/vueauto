@@ -7,6 +7,8 @@ import SetDetail from 'pages/SetDetail';
 import PersonInfo from 'pages/PersonInfo';
 import ConfirmOrder from "pages/ConfirmOrder";
 import OrderPay from 'pages/OrderPay';
+import MyOrder from 'pages/MyOrder';
+import OrderDetail from 'pages/OrderDetail';
 
 Vue.use(Router)
 
@@ -46,6 +48,16 @@ export default new Router({
       path:'/orderpay',
       name:'orderpay',
       component:OrderPay,
+    },
+    {
+      path:'/myorder',
+      name:'myorder',
+      component:MyOrder,
+    },
+    {
+      path:'/orderdetail/:id',
+      name:'orderdetail',
+      component:OrderDetail,
     },
   ]
 })

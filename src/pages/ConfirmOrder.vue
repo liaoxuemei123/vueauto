@@ -22,41 +22,43 @@
                         </div>
                     </div>
                 </div>
-                <div class="bottom">
+                <div class="explain">
                     <div class="explain-item" flex="dir:left cross:top">
-                        <div class="check title">检查：</div>
+                        <div class="check title">保养权益：</div>
                         <div>{{explain.check}}</div>
                     </div>
                     <div class="explain-item" flex="dir:left cross:top">
-                        <div class="change title">更换：</div>
+                        <div class="change title">保养项目：</div>
                         <div>{{explain.change}}</div>
                     </div>
                     <div class="explain-item" flex="dir:left cross:top">
-                        <div class="validate title">到期时间：</div>
-                        <div>{{explain.validate}}</div>
+                        <div class="validate title">使用范围：</div>
+                        <div>{{explain.range}}</div>
                     </div>
                     <div class="explain-item" flex="dir:left cross:top">
-                        <div class="VIN title">VIN：</div>
-                        <div>{{explain.VIN}}</div>
+                        <div class="VIN title">到期时间：</div>
+                        <div>{{explain.validate}}</div>
                     </div>
                 </div>
-            </div>
-            <div class="user-info">
-                <div class="input-control">
-                    <inp-com title="车架号" icon="icon-store"/>
-                </div>
-                <div class="input-control">
-                    <inp-com title="姓名" icon="icon-contact"/>
-                </div>
-                <div class="input-control">
-                    <inp-com title="手机号" icon="icon-phone"/>
-                </div>
-                <div class="input-control">
-                    <inp-com title="留言" icon="icon-comment"/>
+                <div class="bottom" flex="dir:left box:mean">
+                    <div class="car-series" flex="dir:left cross:center">
+                        <div class="title"><i class="iconfont icon-car"></i>车型：</div>
+                        <div class="value">{{setInfo.carSeries}}</div>
+                    </div>
+                    <div class="vin-code" flex="dir:left cross:center">
+                        <div class="title"><i class="iconfont icon-contact"></i>VIN：</div>
+                        <div class="value">{{setInfo.VIN}}</div>
+                    </div>
                 </div>
             </div>
             <div class="tips">
                 提示：支付七天过后不能退单。一旦使用套餐不能退单。
+            </div>
+            <div class="agree" flex="dir:left cross:center" @click="sure =! sure">
+                <div class="sure-circle" :class="{'sure':sure}">
+                    <i class="iconfont icon-agree"></i>
+                </div>
+                我已阅读并同意《用户服务协议》
             </div>
         </div>
         <div class="button-control" flex="dir:left box:first">
@@ -89,18 +91,21 @@
                     price:460,
                     des1:"检查8项，更换4项。",
                     des2:"4次基础保养有效期3年",
+                    carSeries:'逸动V7',
+                    VIN:121321321321,
                 },
                 explain:{
-                    check:"冷却液检查、制动液检查、空气滤清器、制动系统检查、空气滤清器清器、驻车系统检查、燃油滤清器、机油滤清器",
+                    check:"四次基础保养",
                     change:"机油、机油滤清器、汽油滤清器、燃油滤清器",
                     validate:"2020-02-16",
-                    VIN:"20170216274381"
+                    range:"全国使用"
                 },
                 order:{
                     price:450,
                     originFee:460,
                     benifitFee:10,
-                }
+                },
+                sure:false
             }
         },
         components:{
@@ -123,15 +128,18 @@
             background-color: #efefef;
             height:100%;
             overflow: auto;
+            position:relative;
             .set-info{
                 background-color:#fff;
-                padding:0.3rem 3%;
-                width:94%;
+                padding:0.3rem 0rem;
+                width:100%;
                 margin-bottom:0.5rem;
                 box-shadow:0px 2px 3px #ccc;
                 .top{
                     height:2.56rem;
-                    margin-bottom:0.6rem;
+                    margin:0 3%;
+                    padding-bottom: 0.6rem;
+                    border-bottom:1px solid #ccc;
                     .store-url{
                         img{
                             width:2.3rem;
@@ -153,28 +161,61 @@
                         }
                     }
                 }
-                .bottom{
+                .explain{
+                    margin:0.4rem 3%;
                     font-size:0.51rem;
                     color:#5b5b5b;
                     line-height:1.7em;
-                    .check{
-                        width: 3rem;
-                    }
                     .title{
                         font-weight:600;
                     }
                 }
-            }
-            .user-info{
-                box-shadow:0px 2px 3px #ccc;
-                .input-control + div{
-                    border-top:1px solid #efefef;
+                .bottom{
+                    padding:0rem 3%;
+                    background-color:#f9f9f9;
+                    .car-series,.vin-code{
+                        font-size:0.57rem;
+                        color:#333;
+                        line-height:2em;
+                        .iconfont{
+                            font-size:0.57rem;
+                            margin-right:0.2rem;
+                            color:#fc4c1d;
+                        }
+                        .value{
+                            color:#666;
+                        }
+                    }
                 }
             }
             .tips{
                 margin:0.5rem 0.5rem;
-                color:#f9745a;
+                color:#fc4c1d;
                 font-size:0.51rem;
+            }
+            .agree{
+                margin:0rem 0.5rem;
+                color:#ff3b2f;
+                position:absolute;
+                bottom:0.2rem;
+                .sure-circle{
+                    border:1px solid #ff3b2f;
+                    width:0.51rem;
+                    height:0.51rem;
+                    overflow:hidden;
+                    position:relative;
+                    margin-right:0.2rem;
+                    background-color:#fff;
+                    transition:all .5s ease;
+                    .iconfont{
+                        font-size:0.51rem;
+                        position:absolute;
+                        color:#fff;
+                    }
+                }
+                .sure-circle.sure{
+                    background-color:#ff3b2f;
+                }
             }
         }
         .button-control{
@@ -202,7 +243,7 @@
             .button{
                 height:2.1rem;
                 line-height:2.1rem;
-                background-color:#fc4c1d;
+                background-color:#389cf2;
                 text-align:center;
             }
         }

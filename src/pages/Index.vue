@@ -2,8 +2,6 @@
     <div class="index-page page" flex="dir:top box:first">
         <nav-bar 
             title="添加预约订单"
-            :onRight="goMaintain"
-            rightContent="保养套餐"
         />
         <div class="page-content">
             <mt-datetime-picker
@@ -72,9 +70,6 @@
         methods:{
             goStore:function(){
                 this.$router.push({name:'store'});
-            },
-            goMaintain:function(){
-                this.$router.push({name:'maintainset'});
             },
             selectTime:function(){
                 this.$refs.datepicker.open();

@@ -23,8 +23,13 @@ const store = new Vuex.Store({
         PUSH_PAGE:function(state,page){
             state.pageStack.push(page);
         },
-        POP_PAGE:function(state){
-            state.pageStack.pop();
+        POP_PAGE:function(state,number = 0){
+            for(var i=0;i<number;i++){
+                 state.pageStack.pop();
+            }
+        },
+        CLEAR_PAGE:function(state){
+            state.pageStack = [{name:'/',index:0}];
         },
         updateSubscribeInfo:function(state,params){
             var keys = Object.keys(params)

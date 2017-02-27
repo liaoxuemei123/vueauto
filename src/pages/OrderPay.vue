@@ -57,15 +57,14 @@
             </div>
         </div>
         <div class="button-control">
-            <btn-com
-                title="确认支付"
-            />
+            <div class="sure-pay">
+                确认支付
+            </div>
         </div>
     </div>
 </template>
 <script>
     import NavBar from '../components/NavBar';
-    import BtnCom from '../components/BtnCom';
     export default {
         data () {
             return {
@@ -78,8 +77,7 @@
         },
         components:{
             NavBar,
-            BtnCom
-        }
+        },
     }
 </script>
 <style lang="less" scoped>
@@ -151,13 +149,14 @@
             }
         }
         .button-control{
-            background-color:#efefef;
-            width: 95%;
-            padding:1rem 2.5%;
-            color:#fff;
-            font-size:0.77rem;
-            overflow:hidden;
-            border-radius:3px;
+            .sure-pay{
+                text-align:center;
+                color:#fff;
+                background-color:#389cf2;
+                height:2.1rem;
+                line-height:2.1rem;
+                font-size:0.68rem;
+            }
         }
     }
 </style>

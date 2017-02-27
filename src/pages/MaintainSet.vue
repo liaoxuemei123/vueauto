@@ -1,6 +1,6 @@
 <template>
     <div class="maintainset-page page" flex="dir:top box:first">
-        <search 
+        <select-nav 
             placeholder="搜索套餐"
         />
         <div class="page-content">
@@ -11,7 +11,7 @@
     </div>
 </template>
 <script>
-    import Search from '../components/Search';
+    import SelectNav from '../components/SelectNav';
     import SetItem from '../components/SetItem';
     export default {
         data () {
@@ -19,65 +19,41 @@
                 setlist:[
                     {
                         id:1,
-                        url: 'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=2197052797,2441326896&fm=58',
-                        carType:'乘用车',
-                        carName:'CS75 1.6手动',
-                        setName:'A套餐（买二送一）',
+                        url: 'https://zos.alipayobjects.com/rmsportal/dKbkpPXKfvZzWCM.png',
+                        times:'3+1',
+                        des1:'四次基础保养',
+                        des2:'两年以上车龄专享',
+                        range:'全国4S店通用'
                     },
                     {
                         id:2,
-                        url: 'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=2197052797,2441326896&fm=58',
-                        carType:'乘用车',
-                        carName:'瑞驰 GDI手动',
-                        setName:'B套餐（买三送一）',
+                        url: 'https://zos.alipayobjects.com/rmsportal/dKbkpPXKfvZzWCM.png',
+                        times:'3+1',
+                        des1:'四次基础保养',
+                        des2:'两年以上车龄专享',
+                        range:'限制服务商'
                     },
                     {
                         id:3,
                         url: 'https://zos.alipayobjects.com/rmsportal/dKbkpPXKfvZzWCM.png',
-                        carType:'乘用车',
-                        carName:'CS75 1.6手动',
-                        setName:'A套餐（买二送一）',
+                        times:'4+1',
+                        des1:'五次基础保养',
+                        des2:'两年以上车龄专享',
+                        range:'全国4S店通用'
                     },
                     {
                         id:4,
                         url: 'https://zos.alipayobjects.com/rmsportal/XmwCzSeJiqpkuMB.png',
-                        carType:'乘用车',
-                        carName:'瑞驰 GDI手动',
-                        setName:'B套餐（买三送一）',
-                    },
-                    {
-                        id:5,
-                        url: 'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=2197052797,2441326896&fm=58',
-                        carType:'乘用车',
-                        carName:'CS75 1.6手动',
-                        setName:'A套餐（买二送一）',
-                    },
-                    {
-                        id:6,
-                        url: 'https://zos.alipayobjects.com/rmsportal/XmwCzSeJiqpkuMB.png',
-                        carType:'乘用车',
-                        carName:'瑞驰 GDI手动',
-                        setName:'B套餐（买三送一）',
-                    },
-                    {
-                        id:7,
-                        url: 'https://zos.alipayobjects.com/rmsportal/dKbkpPXKfvZzWCM.png',
-                        carType:'乘用车',
-                        carName:'CS75 1.6手动',
-                        setName:'A套餐（买二送一）',
-                    },
-                    {
-                        id:8,
-                        url: 'https://zos.alipayobjects.com/rmsportal/XmwCzSeJiqpkuMB.png',
-                        carType:'乘用车',
-                        carName:'瑞驰 GDI手动',
-                        setName:'B套餐（买三送一）',
-                    },
+                        times:'4+1',
+                        des1:'五次基础保养',
+                        des2:'两年以上车龄专享',
+                        range:'限制服务商'
+                    }
                 ]
             }
         },
         components:{
-            Search,
+            SelectNav,
             SetItem
         },
         methods:{
@@ -97,10 +73,10 @@
             height:100%;
             overflow: auto;
             .set-item{
-                height:7.7rem;
+                height:8.54rem;
                 width:49%;
                 display:inline-block;
-                margin-bottom:0.15rem;
+                margin-top:0.2rem;
                 background-color:#fff;
                 box-shadow:0px 2px 3px #ccc;
             }

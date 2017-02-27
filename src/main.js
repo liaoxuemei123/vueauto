@@ -20,19 +20,22 @@ router.beforeEach((to,from,next)=>{
   const pageStack = store.getters.pageStack;
   const toIndex = getIndex(pageStack, to.path);
   const toPath = to.path;
-  if(toIndex < 0){
+  if(toIndex == -1){
     store.commit('SET_MODE','push');
     store.commit('PUSH_PAGE',{path:toPath,index:pageStack.length});
+  }else if(toIndex === -2){
+    store.commit('SET_MODE','pop');
+    store.commit('CLEAR_PAGE');//保证把前面的页面全部弹出页面栈
   }else{
     store.commit('SET_MODE','pop');
-    store.commit('POP_PAGE');
+    store.commit('POP_PAGE',pageStack.length - toIndex - 1);
   }
   next();
 })
 
 function getIndex (list,path){
   if(path == '/' || !path){
-    return 0;
+    return -2;
   }
   for(var i = 0; i < list.length; i++){
     if(path == list[i].path){

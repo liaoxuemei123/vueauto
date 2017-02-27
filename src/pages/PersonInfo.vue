@@ -2,11 +2,16 @@
     <div class="page personinfo-page" flex="dir:top box:justify">
         <nav-bar
             title="填写个人信息"
+            rightIcon="icon-home"
+            :onRight="goHome"
         />
         <div class="page-content">
             <div class="input-container">
                 <div class="input-control">
                     <inp-com title="车架号" placeholder="输入车架号" :rightArrow="true" />
+                </div>
+                <div class="input-control">
+                    <inp-com title="发动机号" placeholder="输入发动机号后六位" :rightArrow="true" />
                 </div>
                 <div class="input-control">
                     <inp-com title="服务商" placeholder="选择服务商" :rightArrow="true" />
@@ -18,21 +23,19 @@
                     <inp-com title="手机号" placeholder="输入手机号" :rightArrow="true" />
                 </div>
                 <div class="input-control">
-                    <inp-com title="留言" placeholder="请输入100字内留言" :rightArrow="true" />
+                    <inp-com title="备注" placeholder="请输入100字内留言" :rightArrow="true" />
                 </div>
             </div>
         </div>
-        <div class="button-control">
-            <btn-com
-                title="下一步"
-                :onClick="goConfirmOrder"
-            />
+        <div class="button-control" @click="nextPage">
+            <div class="next-button">
+                下一步
+            </div>
         </div>
     </div>
 </template>
 <script>
     import NavBar from '../components/NavBar';
-    import BtnCom from '../components/BtnCom';
     import InpCom from '../components/InpCom';
     export default {
         data () {
@@ -42,12 +45,14 @@
         },
         components:{
             NavBar,
-            BtnCom,
             InpCom
         },
         methods:{
-            goConfirmOrder:function(){
+            nextPage:function(){
                 this.$router.push({name:'confirmorder'});
+            },
+            goHome:function(){
+                this.$router.go(-2)
             }
         }
     }
@@ -69,13 +74,14 @@
             }
         }
         .button-control{
-            background-color:#efefef;
-            width: 95%;
-            padding:1rem 2.5%;
-            color:#fff;
-            font-size:0.77rem;
-            overflow:hidden;
-            border-radius:3px;
+            .next-button{
+                text-align:center;
+                color:#fff;
+                background-color:#389cf2;
+                height:2.1rem;
+                line-height:2.1rem;
+                font-size:0.68rem;
+            }
         }
     }
 </style>

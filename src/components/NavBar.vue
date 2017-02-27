@@ -7,6 +7,7 @@
             {{title}}
         </div>
         <div class="right-button button" @click="onRight">
+            <i class="iconfont" v-if="rightIcon" :class="rightIcon"></i>
             {{rightContent}}
         </div>
     </div>
@@ -29,8 +30,11 @@
             rightContent:{
                 type:String,
                 default:''
+            },
+            rightIcon:{
+                type:String,
+                default:''
             }
-            
         },
         methods:{
             goBack:function(){
@@ -54,6 +58,13 @@
             .iconfont{
                 margin-left:0.3rem;
                 font-size:0.8rem;
+            }
+        }
+        .right-button{
+            .iconfont{
+                float:right;
+                margin-right:0.6rem;
+                font-weight:bold;
             }
         }
         .title{

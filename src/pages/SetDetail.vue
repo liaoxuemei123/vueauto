@@ -3,88 +3,96 @@
         <nav-bar
             title="套餐详情"
         />
-        <div class="page-content">
-            <div class="car-show">
-                <div class="car-image" :style="{'background-image':'url('+ url +')'}"></div>
+        <div class="page-content" flex="dir:top box:first">
+            <div class="detail-container">
+                <div class="set-container">
+                    <div class="set-image">
+                        <div class="image-container">
+                            <img v-lazy="url" >
+                        </div>
+                    </div>
+                    <div class="set-detail" flex="dir:top box:mean">
+                        <div class="line" flex="dir:left cross:center">
+                            <span class="car-type">{{carInfo.carType}}</span>
+                            <span class="des1">{{carInfo.des1}}</span>
+                            <span class="des2">({{carInfo.des2}})</span>
+                        </div>
+                        <div class="line" flex="dir:left cross:center">
+                            <span class="set-content">{{carInfo.setContent}}</span>
+                        </div>
+                        <div class="line" flex="dir:left cross:center">
+                            <span class="price-range"><span class="doller">￥</span>{{carInfo.priceMin}}-{{carInfo.priceMax}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-container">
+                    <inp-com
+                        title="套餐机油选择"
+                        :readonly="true"
+                        :rightArrow="true"
+                        placeholder="xx机油"
+                    />
+                </div>
             </div>
-            <div class="set-detail">
-                <div class="line">
-                    <span class="car-type">{{carInfo.carType}}</span>
-                    <span class="car-brand">{{carInfo.carBrand}}</span>
-                    <span class="set-name">{{carInfo.setName}}</span>
+            <div class="info-container">
+                <div class="title">
+                    套餐信息
                 </div>
-                <div class="line">
-                    <span class="car-series">{{carInfo.carSeries}}</span>
-                </div>
-                <div class="line">
-                    <span class="explain">{{carInfo.explain}}</span>
-                </div>
-                <div class="line">
-                    <span class="price"><span class="price-icon">￥</span>{{carInfo.price}}</span>
-                </div>
-            </div>
-            <div class="set-explain">
-                <div class="explain-item">
-                    <span>检查项目：</span>
-                    <p>{{setInfo.checkItem}}</p>
-                </div>
-                <div class="explain-item">
-                    <span>更换项目：</span>
-                    <p>{{setInfo.changItem}}</p>
-                </div>
-                <div class="explain-item">
-                    <span>有效期：</span>
-                    <p>{{setInfo.validate}}</p>
-                </div>
-                <div class="explain-item">
-                    <span>VIN：</span>
-                    <p>{{setInfo.VIN}}</p>
+                <div class="info-content">
+                    <div class="info-item">
+                        <div class="item-name">保养项目：</div>
+                        <div class="info">
+                            {{setInfo.checkItem}}
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="item-name">有效期：</div>
+                        <div class="info">
+                            {{setInfo.validate}}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="button-control">
-            <btn-com
-                title="确定"
-                background="#fc4c1d"
-                :onClick="goPersonInfo"
-            />
+            <div class="next-button" @click="nextPage">
+                下一步
+            </div>
         </div>
     </div>
 </template>
 <script>
     import NavBar from '../components/NavBar';
-    import BtnCom from '../components/BtnCom';
+    import InpCom from '../components/InpCom';
     export default {
         data () {
             return {
-                 url:"https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=2197052797,2441326896&fm=58",
+                 url:"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1488173505569&di=170b50bcd13d72f52430ec115e0949f4&imgtype=0&src=http%3A%2F%2Fs4.sinaimg.cn%2Fmw690%2F001hYbJBgy6DCQkjv4Dc3%26690",
                  carInfo:{
-                     carType:'乘用车',
-                     carBrand:"锐驰",
-                     setName:"D套餐（买三送一）",
-                     carSeries:"2016款-1.6L GDI 手动 致酷型",
-                     explain:"检查8项，更换4项。4次基础保养有效期3年",
-                     price:460,
+                     carType:'逸动V7',
+                     des1:"四次基础保养",
+                     des2:"两年以上车龄专享",
+                     setContent:"检查8项，更换4项。有效期3年，全国4S店通用",
+                     priceMin:420,
+                     priceMax:460,
                  },
                  setInfo:{
-                     checkItem:"冷却液检查、制动液检查、空气滤清器、制动系统检查、空气滤清器清器、驻车系统检查、燃油滤清器、机油滤清器",
-                     changItem:"机油、机油滤清器、汽油滤清器、燃油滤清器",
+                     checkItem:"机油、机油滤清器、汽油滤清器、全车工时费",
                      validate:"2017.02.16至2020.02.16（周末、法定节假日通用）",
-                     VIN:"12017021627438"
                  }
             }
         },
         components:{
             NavBar,
-            BtnCom
+            InpCom
         },
         mounted:function(){
             this.$route.params.id
         },
         methods:{
-            goPersonInfo:function(){
+            nextPage:function(){
                 this.$router.push({name:'personinfo'});
-            },
+            }
         }
     }
 </script>
@@ -97,83 +105,92 @@
             background-color: #efefef;
             height:100%;
             overflow: auto;
-            .car-show{
-                width:100%;
-                height:8.1rem;
-                background-color:#fff;
-                box-shadow:0px 2px 5px #ccc;
-                .car-image{
-                    width:100%;
-                    height:100%;
-                    background-size:50%;
-                    background-position:center;
-                    background-repeat:no-repeat;
-                    background-blend-mode:multiply;
+            .detail-container{
+                box-shadow:0px 1px 3px #aaa;
+                .set-container{
+                    background-color:#fff;
+                    box-shadow:0px 1px 3px #aaa;
+                    .set-image{
+                        .image-container{
+                            height:7.7rem;
+                            background-color:#ccc;
+                            position:relative;
+                            img{
+                                width:100%;
+                                height:100%;
+                            }
+                            img[lazy=loading] {
+                                position:absolute;
+                                top:37.5%;
+                                left:37.5%;
+                                width:25%;
+                                height:25%;
+                            }
+                        }
+                    }
+                    .set-detail{
+                        height:3.3rem;
+                        padding:0.4rem 0.5rem;
+                        font-size:0.51rem;
+                        .car-type,.des1{
+                            font-size:0.67rem;
+                            color:#333333;
+                            font-weight:bold;
+                            margin-right:0.2rem;
+                        }
+                        .des2{
+                            color:#fd3c2d;
+                            font-size:0.57rem;
+                        }
+                        .set-content{
+                            color:#666;
+                            font-size:0.57rem;
+                        }
+                        .price-range{
+                            color:#fd3c2d;
+                            font-size:0.67rem;
+                            font-weight:bold;
+                            .doller{
+                                font-size:0.51rem;
+                            }
+                        }
+                    }
+                }    
+                .input-container{
+                    margin-top:0.43rem;
                 }
             }
-            .set-detail{
-                margin-top:0.14rem;
-                height:4.3rem;
-                width:94%;
+            .info-container{
                 background-color:#fff;
-                padding:0.4rem 3%;
-                font-size:0.51rem;
-                box-shadow:0px 2px 5px #ccc;
-                .car-type{
-                    font-size:0.43rem;
-                    color:#fff;
-                    background-color:#fc4c1d;
-                    padding:0 0.1rem;
-                    border-radius:0.1rem;
-                    line-height:2em;
+                margin-top:0.43rem;
+                overflow:auto;
+                .title{
+                    font-size:0.68rem;
+                    line-height:3em;
+                    margin:0 0.5rem;
+                    border-bottom:1px solid #ccc;
                 }
-                .car-brand,.set-name{
-                    font-size:0.64rem;
-                    font-weight:bold;
-                    line-height:2em;
-                }
-                .explain{
-                    color:#fc4c1d;
-                    line-height:2em;
-                }
-                .price{
-                    font-size:0.85rem;
-                    color:#fc4c1d;
-                    line-height:1.8em;
-                    .price-icon{
-                        font-size:0.64rem;
-                    }
-                }
-            }
-            .set-explain{
-                margin-top:0.3rem;
-                width:94%;
-                background-color:#fff;
-                padding:0.4rem 3%;
-                box-shadow:0px 2px 5px #ccc;
-                .explain-item{
-                    p{
-                        margin:0;
-                        line-height:1.5em;
-                        font-size:0.51rem;
-                        color:#333;
-                    }
-                    span{
-                        line-height:2em;
-                        font-size:0.51rem;
-                        color:#fc4c1d;
+                .info-content{
+                    padding:0.4rem 0.5rem;
+                    .info-item{
+                        .item-name{
+                            color:#fd3c2d;
+                            font-weight:bold;
+                            line-height:2em;
+                        }
                     }
                 }
             }
         }
         .button-control{
-            background-color:#efefef;
-            width: 95%;
-            padding:1rem 2.5%;
-            color:#fff;
-            font-size:0.77rem;
-            overflow:hidden;
-            border-radius:3px;
+            .next-button{
+                text-align:center;
+                color:#fff;
+                background-color:#389cf2;
+                height:2.1rem;
+                line-height:2.1rem;
+                font-size:0.68rem;
+            }
         }
     }   
 </style>
