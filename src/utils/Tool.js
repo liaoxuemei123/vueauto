@@ -13,7 +13,6 @@ Tool.ajax = function(mySetting){
         timeout:30000,
         success:function (data) {},
         error:function (error) {},
-        onTimeOut:function (error) {},
     }
 
     var aData = [];
