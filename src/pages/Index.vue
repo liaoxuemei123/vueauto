@@ -1,7 +1,9 @@
 <template>
-    <div class="index-page page" flex="dir:top box:first">
+    <div class="index-page page" flex="dir:top box:justify">
         <nav-bar 
             title="添加预约订单"
+            rightContent="预约历史"
+            :onRight="goHistory"
         />
         <div class="page-content">
             <mt-datetime-picker
@@ -11,7 +13,7 @@
                 @confirm="onDateConfirm">
             </mt-datetime-picker>
             <div class="input-control">
-                <inp-com title="车牌号" type="text" icon="icon-plate" placeholder="请输入车牌号" :onBlur="updatePlate.bind(this)" :value="subscribeInfo.plate"/>
+                <inp-com title="车牌号" type="text" icon="icon-plate" :readonly="true" placeholder="请输入车牌号" :onClick="selectPlate.bind(this)" :onBlur="updatePlate.bind(this)" :value="subscribeInfo.plate"/>
             </div>
             <div class="input-control">
                 <inp-com title="预约时间" :readonly="true" type="text" icon="icon-time" placeholder="请选择到店时间" :onClick="selectTime" :value="subscribeInfo.time"/>
@@ -28,25 +30,26 @@
                 </div>
             </div>
             <div class="input-control">
-                <inp-com title="联系人" type="text" icon="icon-contact" placeholder="联系人" :value="subscribeInfo.contact"/>
+                <inp-com title="联系人" type="text" icon="icon-contact" placeholder="联系人" :onBlur="updateContact.bind(this)" :value="subscribeInfo.contact"/>
             </div>
             <div class="input-control">
-                <inp-com title="联系电话" type="number" icon="icon-phone" placeholder="联系电话" :value="subscribeInfo.phone"/>
+                <inp-com title="联系电话" type="number" icon="icon-phone" placeholder="联系电话" :onBlur="updatePhone.bind(this)" :value="subscribeInfo.phone"/>
             </div>
             <div class="input-control">
-                <inp-com title="预约描述" type="text" icon="icon-comment" placeholder="预约描述" :value="subscribeInfo.description"/>
+                <inp-com title="预约描述" type="text" icon="icon-comment" placeholder="预约描述" :onBlur="updateDes.bind(this)" :value="subscribeInfo.description"/>
                 <div class="explain">
                     客户留言预约描述客户留言预约描述客户留言预约描述客户
                     留言预约描述客户留言预约描述客户留言预约描述客户留言
                     预约描述客户留言预约描述客户留言
                 </div>
             </div>
-            <div class="button-control">
-                 <btn-com
-                    title="确定预约"
-                    :onClick="saveInfo"
-                />
-            </div>
+        </div>
+        <div class="button-control">
+            <btn-com
+                title="确定预约"
+                :onClick="saveInfo"
+                background="#00bffe"
+            />
         </div>
     </div>
 </template>
@@ -82,11 +85,29 @@
                 var target = $(e.target);
                 this.subscribeInfo.mile = target.val();
             },
+            updateContact:function(e){
+                var target = $(e.target);
+                this.subscribeInfo.contact = target.val();
+            },
+            updatePhone:function(e){
+                var target = $(e.target);
+                this.subscribeInfo.phone = target.val();
+            },
+            updateDes:function(e){
+                var target = $(e.target);
+                this.subscribeInfo.description = target.val();
+            },
             onDateConfirm:function(val){
                 this.subscribeInfo.time = Tool.formatDate(val);
             },
+            selectPlate:function(val){
+                this.$router.push({name:'selectplate'})
+            },
             saveInfo:function(e){
                 
+            },
+            goHistory:function(){
+                this.$router.push({name:'orderhistory'});
             },
             ...mapMutations([
                 'updateSubscribeInfo',
@@ -108,18 +129,7 @@
             background-color: #efefef;
             height:100%;
             overflow: auto;
-            .button-control{
-                background-color:#fc4c1d;
-                width: 95%;
-                margin:1rem 2.5%;
-                color:#fff;
-                font-size:0.77rem;
-                overflow:hidden;
-                border-radius:3px;
-            }
             .input-control{
-                width: 95%;
-                margin:0.4rem 2.5%;
                 overflow:hidden;
                 border-radius:3px;
                 box-shadow:0px 2px 3px #ccc;
@@ -134,6 +144,13 @@
                     }
                 }
             }
+        }
+        .button-control{
+            margin:0.3rem;
+            color:#fff;
+            font-size:0.77rem;
+            overflow:hidden;
+            border-radius:3px;
         }
     }
     

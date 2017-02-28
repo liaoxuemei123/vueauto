@@ -19,6 +19,14 @@ export default {
 		...mapState([
 			"mode"
 		])
+	},
+	created:function(){
+		var self = this;
+		var geolocation = new BMap.Geolocation();
+        var gc = new BMap.Geocoder();
+        geolocation.getCurrentPosition(function(position){
+			self.$store.commit('SET_LOCATION',position);
+        });
 	}
 }
 </script>

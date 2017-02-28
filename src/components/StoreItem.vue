@@ -6,18 +6,18 @@
         </div>
         <div class="store-info" flex="dir:left cross:center box:first">
             <div class="store-url">
-                <img v-lazy="item.url"/>
+                <img v-lazy="item.photoUrl"/>
             </div>
             <div class="info-content" flex="dir:top cross:top box:mean">
                 <div class="line" flex="dir:left cross:center main:justify">
                     <span class="store-name">{{item.storeName}}</span>
-                    <span class="store-distance">{{item.distance}}</span>
+                    <span class="store-distance">{{item.distance | distanceFilter}}</span>
                 </div>
                 <div class="line" flex="dir:left cross:center">
                     <span class="store-address">{{item.address}}
                 </div>
                 <div class="line" flex="dir:left cross:center">
-                    <span class="store-phone">联系电话：{{item.phone}}</span>
+                    <span class="store-phone">联系电话：{{item.tel}}</span>
                 </div>
             </div>
         </div>
@@ -44,6 +44,11 @@
             active:{
                 type:Boolean,
                 default:false
+            }
+        },
+        filters:{
+            distanceFilter:function(val){
+                return (val/1000).toFixed(1) + 'km';
             }
         }
     }
@@ -95,6 +100,7 @@
                         font-size:0.64rem;
                         margin-right:0.3rem;
                         font-weight:bold;
+                        white-space: nowrap;
                     }
                     .store-distance{
                         font-size: 0.56rem;

@@ -9,6 +9,7 @@ import ConfirmOrder from "pages/ConfirmOrder";
 import OrderPay from 'pages/OrderPay';
 import MyOrder from 'pages/MyOrder';
 import OrderDetail from 'pages/OrderDetail';
+import SelectPlate from 'pages/SelectPlate';
 
 Vue.use(Router)
 
@@ -59,5 +60,10 @@ export default new Router({
       name:'orderdetail',
       component:OrderDetail,
     },
+    {
+      path:'/selectplate',
+      name:'selectplate',
+      component:SelectPlate,
+    }
   ]
 })

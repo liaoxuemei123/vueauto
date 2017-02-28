@@ -14,6 +14,13 @@ const store = new Vuex.Store({
             contact:'',
             phone:'',
             description:''
+        },
+        geolocation:{
+            point:{
+                lat:29.579185,
+                lon:106.55419
+            },
+            address:{}
         }
     },
     mutations:{
@@ -33,12 +40,15 @@ const store = new Vuex.Store({
         },
         updateSubscribeInfo:function(state,params){
             var keys = Object.keys(params)
-            console.log(state.subscribeInfo);
             for(var i = 1; i < keys.length; i ++){
                 state.subscribeInfo[keys[i]] = keys[keys[i]];//把params中可枚举的属性复制给state;
             }
-            console.log(state.subscribeInfo);
-        }
+        },
+        SET_LOCATION:function(state,params){
+            state.geolocation.address = params.address;
+            state.geolocation.point.lat = params.latitude;
+            state.geolocation.point.lon = params.longitude;
+        },
     },
     getters:{
         pageStack:function(state, getters){

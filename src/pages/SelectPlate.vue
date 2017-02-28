@@ -1,0 +1,275 @@
+<template>
+    <div class="page select-plate-page">
+        <div class="page-container" flex="dir:top box:justify">
+            <nav-bar
+                title="选择车辆"
+            />
+            <div class="page-content">
+                <div class="car-list">
+                    <div class="own-item" v-for="(item,index) in ownList" flex="dir:left cross:center" @click="active=index">
+                        <i class="iconfont icon-select active" v-if="active == index"></i>
+                        <i class="iconfont icon-circle" v-else="active == index"></i>
+                        <div class="car-series">{{item.series_name}}</div>
+                        <div class="car-plate">{{item.plate_no}}</div>
+                    </div>
+                    <div class="add-car">
+                        <div class="default-show" flex="dir:left cross:center" @click="active = -1">
+                            <i class="iconfont icon-select active" v-if="active == -1"></i>
+                            <i class="iconfont icon-circle" v-else="active == -1"></i>
+                            <div class="title">我要添加车辆</div>
+                        </div>
+                        <div class="drop-down-form" v-if="active == -1" flex="dir:top main:center">
+                            <div class="input-control">
+                                <input type="text" placeholder="请选择车系" readonly @click="pickerShow=true" :value="addInfo.carSeries.modelName">
+                                <i class="iconfont icon-little-arrow"></i>
+                            </div>
+                            <div class="input-control" flex="dir:left cross:center main:justify">
+                                <input type="text" placeholder="请输入车牌" @blur="updatePlate">
+                                <div class="add-button" @click="addCar">
+                                    确定添加
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="button-control">
+                <btn-com
+                    title="确定"
+                    background="#00bffe"
+                />
+            </div>
+        </div>
+        <div class="picker-mask" v-if="pickerShow"></div>
+        <transition name="picker">
+            <div class="picker-container" v-if="pickerShow">
+                <div class="toolbar" flex="dir:left cross:center main:justify">
+                    <div class="left-button" @click="pickerShow = false">取消</div>
+                    <div class="ri0ght-button" @click="pickerSure">确认</div>
+                </div>
+                <mt-picker :slots="carList" defaultIndex=0 valueKey="modelName" :itemHeight="itemHeight" @change="onValuesChange"></mt-picker>
+            </div>
+        </transition>
+    </div>
+</template>
+<script>
+    import NavBar from '../components/NavBar';
+    import BtnCom from '../components/BtnCom';
+    import { mapState } from 'vuex';
+    import Tool from '../utils/Tool';
+    import { Picker } from 'mint-ui';
+    export default {
+        data () {
+            return {
+                ownList:[],
+                active:0,
+                pickerShow:false,
+                carList:[{
+                    flex:1,
+                    values:[],
+                    className:'car-item',
+                    textAlign:'center',
+                }],
+                addInfo:{
+                    carSeries:'',
+                    plate:'',
+                },
+                pickerValue:{}
+            }
+        },
+        watch:{
+            'active':function(val){
+                if(this.active == -1){
+                    this.getPickerList();
+                }
+            }
+        },
+        methods:{
+            getCarList:function(){
+                var self = this;
+                Tool.get('getCarNumberList',{
+                    userId:1
+                },function(data){
+                    self.ownList = data.data;
+                    if(data.data.length > 0){
+                        self.active = data.data.length - 1;
+                    }
+                }) 
+            },
+            getPickerList:function(){
+                var self = this;
+                Tool.get('getCarList',{},function(data){
+                    self.carList[0].values = data.data;
+                })
+            },
+            onValuesChange:function(picker,values){
+                this.pickerValue = picker.getValues();
+            },
+            pickerSure:function(){
+                if(this.pickerValue[0]){
+                    this.addInfo.carSeries = this.pickerValue[0];
+                    this.pickerValue = {};//每次选择完成后重置pickerValue，不然下次没办法选择第一个选项
+                }else{
+                    this.addInfo.carSeries = this.carList[0].values[0];
+                    this.pickerValue = {};
+                }
+                this.pickerShow = false;
+            },
+            updatePlate:function(e){
+                var target = $(e.target);
+                this.addInfo.plate = target.val();
+            },
+            addCar:function(){
+                var self = this;
+                Tool.post('AaUserVehicleAdd',{
+                    user_id:1,
+                    plate_no:self.addInfo.plate,
+                    vehicle_type_id:self.addInfo.carSeries.modelId,
+                },function(data){
+                    self.getCarList();
+                })
+            }
+        },
+        components:{
+            NavBar,
+            BtnCom
+        },
+        created:function(){
+            this.getCarList();
+        },
+        computed:{
+            itemHeight:function(){
+                return (document.documentElement.style.fontSize.replace("px",'') - 0) * 1.5;
+            }
+        }
+    }
+</script>
+<style lang="less">
+    .page{
+        height:100%;
+        position:absolute;
+        width:100%;
+        .page-container{
+            height:100%;
+            .page-content{
+                background-color: #efefef;
+                height:100%;
+                overflow: auto;
+                .car-list{
+                    font-size:0.67rem;
+                    .own-item{
+                        height:2rem;
+                        background-color:#fff;
+                        border-bottom:1px solid #efefef;
+                        padding:0 3%;
+                        .iconfont{
+                            font-size:0.76rem;
+                            margin-right:0.3rem;
+                        }
+                        .iconfont.active{
+                            color:#fc4c1d;
+                        }
+                        .car-series{
+                            margin-right:0.3rem;
+                        }
+                        .car-plate{
+                            font-size:0.57rem;
+                            color:#888;
+                        }
+                    }
+                    .add-car{
+                        .default-show{
+                            height:1.8rem;
+                            background-color:#fff;
+                            border-bottom:1px solid #efefef;
+                            padding:0 3%;
+                            .iconfont{
+                                font-size:0.76rem;
+                                margin-right:0.3rem;
+                            }
+                            .iconfont.active{
+                                color:#fc4c1d;
+                            }
+                        }
+                        .drop-down-form{
+                            padding:0 10%;
+                            background-color:#fff;
+                            .input-control{
+                                position:relative;
+                                border-bottom:1px solid #efefef;
+                                input{
+                                    font-family:'Microsoft Yahei';
+                                    height:1.8rem;
+                                    line-height:1.8rem;
+                                    outline:none;
+                                    border:none;
+                                    background:transparent;
+                                }
+                                .iconfont{
+                                    position:absolute;
+                                    right:0rem;
+                                    line-height:1.8rem;
+                                    font-size:1rem;
+                                    color:#888;
+                                }
+                                .add-button{
+                                    padding:0.3rem 0.3rem;
+                                    background-color:#fc4c1b;
+                                    font-size:0.51rem;
+                                    color:#fff;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            .button-control{
+                background-color:#efefef;
+                color:#fff;
+                font-size:0.77rem;
+                overflow:hidden;
+                border-radius:3px;
+            }
+        }
+        .picker-mask{
+            position:absolute;
+            top:0;
+            bottom:0;
+            left:0;
+            right:0;
+            background-color:rgba(0,0,0,0.5);
+            z-index:1;
+        }
+        .picker-container{
+            position:absolute;
+            background-color:#fff;
+            width:100%;
+            bottom:0;
+            z-index:2;
+            .toolbar{
+                padding:0 5%;
+                height:1.5rem;
+                font-size:0.76rem;
+                color:#389cf2;
+            }
+        }
+        .picker-enter-active {
+            transition: all .2s ease-in;
+            transform: translate3d(0,0%,0);
+            z-index:1001;
+        }
+        .picker-leave-active {
+            transition: all .2s ease-in;
+            transform: translate3d(0,100%,0);
+            z-index: 1000;
+        }
+        .picker-leave{
+            transform: translate3d(0,0%,0);
+            z-index: 1000;
+        }
+        .picker-enter{
+            transform: translate3d(0,100%,0);
+            z-index:1001;
+        }
+    }
+</style>

@@ -70,7 +70,7 @@
             height:100%;
             width:90%;
             background-color:transparent;
-            font-size:0.5rem;
+            font-size:0.57rem;
             text-align:right;
             padding:0.2rem 5%;
             outline: none;
@@ -85,7 +85,7 @@
         i.iconfont{
             font-size:0.68rem;
             margin:0 0.2rem 0 0.32rem;
-            color:#ff5500;
+            color:#00bffe;
         }
         i.iconfont.arrow{
             color:#cfcfcf;

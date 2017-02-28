@@ -5,7 +5,7 @@
         </div>
         <div class="search-bar">
             <form @submit.prevent="search">
-                <input :type="type" :placeholder="placeholder" :value="key" @input="changeSearch"/>
+                <input :type="type" :placeholder="placeholder" :value="key"/>
             </form>
         </div>
         <div class="right-button button" @click="onRight">
@@ -33,18 +33,17 @@
                 default:function(){
                     return ;
                 }
+            },
+            search:{
+                type:Function,
+                default:function(key){
+                    console.log(key);
+                }
             }
         },
         methods:{
             goBack:function(){
                 this.$router.go(-1);
-            },
-            search:function(){
-                console.log(this.key);
-            },
-            changeSearch:function(e){
-                var target = $(e.target);
-                this.key = target.val();
             },
         }
     }

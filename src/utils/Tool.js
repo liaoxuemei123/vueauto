@@ -1,4 +1,7 @@
+import { Indicator, Toast } from 'mint-ui'
+
 const Tool = {};
+const target = 'http://10.17.244.92:8080/anan-management/app/';
 
 Tool.ajax = function(mySetting){
     var setting = {
@@ -26,17 +29,20 @@ Tool.ajax = function(mySetting){
     setting.type = setting.type.toUpperCase();
 
     var xhr = new XMLHttpRequest();
-
+    Indicator.open({
+        spinnerType:'double-bounce',
+    });
     try{
         if ( setting.type === 'GET' || setting === 'get') {
             sData = setting.url + '?' + sData;
-            xhr.open(setting.type, sData + '&' + new Date().getTime(), setting.async);
+            xhr.open(setting.type, sData + '&_t=' + new Date().getTime(), setting.async);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded;charset=UTF-8");
             xhr.timeout = setting.timeout;
             xhr.ontimeout = setting.onTimeOut;
             xhr.send()
         } else {
             xhr.open(setting.type, setting.url, setting.async);
-            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded;charset=UTF-8");
             xhr.timeout = setting.timeout;
             xhr.ontimeout = setting.onTimeOut;
             xhr.send(sData);
@@ -54,7 +60,7 @@ Tool.ajax = function(mySetting){
     function httpEnd(){
         if(xhr.readyState == 4){
             var head = xhr.getAllResponseHeaders();
-            var response = xhr.responseText();
+            var response = xhr.responseText;
 
             if (/application\/json/.test(head) || setting.dataType === 'json' && /^(\{|\[)([\s\S])*?(\]|\})$/.test(response)) {
                 response = JSON.parse(response);
@@ -63,9 +69,29 @@ Tool.ajax = function(mySetting){
             if (xhr.status == 200) {
                 setting.success(response, setting, xhr);
             } else {
-                setting.error(setting, xhr);
+                if(xhr.status === 0){
+                    if(xhr.statusText == 'timeout'){
+                        Toast({
+                            message:'网路请求超时',
+                            duration:1000,
+                        });
+                        setting.onTimeOut(setting,xhr);
+                    }else{
+                        Toast({
+                            message:'网络连接失败，请检查您的网络',
+                            duration:1000,
+                        });
+                    }
+                }else{
+                    Toast({
+                        message:'网络错误，错误代码:'+ xhr.status,
+                        duration:1000,
+                    });
+                }
+                setting.error(xhr);
             }
         }
+        Indicator.close();
     }
 
     xhr.end = function () {
@@ -99,8 +125,8 @@ Tool.post = function (pathname, data, success, error) {
         url: target + pathname, //默认ajax请求地址
         type: 'POST', //请求的方式
         data: data, //发给服务器的数据
-        success: success || function () { }, //请求成功执行方法
-        error: error || function () { } //请求失败执行方法
+        success: success,
+        error: error
     };
     return Tool.ajax(setting);
 };

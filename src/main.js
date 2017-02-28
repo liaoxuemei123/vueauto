@@ -8,7 +8,6 @@ import './js/jquery.js';
 import 'flex.css';
 import 'normalize.css';
 import './style/iconfont.less';
-
 Vue.use(MintUI);
 
 document.documentElement.style.fontSize = document.documentElement.clientWidth/640*40+"px";

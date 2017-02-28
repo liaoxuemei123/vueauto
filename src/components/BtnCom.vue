@@ -34,10 +34,11 @@
 </script>
 <style scoped lang="less">
     .btn-com{
-        height:1.9rem;
+        height:2.1rem;
         width:100%;
-        line-height: 1.9rem;
+        line-height: 2.1rem;
         text-align: center;
         border-radius:3px;
+        outline:none;
     }
 </style>
