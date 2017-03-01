@@ -15,6 +15,7 @@
             <btn-com
                 title="确定"
                 background="#00bffe"
+                :onClick="submitStore"
             />
         </div>
     </div>
@@ -46,7 +47,7 @@
                 var target = $(e.target).find('input');
                 this.getStoreList(target.val());
             },
-            getStoreList:function(name=''){
+            getStoreList:function(name='',callback){
                 var self = this;
                 Tool.get('getStoreList',{
                     gpsLongitude:self.geolocation.point.lon,
@@ -54,11 +55,27 @@
                     storename:name,
                 },function(data){
                     self.storelist = data.data;
+                    callback && callback();
                 })
+            },
+            submitStore:function(){
+                var data = {};
+                data.id = this.storelist[this.select].id;
+                data.storeName = this.storelist[this.select].storeName;
+                this.$store.commit('SET_SUBSTOREINFO',data);
+                this.$router.back();
             }
         },
         created:function(){
-            this.getStoreList();
+            this.getStoreList('',() => {
+                var storeInfo = this.$store.getters.subscribeInfo.storeInfo;
+                for(var i=0;i<this.storelist.length;i++){
+                    if(storeInfo.id == this.storelist[i].id){
+                        this.select = i;
+                        return;
+                    }
+                }
+            });
         },
         computed:{
             ...mapState([

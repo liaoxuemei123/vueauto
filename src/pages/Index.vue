@@ -8,25 +8,32 @@
         <div class="page-content">
             <mt-datetime-picker
                 ref="datepicker"
-                type="date"
+                type="datetime"
                 v-model="pickerValue"
                 @confirm="onDateConfirm">
             </mt-datetime-picker>
             <div class="input-control">
-                <inp-com title="车牌号" type="text" icon="icon-plate" :readonly="true" placeholder="请输入车牌号" :onClick="selectPlate.bind(this)" :onBlur="updatePlate.bind(this)" :value="subscribeInfo.plate"/>
+                <inp-com title="车牌号" type="text" icon="icon-plate" :readonly="true" placeholder="请输入车牌号" :onClick="selectPlate.bind(this)" :value="subscribeInfo.carInfo.plate"/>
             </div>
             <div class="input-control">
-                <inp-com title="预约时间" :readonly="true" type="text" icon="icon-time" placeholder="请选择到店时间" :onClick="selectTime" :value="subscribeInfo.time"/>
+                <inp-com title="预约时间" :readonly="true" type="text" icon="icon-time" placeholder="请选择到店时间" :onClick="selectTime" :value="subscribeInfo.showTime"/>
             </div>
             <div class="input-control">
-                <inp-com title="4S店选择" type="text" icon="icon-store" placeholder="请选择服务商" :onClick="goStore" :value="subscribeInfo.storeId"/>
+                <inp-com title="4S店选择" type="text" icon="icon-store" placeholder="请选择服务商" :onClick="goStore" :value="subscribeInfo.storeInfo.storeName"/>
             </div>
             <div class="input-control">
                 <inp-com title="预约里程" type="number" icon="icon-mile" placeholder="里程" :onBlur="updateMile.bind(this)" :value="subscribeInfo.mile"/>
                 <div class="explain">
-                    客户留言预约描述客户留言预约描述客户留言预约描述客户
-                    留言预约描述客户留言预约描述客户留言预约描述客户留言
-                    预约描述客户留言预约描述客户留言
+                    <div class="atention" flex="dir:left">保养项目：<div class="red">以下保养项目按照官方保养守则推荐具体以到店为准</div></div>
+                    <div class='fcmc-list'>
+                        <div class="fcmc-item" v-for="(item,index) in subscribeInfo.fcmc" flex="dir:left box:last" v-if="index < 2 || fcmcExpand">
+                            <div class="info">{{index + 1}}.{{item.fcmcDesc}}</div>
+                            <div class="expand" v-if="index == 1" @click="fcmcExpand = !fcmcExpand">
+                                <div v-if="fcmcExpand">收起<i class="iconfont icon-up"></i></div>
+                                <div v-else="fcmcExpand">展开更多<i class="iconfont icon-down"></i></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="input-control">
@@ -35,19 +42,20 @@
             <div class="input-control">
                 <inp-com title="联系电话" type="number" icon="icon-phone" placeholder="联系电话" :onBlur="updatePhone.bind(this)" :value="subscribeInfo.phone"/>
             </div>
-            <div class="input-control">
-                <inp-com title="预约描述" type="text" icon="icon-comment" placeholder="预约描述" :onBlur="updateDes.bind(this)" :value="subscribeInfo.description"/>
-                <div class="explain">
-                    客户留言预约描述客户留言预约描述客户留言预约描述客户
-                    留言预约描述客户留言预约描述客户留言预约描述客户留言
-                    预约描述客户留言预约描述客户留言
+            <div class="input-control" flex="dir:top">
+                <inp-com title="预约描述" type="text" icon="icon-comment" :readonly='true'/>
+                <div class="text-control" flex="dir:top"  >
+                    <textarea rows="5" maxlength='100' @input="updateDes" :value="subscribeInfo.description"></textarea>
+                    <div class="show-length">
+                        {{subscribeInfo.description.length}}/100
+                    </div>
                 </div>
             </div>
         </div>
         <div class="button-control">
             <btn-com
                 title="确定预约"
-                :onClick="saveInfo"
+                :onClick="addOrder"
                 background="#00bffe"
             />
         </div>
@@ -58,17 +66,23 @@
     import BtnCom from '../components/BtnCom';
     import InpCom from '../components/InpCom';
     import { mapMutations, mapState } from 'vuex';
-    import Tool from '../utils/Tool'
+    import Tool from '../utils/Tool';
+    import { Toast } from 'mint-ui';
     export default{
         data () {
             return {
-                pickerValue:Tool.getCurrentDate(),
+                pickerValue:Tool.getCurrentDate('time'),
+                fcmc:[],
+                fcmcExpand:false,
+                des:'1212',
             }
         },
         computed:{
             ...mapState([
                 'subscribeInfo',
             ])
+        },
+        mounted:function(){
         },
         methods:{
             goStore:function(){
@@ -77,13 +91,24 @@
             selectTime:function(){
                 this.$refs.datepicker.open();
             },
-            updatePlate:function(e){
-                var target = $(e.target);
-                this.subscribeInfo.plate = target.val();
-            },
             updateMile:function(e){
+                var self = this;
                 var target = $(e.target);
                 this.subscribeInfo.mile = target.val();
+                if(!self.subscribeInfo.carInfo.vehicleTypeId){
+                    Toast({
+                        message:'请选择爱车',
+                        position:'bottom',
+                        duration:1000,
+                    });
+                    return false;
+                }
+                Tool.get('getCommodityList',{
+                    mileage:target.val() || 0,
+                    cartype:self.subscribeInfo.carInfo.vehicleTypeId,
+                },function(data){
+                    self.subscribeInfo.fcmc = data.data;
+                })
             },
             updateContact:function(e){
                 var target = $(e.target);
@@ -98,13 +123,86 @@
                 this.subscribeInfo.description = target.val();
             },
             onDateConfirm:function(val){
-                this.subscribeInfo.time = Tool.formatDate(val);
+                this.subscribeInfo.time = new Date(val).getTime();
+                this.subscribeInfo.showTime = Tool.formatDate(val,'time');
             },
             selectPlate:function(val){
                 this.$router.push({name:'selectplate'})
             },
-            saveInfo:function(e){
-                
+            addOrder:function(e){
+                var self = this;
+                var data = {}
+                data.carNumber = this.subscribeInfo.carInfo.plate;
+                data.reservationDateTimestamp = this.subscribeInfo.time;
+                data.userId = 1;
+                data.storeId = this.subscribeInfo.storeInfo.id;
+                data.mileage = this.subscribeInfo.mile;
+                data.linkman = this.subscribeInfo.contact;
+                data.phone = this.subscribeInfo.phone;
+                data.description = this.subscribeInfo.description;
+                if(!data.carNumber){
+                    Toast({
+                        message:'请输入车牌号',
+                        position:'bottom',
+                        duration:1000,
+                    });
+                    return false;
+                }
+                if(!data.reservationDateTimestamp){
+                    Toast({
+                        message:'请选择保养时间',
+                        position:'bottom',
+                        duration:1000,
+                    });
+                    return false;
+                }
+                if(!data.storeId){
+                    Toast({
+                        message:'请选择服务商',
+                        position:'bottom',
+                        duration:1000,
+                    });
+                    return false;
+                }
+                if(!data.mileage){
+                    Toast({
+                        message:'请输入里程',
+                        position:'bottom',
+                        duration:1000,
+                    });
+                    return false;
+                }
+                if(!data.linkman){
+                    Toast({
+                        message:'请输入联系人',
+                        position:'bottom',
+                        duration:1000,
+                    });
+                    return false;
+                }
+                if(!data.phone){
+                    Toast({
+                        message:'请输入电话号码',
+                        position:'bottom',
+                        duration:1000,
+                    });
+                    return false;
+                }
+                if(!(/^1[34578]\d{9}$/.test(data.phone))){
+                    Toast({
+                        message:'手机号码不正确',
+                        position:'bottom',
+                        duration:1000,
+                    });
+                    return false;
+                }
+                Tool.post('ReservationOrderAdd',data,function(res){
+                    Toast({
+                        message:res.msg,
+                        duration:1000,
+                    });
+                    self.$store.commit('RESET_SUBSCRIBE');
+                })
             },
             goHistory:function(){
                 this.$router.push({name:'orderhistory'});
@@ -139,10 +237,52 @@
                     font-size:0.51rem;
                     color:#6b6b6b;
                     line-height: 1.5em;
-                    p{
-                        margin:0;
+                    .atention{
+                        white-space:nowrap;
+                        text-overflow:ellipsis;
+                        .red{
+                            color:#fc4c1d;
+                            font-size:0.51rem;
+                            text-overflow: ellipsis;
+                        }
+                    }
+                    .fcmc-list{
+                        .fcmc-item{
+                            white-space:nowrap;
+                            .info{
+                                text-overflow:ellipsis;
+                            }
+                            .expand{
+                                width:3rem;
+                                text-align:right;
+                                color:#fc4c1d;
+                                .iconfont{
+                                    font-size:0.51rem;
+                                }
+                            }
+                        }
                     }
                 }
+                .text-control{
+                    position:relative;
+                    textarea{
+                        resize:none;
+                        outline:none;
+                        border:none;
+                        padding:0;
+                        background-color:#f8f8f8;
+                        font-size:0.58rem;
+                        padding:0.43rem 0.43rem 0.43rem 1.28rem;
+                    }
+                    .show-length{
+                        position:absolute;
+                        bottom:0.43rem;
+                        right:0.43rem;
+                        font-size:0.51rem;
+                        color:#08a9ef;
+                    }
+                }
+               
             }
         }
         .button-control{

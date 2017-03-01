@@ -37,6 +37,7 @@
                 <btn-com
                     title="确定"
                     background="#00bffe"
+                    :onClick="submitCarInfo"
                 />
             </div>
         </div>
@@ -57,7 +58,7 @@
     import BtnCom from '../components/BtnCom';
     import { mapState } from 'vuex';
     import Tool from '../utils/Tool';
-    import { Picker } from 'mint-ui';
+    import { Picker, Toast } from 'mint-ui';
     export default {
         data () {
             return {
@@ -79,13 +80,13 @@
         },
         watch:{
             'active':function(val){
-                if(this.active == -1){
+                if(this.active == -1 && this.carList[0].values.length == 0){
                     this.getPickerList();
                 }
             }
         },
         methods:{
-            getCarList:function(){
+            getCarList:function(callback){
                 var self = this;
                 Tool.get('getCarNumberList',{
                     userId:1
@@ -94,6 +95,7 @@
                     if(data.data.length > 0){
                         self.active = data.data.length - 1;
                     }
+                    callback && callback();
                 }) 
             },
             getPickerList:function(){
@@ -120,6 +122,29 @@
                 this.addInfo.plate = target.val();
             },
             addCar:function(){
+                if(!this.addInfo.carSeries.id){
+                    Toast({
+                        message:'请选择车型',
+                        position:'bottom',
+                        duration:1000,
+                    });
+                    return false;
+                }
+                if(!this.addInfo.plate){
+                    Toast({
+                        message:'请输入车牌',
+                        position:'bottom',
+                        duration:1000,
+                    });
+                    return false;
+                }else if (!(/^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-Z0-9]{4}[A-Z0-9挂学警港澳]{0,1}$/.test(this.addInfo.plate))){
+                    Toast({
+                        message:'车牌号有误',
+                        position:'bottom',
+                        duration:1000,
+                    });
+                    return false;
+                } 
                 var self = this;
                 Tool.post('AaUserVehicleAdd',{
                     user_id:1,
@@ -128,6 +153,14 @@
                 },function(data){
                     self.getCarList();
                 })
+            },
+            submitCarInfo:function(){
+                var data = {};
+                data.plate = this.ownList[this.active].plate_no;
+                data.seriesName = this.ownList[this.active].series_name;
+                data.vehicleTypeId = this.ownList[this.active].vehicle_type_id;
+                this.$store.commit('SET_SUBCARINFO',data);
+                this.$router.back();
             }
         },
         components:{
@@ -135,7 +168,14 @@
             BtnCom
         },
         created:function(){
-            this.getCarList();
+            this.getCarList(()=>{
+                for(var i=0;i<this.ownList.length;i++){
+                    if(this.$store.getters.subscribeInfo.carInfo.vehicleTypeId == this.ownList[i].vehicle_type_id){
+                        this.active = i;
+                        break;
+                    }
+                }
+            });
         },
         computed:{
             itemHeight:function(){

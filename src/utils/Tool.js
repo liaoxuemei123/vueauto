@@ -161,14 +161,12 @@ Tool.formatDate = function(str,type='date'){
     var h = date.getHours();
     var min = date.getMinutes();
     min = min < 10 ? ( "0" + min ) : min;
-    var s = date.getSeconds();
-    s = s < 10 ? ( "0" + s ) : s;
     switch(type){
         case 'date':
             return y + '-' + m + '-' + d;
             break;
         case 'time':
-            return y + '-' + m + '-' + d + ' ' + h + ':' + min + ':' + s;
+            return y + '-' + m + '-' + d + ' ' + h + ':' + min;
         case 'onlytime':
             return h + ':' + min + ':' + s;
     }   
@@ -176,9 +174,9 @@ Tool.formatDate = function(str,type='date'){
 /**
  * 获取今天的日期 XXXX-XX-XX;
  */
-Tool.getCurrentDate = function(){
+Tool.getCurrentDate = function(type='date'){
     var now = new Date();
-    return this.formatDate(now);
+    return this.formatDate(now,type);
 }
 
 
@@ -198,6 +196,28 @@ Tool.removeLocalItem = function(key){
         return localStorage.removeItem(key);
     }
     return localStorage.removeItem();
+}
+/**
+ * @param {Object} obj 需要清空的对象
+ * 本方法是枚举对象中的属性并逐一置为空
+ */
+Tool.removeObject = function(obj){
+    var self = this;
+    if(typeof obj === 'object'){
+        var arr = Object.keys(obj);
+        for(var i = 0; i < arr.length; i++){
+            if(typeof obj[arr[i]] == 'object' && !(obj[arr[i]] instanceof Array)){
+                self.removeObject(obj[arr[i]]);
+            }else if(obj[arr[i]] instanceof Array){
+                obj[arr[i]] = [];
+            }else{
+                obj[arr[i]] = '';
+            }
+        }
+    }else{
+        obj = '';
+    }
+    return ;
 }
 
 export default Tool;

@@ -10,6 +10,8 @@ import 'normalize.css';
 import './style/iconfont.less';
 Vue.use(MintUI);
 
+import { Indicator } from 'mint-ui';
+
 document.documentElement.style.fontSize = document.documentElement.clientWidth/640*40+"px";
 $(window).on("resize",function(){//当窗口发生变化时更新字体大小
   document.documentElement.style.fontSize = document.documentElement.clientWidth/640*40+"px";
@@ -19,6 +21,7 @@ router.beforeEach((to,from,next)=>{
   const pageStack = store.getters.pageStack;
   const toIndex = getIndex(pageStack, to.path);
   const toPath = to.path;
+  Indicator.close();
   if(toIndex == -1){
     store.commit('SET_MODE','push');
     store.commit('PUSH_PAGE',{path:toPath,index:pageStack.length});

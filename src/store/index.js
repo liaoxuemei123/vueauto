@@ -1,20 +1,32 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import Tool from '../utils/Tool'
 Vue.use(Vuex)
+
+const subscribeDefault = {
+    carInfo:{
+        plate:'',
+        seriesName:'',
+        vehicleTypeId:'',
+    },
+    time:'',
+    showTime:'',
+    fcmc:'',
+    storeInfo:{
+        id:'',
+        storeName:'',
+    },
+    mile:'',
+    contact:'',
+    phone:'',
+    description:''
+}
 
 const store = new Vuex.Store({
     state:{
         pageStack:[],
         mode:'push',
-        subscribeInfo:{//预约信息
-            plate:'',
-            time:'',
-            storeId:'',
-            mile:'',
-            contact:'',
-            phone:'',
-            description:''
-        },
+        subscribeInfo:subscribeDefault,
         geolocation:{
             point:{
                 lat:29.579185,
@@ -49,6 +61,18 @@ const store = new Vuex.Store({
             state.geolocation.point.lat = params.latitude;
             state.geolocation.point.lon = params.longitude;
         },
+        SET_SUBCARINFO:function(state,params){
+            state.subscribeInfo.carInfo.plate = params.plate;
+            state.subscribeInfo.carInfo.seriesName = params.seriesName;
+            state.subscribeInfo.carInfo.vehicleTypeId = params.vehicleTypeId;
+        },
+        SET_SUBSTOREINFO:function(state,params){
+            state.subscribeInfo.storeInfo.id = params.id;
+            state.subscribeInfo.storeInfo.storeName = params.storeName;
+        },
+        RESET_SUBSCRIBE:function(state){
+            Tool.removeObject(state.subscribeInfo);
+        }
     },
     getters:{
         pageStack:function(state, getters){
