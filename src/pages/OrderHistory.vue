@@ -3,7 +3,17 @@
         <nav-bar
             title="预约历史"
         />
-        <div class="page-content">
+        <div class="page-content"  flex="dir:top box:first">
+            <div class="state-list">
+                <div class="state-container">
+                    <div class="state-item-container" flex="dir:left box:mean cross:center">
+                        <div class="list-item" :class="{'active':activeState == item.value}" v-for="item in state" @click="filterOrder(item.value)">
+                            {{item.label}}
+                        </div>
+                    </div>
+                    <div class="after" :style="{'left':((activeState + 1) > 3 ? 0 : (activeState + 1)) * 25 + '%' }"></div>
+                </div>
+            </div>
             <div class="history-list">
                 <div class="history-item" v-for="(item,index) in history">
                     <div class="title" flex="dir:left cross:center main:justify">
@@ -38,6 +48,9 @@
                         </div>
                     </div>
                 </div>
+                <div class="load-more" @click="loadMore" v-if="(page)*pageSize < totalCount">
+                    加载更多。。。
+                </div>
             </div>
         </div>
     </div>
@@ -49,6 +62,26 @@
         data () {
             return {
                 history:[],
+                state:[
+                    {
+                        value:3,
+                        label:'全部',
+                    },{
+                        value:0,
+                        label:'已提交',
+                    },{
+                        value:1,
+                        label:'通过',
+                    },{
+                        value:2,
+                        label:'不通过',
+                    }
+                ],
+                activeState:3,
+                totalCount:0,
+                page:1,
+                pageSize:5,
+                reservationState:0
             }
         },
         components:{
@@ -56,10 +89,39 @@
         },
         methods:{
             getHistory:function(){
+                var self = this;
                 Tool.get('ReservationOrderQuery',{
-                    userId:1
+                    userId:1,
+                    pageSize:self.pageSize,
+                    page:self.page,
+                    reservationState:self.reservationState
                 },(data) => {
-                    this.history = data.data;
+                    self.history = data.data.data;
+                    self.totalCount = data.data.totalCount;
+                })
+            },
+            filterOrder:function(index){
+                this.activeState = index;
+                this.page = 1;
+                if(index == 3){
+                    this.reservationState = '';
+                }else{
+                    this.reservationState = index;
+                }
+                this.getHistory();
+            },
+            loadMore:function(){
+                var self = this;
+                self.page ++;
+                self.totalCount = 1000000;//保证加载更多在加载完成前一直显示
+                Tool.get('ReservationOrderQuery',{
+                    userId:1,
+                    pageSize:self.pageSize,
+                    page:self.page,
+                    reservationState:self.reservationState
+                },(data) => {
+                    self.history = self.history.concat(data.data.data);
+                    self.totalCount = data.data.totalCount;
                 })
             }
         },
@@ -89,7 +151,35 @@
             background-color: #efefef;
             height:100%;
             overflow: auto;
+            .state-list{
+                height:1.9rem;
+                background-color:#fff;
+                padding:0 3%;
+                margin-bottom:2px;
+                .state-container{
+                    position:relative;
+                    .after{
+                        position:absolute;
+                        width:25%;
+                        height:2px;
+                        background-color:#379df2;
+                        bottom:0rem;
+                        transition:all .3s ease;
+                    }
+                    .list-item{
+                        height:1.9rem;
+                        line-height:1.9rem;
+                        text-align:center;
+                        font-size:0.67rem;
+                        color:#000;
+                    }
+                    .list-item.active{
+                        color:#379df2;
+                    }
+                }
+            }
             .history-list{
+                overflow: auto;
                 .history-item{
                     background-color:#fff;
                     margin-bottom:0.5rem;
@@ -110,6 +200,12 @@
                         padding:0.5rem 3%;
                         line-height:1.4em;
                     }
+                }
+                .load-more{
+                    height:1.5rem;
+                    background-color:#fff;
+                    text-align:center;
+                    line-height:1.5rem;
                 }
             }
         }

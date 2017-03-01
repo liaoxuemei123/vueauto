@@ -2,7 +2,7 @@
     <div class="index-page page" flex="dir:top box:justify">
         <nav-bar 
             title="添加预约订单"
-            rightContent="预约历史"
+            rightIcon="icon-history"
             :onRight="goHistory"
         />
         <div class="page-content">
@@ -22,30 +22,32 @@
                 <inp-com title="4S店选择" type="text" icon="icon-store" placeholder="请选择服务商" :onClick="goStore" :value="subscribeInfo.storeInfo.storeName"/>
             </div>
             <div class="input-control">
-                <inp-com title="预约里程" type="number" icon="icon-mile" placeholder="里程" :onBlur="updateMile.bind(this)" :value="subscribeInfo.mile"/>
-                <div class="explain">
-                    <div class="atention" flex="dir:left">保养项目：<div class="red">以下保养项目按照官方保养守则推荐具体以到店为准</div></div>
-                    <div class='fcmc-list'>
-                        <div class="fcmc-item" v-for="(item,index) in subscribeInfo.fcmc" flex="dir:left box:last" v-if="index < 2 || fcmcExpand">
-                            <div class="info">{{index + 1}}.{{item.fcmcDesc}}</div>
-                            <div class="expand" v-if="index == 1" @click="fcmcExpand = !fcmcExpand">
-                                <div v-if="fcmcExpand">收起<i class="iconfont icon-up"></i></div>
-                                <div v-else="fcmcExpand">展开更多<i class="iconfont icon-down"></i></div>
+                <inp-com title="预约里程" type="number" icon="icon-mile" placeholder="请输入里程KM" :onBlur="updateMile.bind(this)" :value="subscribeInfo.mile"/>
+                <transition name="drop-down">
+                    <div class="explain" v-if="subscribeInfo.fcmc">
+                        <div class="atention" flex="dir:left">保养项目：<div class="red">以下保养项目按照官方保养守则推荐具体以到店为准</div></div>
+                        <div class='fcmc-list'>
+                            <div class="fcmc-item" v-for="(item,index) in subscribeInfo.fcmc" flex="dir:left box:last" v-if="index < 2 || fcmcExpand">
+                                <div class="info">{{index + 1}}.{{item.fcmcDesc}}</div>
+                                <div class="expand" v-if="index == 1" @click="fcmcExpand = !fcmcExpand">
+                                    <div v-if="fcmcExpand">收起<i class="iconfont icon-up"></i></div>
+                                    <div v-else="fcmcExpand">展开更多<i class="iconfont icon-down"></i></div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </transition>
             </div>
             <div class="input-control">
-                <inp-com title="联系人" type="text" icon="icon-contact" placeholder="联系人" :onBlur="updateContact.bind(this)" :value="subscribeInfo.contact"/>
+                <inp-com title="联系人" type="text" icon="icon-contact" placeholder="请输入联系人" :onBlur="updateContact.bind(this)" :value="subscribeInfo.contact"/>
             </div>
             <div class="input-control">
-                <inp-com title="联系电话" type="number" icon="icon-phone" placeholder="联系电话" :onBlur="updatePhone.bind(this)" :value="subscribeInfo.phone"/>
+                <inp-com title="联系电话" type="number" icon="icon-phone" placeholder="请输入联系电话" :onBlur="updatePhone.bind(this)" :value="subscribeInfo.phone"/>
             </div>
             <div class="input-control" flex="dir:top">
-                <inp-com title="预约描述" type="text" icon="icon-comment" :readonly='true'/>
-                <div class="text-control" flex="dir:top"  >
-                    <textarea rows="5" maxlength='100' @input="updateDes" :value="subscribeInfo.description"></textarea>
+                <inp-com title="预约描述" :onClick="expandDes" placeholder="预约描述..." type="text" icon="icon-comment" :readonly='true'/>
+                <div class="text-control" flex="dir:top"  v-if="desExpand">
+                    <textarea rows="5" maxlength='100' placeholder="请输入预约描述" @input="updateDes" :value="subscribeInfo.description"></textarea>
                     <div class="show-length">
                         {{subscribeInfo.description.length}}/100
                     </div>
@@ -75,6 +77,7 @@
                 fcmc:[],
                 fcmcExpand:false,
                 des:'1212',
+                desExpand:false,
             }
         },
         computed:{
@@ -121,6 +124,9 @@
             updateDes:function(e){
                 var target = $(e.target);
                 this.subscribeInfo.description = target.val();
+            },
+            expandDes:function(){
+                this.desExpand = true;
             },
             onDateConfirm:function(val){
                 this.subscribeInfo.time = new Date(val).getTime();
@@ -293,5 +299,4 @@
             border-radius:3px;
         }
     }
-    
 </style>
