@@ -1,23 +1,25 @@
 <template>
-    <div class="maintainset-page page" flex="dir:top box:first">
-        <select-nav 
-            placeholder="搜索套餐"
-        />
-        <div class="page-content">
-            <div class="up-title title">
-                <span>两年以上车龄专享</span>
-            </div>
-            <div class="up">
-                <div class="set-item" v-for="(item, index) in setlist.up">
-                    <set-item :item="item"  :onClick="viewDetail.bind(this,item.id)"/>
+    <div class="page-container">
+        <div class="maintainset-page page" flex="dir:top box:first">
+            <select-nav 
+                placeholder="搜索套餐"
+            />
+            <div class="page-content">
+                <div class="up-title title">
+                    <span>两年以上车龄专享</span>
                 </div>
-            </div>
-            <div class="down-title title">
-                <span>两年以内车龄专享</span>
-            </div>
-            <div class="down">
-                <div class="set-item" v-for="(item, index) in setlist.down">
-                    <set-item :item="item"  :onClick="viewDetail.bind(this,item.id)"/>
+                <div class="up">
+                    <div class="set-item" v-for="(item, index) in setlist.up">
+                        <set-item :item="item"  :onClick="viewDetail.bind(this,item.id)"/>
+                    </div>
+                </div>
+                <div class="down-title title">
+                    <span>两年以内车龄专享</span>
+                </div>
+                <div class="down">
+                    <div class="set-item" v-for="(item, index) in setlist.down">
+                        <set-item :item="item"  :onClick="viewDetail.bind(this,item.id)"/>
+                    </div>
                 </div>
             </div>
         </div>
@@ -77,6 +79,11 @@
     }
 </script>
 <style lang="less" scoped>
+    .page-container{
+        height:100%;
+        position:absolute;
+        width:100%;
+    }
     .page{
         height:100%;
         position:absolute;

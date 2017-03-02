@@ -1,55 +1,57 @@
 <template>
-    <div class="page order-history-page" flex="dir:top box:first">
-        <nav-bar
-            title="预约历史"
-        />
-        <div class="page-content"  flex="dir:top box:first">
-            <div class="state-list">
-                <div class="state-container">
-                    <div class="state-item-container" flex="dir:left box:mean cross:center">
-                        <div class="list-item" :class="{'active':activeState == item.value}" v-for="item in state" @click="filterOrder(item.value)">
-                            {{item.label}}
+    <div class="page-container">
+        <div class="page order-history-page" flex="dir:top box:first">
+            <nav-bar
+                title="预约历史"
+            />
+            <div class="page-content"  flex="dir:top box:first">
+                <div class="state-list">
+                    <div class="state-container">
+                        <div class="state-item-container" flex="dir:left box:mean cross:center">
+                            <div class="list-item" :class="{'active':activeState == item.value}" v-for="item in state" @click="filterOrder(item.value)">
+                                {{item.label}}
+                            </div>
                         </div>
-                    </div>
-                    <div class="after" :style="{'left':((activeState + 1) > 3 ? 0 : (activeState + 1)) * 25 + '%' }"></div>
-                </div>
-            </div>
-            <div class="history-list">
-                <div class="history-item" v-for="(item,index) in history">
-                    <div class="title" flex="dir:left cross:center main:justify">
-                        <div class="order-num">
-                            预约编号：{{item.reservationNo}}
-                        </div>
-                        <div class="state">
-                            {{item.reservationState | stateFilter}}
-                        </div>
-                    </div>
-                    <div class="content">
-                        <div class="plate">
-                            车牌号：{{item.carNumber}}
-                        </div>
-                        <div class="plate">
-                            预约4S店：{{item.storeName}}
-                        </div>
-                        <div class="plate">
-                            预约时间：{{item.reservationDate}}
-                        </div>
-                        <div class="plate">
-                            创建时间：{{item.createDate}}
-                        </div>
-                        <div class="plate">
-                            里程：{{item.mileage}}
-                        </div>
-                        <div class="plate">
-                            联系人：{{item.linkman}}{{'/' + item.phone}}
-                        </div>
-                        <div class="plate">
-                            预约描述：{{item.description}}
-                        </div>
+                        <div class="after" :style="{'left':((activeState + 1) > 3 ? 0 : (activeState + 1)) * 25 + '%' }"></div>
                     </div>
                 </div>
-                <div class="load-more" @click="loadMore" v-if="(page)*pageSize < totalCount">
-                    加载更多。。。
+                <div class="history-list">
+                    <div class="history-item" v-for="(item,index) in history">
+                        <div class="title" flex="dir:left cross:center main:justify">
+                            <div class="order-num">
+                                预约编号：{{item.reservationNo}}
+                            </div>
+                            <div class="state">
+                                {{item.reservationState | stateFilter}}
+                            </div>
+                        </div>
+                        <div class="content">
+                            <div class="plate">
+                                车牌号：{{item.carNumber}}
+                            </div>
+                            <div class="plate">
+                                预约4S店：{{item.storeName}}
+                            </div>
+                            <div class="plate">
+                                预约时间：{{item.reservationDate}}
+                            </div>
+                            <div class="plate">
+                                创建时间：{{item.createDate}}
+                            </div>
+                            <div class="plate">
+                                里程：{{item.mileage}}
+                            </div>
+                            <div class="plate">
+                                联系人：{{item.linkman}}{{'/' + item.phone}}
+                            </div>
+                            <div class="plate">
+                                预约描述：{{item.description}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="load-more" @click="loadMore" v-if="(page)*pageSize < totalCount">
+                        加载更多。。。
+                    </div>
                 </div>
             </div>
         </div>
@@ -143,6 +145,11 @@
     }
 </script>
 <style lang="less" scoped>
+    .page-container{
+        height:100%;
+        position:absolute;
+        width:100%;
+    }
     .page{
         height:100%;
         position:absolute;

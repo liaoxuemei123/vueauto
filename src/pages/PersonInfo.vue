@@ -1,35 +1,37 @@
 <template>
-    <div class="page personinfo-page" flex="dir:top box:justify">
-        <nav-bar
-            title="填写个人信息"
-            rightIcon="icon-home"
-            :onRight="goHome"
-        />
-        <div class="page-content">
-            <div class="input-container">
-                <div class="input-control">
-                    <inp-com title="车架号" placeholder="输入车架号" :rightArrow="true" />
-                </div>
-                <div class="input-control">
-                    <inp-com title="发动机号" placeholder="输入发动机号后六位" :rightArrow="true" />
-                </div>
-                <div class="input-control">
-                    <inp-com title="服务商" placeholder="选择服务商" :rightArrow="true" />
-                </div>
-                <div class="input-control">
-                    <inp-com title="姓名" placeholder="输入姓名" :rightArrow="true" />
-                </div>
-                <div class="input-control">
-                    <inp-com title="手机号" placeholder="输入手机号" :rightArrow="true" />
-                </div>
-                <div class="input-control">
-                    <inp-com title="备注" placeholder="请输入100字内留言" :rightArrow="true" />
+    <div class="page-container">
+        <div class="page personinfo-page" flex="dir:top box:justify">
+            <nav-bar
+                title="填写个人信息"
+                rightIcon="icon-home"
+                :onRight="goHome"
+            />
+            <div class="page-content">
+                <div class="input-container">
+                    <div class="input-control">
+                        <inp-com title="车架号" placeholder="输入车架号" :rightArrow="true" />
+                    </div>
+                    <div class="input-control">
+                        <inp-com title="发动机号" placeholder="输入发动机号后六位" :rightArrow="true" />
+                    </div>
+                    <div class="input-control">
+                        <inp-com title="服务商" placeholder="选择服务商" :rightArrow="true" />
+                    </div>
+                    <div class="input-control">
+                        <inp-com title="姓名" placeholder="输入姓名" :rightArrow="true" />
+                    </div>
+                    <div class="input-control">
+                        <inp-com title="手机号" placeholder="输入手机号" :rightArrow="true" />
+                    </div>
+                    <div class="input-control">
+                        <inp-com title="备注" placeholder="请输入100字内留言" :rightArrow="true" />
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="button-control" @click="nextPage">
-            <div class="next-button">
-                下一步
+            <div class="button-control" @click="nextPage">
+                <div class="next-button">
+                    下一步
+                </div>
             </div>
         </div>
     </div>
@@ -58,6 +60,11 @@
     }
 </script>
 <style lang="less" scoped>
+    .page-container{
+        height:100%;
+        position:absolute;
+        width:100%;  
+    }
     .page{
         height:100%;
         position:absolute;

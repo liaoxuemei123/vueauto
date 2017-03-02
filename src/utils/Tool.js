@@ -30,44 +30,44 @@ Tool.ajax = function(mySetting){
     setting.type = setting.type.toUpperCase();
 
     var xhr = new XMLHttpRequest();
-    Indicator.open({
-        spinnerType:'double-bounce',
-    });
-    try{
-        if ( setting.type === 'GET' || setting === 'get') {
-            sData = setting.url + '?' + sData;
-            xhr.open(setting.type, sData + '&_t=' + new Date().getTime(), setting.async);
-            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded;charset=UTF-8");
-            xhr.timeout = setting.timeout;
-            xhr.ontimeout  = () => {
-                xhr.explain = 'timeout'
-            }
-            setTimeout(()=>{
-                xhr.explain = 'timeout'
-            },setting.timeout)
-            xhr.onabort = () => {
-                xhr.explain = 'abort'
-            }
-            xhr.send()
-        } else {
-            xhr.open(setting.type, setting.url, setting.async);
-            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded;charset=UTF-8");
-            xhr.timeout = setting.timeout;
-            xhr.ontimeout  = ()=>{
-                this.explain = 'timeout'
-            }
-            xhr.onabort = () => {
-                xhr.explain = 'abort'
-            }
-            xhr.send(sData);
-        }
-        requestPool.push(xhr);
-        xhr.explain = '';
-        xhr.index = requestPool.length - 1;
-        console.log(requestPool);
-    }catch(e){
-        return httpEnd();
-    }
+    // Indicator.open({
+    //     spinnerType:'double-bounce',
+    // });
+    // try{
+    //     if ( setting.type === 'GET' || setting === 'get') {
+    //         sData = setting.url + '?' + sData;
+    //         xhr.open(setting.type, sData + '&_t=' + new Date().getTime(), setting.async);
+    //         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded;charset=UTF-8");
+    //         xhr.timeout = setting.timeout;
+    //         xhr.ontimeout  = () => {
+    //             xhr.explain = 'timeout'
+    //         }
+    //         setTimeout(()=>{
+    //             xhr.explain = 'timeout'
+    //         },setting.timeout)
+    //         xhr.onabort = () => {
+    //             xhr.explain = 'abort'
+    //         }
+    //         xhr.send()
+    //     } else {
+    //         xhr.open(setting.type, setting.url, setting.async);
+    //         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded;charset=UTF-8");
+    //         xhr.timeout = setting.timeout;
+    //         xhr.ontimeout  = ()=>{
+    //             this.explain = 'timeout'
+    //         }
+    //         xhr.onabort = () => {
+    //             xhr.explain = 'abort'
+    //         }
+    //         xhr.send(sData);
+    //     }
+    //     requestPool.push(xhr);
+    //     xhr.explain = '';
+    //     xhr.index = requestPool.length - 1;
+    //     console.log(requestPool);
+    // }catch(e){
+    //     return httpEnd();
+    // }
 
     if (setting.async) {
         xhr.addEventListener('readystatechange', httpEnd, false);

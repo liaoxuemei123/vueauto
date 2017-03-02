@@ -1,22 +1,44 @@
 <template>
-    <div class="store-page page" flex="dir:top box:justify">
-        <search 
-            placeholder="搜索店铺"
-            :search="search.bind(this)"
-        />
-        <div class="page-content">
-            <div class="store-list">
-                <div class="store-item" v-for="(item, index) in storelist">
-                    <store-item :item="item" :onClick="selectItem.bind(this, item.id)" :active="item.id == select"/>
+    <div class="page-container">
+        <div class="store-page page" flex="dir:top box:first">
+            <search 
+                placeholder="搜索店铺"
+                :search="search.bind(this)"
+            />
+            <div class="page-content" flex="dir:top box:first">
+                <div class="city-select" @click="cityShow = !cityShow">
+                    <div class="input-control" flex="dir:left cross:center">
+                        <input type="text" placeholder="请选择城市"readonly >
+                    </div>
+                    <i class="iconfont icon-up" v-if="cityShow"></i>
+                    <i class="iconfont icon-down" v-else="cityShow"></i>
+                </div>
+                <div class="store-list-container">
+                    <div class="container-content" flex="dir:top box:last">
+                        <div class="store-list">
+                            <div class="store-item" v-for="(item, index) in storelist">
+                                <store-item :item="item" :onClick="selectItem.bind(this, item.id)" :active="item.id == select"/>
+                            </div>
+                        </div>
+                        <div class="button-control">
+                            <btn-com
+                                title="确定"
+                                background="#00bffe"
+                                :onClick="submitStore"
+                            />
+                        </div>
+                    </div>
+                    <transition name="fade">
+                        <div class="down-list-mask" v-if="cityShow"></div>
+                    </transition>
+                    <transition name="slide-down">
+                        <div class="down-list" v-if="cityShow">
+                            卡视角
+                        </div>
+                    </transition>
                 </div>
             </div>
-        </div>
-        <div class="button-control">
-            <btn-com
-                title="确定"
-                background="#00bffe"
-                :onClick="submitStore"
-            />
+
         </div>
     </div>
 </template>
@@ -30,8 +52,11 @@
     export default {
         data () {
             return {
-                storelist:[],
+                storelist:[{
+                    photoUrl:'',
+                }],
                 select:0,
+                cityShow:false,
             }
         },
         components:{
@@ -85,6 +110,11 @@
     }
 </script>
 <style lang="less" scoped>
+    .page-container{
+        height:100%;
+        position:absolute;
+        width:100%;
+    }
     .page{
         height:100%;
         position:absolute;
@@ -93,6 +123,52 @@
             background-color: #efefef;
             height:100%;
             overflow: auto;
+            .city-select{
+                position:relative;
+                height:1.8rem;
+                line-height:1.8rem;
+                background-color:#fff;
+                box-shadow:0px 1px 3px #ccc;
+                .input-control{
+                    width:100%;
+                    height:1.8rem;
+                    input{
+                        outline:none;
+                        border:none;
+                        padding:0 0.6rem;
+                        width:12rem;
+                    }
+                }
+                .iconfont{
+                    position:absolute;
+                    right:0.5rem;
+                    top:0rem;
+                }
+            }
+            .store-list-container{
+                position:relative;
+                background:transparent;
+                .container-content{
+                    height:100%;
+                    .store-list{
+                        margin-top:0.5rem;
+                    }
+                }
+                .down-list-mask{
+                    width:100%;
+                    height:100%;
+                    background-color:rgba(0,0,0,0.5);
+                    position:absolute;
+                    top:0;
+                }
+                .down-list{
+                    position:absolute;
+                    top:0rem;
+                    height:6rem;
+                    width:100%;
+                    background-color:#fff;
+                }
+            }
         }
         .button-control{
             background-color:#efefef;

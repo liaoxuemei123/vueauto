@@ -1,64 +1,66 @@
 <template>
-    <div class="page order-pay-page" flex="dir:top box:justify">
-        <nav-bar
-            title="确认购买"
-        />
-        <div class="page-content">
-            <div class="order-info" flex="dir:top box:mean">
-                <div class="order-name" flex="dir:left cross:center">
-                    <span class="title">订单名称：</span>
-                    <span class="value">{{order.setName}}</span>
+    <div class="page-container">
+        <div class="page order-pay-page" flex="dir:top box:justify">
+            <nav-bar
+                title="确认购买"
+            />
+            <div class="page-content">
+                <div class="order-info" flex="dir:top box:mean">
+                    <div class="order-name" flex="dir:left cross:center">
+                        <span class="title">订单名称：</span>
+                        <span class="value">{{order.setName}}</span>
+                    </div>
+                    <div class="order-price" flex="dir:left cross:center">
+                        <span class="title">订单金额：</span>
+                        <span class="value">{{order.price}}</span>
+                    </div>
                 </div>
-                <div class="order-price" flex="dir:left cross:center">
-                    <span class="title">订单金额：</span>
-                    <span class="value">{{order.price}}</span>
+                <div class="payment-mode">
+                    <div class="payment-item" flex="dir:left cross:center box:justify" @click="paymentMode=1">
+                        <div class="pay-url">
+                            <img src="../assets/payment-union.jpg" alt="">
+                        </div>
+                        <div class="payment-info" flex="dir:top box:mean">
+                            <span class="mode" flex="dir:left cross:center">微信支付</span>
+                            <span class="comment" flex="dir:left cross:center">推荐安装微信5.0及以上版本使用</span>
+                        </div>
+                        <div class="selector">
+                            <i class="iconfont icon-select" v-if="paymentMode==1"></i>
+                            <i class="iconfont icon-circle" v-else="paymentMode==1"></i>
+                        </div>
+                    </div>
+                    <div class="payment-item" flex="dir:left cross:center box:justify" @click="paymentMode=2">
+                        <div class="pay-url">
+                            <img src="../assets/payment-wepay.jpg" alt="">
+                        </div>
+                        <div class="payment-info" flex="dir:top box:mean">
+                            <span class="mode" flex="dir:left cross:center">银联支付</span>
+                            <span class="comment" flex="dir:left cross:center">支持储蓄卡信用卡</span>
+                        </div>
+                        <div class="selector">
+                            <i class="iconfont icon-select" v-if="paymentMode==2"></i>
+                            <i class="iconfont icon-circle" v-else="paymentMode==2"></i>
+                        </div>
+                    </div>
+                    <div class="payment-item" flex="dir:left cross:center box:justify" @click="paymentMode=3">
+                        <div class="pay-url">
+                            <img src="../assets/payment-alipay.jpg" alt="">
+                        </div>
+                        <div class="payment-info" flex="dir:top box:mean">
+                            <span class="mode" flex="dir:left cross:center">支付宝支付</span>
+                            <span class="comment" flex="dir:left cross:center">推荐有支付宝账号的用户使用</span>
+                        </div>
+                        <div class="selector">
+                            <i class="iconfont icon-select" v-if="paymentMode==3"></i>
+                            <i class="iconfont icon-circle" v-else="paymentMode==3"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="payment-mode">
-                <div class="payment-item" flex="dir:left cross:center box:justify" @click="paymentMode=1">
-                    <div class="pay-url">
-                        <img src="../assets/payment-union.jpg" alt="">
-                    </div>
-                    <div class="payment-info" flex="dir:top box:mean">
-                        <span class="mode" flex="dir:left cross:center">微信支付</span>
-                        <span class="comment" flex="dir:left cross:center">推荐安装微信5.0及以上版本使用</span>
-                    </div>
-                    <div class="selector">
-                        <i class="iconfont icon-select" v-if="paymentMode==1"></i>
-                        <i class="iconfont icon-circle" v-else="paymentMode==1"></i>
-                    </div>
+            <div class="button-control">
+                <div class="sure-pay">
+                    确认支付
                 </div>
-                <div class="payment-item" flex="dir:left cross:center box:justify" @click="paymentMode=2">
-                    <div class="pay-url">
-                        <img src="../assets/payment-wepay.jpg" alt="">
-                    </div>
-                    <div class="payment-info" flex="dir:top box:mean">
-                        <span class="mode" flex="dir:left cross:center">银联支付</span>
-                        <span class="comment" flex="dir:left cross:center">支持储蓄卡信用卡</span>
-                    </div>
-                    <div class="selector">
-                        <i class="iconfont icon-select" v-if="paymentMode==2"></i>
-                        <i class="iconfont icon-circle" v-else="paymentMode==2"></i>
-                    </div>
-                </div>
-                <div class="payment-item" flex="dir:left cross:center box:justify" @click="paymentMode=3">
-                    <div class="pay-url">
-                        <img src="../assets/payment-alipay.jpg" alt="">
-                    </div>
-                    <div class="payment-info" flex="dir:top box:mean">
-                        <span class="mode" flex="dir:left cross:center">支付宝支付</span>
-                        <span class="comment" flex="dir:left cross:center">推荐有支付宝账号的用户使用</span>
-                    </div>
-                    <div class="selector">
-                        <i class="iconfont icon-select" v-if="paymentMode==3"></i>
-                        <i class="iconfont icon-circle" v-else="paymentMode==3"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="button-control">
-            <div class="sure-pay">
-                确认支付
             </div>
         </div>
     </div>
@@ -81,6 +83,11 @@
     }
 </script>
 <style lang="less" scoped>
+    .page-container{
+        height:100%;
+        position:absolute;
+        width:100%;
+    }
     .page{
         height:100%;
         position:absolute;

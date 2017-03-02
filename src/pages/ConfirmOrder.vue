@@ -1,79 +1,81 @@
 <template>
-    <div class="page confirm-order-page" flex="dir:top box:justify">
-        <nav-bar
-            title="确认订单"
-        />
-        <div class="page-content">
-            <div class="set-info">
-                <div class="top" flex="dir:left box:first">
-                    <div class="store-url" flex="dir:left cross:center">
-                        <img :src="setInfo.url">
-                    </div>
-                    <div class="set-detail" flex="dir:top box:mean">
-                        <div class="line" flex="dir:left cross:center main:justify">
-                            <span class="set-name">{{setInfo.setName}}</span>
-                            <span class="price">￥{{setInfo.price}}</span>
+    <div class="page-container">
+        <div class="page confirm-order-page" flex="dir:top box:justify">
+            <nav-bar
+                title="确认订单"
+            />
+            <div class="page-content">
+                <div class="set-info">
+                    <div class="top" flex="dir:left box:first">
+                        <div class="store-url" flex="dir:left cross:center">
+                            <img :src="setInfo.url">
                         </div>
-                        <div class="line" flex="dir:left cross:center main:justify">
-                            <span class="set-des1">{{setInfo.des1}}</span>
+                        <div class="set-detail" flex="dir:top box:mean">
+                            <div class="line" flex="dir:left cross:center main:justify">
+                                <span class="set-name">{{setInfo.setName}}</span>
+                                <span class="price">￥{{setInfo.price}}</span>
+                            </div>
+                            <div class="line" flex="dir:left cross:center main:justify">
+                                <span class="set-des1">{{setInfo.des1}}</span>
+                            </div>
+                            <div class="line" flex="dir:left cross:center main:justify">
+                                <span class="set-des2">{{setInfo.des2}}</span>
+                            </div>
                         </div>
-                        <div class="line" flex="dir:left cross:center main:justify">
-                            <span class="set-des2">{{setInfo.des2}}</span>
+                    </div>
+                    <div class="explain">
+                        <div class="explain-item" flex="dir:left cross:top">
+                            <div class="check title">保养权益：</div>
+                            <div>{{explain.check}}</div>
+                        </div>
+                        <div class="explain-item" flex="dir:left cross:top">
+                            <div class="change title">保养项目：</div>
+                            <div>{{explain.change}}</div>
+                        </div>
+                        <div class="explain-item" flex="dir:left cross:top">
+                            <div class="validate title">使用范围：</div>
+                            <div>{{explain.range}}</div>
+                        </div>
+                        <div class="explain-item" flex="dir:left cross:top">
+                            <div class="VIN title">到期时间：</div>
+                            <div>{{explain.validate}}</div>
+                        </div>
+                    </div>
+                    <div class="bottom" flex="dir:left box:mean">
+                        <div class="car-series" flex="dir:left cross:center">
+                            <div class="title"><i class="iconfont icon-car"></i>车型：</div>
+                            <div class="value">{{setInfo.carSeries}}</div>
+                        </div>
+                        <div class="vin-code" flex="dir:left cross:center">
+                            <div class="title"><i class="iconfont icon-contact"></i>VIN：</div>
+                            <div class="value">{{setInfo.VIN}}</div>
                         </div>
                     </div>
                 </div>
-                <div class="explain">
-                    <div class="explain-item" flex="dir:left cross:top">
-                        <div class="check title">保养权益：</div>
-                        <div>{{explain.check}}</div>
-                    </div>
-                    <div class="explain-item" flex="dir:left cross:top">
-                        <div class="change title">保养项目：</div>
-                        <div>{{explain.change}}</div>
-                    </div>
-                    <div class="explain-item" flex="dir:left cross:top">
-                        <div class="validate title">使用范围：</div>
-                        <div>{{explain.range}}</div>
-                    </div>
-                    <div class="explain-item" flex="dir:left cross:top">
-                        <div class="VIN title">到期时间：</div>
-                        <div>{{explain.validate}}</div>
-                    </div>
+                <div class="tips">
+                    提示：支付七天过后不能退单。一旦使用套餐不能退单。
                 </div>
-                <div class="bottom" flex="dir:left box:mean">
-                    <div class="car-series" flex="dir:left cross:center">
-                        <div class="title"><i class="iconfont icon-car"></i>车型：</div>
-                        <div class="value">{{setInfo.carSeries}}</div>
+                <div class="agree" flex="dir:left cross:center" @click="sure =! sure">
+                    <div class="sure-circle" :class="{'sure':sure}">
+                        <i class="iconfont icon-agree"></i>
                     </div>
-                    <div class="vin-code" flex="dir:left cross:center">
-                        <div class="title"><i class="iconfont icon-contact"></i>VIN：</div>
-                        <div class="value">{{setInfo.VIN}}</div>
-                    </div>
+                    我已阅读并同意《用户服务协议》
                 </div>
             </div>
-            <div class="tips">
-                提示：支付七天过后不能退单。一旦使用套餐不能退单。
-            </div>
-            <div class="agree" flex="dir:left cross:center" @click="sure =! sure">
-                <div class="sure-circle" :class="{'sure':sure}">
-                    <i class="iconfont icon-agree"></i>
+            <div class="button-control" flex="dir:left box:first">
+                <div class="pay-info" flex="dir:top box:mean">
+                    <div class="pay-price" flex="dir:left main:left cross:center">
+                        <span>实付:</span>
+                        <span class="price">￥{{order.price}}</span>
+                    </div>
+                    <div class="benifit-info" flex="dir:left main:left cross:center">
+                        <span class="origin-fee">(保养费:￥{{order.originFee}} </span>
+                        <span class="benifit-fee">优惠金额:￥{{order.benifitFee}})</span>
+                    </div>
                 </div>
-                我已阅读并同意《用户服务协议》
-            </div>
-        </div>
-        <div class="button-control" flex="dir:left box:first">
-            <div class="pay-info" flex="dir:top box:mean">
-                <div class="pay-price" flex="dir:left main:left cross:center">
-                    <span>实付:</span>
-                    <span class="price">￥{{order.price}}</span>
+                <div class="button pay" @click="goPay">
+                    立即支付
                 </div>
-                <div class="benifit-info" flex="dir:left main:left cross:center">
-                    <span class="origin-fee">(保养费:￥{{order.originFee}} </span>
-                    <span class="benifit-fee">优惠金额:￥{{order.benifitFee}})</span>
-                </div>
-            </div>
-            <div class="button pay" @click="goPay">
-                立即支付
             </div>
         </div>
     </div>
@@ -120,6 +122,11 @@
     }
 </script>
 <style lang="less" scoped>
+    .page-container{
+        height:100%;
+        position:absolute;
+        width:100%;
+    }
     .page{
         height:100%;
         position:absolute;

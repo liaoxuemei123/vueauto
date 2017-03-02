@@ -1,22 +1,24 @@
 <template>
-    <div class="page myorder-page" flex="dir:top box:first">
-        <nav-bar
-            title="我的订单"
-        />
-        <div class="page-content" flex="dir:top box:first">
-            <div class="tab">
-                <div class="tab-container">
-                    <div class="tab-item-container" flex="dir:left box:mean">
-                        <div class="tab-item" @click="activeTab = index" v-for="(item, index) in tabs" flex="dir:left cross:center main:center" :class="{'active':index==activeTab}">
-                            {{item.label}}
+    <div class="page-container">
+        <div class="page myorder-page" flex="dir:top box:first">
+            <nav-bar
+                title="我的订单"
+            />
+            <div class="page-content" flex="dir:top box:first">
+                <div class="tab">
+                    <div class="tab-container">
+                        <div class="tab-item-container" flex="dir:left box:mean">
+                            <div class="tab-item" @click="activeTab = index" v-for="(item, index) in tabs" flex="dir:left cross:center main:center" :class="{'active':index==activeTab}">
+                                {{item.label}}
+                            </div>
                         </div>
+                        <div class="after" :style="{'left':( activeTab * 20 ) + '%'}"></div>
                     </div>
-                    <div class="after" :style="{'left':( activeTab * 20 ) + '%'}"></div>
                 </div>
-            </div>
-            <div class="order-list">
-                <div class="order-item" v-for="(item, index) in orderList">
-                    <order-item :item="item"></order-item>
+                <div class="order-list">
+                    <div class="order-item" v-for="(item, index) in orderList">
+                        <order-item :item="item"></order-item>
+                    </div>
                 </div>
             </div>
         </div>
@@ -61,6 +63,11 @@
     }
 </script>
 <style lang="less" scoped>
+    .page-container{
+        height:100%;
+        position:absolute;
+        width:100%;
+    }
     .page{
         height:100%;
         position:absolute;

@@ -1,65 +1,67 @@
 <template>
-    <div class="index-page page" flex="dir:top box:justify">
-        <nav-bar 
-            title="添加预约订单"
-            rightIcon="icon-history"
-            :onRight="goHistory"
-        />
-        <div class="page-content">
-            <mt-datetime-picker
-                ref="datepicker"
-                type="datetime"
-                v-model="pickerValue"
-                @confirm="onDateConfirm">
-            </mt-datetime-picker>
-            <div class="input-control">
-                <inp-com title="车牌号" type="text" icon="icon-plate" :readonly="true" placeholder="请输入车牌号" :onClick="selectPlate.bind(this)" :value="subscribeInfo.carInfo.plate"/>
-            </div>
-            <div class="input-control">
-                <inp-com title="预约时间" :readonly="true" type="text" icon="icon-time" placeholder="请选择到店时间" :onClick="selectTime" :value="subscribeInfo.showTime"/>
-            </div>
-            <div class="input-control">
-                <inp-com title="4S店选择" type="text" icon="icon-store" placeholder="请选择服务商" :onClick="goStore" :value="subscribeInfo.storeInfo.storeName"/>
-            </div>
-            <div class="input-control">
-                <inp-com title="预约里程" type="number" icon="icon-mile" placeholder="请输入里程KM" :onBlur="updateMile.bind(this)" :value="subscribeInfo.mile"/>
-                <transition name="drop-down">
-                    <div class="explain" v-if="subscribeInfo.fcmc">
-                        <div class="atention" flex="dir:left">保养项目：<div class="red">以下保养项目按照官方保养守则推荐具体以到店为准</div></div>
-                        <div class='fcmc-list'>
-                            <div class="fcmc-item" v-for="(item,index) in subscribeInfo.fcmc" flex="dir:left box:last" v-if="index < 2 || fcmcExpand">
-                                <div class="info">{{index + 1}}.{{item.fcmcDesc}}</div>
-                                <div class="expand" v-if="index == 1" @click="fcmcExpand = !fcmcExpand">
-                                    <div v-if="fcmcExpand">收起<i class="iconfont icon-up"></i></div>
-                                    <div v-else="fcmcExpand">展开更多<i class="iconfont icon-down"></i></div>
+    <div class="page-container">
+        <div class="index-page page" flex="dir:top box:justify">
+            <nav-bar 
+                title="添加预约订单"
+                rightIcon="icon-history"
+                :onRight="goHistory"
+            />
+            <div class="page-content">
+                <mt-datetime-picker
+                    ref="datepicker"
+                    type="datetime"
+                    v-model="pickerValue"
+                    @confirm="onDateConfirm">
+                </mt-datetime-picker>
+                <div class="input-control">
+                    <inp-com title="车牌号" type="text" icon="icon-plate" :readonly="true" placeholder="请输入车牌号" :onClick="selectPlate.bind(this)" :value="subscribeInfo.carInfo.plate"/>
+                </div>
+                <div class="input-control">
+                    <inp-com title="预约时间" :readonly="true" type="text" icon="icon-time" placeholder="请选择到店时间" :onClick="selectTime" :value="subscribeInfo.showTime"/>
+                </div>
+                <div class="input-control">
+                    <inp-com title="4S店选择" type="text" icon="icon-store" placeholder="请选择服务商" :onClick="goStore" :value="subscribeInfo.storeInfo.storeName"/>
+                </div>
+                <div class="input-control">
+                    <inp-com title="预约里程" type="number" icon="icon-mile" placeholder="请输入里程KM" :onBlur="updateMile.bind(this)" :value="subscribeInfo.mile"/>
+                    <transition name="drop-down">
+                        <div class="explain" v-if="subscribeInfo.fcmc">
+                            <div class="atention" flex="dir:left">保养项目：<div class="red">以下保养项目按照官方保养守则推荐具体以到店为准</div></div>
+                            <div class='fcmc-list'>
+                                <div class="fcmc-item" v-for="(item,index) in subscribeInfo.fcmc" flex="dir:left box:last" v-if="index < 2 || fcmcExpand">
+                                    <div class="info">{{index + 1}}.{{item.fcmcDesc}}</div>
+                                    <div class="expand" v-if="index == 1" @click="fcmcExpand = !fcmcExpand">
+                                        <div v-if="fcmcExpand">收起<i class="iconfont icon-up"></i></div>
+                                        <div v-else="fcmcExpand">展开更多<i class="iconfont icon-down"></i></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </transition>
-            </div>
-            <div class="input-control">
-                <inp-com title="联系人" type="text" icon="icon-contact" placeholder="请输入联系人" :onBlur="updateContact.bind(this)" :value="subscribeInfo.contact"/>
-            </div>
-            <div class="input-control">
-                <inp-com title="联系电话" type="number" icon="icon-phone" placeholder="请输入联系电话" :onBlur="updatePhone.bind(this)" :value="subscribeInfo.phone"/>
-            </div>
-            <div class="input-control" flex="dir:top">
-                <inp-com title="预约描述" :onClick="expandDes" placeholder="预约描述..." type="text" icon="icon-comment" :readonly='true'/>
-                <div class="text-control" flex="dir:top"  v-if="desExpand">
-                    <textarea rows="5" maxlength='100' placeholder="请输入预约描述" @input="updateDes" :value="subscribeInfo.description"></textarea>
-                    <div class="show-length">
-                        {{subscribeInfo.description.length}}/100
+                    </transition>
+                </div>
+                <div class="input-control">
+                    <inp-com title="联系人" type="text" icon="icon-contact" placeholder="请输入联系人" :onBlur="updateContact.bind(this)" :value="subscribeInfo.contact"/>
+                </div>
+                <div class="input-control">
+                    <inp-com title="联系电话" type="number" icon="icon-phone" placeholder="请输入联系电话" :onBlur="updatePhone.bind(this)" :value="subscribeInfo.phone"/>
+                </div>
+                <div class="input-control" flex="dir:top">
+                    <inp-com title="预约描述" :onClick="expandDes" placeholder="预约描述..." type="text" icon="icon-comment" :readonly='true'/>
+                    <div class="text-control" flex="dir:top"  v-if="desExpand">
+                        <textarea rows="5" maxlength='100' placeholder="请输入预约描述" @input="updateDes" :value="subscribeInfo.description"></textarea>
+                        <div class="show-length">
+                            {{subscribeInfo.description.length}}/100
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="button-control">
-            <btn-com
-                title="确定预约"
-                :onClick="addOrder"
-                background="#00bffe"
-            />
+            <div class="button-control">
+                <btn-com
+                    title="确定预约"
+                    :onClick="addOrder"
+                    background="#00bffe"
+                />
+            </div>
         </div>
     </div>
 </template>
@@ -225,6 +227,11 @@
     }
 </script>
 <style scoped lang="less">
+    .page-container{
+        height:100%;
+        position:absolute;
+        width:100%;
+    }
     .page{
         height:100%;
         position:absolute;

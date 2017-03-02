@@ -1,56 +1,58 @@
 <template>
-    <div class="page select-plate-page">
-        <div class="page-container" flex="dir:top box:justify">
-            <nav-bar
-                title="选择车辆"
-            />
-            <div class="page-content">
-                <div class="car-list">
-                    <div class="own-item" v-for="(item,index) in ownList" flex="dir:left cross:center" @click="active=index">
-                        <i class="iconfont icon-select active" v-if="active == index"></i>
-                        <i class="iconfont icon-circle" v-else="active == index"></i>
-                        <div class="car-series">{{item.series_name}}</div>
-                        <div class="car-plate">{{item.plate_no}}</div>
-                    </div>
-                    <div class="add-car">
-                        <div class="default-show" flex="dir:left cross:center" @click="active = -1">
-                            <i class="iconfont icon-select active" v-if="active == -1"></i>
-                            <i class="iconfont icon-circle" v-else="active == -1"></i>
-                            <div class="title">我要添加车辆</div>
+    <div class="page-container">
+        <div class="page select-plate-page">
+            <div class="page-container" flex="dir:top box:justify">
+                <nav-bar
+                    title="选择车辆"
+                />
+                <div class="page-content">
+                    <div class="car-list">
+                        <div class="own-item" v-for="(item,index) in ownList" flex="dir:left cross:center" @click="active=index">
+                            <i class="iconfont icon-select active" v-if="active == index"></i>
+                            <i class="iconfont icon-circle" v-else="active == index"></i>
+                            <div class="car-series">{{item.series_name}}</div>
+                            <div class="car-plate">{{item.plate_no}}</div>
                         </div>
-                        <div class="drop-down-form" v-if="active == -1" flex="dir:top main:center">
-                            <div class="input-control">
-                                <input type="text" placeholder="请选择车系" readonly @click="pickerShow=true" :value="addInfo.carSeries.modelName">
-                                <i class="iconfont icon-little-arrow"></i>
+                        <div class="add-car">
+                            <div class="default-show" flex="dir:left cross:center" @click="active = -1">
+                                <i class="iconfont icon-select active" v-if="active == -1"></i>
+                                <i class="iconfont icon-circle" v-else="active == -1"></i>
+                                <div class="title">我要添加车辆</div>
                             </div>
-                            <div class="input-control" flex="dir:left cross:center main:justify">
-                                <input type="text" placeholder="请输入车牌" @blur="updatePlate">
-                                <div class="add-button" @click="addCar">
-                                    确定添加
+                            <div class="drop-down-form" v-if="active == -1" flex="dir:top main:center">
+                                <div class="input-control">
+                                    <input type="text" placeholder="请选择车系" readonly @click="pickerShow=true" :value="addInfo.carSeries.modelName">
+                                    <i class="iconfont icon-little-arrow"></i>
+                                </div>
+                                <div class="input-control" flex="dir:left cross:center main:justify">
+                                    <input type="text" placeholder="请输入车牌" @blur="updatePlate">
+                                    <div class="add-button" @click="addCar">
+                                        确定添加
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="button-control">
-                <btn-com
-                    title="确定"
-                    background="#00bffe"
-                    :onClick="submitCarInfo"
-                />
-            </div>
-        </div>
-        <div class="picker-mask" v-if="pickerShow"></div>
-        <transition name="picker">
-            <div class="picker-container" v-if="pickerShow">
-                <div class="toolbar" flex="dir:left cross:center main:justify">
-                    <div class="left-button" @click="pickerShow = false">取消</div>
-                    <div class="ri0ght-button" @click="pickerSure">确认</div>
+                <div class="button-control">
+                    <btn-com
+                        title="确定"
+                        background="#00bffe"
+                        :onClick="submitCarInfo"
+                    />
                 </div>
-                <mt-picker :slots="carList" defaultIndex=0 valueKey="modelName" :itemHeight="itemHeight" @change="onValuesChange"></mt-picker>
             </div>
-        </transition>
+            <div class="picker-mask" v-if="pickerShow"></div>
+            <transition name="picker">
+                <div class="picker-container" v-if="pickerShow">
+                    <div class="toolbar" flex="dir:left cross:center main:justify">
+                        <div class="left-button" @click="pickerShow = false">取消</div>
+                        <div class="ri0ght-button" @click="pickerSure">确认</div>
+                    </div>
+                    <mt-picker :slots="carList" defaultIndex=0 valueKey="modelName" :itemHeight="itemHeight" @change="onValuesChange"></mt-picker>
+                </div>
+            </transition>
+        </div>
     </div>
 </template>
 <script>
@@ -185,6 +187,11 @@
     }
 </script>
 <style lang="less">
+    .page-container{
+        height:100%;
+        position:absolute;
+        width:100%;
+    }
     .page{
         height:100%;
         position:absolute;
@@ -294,12 +301,12 @@
             }
         }
         .picker-enter-active {
-            transition: all .2s ease-in;
+            transition: all .3s ease;
             transform: translate3d(0,0%,0);
             z-index:1001;
         }
         .picker-leave-active {
-            transition: all .2s ease-in;
+            transition: all .3s ease;
             transform: translate3d(0,100%,0);
             z-index: 1000;
         }

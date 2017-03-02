@@ -7,6 +7,7 @@ import 'mint-ui/lib/style.css';
 import './js/jquery.js';
 import 'flex.css';
 import 'normalize.css';
+import './style/base.css';
 import './style/iconfont.less';
 Vue.use(MintUI);
 
