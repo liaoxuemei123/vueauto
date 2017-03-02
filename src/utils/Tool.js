@@ -2,6 +2,7 @@ import { Indicator, Toast } from 'mint-ui'
 
 const Tool = {};
 const target = 'http://10.17.244.92:8080/anan-management/app/';//默认的远程服务器地址
+const CLOSE_NETWORK = true;//在本地调试时关闭网络
 
 var requestPool = [];//请求池
 
@@ -30,44 +31,47 @@ Tool.ajax = function(mySetting){
     setting.type = setting.type.toUpperCase();
 
     var xhr = new XMLHttpRequest();
-    // Indicator.open({
-    //     spinnerType:'double-bounce',
-    // });
-    // try{
-    //     if ( setting.type === 'GET' || setting === 'get') {
-    //         sData = setting.url + '?' + sData;
-    //         xhr.open(setting.type, sData + '&_t=' + new Date().getTime(), setting.async);
-    //         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded;charset=UTF-8");
-    //         xhr.timeout = setting.timeout;
-    //         xhr.ontimeout  = () => {
-    //             xhr.explain = 'timeout'
-    //         }
-    //         setTimeout(()=>{
-    //             xhr.explain = 'timeout'
-    //         },setting.timeout)
-    //         xhr.onabort = () => {
-    //             xhr.explain = 'abort'
-    //         }
-    //         xhr.send()
-    //     } else {
-    //         xhr.open(setting.type, setting.url, setting.async);
-    //         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded;charset=UTF-8");
-    //         xhr.timeout = setting.timeout;
-    //         xhr.ontimeout  = ()=>{
-    //             this.explain = 'timeout'
-    //         }
-    //         xhr.onabort = () => {
-    //             xhr.explain = 'abort'
-    //         }
-    //         xhr.send(sData);
-    //     }
-    //     requestPool.push(xhr);
-    //     xhr.explain = '';
-    //     xhr.index = requestPool.length - 1;
-    //     console.log(requestPool);
-    // }catch(e){
-    //     return httpEnd();
-    // }
+    if(CLOSE_NETWORK){
+        return false;
+    }
+    Indicator.open({
+        spinnerType:'double-bounce',
+    });
+    try{
+        if ( setting.type === 'GET' || setting === 'get') {
+            sData = setting.url + '?' + sData;
+            xhr.open(setting.type, sData + '&_t=' + new Date().getTime(), setting.async);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded;charset=UTF-8");
+            xhr.timeout = setting.timeout;
+            xhr.ontimeout  = () => {
+                xhr.explain = 'timeout'
+            }
+            setTimeout(()=>{
+                xhr.explain = 'timeout'
+            },setting.timeout)
+            xhr.onabort = () => {
+                xhr.explain = 'abort'
+            }
+            xhr.send()
+        } else {
+            xhr.open(setting.type, setting.url, setting.async);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded;charset=UTF-8");
+            xhr.timeout = setting.timeout;
+            xhr.ontimeout  = ()=>{
+                this.explain = 'timeout'
+            }
+            xhr.onabort = () => {
+                xhr.explain = 'abort'
+            }
+            xhr.send(sData);
+        }
+        requestPool.push(xhr);
+        xhr.explain = '';
+        xhr.index = requestPool.length - 1;
+        console.log(requestPool);
+    }catch(e){
+        return httpEnd();
+    }
 
     if (setting.async) {
         xhr.addEventListener('readystatechange', httpEnd, false);

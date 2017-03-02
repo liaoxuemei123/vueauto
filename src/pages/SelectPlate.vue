@@ -44,7 +44,7 @@
             </div>
         </div>
         <transition name="fade">
-            <div class="picker-mask" v-if="pickerShow"></div>
+            <div class="picker-mask" v-if="pickerShow" @click="pickerShow=false"></div>
         </transition>
         <transition name="slide-up">
             <div class="picker-container" v-if="pickerShow">

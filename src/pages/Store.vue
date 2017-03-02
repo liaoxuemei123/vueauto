@@ -29,7 +29,7 @@
                         </div>
                     </div>
                     <transition name="fade">
-                        <div class="down-list-mask" v-if="cityShow"></div>
+                        <div class="down-list-mask" v-if="cityShow" @click="cityShow=false"></div>
                     </transition>
                     <transition name="slide-down">
                         <div class="down-list" v-if="cityShow">

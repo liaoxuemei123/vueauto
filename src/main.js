@@ -22,7 +22,7 @@ router.beforeEach((to,from,next)=>{
   const pageStack = store.getters.pageStack;
   const toIndex = getIndex(pageStack, to.path);
   const toPath = to.path;
-  Tool.clearRequestPool();//切换页面的时候把上一个页面的请求中断掉
+  Tool.clearRequestPool();//切换页面的时候把上一个页面的请求全部中断掉
   if(toIndex == -1){
     store.commit('SET_MODE','push');
     store.commit('PUSH_PAGE',{path:toPath,index:pageStack.length});
