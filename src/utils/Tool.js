@@ -1,7 +1,9 @@
 import { Indicator, Toast } from 'mint-ui'
 
 const Tool = {};
-const target = 'http://10.17.244.92:8080/anan-management/app/';
+const target = 'http://10.17.244.92:8080/anan-management/app/';//默认的远程服务器地址
+
+var requestPool = [];//请求池
 
 Tool.ajax = function(mySetting){
     var setting = {
@@ -10,7 +12,7 @@ Tool.ajax = function(mySetting){
         type:'GET',
         data:{},
         dataType:'json',
-        timeout:30000,
+        timeout:15000,
         success:function (data) {},
         error:function (error) {},
     }
@@ -37,15 +39,32 @@ Tool.ajax = function(mySetting){
             xhr.open(setting.type, sData + '&_t=' + new Date().getTime(), setting.async);
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded;charset=UTF-8");
             xhr.timeout = setting.timeout;
-            xhr.ontimeout = setting.onTimeOut;
+            xhr.ontimeout  = () => {
+                xhr.explain = 'timeout'
+            }
+            setTimeout(()=>{
+                xhr.explain = 'timeout'
+            },setting.timeout)
+            xhr.onabort = () => {
+                xhr.explain = 'abort'
+            }
             xhr.send()
         } else {
             xhr.open(setting.type, setting.url, setting.async);
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded;charset=UTF-8");
             xhr.timeout = setting.timeout;
-            xhr.ontimeout = setting.onTimeOut;
+            xhr.ontimeout  = ()=>{
+                this.explain = 'timeout'
+            }
+            xhr.onabort = () => {
+                xhr.explain = 'abort'
+            }
             xhr.send(sData);
         }
+        requestPool.push(xhr);
+        xhr.explain = '';
+        xhr.index = requestPool.length - 1;
+        console.log(requestPool);
     }catch(e){
         return httpEnd();
     }
@@ -65,29 +84,35 @@ Tool.ajax = function(mySetting){
                 response = JSON.parse(response);
             }
 
+            requestPool.splice( xhr.index, xhr.index + 1 );//请求完成后移除请求池
+
             if (xhr.status == 200) {
                 setting.success(response, setting, xhr);
             } else {
-                if(xhr.status === 0){
-                    if(xhr.statusText == 'timeout'){
-                        Toast({
-                            message:'网路请求超时',
-                            duration:1000,
-                        });
-                        setting.onTimeOut(setting,xhr);
+                setTimeout(()=>{//异步错误处理，，保证请求状态在错误处理逻辑之前改变，否则无法保证正确处理错误状态
+                    if(xhr.status === 0){
+                        if(xhr.explain == 'abort'){
+                            //取消ajax不报提示
+                        }else if(xhr.explain == 'timeout'){
+                            Toast({
+                                message:'网路请求超时',
+                                duration:1000,
+                            });
+                        }else{
+                            Toast({
+                                message:'网络连接失败，请检查您的网络',
+                                duration:1000,
+                            });
+                        }
                     }else{
                         Toast({
-                            message:'网络连接失败，请检查您的网络',
+                            message:'网络错误，错误代码:'+ xhr.status,
                             duration:1000,
                         });
                     }
-                }else{
-                    Toast({
-                        message:'网络错误，错误代码:'+ xhr.status,
-                        duration:1000,
-                    });
-                }
-                setting.error(xhr);
+                    setting.error(xhr);
+                    xhr.end();
+                },50);
             }
         }
         Indicator.close();
@@ -146,6 +171,17 @@ Tool.get = function (pathname, data, success, error) {
     };
     return Tool.ajax(setting);
 };
+/**
+ * 清空请求池中的所有请求
+ */
+Tool.clearRequestPool =function(){
+    for(var i = 0; i < requestPool.length; i++){
+        requestPool[i].explain = 'abort';
+        requestPool[i].abort();//中断请求;
+    }
+    requestPool.splice(0,requestPool.length);
+    return requestPool;
+}
 
 
 /**
@@ -168,7 +204,7 @@ Tool.formatDate = function(str,type='date'){
         case 'time':
             return y + '-' + m + '-' + d + ' ' + h + ':' + min;
         case 'onlytime':
-            return h + ':' + min + ':' + s;
+            return h + ':' + min;
     }   
 }
 /**

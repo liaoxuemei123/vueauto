@@ -11,9 +11,6 @@
                 <span class="des1">{{item.des1}}</span>
             </div>
             <div class="line">
-                <span class="des2">{{item.des2}}</span>
-            </div>
-            <div class="line">
                 <span class="range">{{item.range}}</span>
             </div>
         </div>

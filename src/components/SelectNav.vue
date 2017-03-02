@@ -9,6 +9,11 @@
             <div class="drop-down-menu">
                 <div class="drop-down-item" flex="dir:left cross:center" :class="{'active':index==menuValue}" v-for="(item,index) in items" v-show="menuShow" @click="selectItem(index)">
                     {{item.label}}
+                    <div class="child-drop-down" v-if="index==menuValue">
+                        <div class="child-drop-down-item" v-for="(citem,cindex) in item.child">
+                            {{citem.label}}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -37,15 +42,45 @@
                     return [
                         {
                             value:1,
-                            label:'车型1'
+                            label:'车型1',
+                            child:[
+                                {
+                                    value:1,
+                                    label:'子1'
+                                },
+                                {
+                                    value:2,
+                                    label:'子2'
+                                },
+                            ]
                         },
                         {
                             value:2,
-                            label:'车型2'
+                            label:'车型2',
+                            child:[
+                                {
+                                    value:1,
+                                    label:'1.5T'
+                                },
+                                {
+                                    value:2,
+                                    label:'2.0T'
+                                },
+                            ]
                         },
                         {
                             value:3,
-                            label:'车型3'
+                            label:'车型3',
+                            child:[
+                                {
+                                    value:1,
+                                    label:'3.0T'
+                                },
+                                {
+                                    value:2,
+                                    label:'5.0T'
+                                },
+                            ]
                         },
                         {
                             value:4,
@@ -64,9 +99,6 @@
             },
             selectItem:function(index){
                 this.menuValue = index;
-                setTimeout(() => {
-                    this.menuShow = false;
-                },300)
             }
         }
     }
@@ -118,22 +150,31 @@
                 position:fixed;
                 right:0.5rem;
                 top:2.1rem;
-                width:50%;
-                color:#fff;
-                border-radius:0.2rem;
+                width:30%;
+                color:#323232;
+                border-radius:3px;
                 text-align:left;
-                background-color:rgba(0,0,0,0.8);
+                background-color:#fff;
                 overflow:hidden;
+                box-shadow:1px 2px 5px #aaa;
                 .drop-down-item{
                     width:84%;
                     margin:0.2rem 5%;
                     padding:0 3%;
                     border:none;
-                    height:1.5rem;
+                    height:1.3rem;
                     border-radius:0.2rem;
+                    position:relative;
+                    .child-drop-down{
+                        position:absolute;
+                        width:90%;
+                        background-color:#fff;
+                        left:-90%;
+                    }
                 }
                 .drop-down-item.active{
-                    background-color:rgba(180,180,180,0.9);
+                    background-color:#08aaeb;
+                    color:#fff;
                 }
             }
         }

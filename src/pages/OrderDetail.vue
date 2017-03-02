@@ -36,7 +36,7 @@
     </div>
 </template>
 <script>
-    import NavBar from '../components/NavBar'
+    import NavBar from '../components/NavBar';
     export default {
         data () {
             return{
@@ -55,7 +55,8 @@
                     {
 
                     }
-                ]
+                ],
+                popupVisible:true
             }
         },
         components:{
@@ -93,7 +94,7 @@
             position:relative;
             .order-detail{
                 background-color:#fff;
-                box-shadow:0px 1px 3px #ccc;
+                box-shadow:1px solid #efefef;
                 .header{
                     height:1.92rem;
                     font-size:0.67rem;
