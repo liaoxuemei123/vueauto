@@ -42,17 +42,19 @@
                     />
                 </div>
             </div>
-            <div class="picker-mask" v-if="pickerShow"></div>
-            <transition name="picker">
-                <div class="picker-container" v-if="pickerShow">
-                    <div class="toolbar" flex="dir:left cross:center main:justify">
-                        <div class="left-button" @click="pickerShow = false">取消</div>
-                        <div class="ri0ght-button" @click="pickerSure">确认</div>
-                    </div>
-                    <mt-picker :slots="carList" defaultIndex=0 valueKey="modelName" :itemHeight="itemHeight" @change="onValuesChange"></mt-picker>
-                </div>
-            </transition>
         </div>
+        <transition name="fade">
+            <div class="picker-mask" v-if="pickerShow"></div>
+        </transition>
+        <transition name="slide-up">
+            <div class="picker-container" v-if="pickerShow">
+                <div class="toolbar" flex="dir:left cross:center main:justify">
+                    <div class="left-button" @click="pickerShow = false">取消</div>
+                    <div class="ri0ght-button" @click="pickerSure">确认</div>
+                </div>
+                <mt-picker :slots="carList" defaultIndex=0 valueKey="modelName" :itemHeight="itemHeight" @change="onValuesChange"></mt-picker>
+            </div>
+        </transition>
     </div>
 </template>
 <script>
@@ -191,6 +193,28 @@
         height:100%;
         position:absolute;
         width:100%;
+        .picker-mask{
+            position:absolute;
+            top:0;
+            bottom:0;
+            left:0;
+            right:0;
+            background-color:rgba(0,0,0,0.5);
+            z-index:1;
+        }
+        .picker-container{
+            position:absolute;
+            background-color:#fff;
+            width:100%;
+            bottom:0;
+            z-index:2;
+            .toolbar{
+                padding:0 5%;
+                height:1.5rem;
+                font-size:0.76rem;
+                color:#389cf2;
+            }
+        }
     }
     .page{
         height:100%;
@@ -277,46 +301,6 @@
                 overflow:hidden;
                 border-radius:3px;
             }
-        }
-        .picker-mask{
-            position:absolute;
-            top:0;
-            bottom:0;
-            left:0;
-            right:0;
-            background-color:rgba(0,0,0,0.5);
-            z-index:1;
-        }
-        .picker-container{
-            position:absolute;
-            background-color:#fff;
-            width:100%;
-            bottom:0;
-            z-index:2;
-            .toolbar{
-                padding:0 5%;
-                height:1.5rem;
-                font-size:0.76rem;
-                color:#389cf2;
-            }
-        }
-        .picker-enter-active {
-            transition: all .3s ease;
-            transform: translate3d(0,0%,0);
-            z-index:1001;
-        }
-        .picker-leave-active {
-            transition: all .3s ease;
-            transform: translate3d(0,100%,0);
-            z-index: 1000;
-        }
-        .picker-leave{
-            transform: translate3d(0,0%,0);
-            z-index: 1000;
-        }
-        .picker-enter{
-            transform: translate3d(0,100%,0);
-            z-index:1001;
         }
     }
 </style>

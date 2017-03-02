@@ -1,21 +1,3 @@
-# ubifly
+vue2 + vuex2 + vue-router2 + mint-ui + flex.css
 
-> A Vue.js project
-
-## Build Setup
-
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-```
-
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+每个页面增加一层.page-container容器方便实现各种全屏遮罩动画，所有全屏遮罩都写在.page-container的最下面
