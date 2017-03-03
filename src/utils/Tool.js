@@ -2,7 +2,7 @@ import { Indicator, Toast } from 'mint-ui'
 
 const Tool = {};
 const target = 'http://10.17.244.92:8080/anan-management/app/';//默认的远程服务器地址
-const CLOSE_NETWORK = true;//在本地调试时关闭网络
+const CLOSE_NETWORK = true;//在本地调试时关闭网络，只调整静态页面
 
 var requestPool = [];//请求池
 
@@ -29,11 +29,10 @@ Tool.ajax = function(mySetting){
     }
     sData = aData.join('&');
     setting.type = setting.type.toUpperCase();
-
-    var xhr = new XMLHttpRequest();
     if(CLOSE_NETWORK){
         return false;
     }
+    var xhr = new XMLHttpRequest();
     Indicator.open({
         spinnerType:'double-bounce',
     });

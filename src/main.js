@@ -5,16 +5,20 @@ import store from './store';
 import MintUI from 'mint-ui';
 import 'mint-ui/lib/style.css';
 import './js/jquery.js';
-import 'flex.css';
+import 'flex.css';//主要使用flex.css布局，避免各种滚动条的计算
 import 'normalize.css';
 import './style/base.css';
 import './style/iconfont.less';
+import Tool from './utils/Tool'
+const FastClick = require('fastclick')
 Vue.use(MintUI);
 
-import Tool from './utils/Tool'
+$(function(){
+	FastClick.attach(document.body)//移动端添加fastClick支持
+})
 
 document.documentElement.style.fontSize = document.documentElement.clientWidth/640*40+"px";
-$(window).on("resize",function(){//当窗口发生变化时更新字体大小
+$(window).on("resize",function(){//当窗口发生变化时更新基础字体大小
   document.documentElement.style.fontSize = document.documentElement.clientWidth/640*40+"px";
 })
 

@@ -143,11 +143,6 @@
     }
 </script>
 <style lang="less" scoped>
-    .page-container{
-        height:100%;
-        position:absolute;
-        width:100%;
-    }
     .page{
         height:100%;
         position:absolute;

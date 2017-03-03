@@ -11,7 +11,12 @@
                     ref="datepicker"
                     type="datetime"
                     v-model="pickerValue"
-                    @confirm="onDateConfirm">
+                    @confirm="onDateConfirm"
+                    month-format="{value}月"
+                    date-format="{value}日"
+                    hour-format="{value}时"
+                    minute-format="{value}分"
+                    >
                 </mt-datetime-picker>
                 <div class="input-control">
                     <inp-com title="车牌号" type="text" icon="icon-plate" :readonly="true" placeholder="请输入车牌号" :onClick="selectPlate.bind(this)" :value="subscribeInfo.carInfo.plate"/>
@@ -20,7 +25,7 @@
                     <inp-com title="预约时间" :readonly="true" type="text" icon="icon-time" placeholder="请选择到店时间" :onClick="selectTime" :value="subscribeInfo.showTime"/>
                 </div>
                 <div class="input-control">
-                    <inp-com title="4S店选择" type="text" icon="icon-store" placeholder="请选择服务商" :onClick="goStore" :value="subscribeInfo.storeInfo.storeName"/>
+                    <inp-com title="4S店选择" type="text" icon="icon-store" :readonly="true" placeholder="请选择服务商" :onClick="goStore" :value="subscribeInfo.storeInfo.storeName"/>
                 </div>
                 <div class="input-control">
                     <inp-com title="预约里程" type="number" icon="icon-mile" placeholder="请输入里程KM" :onBlur="updateMile.bind(this)" :value="subscribeInfo.mile"/>

@@ -4,18 +4,8 @@
             <i class="iconfont icon-back"></i>
         </div>
         <div class="select-bar">
-            <input :type="type" :placeholder="placeholder" @input="changeSearch" :value="items[menuValue].label"/>
+            <input :type="type" :placeholder="placeholder" @input="changeSearch"/>
             <i class="iconfont icon-little-arrow" @click="menuShow=!menuShow"></i>
-            <div class="drop-down-menu">
-                <div class="drop-down-item" flex="dir:left cross:center" :class="{'active':index==menuValue}" v-for="(item,index) in items" v-show="menuShow" @click="selectItem(index)">
-                    {{item.label}}
-                    <div class="child-drop-down" v-if="index==menuValue">
-                        <div class="child-drop-down-item" v-for="(citem,cindex) in item.child">
-                            {{citem.label}}
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </template>
@@ -35,59 +25,6 @@
             placeholder:{
                 type:String,
                 default:''
-            },
-            items:{
-                type:Array,
-                default:function(){
-                    return [
-                        {
-                            value:1,
-                            label:'车型1',
-                            child:[
-                                {
-                                    value:1,
-                                    label:'子1'
-                                },
-                                {
-                                    value:2,
-                                    label:'子2'
-                                },
-                            ]
-                        },
-                        {
-                            value:2,
-                            label:'车型2',
-                            child:[
-                                {
-                                    value:1,
-                                    label:'1.5T'
-                                },
-                                {
-                                    value:2,
-                                    label:'2.0T'
-                                },
-                            ]
-                        },
-                        {
-                            value:3,
-                            label:'车型3',
-                            child:[
-                                {
-                                    value:1,
-                                    label:'3.0T'
-                                },
-                                {
-                                    value:2,
-                                    label:'5.0T'
-                                },
-                            ]
-                        },
-                        {
-                            value:4,
-                            label:'车型4'
-                        },
-                    ]
-                }
             }
         },
         methods:{
@@ -145,37 +82,6 @@
                 z-index:2;
                 top:0;
                 right:0.1rem;
-            }
-            .drop-down-menu{
-                position:fixed;
-                right:0.5rem;
-                top:2.1rem;
-                width:30%;
-                color:#323232;
-                border-radius:3px;
-                text-align:left;
-                background-color:#fff;
-                overflow:hidden;
-                box-shadow:1px 2px 5px #aaa;
-                .drop-down-item{
-                    width:84%;
-                    margin:0.2rem 5%;
-                    padding:0 3%;
-                    border:none;
-                    height:1.3rem;
-                    border-radius:0.2rem;
-                    position:relative;
-                    .child-drop-down{
-                        position:absolute;
-                        width:90%;
-                        background-color:#fff;
-                        left:-90%;
-                    }
-                }
-                .drop-down-item.active{
-                    background-color:#08aaeb;
-                    color:#fff;
-                }
             }
         }
     }

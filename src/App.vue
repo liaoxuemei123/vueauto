@@ -35,18 +35,20 @@ export default {
 	position:relative;
 }
 .push-enter-active {
-	transition: all .2s ease-in;
+	transition: all .2s ease-out;
 	transform: translate3d(0%,0,0);
 	z-index:1001;
 }
 .push-leave-active {
-	transition: all .2s ease-in;
+	transition: all .2s ease-out;
 	transform: translate3d(0%,0,0);
 	z-index: 1000;
+	opacity:0;
 }
 .push-leave{
 	transform: translate3d(0%,0,0);
 	z-index: 1000;
+	opacity:1;
 }
 .push-enter{
 	transform: translate3d(100%,0,0);
@@ -54,21 +56,23 @@ export default {
 }
 
 .pop-enter-active {
-	transition: all .2s ease-in;
+	transition: all .2s ease-out;
 	transform: translate3d(0%,0,0);
-	z-index:1000
+	opacity:1;
+	z-index:1000;
 }
 .pop-leave-active {
-	transition: all .2s ease-in;
+	transition: all .2s ease-out;
 	transform: translate3d(100%,0,0);
-	z-index: 1001;
+	z-index: 10001;
 }
 .pop-leave{
 	transform: translate3d(0%,0,0);
-	z-index: 1001;
+	z-index: 10001;
 }
 .pop-enter{
 	transform: translate3d(0%,0,0);
-	z-index:1000
+	z-index:1000;
+	opacity:0;
 }
 </style>
