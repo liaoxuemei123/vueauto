@@ -38,11 +38,11 @@ body,html{
 
 /*预设vue向下滑入向上滑出动画*/
 .slide-down-enter-active {
-    transition: all .3s ease-out;
+    transition: all .2s ease-out;
     transform: translate3d(0,0%,0);
 }
 .slide-down-leave-active {
-    transition: all .3s ease-out;
+    transition: all .2s ease-out;
     transform: translate3d(0,-100%,0);
 }
 .slide-down-leave{
@@ -53,11 +53,11 @@ body,html{
 }
 /*预设vue上滑动画*/
 .slide-up-enter-active {
-    transition: all .3s ease-out;
+    transition: all .2s ease-out;
     transform: translate3d(0,0%,0);
 }
 .slide-up-leave-active {
-    transition: all .3s ease-out;
+    transition: all .2s ease-out;
     transform: translate3d(0,100%,0);
 }
 .slide-up-leave{
@@ -68,7 +68,7 @@ body,html{
 }
 /*预设vue淡入淡出动画*/
 .fade-enter,.fade-leave-active{
-    transition: all .3s ease-out;
+    transition: all .2s ease-out;
     opacity:0;
 }
 .fade-leave,.fade-enter-active{

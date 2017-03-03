@@ -33,7 +33,7 @@
                     </transition>
                     <transition name="slide-down">
                         <div class="down-list" v-if="cityShow">
-                            卡视角
+                            <mt-picker :slots="citylist" @change="onCityChange"></mt-picker>
                         </div>
                     </transition>
                 </div>
@@ -48,14 +48,36 @@
     import Tool from '../utils/Tool';
     import { mapState } from 'vuex';
     import { Indicator, Toast } from 'mint-ui';
+    import cityList from '../js/citylist';
+    const defaultI = 1;
     export default {
         data () {
             return {
-                storelist:[{
-                    photoUrl:'',
-                }],
+                storelist:[],
                 select:0,
                 cityShow:false,
+                citylist:[
+                    {
+                        flex:1,
+                        defaultIndex:defaultI,
+                        values:Object.keys(cityList),
+                        className:'province',
+                    },{
+                        divider:true,
+                        content:'-'
+                    },{
+                        flex:1,
+                        values:Object.keys(cityList[Object.keys(cityList)[defaultI]]),
+                        className:'city'
+                    },{
+                        divider:true,
+                        content:'-'
+                    },{
+                        flex:1,
+                        values:cityList[Object.keys(cityList)[defaultI]][Object.keys(cityList[Object.keys(cityList)[defaultI]])[0]],
+                        className:'detail'
+                    }
+                ]
             }
         },
         components:{
@@ -88,6 +110,18 @@
                 data.storeName = this.storelist[this.select].storeName;
                 this.$store.commit('SET_SUBSTOREINFO',data);
                 this.$router.back();
+            },
+            onCityChange:function(picker,values){
+                var city;
+                if(!values[0]){
+                    city = Object.keys(cityList[Object.keys(cityList)[this.citylist[0].defaultIndex]])
+                    picker.setSlotValues(1,city);
+                    picker.setSlotValues(2,cityList[Object.keys(cityList)[this.citylist[0].defaultIndex]][[values[1]]]);
+                }else{
+                    city = Object.keys(cityList[values[0]])
+                    picker.setSlotValues(1,city);
+                    picker.setSlotValues(2,cityList[values[0]][[values[1]]]);
+                }
             }
         },
         created:function(){
@@ -163,7 +197,6 @@
                 .down-list{
                     position:absolute;
                     top:0rem;
-                    height:6rem;
                     width:100%;
                     background-color:#fff;
                 }
