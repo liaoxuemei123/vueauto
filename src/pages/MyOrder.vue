@@ -12,7 +12,7 @@
                                 {{item.label}}
                             </div>
                         </div>
-                        <div class="after" :style="{'left':( activeTab * 20 ) + '%'}"></div>
+                        <div class="after" :style="{'left':( activeTab * 20 ) + 2 + '%'}"></div>
                     </div>
                 </div>
                 <div class="order-list">
@@ -93,8 +93,8 @@
                 }
                 .tab-container .after{
                     display:block;
-                    width:20%;
-                    height:3px;
+                    width:16%;
+                    height:2px;
                     background-color:#379df2;
                     position:absolute;
                     bottom:0;

@@ -12,7 +12,7 @@
                                 {{item.label}}
                             </div>
                         </div>
-                        <div class="after" :style="{'left':((activeState + 1) > 3 ? 0 : (activeState + 1)) * 25 + '%' }"></div>
+                        <div class="after" :style="{'left':((activeState + 1) > 3 ? 0 : (activeState + 1)) * 25 + 3 + '%' }"></div>
                     </div>
                 </div>
                 <div class="history-list">
@@ -167,7 +167,7 @@
                     position:relative;
                     .after{
                         position:absolute;
-                        width:25%;
+                        width:18%;
                         height:2px;
                         background-color:#379df2;
                         bottom:0rem;

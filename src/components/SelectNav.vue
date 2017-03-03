@@ -44,7 +44,7 @@
     .select-nav{
         height:2.1rem;
         background-color:#fff;
-        box-shadow: 0px 1px 5px #aaa;
+        border-bottom:1px solid #cfcfcf;
         z-index:1;
         .button{
             height: 2.1rem;
