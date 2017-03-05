@@ -4,8 +4,8 @@
             <i class="iconfont icon-back"></i>
         </div>
         <div class="select-bar">
-            <input :type="type" :placeholder="placeholder" @input="changeSearch"/>
-            <i class="iconfont icon-little-arrow" @click="menuShow=!menuShow"></i>
+            <input :type="type" :placeholder="placeholder"/>
+            <i class="iconfont icon-little-arrow" @click="onDropDown"></i>
         </div>
     </div>
 </template>
@@ -13,8 +13,6 @@
     export default {
         data () {
             return {
-                menuShow:false,
-                menuValue:0,
             }
         },
         props:{
@@ -25,18 +23,18 @@
             placeholder:{
                 type:String,
                 default:''
+            },
+            onDropDown:{
+                type:Function,
+                default:function(){
+                    return;
+                }
             }
         },
         methods:{
             goBack:function(){
                 this.$router.go(-1);
             },
-            changeSearch:function(){
-
-            },
-            selectItem:function(index){
-                this.menuValue = index;
-            }
         }
     }
 </script>

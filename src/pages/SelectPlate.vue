@@ -20,8 +20,8 @@
                                 <div class="title">我要添加车辆</div>
                             </div>
                             <div class="drop-down-form" v-if="active == -1" flex="dir:top main:center">
-                                <div class="input-control">
-                                    <input type="text" placeholder="请选择车系" readonly @click="pickerShow=true" :value="addInfo.carSeries.modelName">
+                                <div class="input-control" @click="pickerShow=true">
+                                    <input type="text" placeholder="请选择车系" readonly :value="addInfo.carSeries.modelName">
                                     <i class="iconfont icon-little-arrow"></i>
                                 </div>
                                 <div class="input-control" flex="dir:left cross:center main:justify">

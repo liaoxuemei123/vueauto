@@ -11,6 +11,7 @@ import MyOrder from 'pages/MyOrder';
 import OrderDetail from 'pages/OrderDetail';
 import SelectPlate from 'pages/SelectPlate';
 import OrderHistory from 'pages/OrderHistory';
+import Evaluate from 'pages/Evaluate';
 
 Vue.use(Router)
 
@@ -70,6 +71,10 @@ export default new Router({
       path:'/orderhistory',
       name:'orderhistory',
       component:OrderHistory,
+    },{
+      path:'/evaluate',
+      name:'evaluate',
+      component:Evaluate,
     }
   ]
 })

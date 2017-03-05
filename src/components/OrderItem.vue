@@ -29,6 +29,7 @@
                 <div class="oprater" flex="dir:left cross:center">
                     <div class="pay" v-if="item.state == 2">去支付</div>
                     <div class="cancel" v-if="item.state == 1">退单</div>
+                    <div class="evaluate" @click="goEvaluate" v-if="item.state == 4">去评价</div>
                     <div class="detail" @click="viewDetail(item.orderId)">查看详情</div>
                 </div>
             </div>
@@ -69,6 +70,9 @@
         methods:{
             viewDetail:function(id){
                 this.$router.push({path:'orderdetail/'+id});
+            },
+            goEvaluate:function(){
+                this.$router.push({path:'evaluate'});
             }
         }
     }
@@ -91,7 +95,7 @@
             margin:0.4rem 0;
             .oprater{
                 font-size:0.51rem;
-                .pay,.cancel{
+                .pay,.cancel,.evaluate{
                     color:#666;
                     padding:0rem 0.3rem;
                     border:1px solid #666;

@@ -52,6 +52,13 @@
                         time:'2017-02-28',
                         price:190,
                     },
+                    {
+                        orderId:3,
+                        state:4,
+                        carSeries:'悦翔V7',
+                        time:'2017-02-29',
+                        price:118,
+                    },
                 ],
                 activeTab:0,
             }
