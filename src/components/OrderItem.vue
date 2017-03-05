@@ -101,6 +101,8 @@
                     border:1px solid #666;
                     border-radius:2px;
                     margin-left:0.2rem;
+                    margin-bottom:0rem;
+                    box-shadow:none;
                 }
                 .detail{
                     color:#ff3c30;

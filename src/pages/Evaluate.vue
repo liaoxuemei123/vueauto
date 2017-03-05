@@ -5,7 +5,7 @@
                 title='用户点评'
                 rightContent='发表'
             />
-            <div class="page-content">
+            <div class="page-content" flex="dir:top box:first">
                 <div class="evaluate">
                     <div class="title" flex="dir:left cross:center">
                         点评得分
@@ -64,6 +64,33 @@
                             <div class="score">
                                 {{score.total}}
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="description" flex="dir:top box:first">
+                    <div class="title" flex="dir:left cross:center">
+                        点评描述
+                    </div>
+                    <div class="content" flex="dir:top box:justify">
+                        <div class="base-info">
+                            <div class="info-item" flex="dir:left cross:center">
+                                <div class="label">所选车型</div>
+                                <div class="value">CS75</div>
+                            </div>
+                            <div class="info-item" flex="dir:left cross:center">
+                                <div class="label">服务类型</div>
+                                <div class="value">售后服务</div>
+                            </div>
+                        </div>
+                        <div class="evaluate-description">
+                            <textarea
+                                placeholder="请描述一下你在4S店的服务经历帮助一下其他小伙伴        写够15字才是好同志"
+                            >
+                            </textarea>
+                        </div>
+                        <div class="addon-picture" flex="dir:left cross:center">
+                            <div class="picture-container"></div>
+                            <div class="upload-picture">上传图片</div>
                         </div>
                     </div>
                 </div>
@@ -205,6 +232,40 @@
                             text-align:right;
                             color:#ff3b30;
                         }
+                    }
+                }
+            }
+            .description{
+                background-color:#fff;
+                .title{
+                    height:1.92rem;
+                    padding:0 3%;
+                    background-color:#fff;
+                    border-bottom:1px solid #afafaf;
+                    font-size:0.67rem;
+                }
+                .content{
+                    padding:0.1rem 3%;
+                    .base-info{
+                        .info-item{
+                            height:1.5rem;
+                            border-bottom:1px solid #d9d9d9;
+                        }
+                    }
+                    .evaluate-description{
+                        padding:0.4rem 0;
+                        border-bottom:1px solid #d9d9d9;
+                        textarea{
+                            resize:none;
+                            outline:none;
+                            border:none;
+                            padding:0;
+                            font-size:0.58rem;
+                            width:100%;
+                        }
+                    }
+                    .addon-picture{
+                        height:3.42rem;
                     }
                 }
             }
