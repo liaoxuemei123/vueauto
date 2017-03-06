@@ -101,6 +101,7 @@
 <script>
     import NavBar from '../components/NavBar';
     import InpCom from '../components/InpCom';
+    import Tool from '../utils/Tool'
     export default {
         data () {
             return {
@@ -141,7 +142,15 @@
             },
             popOilSelect:function(){
                 this.popupVisible = true;
+            },
+            getPackage:function(id){
+                Tool.get('getPackage',{id},function(data){
+                    
+                })
             }
+        },
+        created:function(){
+            this.getPackage(this.$route.params.id);
         }
     }
 </script>

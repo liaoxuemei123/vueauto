@@ -112,11 +112,11 @@
                         white-space: nowrap;
                         overflow: hidden;
                         display: inline-block;
-                        font-size:0.24rem;
+                        font-size:0.51rem;
                         margin-right:0.3rem
                     }
                     .store-phone{
-                        font-size:0.24rem;
+                        font-size:0.51rem;
                         margin-right:0.3rem
                     }
                 }

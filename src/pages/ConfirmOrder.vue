@@ -41,13 +41,27 @@
                             <div>{{explain.validate}}</div>
                         </div>
                     </div>
-                    <div class="bottom" flex="dir:left box:mean">
-                        <div class="car-series" flex="dir:left cross:center">
-                            <div class="title"><i class="iconfont icon-car"></i>车型：</div>
+                    <div class="bottom" flex="dir:left box:justify">
+                        <div class="bottom-item" flex="dir:left cross:center main:center">
+                            <div class="title"><i class="iconfont icon-contact"></i>姓名:</div>
+                            <div class="value">{{setInfo.contact}}</div>
+                        </div>
+                        <div class="bottom-item" flex="dir:left cross:center main:center">
+                            <div class="title"><i class="iconfont icon-phone"></i>电话:</div>
+                            <div class="value">{{setInfo.phone}}</div>
+                        </div>
+                        <div class="bottom-item" flex="dir:left cross:center main:center">
+                            <div class="title"><i class="iconfont icon-car"></i>车型:</div>
                             <div class="value">{{setInfo.carSeries}}</div>
                         </div>
-                        <div class="vin-code" flex="dir:left cross:center">
-                            <div class="title"><i class="iconfont icon-contact"></i>VIN：</div>
+                    </div>
+                    <div class="bottom" flex="dir:left box:first">
+                        <div class="bottom-item" flex="dir:left cross:center main:center">
+                            <div class="title"><i class="iconfont icon-motor"></i>发动机号:</div>
+                            <div class="value">{{setInfo.motor}}</div>
+                        </div>
+                        <div class="bottom-item" flex="dir:left cross:center main:right">
+                            <div class="title"><i class="iconfont icon-vin custom"></i>限用车架号:</div>
                             <div class="value">{{setInfo.VIN}}</div>
                         </div>
                     </div>
@@ -95,6 +109,9 @@
                     des2:"4次基础保养有效期3年",
                     carSeries:'逸动V7',
                     VIN:121321321321,
+                    contact:'李某某',
+                    phone:15178831138,
+                    motor:63827276,
                 },
                 explain:{
                     check:"四次基础保养",
@@ -180,17 +197,20 @@
                 .bottom{
                     padding:0rem 3%;
                     background-color:#f9f9f9;
-                    .car-series,.vin-code{
-                        font-size:0.57rem;
+                    .bottom-item{
+                        font-size:0.51rem;
                         color:#333;
                         line-height:2em;
                         .iconfont{
-                            font-size:0.57rem;
+                            font-size:0.51rem;
                             margin-right:0.2rem;
                             color:#fc4c1d;
                         }
                         .value{
                             color:#666;
+                        }
+                        .custom{
+                            font-size:0.7rem;
                         }
                     }
                 }

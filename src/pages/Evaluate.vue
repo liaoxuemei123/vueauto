@@ -4,6 +4,7 @@
             <nav-bar
                 title='用户点评'
                 rightContent='发表'
+                :otherClass='true'
             />
             <div class="page-content" flex="dir:top box:first">
                 <div class="evaluate">
@@ -11,6 +12,18 @@
                         点评得分
                     </div>
                     <div class="content">
+                        <div class="score-total" flex="dir:left cross:center">
+                            <span>总体评分</span>
+                            <div class="score-evaluate" flex="dir:left cross:center">
+                                <div class="score-evaluate-item" v-for="i in [1,2,3,4,5]" @click="score.total = i">
+                                    <div class="iconfont icon-start" v-if="i<=score.total"></div>
+                                    <div class="iconfont icon-start dark" v-else="i<=score.total"></div>
+                                </div>
+                            </div>
+                            <div class="score">
+                                {{score.total}}
+                            </div>
+                        </div>
                         <div class="score-single">
                             <div class="single-item" flex="dir:left cross:center">
                                 <span>服务描述</span>
@@ -53,18 +66,6 @@
                                 <div class="score score-service">{{score.software | scoreFilter}}</div>
                             </div>
                         </div>
-                        <div class="score-total" flex="dir:left cross:center">
-                            <span>总体评分</span>
-                            <div class="score-evaluate" flex="dir:left cross:center">
-                                <div class="score-evaluate-item" v-for="i in [1,2,3,4,5]" @click="score.total = i">
-                                    <div class="iconfont icon-start" v-if="i<=score.total"></div>
-                                    <div class="iconfont icon-start dark" v-else="i<=score.total"></div>
-                                </div>
-                            </div>
-                            <div class="score">
-                                {{score.total}}
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div class="description" flex="dir:top box:first">
@@ -74,16 +75,17 @@
                     <div class="content" flex="dir:top box:justify">
                         <div class="base-info">
                             <div class="info-item" flex="dir:left cross:center">
-                                <div class="label">所选车型</div>
+                                <div class="label">所选车型：</div>
                                 <div class="value">CS75</div>
                             </div>
                             <div class="info-item" flex="dir:left cross:center">
-                                <div class="label">服务类型</div>
+                                <div class="label">服务类型：</div>
                                 <div class="value">售后服务</div>
                             </div>
                         </div>
                         <div class="evaluate-description">
                             <textarea
+                                rows='5 '
                                 placeholder="请描述一下你在4S店的服务经历帮助一下其他小伙伴        写够15字才是好同志"
                             >
                             </textarea>
@@ -133,13 +135,7 @@
         }
     }
 </script>
-<style lang="less">
-    .nav-bar .right-button.button{
-        text-align:right;
-        position:relative;
-        right:0.5rem;
-        color:#379bf3;
-    }
+<style lang="less" scoped>
     .page-container{
         height:100%;
         position:absolute;
@@ -169,7 +165,7 @@
                     .score-single{
                         padding:0.2rem 0;
                         .single-item{
-                            height:1.8rem;
+                            height:1.6rem;
                             span{
                                 width:20%;
                             }
@@ -205,8 +201,8 @@
                         }
                     }
                     .score-total{
-                        height:2.5rem;
-                        line-height:2.5rem;
+                        height:2.3rem;
+                        line-height:2.3rem;
                         border-top:1px solid #d9d9d9;
                         span{
                             width:20%;
@@ -253,7 +249,7 @@
                         }
                     }
                     .evaluate-description{
-                        padding:0.4rem 0;
+                        padding:0.2rem 0;
                         border-bottom:1px solid #d9d9d9;
                         textarea{
                             resize:none;
@@ -265,7 +261,7 @@
                         }
                     }
                     .addon-picture{
-                        height:3.42rem;
+                        height:3rem;
                     }
                 }
             }

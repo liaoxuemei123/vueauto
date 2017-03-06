@@ -41,26 +41,13 @@
 <script>
     import SelectNav from '../components/SelectNav';
     import SetItem from '../components/SetItem';
+    import Tool from '../utils/Tool'
     export default {
         data () {
             return {
                 setlist:{
-                    up:[{
-                        id:1,
-                        url: 'https://zos.alipayobjects.com/rmsportal/dKbkpPXKfvZzWCM.png',
-                        times:'3+1',des1:'四次基础保养',des2:'两年以上车龄专享',range:'全国4S店通用'
-                    },{
-                        id:2,
-                        url: 'https://zos.alipayobjects.com/rmsportal/dKbkpPXKfvZzWCM.png',
-                        times:'3+1',des1:'四次基础保养',des2:'两年以上车龄专享',range:'限制服务商'}],
-                    down:[{
-                        id:3,
-                        url: 'https://zos.alipayobjects.com/rmsportal/dKbkpPXKfvZzWCM.png',
-                        times:'4+1',des1:'五次基础保养',des2:'两年以上车龄专享',range:'全国4S店通用'
-                    },{
-                        id:4,
-                        url: 'https://zos.alipayobjects.com/rmsportal/XmwCzSeJiqpkuMB.png',
-                        times:'4+1',des1:'五次基础保养',des2:'两年以上车龄专享',range:'限制服务商'}]
+                    up:[],
+                    down:[]
                 },
                 dropDownMenu:[
                     {
@@ -85,7 +72,7 @@
                 ],
                 dropdownMenuShow:false,
                 mainIndex:0,
-                subIndex:0,
+                subIndex:-1,
             }
         },
         components:{
@@ -94,18 +81,27 @@
         },
         methods:{
             viewDetail:function(id){
-                this.$router.push({name:'setdetail'});
+                this.$router.push({path:'setdetail/'+id});
             },
             showSelector:function(){
                 this.dropdownMenuShow = !this.dropdownMenuShow;
             },
             selectMainMenu:function(index){
                 this.mainIndex = index;
-                this.subIndex = 0;
+                this.subIndex = -1;
             },
             selectSubMenu:function(index){
                 this.subIndex = index;
+            },
+            getPackageList:function(){
+                Tool.get('getPackageList',{},(data)=>{
+                    this.setlist.up = data.data.twoup;
+                    this.setlist.down = data.data.twodown;
+                })
             }
+        },
+        created:function(){
+            this.getPackageList();
         }
     }
 </script>

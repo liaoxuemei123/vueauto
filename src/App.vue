@@ -1,10 +1,10 @@
 <template>
 	<div id="pagecontainer">
-		<keep-alive>
-			<transition :name="mode">
+		<transition :name="mode">
+			<keep-alive>
 				<router-view></router-view>
-			</transition>
-		</keep-alive>
+			</keep-alive>
+		</transition>
 	</div>
 </template>
 <script>

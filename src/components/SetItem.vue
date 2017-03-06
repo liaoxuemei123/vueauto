@@ -2,16 +2,16 @@
     <div class="set-container" @click="onClick" flex="dir:top box:first">
         <div class="set-image">
             <div class="image-container">
-                <img v-lazy="item.url">
+                <img v-lazy="item.packageImage">
             </div>
         </div>
         <div class="set-info" flex="dir:top cross:top box:mean">
             <div class="line">
-                <span class="times">{{item.times}}</span>
-                <span class="des1">{{item.des1}}</span>
+                <span class="times">{{item.discount}}折</span>
+                <span class="des1">{{item.packageName}}</span>
             </div>
             <div class="line">
-                <span class="range">{{item.range}}</span>
+                <span class="range">{{item.isUniversal|universalFilter}}</span>
             </div>
         </div>
     </div>
@@ -32,6 +32,15 @@
                 type:Function,
                 default:function(){
                     return ;
+                }
+            }
+        },
+        filters:{
+            universalFilter:function(val){
+                if(val){
+                    return '全国4S店通用'
+                }else{
+                    return '指定服务商'
                 }
             }
         }

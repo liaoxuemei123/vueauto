@@ -15,9 +15,11 @@
                 </div>
                 <div class="store-list-container">
                     <div class="container-content" flex="dir:top box:last">
-                        <div class="store-list">
-                            <div class="store-item" v-for="(item, index) in storelist">
-                                <store-item :item="item" :onClick="selectItem.bind(this, item.id)" :active="item.id == select"/>
+                        <div class="overflow-container">
+                            <div class="store-list">
+                                <div class="store-item" v-for="(item, index) in storelist">
+                                    <store-item :item="item" :onClick="selectItem.bind(this, item.id)" :active="item.id == select"/>
+                                </div>
                             </div>
                         </div>
                         <div class="button-control">
@@ -34,6 +36,14 @@
                     <transition name="slide-down">
                         <div class="down-list" v-if="cityShow">
                             <mt-picker :slots="citylist" @change="onCityChange"></mt-picker>
+                            <div class="toolbar" flex="dir:left box:mean">
+                                <div class="cancel" @click="cityShow=false" flex="dir:left cross:center main:left">
+                                    取消
+                                </div>
+                                <div class="sure" flex="dir:left cross:center main:right">
+                                    确定
+                                </div>
+                            </div>
                         </div>
                     </transition>
                 </div>
@@ -122,6 +132,8 @@
                     picker.setSlotValues(1,city);
                     picker.setSlotValues(2,cityList[values[0]][[values[1]]]);
                 }
+                this.pickerValue = values.join(',');
+
             }
         },
         created:function(){
@@ -178,8 +190,11 @@
                 background:transparent;
                 .container-content{
                     height:100%;
-                    .store-list{
-                        margin-top:0.5rem;
+                    .overflow-container{
+                        overflow:auto;
+                        .store-list{
+                            margin-top:0.5rem;
+                        }
                     }
                 }
                 .down-list-mask{
@@ -194,6 +209,17 @@
                     top:0rem;
                     width:100%;
                     background-color:#fff;
+                    .toolbar{
+                        height:1.5rem;
+                        font-size:0.67rem;
+                        color:#00bffe;
+                        .cancel{
+                            padding-left:1.5rem;
+                        }
+                        .sure{
+                            padding-right:1.5rem;
+                        }
+                    }
                 }
             }
         }

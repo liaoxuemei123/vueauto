@@ -2,7 +2,7 @@ import { Indicator, Toast } from 'mint-ui'
 
 const Tool = {};
 const target = 'http://10.17.244.92:8080/anan-management/app/';//默认的远程服务器地址
-const CLOSE_NETWORK = true;//在本地调试时关闭网络，只调整静态页面
+const CLOSE_NETWORK = false;//在本地调试时关闭网络，只调整静态页面
 
 var requestPool = [];//请求池
 
@@ -67,7 +67,6 @@ Tool.ajax = function(mySetting){
         requestPool.push(xhr);
         xhr.explain = '';
         xhr.index = requestPool.length - 1;
-        console.log(requestPool);
     }catch(e){
         return httpEnd();
     }
@@ -174,6 +173,20 @@ Tool.get = function (pathname, data, success, error) {
     };
     return Tool.ajax(setting);
 };
+/**
+ * 地名转换为位置信息
+ * @param {string} address 当前位置名称
+ */
+Tool.getLocation = function(address,success,error){
+    var setting = {
+        url:'http://api.map.baidu.com/geocoder/v2/',
+        type:'GET',
+        data:{ak:'V5qLiGqxsGZZpRt8nqUERSpA2A18MLjk',output:'json',address:address},
+        success: success || function () { }, //请求成功执行方法
+        error: error || function () { } //请求失败执行方法
+    }
+    return Tool.ajax(setting);
+}
 /**
  * 清空请求池中的所有请求
  */

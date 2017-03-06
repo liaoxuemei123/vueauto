@@ -6,7 +6,7 @@
         <div class="title">
             {{title}}
         </div>
-        <div class="right-button button" @click="onRight">
+        <div class="right-button button" @click="onRight" :class="{'other':otherClass}">
             <i class="iconfont" v-if="rightIcon" :class="rightIcon"></i>
             {{rightContent}}
         </div>
@@ -34,6 +34,10 @@
             rightIcon:{
                 type:String,
                 default:''
+            },
+            otherClass:{
+                typs:Boolean,
+                default:false,
             }
         },
         methods:{
@@ -65,6 +69,12 @@
                 margin-right:0.6rem;
                 font-weight:bold;
             }
+        }
+        .right-button.other{
+            text-align:right;
+            position:relative;
+            right:0.5rem;
+            color:#379bf3;
         }
         .title{
             text-align:center;

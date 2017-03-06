@@ -12,6 +12,7 @@ import OrderDetail from 'pages/OrderDetail';
 import SelectPlate from 'pages/SelectPlate';
 import OrderHistory from 'pages/OrderHistory';
 import Evaluate from 'pages/Evaluate';
+import EvaluateDetail from 'pages/EvaluateDetail';
 
 Vue.use(Router)
 
@@ -33,7 +34,7 @@ export default new Router({
       component:MaintainSet,
     },
     {
-      path:'/setdetail',
+      path:'/setdetail/:id',
       name:'setdetail',
       component:SetDetail,
     },
@@ -71,10 +72,16 @@ export default new Router({
       path:'/orderhistory',
       name:'orderhistory',
       component:OrderHistory,
-    },{
+    },
+    {
       path:'/evaluate',
       name:'evaluate',
       component:Evaluate,
+    },
+    {
+      path:'/evaluatedetail',
+      name:'evaluatedetail',
+      component:EvaluateDetail,
     }
   ]
 })

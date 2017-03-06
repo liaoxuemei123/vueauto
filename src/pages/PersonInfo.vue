@@ -12,7 +12,7 @@
                         <inp-com title="车架号" placeholder="输入车架号" :rightArrow="true" />
                     </div>
                     <div class="input-control">
-                        <inp-com title="发动机号" placeholder="输入发动机号后六位" :rightArrow="true" />
+                        <inp-com title="发动机号后六位" placeholder="输入发动机号后六位" :rightArrow="true" />
                     </div>
                     <div class="input-control">
                         <inp-com title="服务商" placeholder="选择服务商" :rightArrow="true" />
@@ -22,6 +22,11 @@
                     </div>
                     <div class="input-control">
                         <inp-com title="手机号" placeholder="输入手机号" :rightArrow="true" />
+                    </div>
+                    <div class="input-control-custom" flex="dir:left cross:center box:justify">
+                        <div class="label">验证码</div>
+                        <input type="text">
+                        <div class="button" flex="dir:left cross:center main:right"><span>获取验证码</span></div>
                     </div>
                     <div class="input-control">
                         <inp-com title="备注" placeholder="请输入100字内留言" :rightArrow="true" />
@@ -77,6 +82,33 @@
                 box-shadow:0px 2px 5px #ccc;
                 .input-control{
                     margin-bottom:1px;
+                }
+                .input-control-custom{
+                    height:1.9rem;
+                    background-color:#fff;
+                    margin-bottom:1px;
+                    padding:0rem 0.5rem;
+                    font-size:0.68rem;
+                    .label{
+                        margin-right:1rem;
+                    }
+                    input{
+                        outline:none;
+                        border:none;
+                        font-size:0.58rem;
+                    }
+                    .button{
+                        width:4rem;
+                        text-align:right;
+                        font-size:0.58rem;
+                        height:1.9rem;
+                        span{
+                            color:#ff3b2f;
+                            border:1px solid #ff3b2f;
+                            padding:0.2rem 0.3rem;
+                            border-radius:3px;
+                        }
+                    }
                 }
             }
         }
