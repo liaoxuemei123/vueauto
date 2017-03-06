@@ -3,7 +3,7 @@
         <div class="maintainset-page page" flex="dir:top box:first">
             <select-nav 
                 placeholder="搜索套餐"
-                :onDropDown="showSelector"
+                :onDropDown="dropMenuShow"
             />
             <div class="page-content">
                 <div class="up-title title">
@@ -22,18 +22,22 @@
                         <set-item :item="item"  :onClick="viewDetail.bind(this,item.id)"/>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="drop-down-list" v-if="dropdownMenuShow">
-            <div class="drop-down-container">
-                <div class="drop-down-item" @click="selectMainMenu(index)" v-for="(item,index) in dropDownMenu" :class="{'active':index == mainIndex}">
-                    <div class="item-name">{{item.name}}</div>
-                    <div class="sub-menu-list" v-if="mainIndex == index">
-                        <div class="sub-item" @click.stop="selectSubMenu(subindex)" v-for="(subitem,subindex) in item.children" :class="{'active':subindex == subIndex}">
-                            {{subitem.name}}
+                <transition name="fade">
+                    <div class="down-list-mask" v-if="carShow" @click="carShow=false"></div>
+                </transition>
+                <transition name="slide-down">
+                    <div class="down-list" v-if="carShow">
+                        <mt-picker :slots="carlist" @change="onCarChange"></mt-picker>
+                        <div class="toolbar" flex="dir:left box:mean">
+                            <div class="cancel" @click="carShow=false" flex="dir:left cross:center main:left">
+                                取消
+                            </div>
+                            <div class="sure" flex="dir:left cross:center main:right">
+                                确定
+                            </div>
                         </div>
                     </div>
-                </div>
+                </transition>
             </div>
         </div>
     </div>
@@ -42,6 +46,7 @@
     import SelectNav from '../components/SelectNav';
     import SetItem from '../components/SetItem';
     import Tool from '../utils/Tool'
+    const defaultI = 0;
     export default {
         data () {
             return {
@@ -49,14 +54,14 @@
                     up:[],
                     down:[]
                 },
-                dropDownMenu:[
+                carData:[
                     {
                         name:'车型1',id:1,
                         children:[
                             {
-                                name:'SX1',id:1,
+                                name:'1.0T',id:1,
                             },{
-                                name:'S75',id:2,
+                                name:'1.5T',id:2,
                             }
                         ]
                     },{
@@ -70,9 +75,22 @@
                         ]
                     }
                 ],
-                dropdownMenuShow:false,
-                mainIndex:0,
-                subIndex:-1,
+                carlist:[
+                    {
+                        flex:1,
+                        defaultIndex:defaultI,
+                        values:[],
+                        className:'province',
+                    },{
+                        divider:true,
+                        content:'-'
+                    },{
+                        flex:1,
+                        values:[],
+                        className:'city'
+                    }
+                ],
+                carShow:false,
             }
         },
         components:{
@@ -83,25 +101,30 @@
             viewDetail:function(id){
                 this.$router.push({path:'setdetail/'+id});
             },
-            showSelector:function(){
-                this.dropdownMenuShow = !this.dropdownMenuShow;
-            },
-            selectMainMenu:function(index){
-                this.mainIndex = index;
-                this.subIndex = -1;
-            },
-            selectSubMenu:function(index){
-                this.subIndex = index;
-            },
             getPackageList:function(){
                 Tool.get('getPackageList',{},(data)=>{
                     this.setlist.up = data.data.twoup;
                     this.setlist.down = data.data.twodown;
                 })
+            },
+            onCarChange:function(picker,values){
+                console.log(picker);
+            },
+            dropMenuShow:function(){
+                this.carShow = !this.carShow ;
+            },
+            initSelector:function(){
+                for(var i = 0;i<this.carData.length;i++){
+                    this.carlist[0].values.push(this.carData[i].name);
+                }
+                for(var j = 0;j<this.carData[0].children.length;j++){
+                    this.carlist[2].values.push(this.carData[0].children[j].name);
+                }
             }
         },
         created:function(){
             this.getPackageList();
+            this.initSelector();
         }
     }
 </script>
@@ -110,51 +133,6 @@
         height:100%;
         position:absolute;
         width:100%;
-        .drop-down-list{
-            width:30%;
-            background-color:#fff;
-            position:absolute;
-            z-index:2;
-            right:0.5rem;
-            top:2rem;
-            border-radius:3px;
-            box-shadow:1px 1px 3px #aaa;
-            .drop-down-container{
-                padding:0.1rem 0.2rem;
-                .drop-down-item{
-                    font-size:0.67rem;
-                    line-height:1.8em;
-                    padding-left:0.2rem;
-                    position:relative;
-                    border-radius:3px;
-                    .sub-menu-list{
-                        position:absolute;
-                        top:0;
-                        width:2rem;
-                        left:-2.7rem;
-                        color:#333;
-                        background-color:#fff;
-                        padding:0.1rem 0.2rem;
-                        font-size:0.58rem;
-                        border-radius:3px;
-                        box-shadow:1px 1px 3px #aaa;
-                        .sub-item{
-                            line-height:1.5em;
-                            padding-left:0.2rem;
-                            border-radius:3px;
-                        }
-                        .sub-item.active{
-                            background-color:#08aaeb;
-                            color:#fff;
-                        }
-                    }
-                }
-                .drop-down-item.active{
-                    background-color:#08aaeb;
-                    color:#fff;
-                }
-            }
-        }
     }
     .page{
         height:100%;
@@ -164,6 +142,32 @@
             background-color: #efefef;
             height:100%;
             overflow: auto;
+            position:relative;
+            .down-list-mask{
+                position:absolute;
+                top:0;
+                bottom:0;
+                left:0;
+                right:0;
+                background-color:rgba(0,0,0,0.5);
+            }
+            .down-list{
+                position:absolute;
+                top:0rem;
+                width:100%;
+                background-color:#fff;
+                .toolbar{
+                    height:1.5rem;
+                    font-size:0.67rem;
+                    color:#00bffe;
+                    .cancel{
+                        padding-left:1.5rem;
+                    }
+                    .sure{
+                        padding-right:1.5rem;
+                    }
+                }
+            }
             .title{
                 height:1.7rem;
                 line-height:1.7rem;

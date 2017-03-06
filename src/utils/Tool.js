@@ -2,7 +2,7 @@ import { Indicator, Toast } from 'mint-ui'
 
 const Tool = {};
 const target = 'http://10.17.244.92:8080/anan-management/app/';//默认的远程服务器地址
-const CLOSE_NETWORK = false;//在本地调试时关闭网络，只调整静态页面
+const CLOSE_NETWORK = true;//在本地调试时关闭网络，只调整静态页面
 
 var requestPool = [];//请求池
 
