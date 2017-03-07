@@ -37,8 +37,11 @@ const store = new Vuex.Store({
         packageInfo:{
             modelInfo:{},
             setInfo:{},
-            setDetail:{}
+            setDetail:{},
+            storeInfo:{},
+            userInfo:{},
         },
+        reset:true,
     },
     mutations:{
         SET_MODE:function(state,mode){
@@ -54,12 +57,6 @@ const store = new Vuex.Store({
         },
         CLEAR_PAGE:function(state){
             state.pageStack = [{name:'/',index:0}];
-        },
-        updateSubscribeInfo:function(state,params){
-            var keys = Object.keys(params)
-            for(var i = 1; i < keys.length; i ++){
-                state.subscribeInfo[keys[i]] = keys[keys[i]];//把params中可枚举的属性复制给state;
-            }
         },
         SET_LOCATION:function(state,params){
             state.geolocation.address = params.address;
@@ -83,11 +80,19 @@ const store = new Vuex.Store({
         },
         SET_PACKAGE_SETINFO:function(state,param){
             state.packageInfo.setInfo = param;
-            console.log(state.packageInfo.setInfo)
         },
-        SET_PACKAGE_SETINFO:function(state,param){
+        SET_PACKAGE_SETDETAIL:function(state,param){
             state.packageInfo.setDetail = param;
-            console.log(state.packageInfo.setDetail)
+        },
+        SET_RESET_FLAS:function(state,bool){
+            state.packageInfo.reset = bool;
+        },
+        SET_PACKAGE_STOREINFO:function(state,param){
+            state.packageInfo.storeInfo = param;
+        },
+        SET_PACKAGE_USERINFO:function(state,param){
+            state.packageInfo.userInfo = param;
+            console.log(state.packageInfo.userInfo);
         }
     },
     getters:{
@@ -96,6 +101,9 @@ const store = new Vuex.Store({
         },
         subscribeInfo:function(state, getters){
             return state.subscribeInfo;
+        },
+        prepage:function(state,getters){
+            return state.pageStack;
         }
     }
 

@@ -134,9 +134,11 @@
             nextPage:function(){
                 if(!this.setDetail.price){
                     Toast('请选择机油');
+                    return false;
                 }
                 this.$store.commit('SET_PACKAGE_SETINFO',this.setInfo);
-                this.$store.commit('SET_PACKAGE_SETINFO',this.setDetail);
+                this.$store.commit('SET_PACKAGE_SETDETAIL',this.setDetail);
+                this.$store.commit('SET_RESET_FLAS',false);
                 this.$router.push({name:'personinfo'});
             },
             popOilSelect:function(){
@@ -192,9 +194,10 @@
         },
         activated:function(){
             this.setInfo = this.$route.query;
-            console.log(this.$route);
             this.setInfo.validate = new Date().getTime();
-            this.reSetData();
+            if(this.packageInfo.reset){
+                this.reSetData();
+            }
             setTimeout(()=>{
                 this.getPackagePriceRange();
             },0)

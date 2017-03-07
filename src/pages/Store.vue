@@ -18,7 +18,7 @@
                         <div class="overflow-container">
                             <div class="store-list">
                                 <div class="store-item" v-for="(item, index) in storelist">
-                                    <store-item :item="item" :onClick="selectItem.bind(this, item.id)" :active="item.id == select"/>
+                                    <store-item :item="item" :onClick="selectItem.bind(this, index)" :active="index == select"/>
                                 </div>
                             </div>
                         </div>
@@ -115,11 +115,26 @@
                 })
             },
             submitStore:function(){
-                var data = {};
-                data.id = this.storelist[this.select].id;
-                data.storeName = this.storelist[this.select].storeName;
-                this.$store.commit('SET_SUBSTOREINFO',data);
-                this.$router.back();
+                if(this.$store.getters.prepage[this.$store.getters.prepage.length-2].path == '/personinfo'){
+                    setTimeout(()=>{
+                        var data = {};
+                        data.id = this.storelist[this.select].id;
+                        data.storeName = this.storelist[this.select].storeName;
+                        console.log(this.storelist[this.select]);
+                        data.photoUrl = this.storelist[this.select].photoUrl;
+                        this.$store.commit('SET_PACKAGE_STOREINFO',data);
+                        this.$router.back();
+                    })
+                }else{
+                    setTimeout(()=>{
+                        var data = {};
+                        data.id = this.storelist[this.select].id;
+                        data.storeName = this.storelist[this.select].storeName;
+                        data.photoUrl = this.storelist[this.select].photoUrl;
+                        this.$store.commit('SET_SUBSTOREINFO',data);
+                        this.$router.back();
+                    })
+                }
             },
             onCityChange:function(picker,values){
                 var city;

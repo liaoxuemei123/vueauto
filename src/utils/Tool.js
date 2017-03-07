@@ -15,7 +15,7 @@ Tool.ajax = function(mySetting){
         type:'GET',
         data:{},
         dataType:'json',
-        timeout:15000,
+        timeout:30000,
         success:function (data) {},
         error:function (error) {},
     }

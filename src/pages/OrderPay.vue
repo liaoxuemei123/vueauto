@@ -42,7 +42,7 @@
                             <i class="iconfont icon-circle" v-else="paymentMode==2"></i>
                         </div>
                     </div>
-                    <div class="payment-item" flex="dir:left cross:center box:justify" @click="paymentMode=3">
+                    <!--<div class="payment-item" flex="dir:left cross:center box:justify" @click="paymentMode=3">
                         <div class="pay-url">
                             <img src="../assets/payment-alipay.jpg" alt="">
                         </div>
@@ -54,7 +54,7 @@
                             <i class="iconfont icon-select" v-if="paymentMode==3"></i>
                             <i class="iconfont icon-circle" v-else="paymentMode==3"></i>
                         </div>
-                    </div>
+                    </div>-->
                 </div>
             </div>
             <div class="button-control">

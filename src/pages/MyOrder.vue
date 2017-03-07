@@ -15,9 +15,14 @@
                         <div class="after" :style="{'left':( activeTab * 20 ) + 2 + '%'}"></div>
                     </div>
                 </div>
-                <div class="order-list">
-                    <div class="order-item" v-for="(item, index) in orderList">
-                        <order-item :item="item"></order-item>
+                <div class="order-list-container">
+                    <div class="order-list">
+                        <div class="order-item" v-for="(item, index) in orderList">
+                            <order-item :item="item"></order-item>
+                        </div>
+                        <div class="load-more" @click="loadMore" v-if="(page)*pageSize < totalCount">
+                            加载更多。。。
+                        </div>
                     </div>
                 </div>
             </div>
@@ -25,8 +30,9 @@
     </div>
 </template>
 <script>
-    import NavBar from '../components/NavBar'
-    import OrderItem  from '../components/OrderItem'
+    import NavBar from '../components/NavBar';
+    import OrderItem  from '../components/OrderItem';
+    import Tool from '../utils/Tool';
     export default {
         data () {
             return {
@@ -37,35 +43,37 @@
                     {value:3, label:'已退单'},
                     {value:4, label:'待评价'}
                 ],
-                orderList:[
-                    {
-                        orderId:1,
-                        state:1,
-                        carSeries:'悦翔V7',
-                        time:'2017-02-27',
-                        price:100,
-                    },
-                    {
-                        orderId:2,
-                        state:2,
-                        carSeries:'悦翔V7',
-                        time:'2017-02-28',
-                        price:190,
-                    },
-                    {
-                        orderId:3,
-                        state:4,
-                        carSeries:'悦翔V7',
-                        time:'2017-02-29',
-                        price:118,
-                    },
-                ],
+                orderList:[],
                 activeTab:0,
+                totalCount:0,
+                page:1,
+                pageSize:5,
             }
         },
         components:{
             NavBar,
             OrderItem
+        },
+        methods:{
+            orderQuery:function(){
+                Tool.get('AaPackageOrderQuery',{
+                    userId:1,
+                    status:'',
+                    page:this.page,
+                    pageSize:this.pageSize,
+                },(data)=>{
+                    this.orderList = data.data.data;
+                    this.totalCount = data.data.totalCount;
+                })
+            },
+            loadMore:function(){
+                var self = this;
+                self.page ++;
+                self.totalCount = 1000000;//保证加载更多在加载完成前一直显示
+            }
+        },
+        activated:function(){
+            this.orderQuery();
         }
     }
 </script>
@@ -108,12 +116,21 @@
                     transition:all .3s ease;
                 }
             }
-            .order-list{
-                .order-item{
-                    background-color:#fff;
-                    padding:0.4rem 5%;
-                    margin-bottom:0.5rem;
-                    box-shadow:0px 1px 2px #ccc;
+            .order-list-container{
+                overflow:auto;
+                .order-list{
+                    .order-item{
+                        background-color:#fff;
+                        padding:0.4rem 5%;
+                        margin-bottom:0.5rem;
+                        box-shadow:0px 1px 2px #ccc;
+                    }
+                    .load-more{
+                        height:1.5rem;
+                        background-color:#fff;
+                        text-align:center;
+                        line-height:1.5rem;
+                    }
                 }
             }
         }

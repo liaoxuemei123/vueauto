@@ -8,61 +8,61 @@
                 <div class="set-info">
                     <div class="top" flex="dir:left box:first">
                         <div class="store-url" flex="dir:left cross:center">
-                            <img :src="setInfo.url">
+                            <img :src="packageInfo.storeInfo.photoUrl">
                         </div>
                         <div class="set-detail" flex="dir:top box:mean">
                             <div class="line" flex="dir:left cross:center main:justify">
-                                <span class="set-name">{{setInfo.setName}}</span>
-                                <span class="price">￥{{setInfo.price}}</span>
+                                <span class="set-name">{{packageInfo.modelInfo.seriesName}} {{packageInfo.setInfo.packageName}}</span>
+                                <span class="price">￥{{packageInfo.setDetail.price}}</span>
                             </div>
                             <div class="line" flex="dir:left cross:center main:justify">
-                                <span class="set-des1">{{setInfo.des1}}</span>
+                                <span class="set-des1">{{packageInfo.setInfo.packageContent}}</span>
                             </div>
                             <div class="line" flex="dir:left cross:center main:justify">
-                                <span class="set-des2">{{setInfo.des2}}</span>
+                                <span class="set-des2">{{packageInfo.setInfo.beginVehicleAge|ageFilter}}</span>
                             </div>
                         </div>
                     </div>
                     <div class="explain">
                         <div class="explain-item" flex="dir:left cross:top">
                             <div class="check title">保养权益：</div>
-                            <div>{{explain.check}}</div>
+                            <div>{{packageInfo.setInfo.packageName}}</div>
                         </div>
                         <div class="explain-item" flex="dir:left cross:top">
                             <div class="change title">保养项目：</div>
-                            <div>{{explain.change}}</div>
+                            <div>{{packageInfo.setInfo.packageContent}}</div>
                         </div>
                         <div class="explain-item" flex="dir:left cross:top">
                             <div class="validate title">使用范围：</div>
-                            <div>{{explain.range}}</div>
+                            <div>{{packageInfo.setInfo.isUniversal|universalFilter}}</div>
                         </div>
                         <div class="explain-item" flex="dir:left cross:top">
                             <div class="VIN title">到期时间：</div>
-                            <div>{{explain.validate}}</div>
+                            <div>{{packageInfo.setInfo.validate|validateFilter}}</div>
                         </div>
                     </div>
                     <div class="bottom" flex="dir:left box:justify">
                         <div class="bottom-item" flex="dir:left cross:center main:center">
                             <div class="title"><i class="iconfont icon-contact"></i>姓名:</div>
-                            <div class="value">{{setInfo.contact}}</div>
+                            <div class="value">{{packageInfo.userInfo.contact}}</div>
                         </div>
                         <div class="bottom-item" flex="dir:left cross:center main:center">
                             <div class="title"><i class="iconfont icon-phone"></i>电话:</div>
-                            <div class="value">{{setInfo.phone}}</div>
+                            <div class="value">{{packageInfo.userInfo.tel}}</div>
                         </div>
                         <div class="bottom-item" flex="dir:left cross:center main:center">
                             <div class="title"><i class="iconfont icon-car"></i>车型:</div>
-                            <div class="value">{{setInfo.carSeries}}</div>
+                            <div class="value">{{packageInfo.modelInfo.seriesName}}</div>
                         </div>
                     </div>
                     <div class="bottom" flex="dir:left box:first">
                         <div class="bottom-item" flex="dir:left cross:center main:center">
                             <div class="title"><i class="iconfont icon-motor"></i>发动机号:</div>
-                            <div class="value">{{setInfo.motor}}</div>
+                            <div class="value">{{packageInfo.userInfo.motorId}}</div>
                         </div>
                         <div class="bottom-item" flex="dir:left cross:center main:right">
                             <div class="title"><i class="iconfont icon-vin custom"></i>限用车架号:</div>
-                            <div class="value">{{setInfo.VIN}}</div>
+                            <div class="value">{{packageInfo.userInfo.vin}}</div>
                         </div>
                     </div>
                 </div>
@@ -80,11 +80,11 @@
                 <div class="pay-info" flex="dir:top box:mean">
                     <div class="pay-price" flex="dir:left main:left cross:center">
                         <span>实付:</span>
-                        <span class="price">￥{{order.price}}</span>
+                        <span class="price">￥{{packageInfo.setDetail.price}}</span>
                     </div>
                     <div class="benifit-info" flex="dir:left main:left cross:center">
-                        <span class="origin-fee">(保养费:￥{{order.originFee}} </span>
-                        <span class="benifit-fee">优惠金额:￥{{order.benifitFee}})</span>
+                        <span class="origin-fee">(保养费:￥{{packageInfo.setDetail.price}} </span>
+                        <span class="benifit-fee">优惠金额:￥0.00)</span>
                     </div>
                 </div>
                 <div class="button pay" @click="goPay">
@@ -97,35 +97,22 @@
 <script>
     import NavBar from "../components/NavBar";
     import InpCom from "../components/InpCom";
-    import { mapMutations } from 'vuex';
+    import { mapMutations, mapState } from 'vuex';
+    import Tool from '../utils/Tool';
+    import { Toast } from 'mint-ui';
     export default {
         data () {
             return {
-                setInfo:{
-                    url:"https://zos.alipayobjects.com/rmsportal/XmwCzSeJiqpkuMB.png",
-                    setName:"逸动V7/D套餐（买三送一）",
-                    price:460,
-                    des1:"检查8项，更换4项。",
-                    des2:"4次基础保养有效期3年",
-                    carSeries:'逸动V7',
-                    VIN:121321321321,
-                    contact:'李某某',
-                    phone:15178831138,
-                    motor:63827276,
-                },
-                explain:{
-                    check:"四次基础保养",
-                    change:"机油、机油滤清器、汽油滤清器、燃油滤清器",
-                    validate:"2020-02-16",
-                    range:"全国使用"
-                },
-                order:{
-                    price:450,
-                    originFee:460,
-                    benifitFee:10,
-                },
                 sure:false
             }
+        },
+        computed:{
+            'expirationDateTimestamp':function(){
+
+            },
+            ...mapState([
+                'packageInfo'
+            ])
         },
         components:{
             NavBar,
@@ -133,7 +120,55 @@
         },
         methods:{
             goPay:function(){
-                this.$router.push({name:'orderpay'});
+                if(!this.sure){
+                    Toast('请阅读并同意《用户服务协议》');
+                    return false;
+                }
+                this.submitOrder();
+            },
+            submitOrder:function(){
+                var today = Tool.formatDate(this.packageInfo.setInfo.validate);
+                var end = today.substring(0,4) - 0 + 3 + today.substring(4,10);
+                var endTime = new Date(end).getTime();
+                Tool.post('AaPackageOrder',{
+                    userId:1,
+                    allNumber:this.packageInfo.setInfo.setMealNumber,
+                    expirationDateTimestamp:endTime,
+                    vin:this.packageInfo.userInfo.vin,
+                    packageId:this.packageInfo.setInfo.id,
+                    restrictFacilitator:this.packageInfo.storeInfo.id,
+                    phone:this.packageInfo.userInfo.tel,
+                    linkman:this.packageInfo.userInfo.contact,
+                    orderPrice:this.packageInfo.setDetail.price,
+                    carType:this.packageInfo.modelInfo.modelId,
+                },(data)=>{
+                    Toast(data.msg);
+                    this.$router.push({name:'orderpay'});
+                })
+            }
+        },
+        activated:function(){
+            console.log(this.packageInfo);
+        },
+        filters:{
+            universalFilter:function(val){
+                if(val){
+                    return '全国4S店通用'
+                }else{
+                    return '指定服务商'
+                }
+            },
+            ageFilter:function(val){
+                if(val){
+                    return '两年以上车龄专享'
+                }else{
+                    return '两年以内车龄专享'
+                }
+            },
+            validateFilter:function(val){
+                var today = Tool.formatDate(val);
+                var endday = today.substring(0,4) - 0 + 3 + today.substring(4,10);
+                return endday;
             }
         }
     }
@@ -182,6 +217,9 @@
                         .price{
                             color:#fc4c1d;
                             font-size:0.54rem;
+                        }
+                        .set-des2{
+                            color:#fc4c1d;
                         }
                     }
                 }

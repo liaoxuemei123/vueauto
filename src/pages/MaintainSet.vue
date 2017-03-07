@@ -150,6 +150,10 @@
         created:function(){
             this.getPackageList();
             this.initSelector();
+        },
+        activated:function(){
+            this.$store.commit('SET_RESET_FLAS',true);
+            this.$store.commit('SET_PACKAGE_STOREINFO',{});
         }
     }
 </script>
