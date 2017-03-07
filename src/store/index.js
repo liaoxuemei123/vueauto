@@ -33,7 +33,14 @@ const store = new Vuex.Store({
                 lon:106.55419
             },
             address:{}
-        }
+        },
+        packageInfo:{
+            modelInfo:{
+                modelId:'',
+                modelName:'',
+                seriesName:'',
+            }
+        },
     },
     mutations:{
         SET_MODE:function(state,mode){
@@ -72,6 +79,9 @@ const store = new Vuex.Store({
         },
         RESET_SUBSCRIBE:function(state){
             Tool.removeObject(state.subscribeInfo);
+        },
+        SET_PACKAGE_MODEL:function(state,param){
+            state.packageInfo.modelInfo = param;
         }
     },
     getters:{

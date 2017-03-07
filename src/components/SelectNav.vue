@@ -4,7 +4,7 @@
             <i class="iconfont icon-back"></i>
         </div>
         <div class="select-bar">
-            <input :type="type" :placeholder="placeholder"/>
+            <input :type="type" :placeholder="placeholder" :value="value"/>
             <i class="iconfont icon-little-arrow" @click="onDropDown"></i>
         </div>
     </div>
@@ -29,6 +29,10 @@
                 default:function(){
                     return;
                 }
+            },
+            value:{
+                type:String,
+                default:'',
             }
         },
         methods:{

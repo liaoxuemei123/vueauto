@@ -4,6 +4,7 @@
             <select-nav 
                 placeholder="搜索套餐"
                 :onDropDown="dropMenuShow"
+                :value="pickerModel"
             />
             <div class="page-content">
                 <div class="up-title title">
@@ -11,7 +12,7 @@
                 </div>
                 <div class="up">
                     <div class="set-item" v-for="(item, index) in setlist.up">
-                        <set-item :item="item"  :onClick="viewDetail.bind(this,item.id)"/>
+                        <set-item :item="item"  :onClick="viewDetail.bind(this,item)"/>
                     </div>
                 </div>
                 <div class="down-title title">
@@ -19,7 +20,7 @@
                 </div>
                 <div class="down">
                     <div class="set-item" v-for="(item, index) in setlist.down">
-                        <set-item :item="item"  :onClick="viewDetail.bind(this,item.id)"/>
+                        <set-item :item="item"  :onClick="viewDetail.bind(this,item)"/>
                     </div>
                 </div>
                 <transition name="fade">
@@ -27,12 +28,12 @@
                 </transition>
                 <transition name="slide-down">
                     <div class="down-list" v-if="carShow">
-                        <mt-picker :slots="carlist" @change="onCarChange"></mt-picker>
+                        <mt-picker :slots="carlist" @change="onCarChange" valueKey="name"></mt-picker>
                         <div class="toolbar" flex="dir:left box:mean">
                             <div class="cancel" @click="carShow=false" flex="dir:left cross:center main:left">
                                 取消
                             </div>
-                            <div class="sure" flex="dir:left cross:center main:right">
+                            <div class="sure" flex="dir:left cross:center main:right" @click="submitModelInfo">
                                 确定
                             </div>
                         </div>
@@ -45,7 +46,8 @@
 <script>
     import SelectNav from '../components/SelectNav';
     import SetItem from '../components/SetItem';
-    import Tool from '../utils/Tool'
+    import Tool from '../utils/Tool';
+    import { Toast } from 'mint-ui';
     const defaultI = 0;
     export default {
         data () {
@@ -54,27 +56,7 @@
                     up:[],
                     down:[]
                 },
-                carData:[
-                    {
-                        name:'车型1',id:1,
-                        children:[
-                            {
-                                name:'1.0T',id:1,
-                            },{
-                                name:'1.5T',id:2,
-                            }
-                        ]
-                    },{
-                        name:'车型2',id:2,
-                        children:[
-                            {
-                                name:'1.5T',id:3,
-                            },{
-                                name:'2.0T',id:4,
-                            }
-                        ]
-                    }
-                ],
+                carData:{},
                 carlist:[
                     {
                         flex:1,
@@ -90,7 +72,9 @@
                         className:'city'
                     }
                 ],
+                carModel:{},
                 carShow:false,
+                pickerModel:'',
             }
         },
         components:{
@@ -98,8 +82,12 @@
             SetItem
         },
         methods:{
-            viewDetail:function(id){
-                this.$router.push({path:'setdetail/'+id});
+            viewDetail:function(item){
+                if(this.pickerModel){
+                    this.$router.push({path:'setdetail/'+item.id,query:item});
+                }else{
+                    Toast("请选择车型");
+                }
             },
             getPackageList:function(){
                 Tool.get('getPackageList',{},(data)=>{
@@ -108,18 +96,55 @@
                 })
             },
             onCarChange:function(picker,values){
-                console.log(picker);
+                if(values[0]&&values[1]){
+                    this.carModel.modelId = values[1].id;
+                    this.carModel.modelName = values[1].name;
+                    this.carModel.seriesName = values[0].name;
+                    picker.setSlotValues(1,this.carData.modelList[values[0].index]);
+                }
+            },
+            submitModelInfo:function(){
+                if(this.carModel.modelId){
+                    this.$store.commit('SET_PACKAGE_MODEL',this.carModel);
+                }else{
+                    this.carModel.modelId = this.carData.modelList[0][0].id;
+                    this.carModel.modelName = this.carData.modelList[0][0].name;
+                    this.carModel.seriesName = this.carData.seriesList[0].name;
+                    this.$store.commit('SET_PACKAGE_MODEL',this.carModel);
+                }
+                this.pickerModel = this.carModel.seriesName + ' ' + this.carModel.modelName;
+                this.carModel = {};
+                this.carShow = false;
             },
             dropMenuShow:function(){
                 this.carShow = !this.carShow ;
             },
+            getCarList:function(callback){
+                Tool.get('queryCarList',{},(data)=>{
+                    var seriesList = [];
+                    for(var i=0;i<data.data.length;i++){
+                        seriesList.push({name:data.data[i].seriesName,index:i})
+                    }
+                    var ModelList = [];
+                    for(var i=0;i<data.data.length;i++){
+                        ModelList[i] = [];
+                        for(var j=0;j< data.data[i].modelName.length;j++){
+                            ModelList[i].push({name:data.data[i].modelName[j].displacement,id:data.data[i].modelName[j].modelId})
+                        }
+                    }
+                    var param = {
+                        seriesList:seriesList,
+                        modelList:ModelList,
+                    }
+                    this.carData = param;
+                    callback && callback();
+                })
+            },
             initSelector:function(){
-                for(var i = 0;i<this.carData.length;i++){
-                    this.carlist[0].values.push(this.carData[i].name);
-                }
-                for(var j = 0;j<this.carData[0].children.length;j++){
-                    this.carlist[2].values.push(this.carData[0].children[j].name);
-                }
+                this.getCarList(()=>{
+                    this.carlist[0].values = this.carData.seriesList;
+                    this.carlist[2].values = this.carData.modelList[0];
+                })
             }
         },
         created:function(){

@@ -1,8 +1,10 @@
+/**
+ * @author flyerjay
+ */
 import { Indicator, Toast } from 'mint-ui'
-
 const Tool = {};
 const target = 'http://10.17.244.92:8080/anan-management/app/';//默认的远程服务器地址
-const CLOSE_NETWORK = true;//在本地调试时关闭网络，只调整静态页面
+const CLOSE_NETWORK = false;//在本地调试时关闭网络，只调整静态页面
 
 var requestPool = [];//请求池
 
@@ -85,9 +87,10 @@ Tool.ajax = function(mySetting){
             if (/application\/json/.test(head) || setting.dataType === 'json' && /^(\{|\[)([\s\S])*?(\]|\})$/.test(response)) {
                 response = JSON.parse(response);
             }
-
-            requestPool.splice( xhr.index, xhr.index + 1 );//请求完成后移除请求池
-
+            requestPool.splice( xhr.index, xhr.index + 1 );
+            for(var i=0;i<requestPool.length;i++){
+                requestPool[i].index = i;//更新剩余请求的标志位
+            }
             if (xhr.status == 200) {
                 setting.success(response, setting, xhr);
             } else {
@@ -117,7 +120,9 @@ Tool.ajax = function(mySetting){
                 },50);
             }
         }
-        Indicator.close();
+        if(requestPool.length < 1){//当所有发出的请求都完成的时候才取消遮罩层
+            Indicator.close();
+        }
     }
 
     xhr.end = function () {
@@ -202,6 +207,8 @@ Tool.clearRequestPool =function(){
 
 /**
  * 时间格式化 支持date、time、onlytime三种格式，传入的日期可以是时间戳也可以是时间字符串;
+ * @param {str} String,Date,timeTemp
+ * @param type String 'date,tiem,onlytime' 
  */
 Tool.formatDate = function(str,type='date'){
     var date = new Date(str);
@@ -225,6 +232,7 @@ Tool.formatDate = function(str,type='date'){
 }
 /**
  * 获取今天的日期 XXXX-XX-XX;
+ * @param {type} String 'date,time,onlytime'
  */
 Tool.getCurrentDate = function(type='date'){
     var now = new Date();

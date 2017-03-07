@@ -16,8 +16,8 @@
                         <div class="set-detail" flex="dir:top box:mean">
                             <div class="line" flex="dir:left cross:center">
                                 <span class="car-type">{{carInfo.carType}}</span>
-                                <span class="des1">{{carInfo.des1}}</span>
-                                <span class="des2">({{carInfo.des2}})</span>
+                                <span class="des1">{{carInfo.packageName}}</span>
+                                <span class="des2">({{carInfo.beginVehicleAge}})</span>
                             </div>
                             <div class="line" flex="dir:left cross:center">
                                 <span class="set-content">{{carInfo.setContent}}</span>
@@ -108,8 +108,8 @@
                  url:"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1488173505569&di=170b50bcd13d72f52430ec115e0949f4&imgtype=0&src=http%3A%2F%2Fs4.sinaimg.cn%2Fmw690%2F001hYbJBgy6DCQkjv4Dc3%26690",
                  carInfo:{
                      carType:'逸动V7',
-                     des1:"四次基础保养",
-                     des2:"两年以上车龄专享",
+                     packageName:"四次基础保养",
+                     beginVehicleAge:"两年以上车龄专享",
                      setContent:"检查8项，更换4项。有效期3年，全国4S店通用",
                      priceMin:420,
                      priceMax:460,
@@ -133,9 +133,6 @@
             NavBar,
             InpCom
         },
-        mounted:function(){
-            this.$route.params.id
-        },
         methods:{
             nextPage:function(){
                 this.$router.push({name:'personinfo'});
@@ -149,7 +146,8 @@
                 })
             }
         },
-        created:function(){
+        activated:function(){
+            console.log(this.$route);
             this.getPackage(this.$route.params.id);
         }
     }

@@ -9,6 +9,7 @@
 </template>
 <script>
 import { mapState, mapMutations } from 'vuex';
+import Tool from './utils/Tool';
 export default {
 	data () {
 		return {
