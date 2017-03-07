@@ -10,20 +10,21 @@
                     <div class="set-container">
                         <div class="set-image">
                             <div class="image-container">
-                                <img v-lazy="url" >
+                                <img :src="setInfo.packageImage" >
                             </div>
                         </div>
                         <div class="set-detail" flex="dir:top box:mean">
                             <div class="line" flex="dir:left cross:center">
-                                <span class="car-type">{{carInfo.carType}}</span>
-                                <span class="des1">{{carInfo.packageName}}</span>
-                                <span class="des2">({{carInfo.beginVehicleAge}})</span>
+                                <span class="car-type">{{packageInfo.modelInfo.seriesName}}</span>
+                                <span class="des1">{{setInfo.packageName}}</span>
+                                <span class="des2">({{setInfo.beginVehicleAge|ageFilter}})</span>
                             </div>
                             <div class="line" flex="dir:left cross:center">
-                                <span class="set-content">{{carInfo.setContent}}</span>
+                                <span class="set-content">{{setInfo.packageContent}}</span>
                             </div>
                             <div class="line" flex="dir:left cross:center">
-                                <span class="price-range"><span class="doller">￥</span>{{carInfo.priceMin}}-{{carInfo.priceMax}}</span>
+                                <span class="price-range" v-if="setDetail.price"><span class="doller">￥</span>{{setDetail.price}}</span>
+                                <span class="price-range" v-else="setDetail.price"><span class="doller">￥</span>{{priceRange.minprice}}-{{priceRange.maxprice}}</span>
                             </div>
                         </div>
                     </div>
@@ -32,8 +33,9 @@
                             title="套餐机油选择"
                             :readonly="true"
                             :rightArrow="true"
-                            placeholder="xx机油"
+                            placeholder="请选择机油"
                             :onClick="popOilSelect"
+                            :value="setDetail.mealName"
                         />
                     </div>
                 </div>
@@ -45,13 +47,13 @@
                         <div class="info-item">
                             <div class="item-name">保养项目：</div>
                             <div class="info">
-                                {{setInfo.checkItem}}
+                                {{setInfo.packageContent}}
                             </div>
                         </div>
                         <div class="info-item">
                             <div class="item-name">有效期：</div>
                             <div class="info">
-                                {{setInfo.validate}}
+                                {{setInfo.validate|validateFilter}}
                             </div>
                         </div>
                     </div>
@@ -70,12 +72,12 @@
                 <div class="title">
                     <div class="store-url">
                         <div class="image-container">
-                            <img v-lazy="url">
+                            <img :src="setInfo.packageImage">
                         </div>
                     </div>
                     <div class="right" flex="dir:top box:mean">
-                        <div class="price" flex="dir:left cross:center">￥{{oillist[selectOil].price}}</div>
-                        <div class="name" flex="dir:left cross:center">已选“{{oillist[selectOil].name}}”</div>
+                        <div class="price" flex="dir:left cross:center" v-if='setMealList[selectMeal]'>￥{{setMealList[selectMeal].unitPrice}}</div>
+                        <div class="name" flex="dir:left cross:center" v-if='setMealList[selectMeal]'>已选“{{setMealList[selectMeal].engineOil+setMealList[selectMeal].pieceNumber}}”</div>
                     </div>
                     <div class="close-button" @click="popupVisible=false">
                         <i class="iconfont icon-close"></i>
@@ -84,11 +86,11 @@
                 <div class="oil-list-container" flex="dir:top box:last">
                     <div class="oil-list">
                         <div class="oil-class">机油种类</div>
-                        <div class="oil-item" @click='selectOil = index' :class="{'active':index==selectOil}" flex="dir:left cross:center" v-for="(item,index) in oillist">
-                            {{item.name}}
+                        <div class="oil-item" @click='selectMeal = index' :class="{'active':index==selectMeal}" flex="dir:left cross:center" v-for="(item,index) in setMealList">
+                            {{item.engineOil+item.pieceNumber}}
                         </div>
                     </div>
-                    <div class="button-control" @click="">
+                    <div class="button-control" @click="selectedMeal">
                         <div class="ok-button">
                             确认
                         </div>
@@ -101,55 +103,116 @@
 <script>
     import NavBar from '../components/NavBar';
     import InpCom from '../components/InpCom';
-    import Tool from '../utils/Tool'
+    import Tool from '../utils/Tool';
+    import { mapState } from 'vuex';
+    import { Toast } from 'mint-ui';
     export default {
         data () {
             return {
-                 url:"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1488173505569&di=170b50bcd13d72f52430ec115e0949f4&imgtype=0&src=http%3A%2F%2Fs4.sinaimg.cn%2Fmw690%2F001hYbJBgy6DCQkjv4Dc3%26690",
-                 carInfo:{
-                     carType:'逸动V7',
-                     packageName:"四次基础保养",
-                     beginVehicleAge:"两年以上车龄专享",
-                     setContent:"检查8项，更换4项。有效期3年，全国4S店通用",
-                     priceMin:420,
-                     priceMax:460,
-                 },
-                 setInfo:{
-                     checkItem:"机油、机油滤清器、汽油滤清器、全车工时费",
-                     validate:"2017.02.16至2020.02.16（周末、法定节假日通用）",
-                 },
-                 popupVisible:false,
-                 oil:{
-                     price:430,
-                     name:'某某机油',
-                     id:1,
-                 },
-                 selectOil:0,
-                 oillist:[{price:113,name:'XX机油',id:1},{price:10,name:'机油2',id:2},{price:123,name:'超级机油',id:3},
-                 {price:10,name:'某某机油',id:4},{price:10,name:'某某机油',id:5},{price:10,name:'某某机油',id:6},{price:10,name:'某某机油',id:7}]
+                setInfo:{},
+                popupVisible:false,
+                priceRange:{},
+                selectMeal:0,
+                setMealList:[],
+                setDetail:{
+                    price:'',
+                    mealId:'',
+                    mealName:''
+                }
             }
         },
         components:{
             NavBar,
             InpCom
         },
+        computed:{
+            ...mapState([
+                'packageInfo'
+            ])
+        },
         methods:{
             nextPage:function(){
+                if(!this.setDetail.price){
+                    Toast('请选择机油');
+                }
+                this.$store.commit('SET_PACKAGE_SETINFO',this.setInfo);
+                this.$store.commit('SET_PACKAGE_SETINFO',this.setDetail);
                 this.$router.push({name:'personinfo'});
             },
             popOilSelect:function(){
-                this.popupVisible = true;
+                if(this.setMealList.length < 1){
+                    this.getMealList(()=>{
+                        this.popupVisible = true;
+                    })
+                }else{
+                    this.popupVisible = true;
+                }
+            },
+            getMealList:function(callback){
+                Tool.get('getSetMealList',{
+                     vehicleModelId:this.packageInfo.modelInfo.modelId,
+                },(data)=>{
+                    this.setMealList = data.data;
+                    callback && callback();
+                })
+            },
+            selectedMeal:function(){
+                var number = this.setInfo.setMealNumber - 0;
+                var discount = (this.setInfo.discount - 0)/10;
+                var univalent = this.setMealList[this.selectMeal].unitPrice;
+                this.setDetail.price = ( number * discount * univalent ).toFixed(2);
+                this.setDetail.mealId = this.setMealList[this.selectMeal].id;
+                this.setDetail.mealName = this.setMealList[this.selectMeal].engineOil + this.setMealList[this.selectMeal].pieceNumber;
+                this.popupVisible = false;
             },
             getPackage:function(id){
                 Tool.get('getPackage',{id},function(data){
-                    
+                    this.setInfo = data.data;
                 })
+            },
+            getPackagePriceRange:function(){
+                Tool.get('getPackagePriceRange',{
+                    vehicleModelId:this.packageInfo.modelInfo.modelId,
+                    discount:this.setInfo.discount,
+                    setMealNumber:this.setInfo.setMealNumber,
+                },(data)=>{
+                    this.priceRange = data.data;
+                })
+            },
+            reSetData:function(){
+                this.setMealList = [];
+                this.selectMeal = 0;
+                this.priceRange = {};
+                this.setDetail = {
+                    price:'',
+                    mealId:'',
+                    mealName:''
+                }
             }
         },
         activated:function(){
+            this.setInfo = this.$route.query;
             console.log(this.$route);
-            this.getPackage(this.$route.params.id);
-        }
+            this.setInfo.validate = new Date().getTime();
+            this.reSetData();
+            setTimeout(()=>{
+                this.getPackagePriceRange();
+            },0)
+        },
+        filters:{
+            ageFilter:function(val){
+                if(val){
+                    return '两年以上车龄专享'
+                }else{
+                    return '两年以内车龄专享'
+                }
+            },
+            validateFilter:function(val){
+                var today = Tool.formatDate(val);
+                var endDay = (today.substring(0,4) - 0) + 3 + today.substring(4,10);
+                return today + '至' + endDay + ' (周末、法定节假日通用)';
+            }
+        }   
     }
 </script>
 <style scoped lang="less">
@@ -188,6 +251,9 @@
                     }
                     .name{
                         color:#333;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
                     }
                 }
                 .close-button{

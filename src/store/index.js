@@ -35,11 +35,9 @@ const store = new Vuex.Store({
             address:{}
         },
         packageInfo:{
-            modelInfo:{
-                modelId:'',
-                modelName:'',
-                seriesName:'',
-            }
+            modelInfo:{},
+            setInfo:{},
+            setDetail:{}
         },
     },
     mutations:{
@@ -82,6 +80,14 @@ const store = new Vuex.Store({
         },
         SET_PACKAGE_MODEL:function(state,param){
             state.packageInfo.modelInfo = param;
+        },
+        SET_PACKAGE_SETINFO:function(state,param){
+            state.packageInfo.setInfo = param;
+            console.log(state.packageInfo.setInfo)
+        },
+        SET_PACKAGE_SETINFO:function(state,param){
+            state.packageInfo.setDetail = param;
+            console.log(state.packageInfo.setDetail)
         }
     },
     getters:{
