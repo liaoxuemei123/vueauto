@@ -38,9 +38,9 @@
         filters:{
             universalFilter:function(val){
                 if(val){
-                    return '全国4S店通用'
+                    return '全国服务中心通用'
                 }else{
-                    return '指定服务商'
+                    return '指定服务中心使用'
                 }
             }
         }

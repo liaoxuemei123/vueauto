@@ -25,7 +25,7 @@
                         <div class="deadline">到期时间：{{orderInfo.deadline}}</div>
                     </div>
                     <div class="bottom" flex="dir:left cross:center">
-                        使用方法：到店后告知服务顾问已购买套餐即可使用
+                        使用方法：到店保养前告知服务顾问已购买套餐即可使用
                     </div>
                 </div>
                 <div class="use-detail">

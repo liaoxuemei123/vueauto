@@ -12,18 +12,52 @@
                                 {{item.label}}
                             </div>
                         </div>
-                        <div class="after" :style="{'left':( activeTab * 20 ) + 2 + '%'}"></div>
+                        <div class="after" :style="{'left':( activeTab * 25 ) + 4 + '%'}"></div>
                     </div>
                 </div>
                 <div class="order-list-container">
-                    <div class="order-list">
-                        <div class="order-item" v-for="(item, index) in orderList">
-                            <order-item :item="item"></order-item>
+                    <transition :name="animate">
+                        <div class="tab-all tabs" key="all" v-if="activeTab == 0">
+                            <div class="order-list">
+                                <div class="order-item" v-for="(item, index) in orderList">
+                                    <order-item :item="item"></order-item>
+                                </div>
+                                <div class="load-more" @click="loadMoreAll" v-if="(pageAll)*pageSize < totalCountAll">
+                                    加载更多。。。
+                                </div>
+                            </div>
                         </div>
-                        <div class="load-more" @click="loadMore" v-if="(page)*pageSize < totalCount">
-                            加载更多。。。
+                        <div class="tab-unpaid tabs" key="unpaid" v-if="activeTab == 1">
+                            <div class="order-list">
+                                <div class="order-item" v-for="(item, index) in unpaidList">
+                                    <order-item :item="item"></order-item>
+                                </div>
+                                <div class="load-more" @click="loadMoreUnpaid" v-if="(pageUnpaid)*pageSize < totalCountUnpaid">
+                                    加载更多。。。
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                        <div class="tab-paid tabs" key="paid" v-if="activeTab == 2">
+                            <div class="order-list">
+                                <div class="order-item" v-for="(item, index) in paidList">
+                                    <order-item :item="item"></order-item>
+                                </div>
+                                <div class="load-more" @click="loadMorePaid" v-if="(pagePaid)*pageSize < totalCountPaid">
+                                    加载更多。。。
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-unevaluate tabs" key="unevaluate" v-if="activeTab == 3">
+                            <div class="order-list">
+                                <div class="order-item" v-for="(item, index) in unevalList">
+                                    <order-item :item="item"></order-item>
+                                </div>
+                                <div class="load-more" @click="loadMoreUnEval" v-if="(pageUnEval)*pageSize < totalCountUnEval">
+                                    加载更多。。。
+                                </div>
+                            </div>
+                        </div>
+                    </transition>
                 </div>
             </div>
         </div>
@@ -38,42 +72,174 @@
             return {
                 tabs:[
                     {value:0, label:'全部'},
-                    {value:1, label:'已支付'},
-                    {value:2, label:'待支付'},
-                    {value:3, label:'已退单'},
-                    {value:4, label:'待评价'}
+                    {value:1, label:'待支付'},
+                    {value:2, label:'已支付'},
+                    {value:3, label:'待评价'}
                 ],
                 orderList:[],
+                unpaidList:[],
+                paidList:[],
+                unevalList:[],
                 activeTab:0,
-                totalCount:0,
-                page:1,
+                totalCountAll:0,
+                totalCountUnpaid:0,
+                totalCountPaid:0,
+                totalCountUnEval:0,
+                pageAll:1,
+                pageUnpaid:1,
+                pagePaid:1,
+                pageUnEval:1,
                 pageSize:5,
+                animate:'left',
             }
         },
         components:{
             NavBar,
             OrderItem
         },
+        watch:{
+            'activeTab':function(newdata,old){
+                if(newdata >old){
+                    this.animate = 'left'
+                }else{
+                    this.animate = 'right'
+                }
+                switch(newdata){
+                    case 1:
+                        if(this.unpaidList.length<1){
+                            this.pageUnpaid = 1;
+                            this.totalCountUnpaid = 0;
+                            this.orderQueryUnPaid();
+                        }
+                        break;
+                    case 2:
+                        if(this.paidList.length<1){
+                            this.pagePaid = 1;
+                            this.totalCountPaid = 0;
+                            this.orderQueryPaid();
+                        }
+                        break;
+                    case 3:
+                        if(this.unevalList.length<1){
+                            this.pageUnEval = 1;
+                            this.totalCountUnEval = 0;
+                            this.orderQueryUnEval();
+                        }
+                        break;
+                    case 0:
+                        if(this.orderList.length<1){
+                            this.pageAll = 1;
+                            this.totalCountAll = 0;
+                            this.orderQueryAll();
+                        }
+                        break;
+                }
+            }
+        },
         methods:{
-            orderQuery:function(){
+            orderQueryAll:function(){
                 Tool.get('AaPackageOrderQuery',{
                     userId:1,
                     status:'',
-                    page:this.page,
+                    page:this.pageAll,
                     pageSize:this.pageSize,
                 },(data)=>{
                     this.orderList = data.data.data;
-                    this.totalCount = data.data.totalCount;
+                    this.totalCountAll = data.data.totalCount;
                 })
             },
-            loadMore:function(){
+            orderQueryUnPaid:function(){
+                Tool.get('AaPackageOrderQuery',{
+                    userId:1,
+                    status:'1',
+                    page:this.pageUnpaid,
+                    pageSize:this.pageSize,
+                },(data)=>{
+                    this.unpaidList = data.data.data;
+                    this.totalCountUnpaid = data.data.totalCount;
+                })
+            },
+            orderQueryPaid:function(){
+                Tool.get('AaPackageOrderQuery',{
+                    userId:1,
+                    status:'2',
+                    page:this.pagePaid,
+                    pageSize:this.pageSize,
+                },(data)=>{
+                    this.paidList = data.data.data;
+                    this.totalCountPaid = data.data.totalCount;
+                })
+            },
+            orderQueryUnEval:function(){
+                Tool.get('AaPackageOrderQuery',{
+                    userId:1,
+                    status:'3',
+                    page:this.pageUnEval,
+                    pageSize:this.pageSize,
+                },(data)=>{
+                    this.unevalList = data.data.data;
+                    this.totalCountUnEval = data.data.totalCount;
+                })
+            },
+            loadMoreAll:function(){
                 var self = this;
-                self.page ++;
-                self.totalCount = 1000000;//保证加载更多在加载完成前一直显示
+                self.pageAll ++;
+                self.totalCountAll = 1000000;//保证加载更多在加载完成前一直显示
+                Tool.get('AaPackageOrderQuery',{
+                    userId:1,
+                    status:'',
+                    page:this.pageAll,
+                    pageSize:this.pageSize,
+                },(data)=>{
+                    this.orderList = this.orderList.concat(data.data.data);
+                    this.totalCountAll = data.data.totalCount;
+                })
+            },
+            loadMoreUnpaid:function(){
+                var self = this;
+                self.pageUnpaid ++;
+                self.totalCountUnpaid = 1000000;//保证加载更多在加载完成前一直显示
+                Tool.get('AaPackageOrderQuery',{
+                    userId:1,
+                    status:1,
+                    page:this.pageUnpaid,
+                    pageSize:this.pageSize,
+                },(data)=>{
+                    this.unpaidList = this.unpaidList.concat(data.data.data);
+                    this.totalCountUnpaid = data.data.totalCount;
+                })
+            },
+            loadMorePaid:function(){
+                var self = this;
+                self.pagePaid ++;
+                self.totalCountPaid = 1000000;//保证加载更多在加载完成前一直显示
+                Tool.get('AaPackageOrderQuery',{
+                    userId:1,
+                    status:2,
+                    page:this.pagePaid,
+                    pageSize:this.pageSize,
+                },(data)=>{
+                    this.paidList = this.paidList.concat(data.data.data);
+                    this.totalCountPaid = data.data.totalCount;
+                })
+            },
+            loadMoreUnEval:function(){
+                var self = this;
+                self.pageUnEval ++;
+                self.totalCountUnEval = 1000000;//保证加载更多在加载完成前一直显示
+                Tool.get('AaPackageOrderQuery',{
+                    userId:1,
+                    status:3,
+                    page:this.pageUnEval,
+                    pageSize:this.pageSize,
+                },(data)=>{
+                    this.unevalList = this.unevalList.concat(data.data.data);
+                    this.totalCountUnEval = data.data.totalCount;
+                })
             }
         },
-        activated:function(){
-            this.orderQuery();
+        created:function(){
+            this.orderQueryAll();
         }
     }
 </script>
@@ -96,6 +262,7 @@
                 background-color:#fff;
                 padding:0rem 1rem;
                 border-bottom: 1px solid #ccc;
+                margin-bottom:0.2rem;
                 .tab-container{
                     height:1.7rem;
                     position:relative;
@@ -118,18 +285,23 @@
             }
             .order-list-container{
                 overflow:auto;
-                .order-list{
-                    .order-item{
-                        background-color:#fff;
-                        padding:0.4rem 5%;
-                        margin-bottom:0.5rem;
-                        box-shadow:0px 1px 2px #ccc;
-                    }
-                    .load-more{
-                        height:1.5rem;
-                        background-color:#fff;
-                        text-align:center;
-                        line-height:1.5rem;
+                position:relative;
+                .tabs{
+                    position:absolute;
+                    width:100%;
+                    .order-list{
+                        .order-item{
+                            background-color:#fff;
+                            padding:0.4rem 5%;
+                            margin-bottom:0.5rem;
+                            box-shadow:0px 1px 2px #ccc;
+                        }
+                        .load-more{
+                            height:1.5rem;
+                            background-color:#fff;
+                            text-align:center;
+                            line-height:1.5rem;
+                        }
                     }
                 }
             }

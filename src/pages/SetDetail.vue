@@ -1,11 +1,11 @@
 <template>
     <div class="page-container">
-        <div class="page detail-page" flex="dir:top box:justify">
+        <div class="page detail-page" flex="dir:top box:first">
             <nav-bar
                 title="套餐详情"
             />
             
-            <div class="page-content" flex="dir:top box:first">
+            <div class="page-content" flex="dir:top box:last">
                 <div class="detail-container">
                     <div class="set-container">
                         <div class="set-image">
@@ -20,15 +20,23 @@
                                 <span class="des2">({{setInfo.beginVehicleAge|ageFilter}})</span>
                             </div>
                             <div class="line" flex="dir:left cross:center">
-                                <span class="set-content">{{setInfo.packageContent}}</span>
-                            </div>
-                            <div class="line" flex="dir:left cross:center">
                                 <span class="price-range" v-if="setDetail.price"><span class="doller">￥</span>{{setDetail.price}}</span>
                                 <span class="price-range" v-else="setDetail.price"><span class="doller">￥</span>{{priceRange.minprice}}-{{priceRange.maxprice}}</span>
                             </div>
                         </div>
                     </div>
-                    <div class="input-container">
+                    <div class="meal-list-container">
+                        <div class="title">套餐机油选择</div>
+                        <div class="meal-list">
+                            <div class="meal-item" @click="selectedMeal(index)" v-for="(item,index) in setMealList" flex="dir:left cross:center">
+                                <i class="iconfont icon-select" v-if="selectMeal == index"></i>
+                                <i class="iconfont icon-circle active" v-else="selectMeal == index"></i>
+                                <div class="oil-brand">{{item.engineOil}}</div>
+                                <div class="oil-piece">{{item.pieceNumber}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="input-container">
                         <inp-com
                             title="套餐机油选择"
                             :readonly="true"
@@ -37,31 +45,37 @@
                             :onClick="popOilSelect"
                             :value="setDetail.mealName"
                         />
-                    </div>
-                </div>
-                <div class="info-container">
-                    <div class="title">
-                        套餐信息
-                    </div>
-                    <div class="info-content">
-                        <div class="info-item">
-                            <div class="item-name">保养项目：</div>
-                            <div class="info">
-                                {{setInfo.packageContent}}
+                    </div>-->
+                    <div class="info-container">
+                        <div class="title">
+                            套餐信息
+                        </div>
+                        <div class="info-content">
+                            <div class="info-item">
+                                <div class="item-name">保养项目：</div>
+                                <div class="info">
+                                    {{setInfo.packageContent}}
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <div class="item-name">有效期：</div>
+                                <div class="info">
+                                    {{setInfo.validate|validateFilter}}
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <div class="item-name">适用范围：</div>
+                                <div class="info">
+                                    {{setInfo.isUniversal|universalFilter}}
+                                </div>
                             </div>
                         </div>
-                        <div class="info-item">
-                            <div class="item-name">有效期：</div>
-                            <div class="info">
-                                {{setInfo.validate|validateFilter}}
-                            </div>
-                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="button-control">
-                <div class="next-button" @click="nextPage">
-                    下一步
+                <div class="button-control">
+                    <div class="next-button" @click="nextPage">
+                        下一步
+                    </div>
                 </div>
             </div>
         </div>
@@ -111,8 +125,11 @@
             return {
                 setInfo:{},
                 popupVisible:false,
-                priceRange:{},
-                selectMeal:0,
+                priceRange:{
+                    minprice:0,
+                    maxprice:0,
+                },
+                selectMeal:-1,
                 setMealList:[],
                 setDetail:{
                     price:'',
@@ -141,24 +158,25 @@
                 this.$store.commit('SET_RESET_FLAS',false);
                 this.$router.push({name:'personinfo'});
             },
-            popOilSelect:function(){
-                if(this.setMealList.length < 1){
-                    this.getMealList(()=>{
-                        this.popupVisible = true;
-                    })
-                }else{
-                    this.popupVisible = true;
-                }
-            },
+            // popOilSelect:function(){
+            //     if(this.setMealList.length < 1){
+            //         this.getMealList(()=>{
+            //             this.popupVisible = true;
+            //         })
+            //     }else{
+            //         this.popupVisible = true;
+            //     }
+            // },
             getMealList:function(callback){
                 Tool.get('getSetMealList',{
-                     vehicleModelId:this.packageInfo.modelInfo.modelId,
+                    vehicleModelId:this.packageInfo.modelInfo.modelId || '',
                 },(data)=>{
                     this.setMealList = data.data;
                     callback && callback();
                 })
             },
-            selectedMeal:function(){
+            selectedMeal:function(index){
+                this.selectMeal = index;
                 var number = this.setInfo.setMealNumber - 0;
                 var discount = (this.setInfo.discount - 0)/10;
                 var univalent = this.setMealList[this.selectMeal].unitPrice;
@@ -183,7 +201,7 @@
             },
             reSetData:function(){
                 this.setMealList = [];
-                this.selectMeal = 0;
+                this.selectMeal = -1;
                 this.priceRange = {};
                 this.setDetail = {
                     price:'',
@@ -197,10 +215,11 @@
             this.setInfo.validate = new Date().getTime();
             if(this.packageInfo.reset){
                 this.reSetData();
+                setTimeout(()=>{
+                    this.getPackagePriceRange();
+                    this.getMealList();
+                },0)
             }
-            setTimeout(()=>{
-                this.getPackagePriceRange();
-            },0)
         },
         filters:{
             ageFilter:function(val){
@@ -211,9 +230,16 @@
                 }
             },
             validateFilter:function(val){
-                var today = Tool.formatDate(val);
-                var endDay = (today.substring(0,4) - 0) + 3 + today.substring(4,10);
-                return today + '至' + endDay + ' (周末、法定节假日通用)';
+                // var today = Tool.formatDate(val);
+                // var endDay = (today.substring(0,4) - 0) + 3 + today.substring(4,10);today + '至' + endDay + ' (周末、法定节假日通用)';
+                return '3年'
+            },
+            universalFilter:function(val){
+                if(val){
+                    return '全国服务中心通用'
+                }else{
+                    return '指定服务中心使用'
+                }
             }
         }   
     }
@@ -314,6 +340,7 @@
             overflow: auto;
             .detail-container{
                 box-shadow:0px 1px 3px #aaa;
+                overflow:auto;
                 .set-container{
                     background-color:#fff;
                     box-shadow:0px 1px 3px #aaa;
@@ -336,7 +363,7 @@
                         }
                     }
                     .set-detail{
-                        height:3.3rem;
+                        height:2.4rem;
                         padding:0.4rem 0.5rem;
                         font-size:0.51rem;
                         .car-type,.des1{
@@ -366,24 +393,54 @@
                 .input-container{
                     margin-top:0.43rem;
                 }
-            }
-            .info-container{
-                background-color:#fff;
-                margin-top:0.43rem;
-                overflow:auto;
-                .title{
-                    font-size:0.68rem;
-                    line-height:3em;
-                    margin:0 0.5rem;
-                    border-bottom:1px solid #ccc;
+                .meal-list-container{
+                    margin-top:0.43rem;
+                    background-color:#fff;
+                    box-shadow:0px 1px 3px #aaa;
+                    padding:0.2rem 3%;
+                    .title{
+                        height:1.6rem;
+                        line-height:1.6rem;
+                        border-bottom:1px solid #d9d9d9;
+                        font-size:0.68rem;
+                    }
+                    .meal-list{
+                        .meal-item{
+                            height:1.5rem;
+                            .iconfont{
+                                font-size:0.67rem;
+                                margin-right:0.4rem;
+                            }
+                            .icon-select{
+                                color:#fc4c1d;
+                            }
+                            .oil-brand{
+                                margin-right:0.2rem;
+                            }
+                            .oil-piece{
+                                color:#888;
+                            }
+                        }
+                    }
                 }
-                .info-content{
-                    padding:0.4rem 0.5rem;
-                    .info-item{
-                        .item-name{
-                            color:#fd3c2d;
-                            font-weight:bold;
-                            line-height:2em;
+                .info-container{
+                    background-color:#fff;
+                    margin-top:0.43rem;
+                    overflow:auto;
+                    .title{
+                        font-size:0.68rem;
+                        line-height:3em;
+                        margin:0 0.5rem;
+                        border-bottom:1px solid #ccc;
+                    }
+                    .info-content{
+                        padding:0.4rem 0.5rem;
+                        .info-item{
+                            .item-name{
+                                color:#fd3c2d;
+                                font-weight:bold;
+                                line-height:2em;
+                            }
                         }
                     }
                 }

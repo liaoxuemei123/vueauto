@@ -41,28 +41,36 @@
                             <div>{{packageInfo.setInfo.validate|validateFilter}}</div>
                         </div>
                     </div>
-                    <div class="bottom" flex="dir:left box:justify">
-                        <div class="bottom-item" flex="dir:left cross:center main:center">
+                    <div class="bottom" flex="dir:left box:mean">
+                        <div class="bottom-item" flex="dir:left cross:center main:left">
                             <div class="title"><i class="iconfont icon-contact"></i>姓名:</div>
                             <div class="value">{{packageInfo.userInfo.contact}}</div>
                         </div>
-                        <div class="bottom-item" flex="dir:left cross:center main:center">
+                        <div class="bottom-item" flex="dir:left cross:center main:left">
                             <div class="title"><i class="iconfont icon-phone"></i>电话:</div>
                             <div class="value">{{packageInfo.userInfo.tel}}</div>
                         </div>
-                        <div class="bottom-item" flex="dir:left cross:center main:center">
-                            <div class="title"><i class="iconfont icon-car"></i>车型:</div>
-                            <div class="value">{{packageInfo.modelInfo.seriesName}}</div>
-                        </div>
+                        
                     </div>
-                    <div class="bottom" flex="dir:left box:first">
-                        <div class="bottom-item" flex="dir:left cross:center main:center">
+                    <div class="bottom" flex="dir:left box:mean">
+                        <div class="bottom-item" flex="dir:left cross:center main:left">
                             <div class="title"><i class="iconfont icon-motor"></i>发动机号:</div>
                             <div class="value">{{packageInfo.userInfo.motorId}}</div>
                         </div>
-                        <div class="bottom-item" flex="dir:left cross:center main:right">
+                        <div class="bottom-item" flex="dir:left cross:center main:left">
+                            <div class="title"><i class="iconfont icon-motor"></i>排量:</div>
+                            <div class="value">{{packageInfo.modelInfo.modelName}}</div>
+                        </div>
+                        
+                    </div>
+                    <div class="bottom" flex="dir:left box:mean">
+                        <div class="bottom-item" flex="dir:left cross:center main:left">
                             <div class="title"><i class="iconfont icon-vin custom"></i>限用车架号:</div>
                             <div class="value">{{packageInfo.userInfo.vin}}</div>
+                        </div>
+                        <div class="bottom-item" flex="dir:left cross:center main:left">
+                            <div class="title"><i class="iconfont icon-car"></i>车型:</div>
+                            <div class="value">{{packageInfo.modelInfo.seriesName}}</div>
                         </div>
                     </div>
                 </div>
@@ -136,14 +144,17 @@
                     expirationDateTimestamp:endTime,
                     vin:this.packageInfo.userInfo.vin,
                     packageId:this.packageInfo.setInfo.id,
-                    restrictFacilitator:this.packageInfo.storeInfo.id,
+                    restrictFacilitator:this.packageInfo.storeInfo.id||'',
                     phone:this.packageInfo.userInfo.tel,
                     linkman:this.packageInfo.userInfo.contact,
                     orderPrice:this.packageInfo.setDetail.price,
                     carType:this.packageInfo.modelInfo.modelId,
+                    setMealId:this.packageInfo.setDetail.mealId,
                 },(data)=>{
                     Toast(data.msg);
-                    this.$router.push({name:'orderpay'});
+                    if(data.code == 200){
+                        this.$router.push({name:'orderpay'});
+                    }
                 })
             }
         },
@@ -153,9 +164,9 @@
         filters:{
             universalFilter:function(val){
                 if(val){
-                    return '全国4S店通用'
+                    return '全国服务中心通用'
                 }else{
-                    return '指定服务商'
+                    return '指定服务中心使用'
                 }
             },
             ageFilter:function(val){
@@ -239,6 +250,7 @@
                         font-size:0.51rem;
                         color:#333;
                         line-height:2em;
+                        text-align:left;
                         .iconfont{
                             font-size:0.51rem;
                             margin-right:0.2rem;

@@ -15,7 +15,7 @@
                         <inp-com title="发动机号后六位" :value="userInfo.motorId" placeholder="输入发动机号后六位" :onBlur="updateMotorId.bind(this)" :maxlength="'6'" :rightArrow="true" />
                     </div>
                     <div class="input-control">
-                        <inp-com title="服务商" :value="packageInfo.storeInfo.storeName" :onClick="goStore" :readonly="true" :placeholder="storeTip" :rightArrow="true" />
+                        <inp-com title="服务中心" :value="packageInfo.storeInfo.storeName" :onClick="goStore" :readonly="true" :placeholder="storeTip" :rightArrow="true" />
                     </div>
                     <div class="input-control">
                         <inp-com title="姓名" :value="userInfo.contact" placeholder="输入姓名" :onBlur="updateContact.bind(this)" :rightArrow="true" />
@@ -56,7 +56,7 @@
         data () {
             return {
                 isSelectStore:true,
-                storeTip:'选择服务商',
+                storeTip:'选择服务中心',
                 userInfo:{
                     vin:'',
                     motorId:'',
@@ -78,9 +78,9 @@
         watch:{
             'isSelectStore':function(val){
                 if(val){
-                    this.storeTip = '选择服务商';
+                    this.storeTip = '选择服务中心';
                 }else{
-                    this.storeTip = '服务商通用';
+                    this.storeTip = '服务中心通用';
                 }
             }
         },
