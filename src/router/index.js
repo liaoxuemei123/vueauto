@@ -13,6 +13,8 @@ import SelectPlate from 'pages/SelectPlate';
 import OrderHistory from 'pages/OrderHistory';
 import Evaluate from 'pages/Evaluate';
 import EvaluateDetail from 'pages/EvaluateDetail';
+import Login from 'pages/Login';
+import Register from 'pages/Register';
 
 Vue.use(Router)
 
@@ -82,6 +84,16 @@ export default new Router({
       path:'/evaluatedetail',
       name:'evaluatedetail',
       component:EvaluateDetail,
+    },
+    {
+      path:'/register',
+      name:'register',
+      component:Register,
+    },
+    {
+      path:'/login',
+      name:'login',
+      component:Login,
     }
   ]
 })
