@@ -67,6 +67,7 @@
 </template>
 <script>
     import NavBar from '../components/NavBar';
+    import Tool from '../utils/Tool';
     export default {
         data () {
             return {
@@ -79,6 +80,15 @@
         },
         components:{
             NavBar,
+        },
+        beforeRouteLeave:function(to,from,next){
+            if(to.name == 'confirmorder'){
+                next({name:'maintainset'});//防止2次下单
+            }
+            next();
+        },
+        beforeRouteEnter:(to,from,next)=>{
+            Tool.routerEnter(to,from,next)
         },
     }
 </script>

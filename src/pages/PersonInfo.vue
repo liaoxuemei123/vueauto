@@ -52,6 +52,7 @@
     import InpCom from '../components/InpCom';
     import { mapState } from 'vuex';
     import { Toast } from 'mint-ui';
+    import Tool from '../utils/Tool'
     export default {
         data () {
             return {
@@ -162,6 +163,9 @@
             }else{
                 this.isSelectStore = false;
             }
+        },
+        beforeRouteEnter:(to,from,next)=>{
+            Tool.routerEnter(to,from,next)
         }
     }
 </script>

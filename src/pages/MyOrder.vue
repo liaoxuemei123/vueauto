@@ -139,7 +139,7 @@
         methods:{
             orderQueryAll:function(){
                 Tool.get('AaPackageOrderQuery',{
-                    userId:1,
+                    userId:Tool.getUserInfo('userId'),
                     status:'',
                     page:this.pageAll,
                     pageSize:this.pageSize,
@@ -150,7 +150,7 @@
             },
             orderQueryUnPaid:function(){
                 Tool.get('AaPackageOrderQuery',{
-                    userId:1,
+                    userId:Tool.getUserInfo('userId'),
                     status:'1',
                     page:this.pageUnpaid,
                     pageSize:this.pageSize,
@@ -161,7 +161,7 @@
             },
             orderQueryPaid:function(){
                 Tool.get('AaPackageOrderQuery',{
-                    userId:1,
+                    userId:Tool.getUserInfo('userId'),
                     status:'2',
                     page:this.pagePaid,
                     pageSize:this.pageSize,
@@ -172,7 +172,7 @@
             },
             orderQueryUnEval:function(){
                 Tool.get('AaPackageOrderQuery',{
-                    userId:1,
+                    userId:Tool.getUserInfo('userId'),
                     status:'3',
                     page:this.pageUnEval,
                     pageSize:this.pageSize,
@@ -186,7 +186,7 @@
                 self.pageAll ++;
                 self.totalCountAll = 1000000;//保证加载更多在加载完成前一直显示
                 Tool.get('AaPackageOrderQuery',{
-                    userId:1,
+                    userId:Tool.getUserInfo('userId'),
                     status:'',
                     page:this.pageAll,
                     pageSize:this.pageSize,
@@ -200,7 +200,7 @@
                 self.pageUnpaid ++;
                 self.totalCountUnpaid = 1000000;//保证加载更多在加载完成前一直显示
                 Tool.get('AaPackageOrderQuery',{
-                    userId:1,
+                    userId:Tool.getUserInfo('userId'),
                     status:1,
                     page:this.pageUnpaid,
                     pageSize:this.pageSize,
@@ -214,7 +214,7 @@
                 self.pagePaid ++;
                 self.totalCountPaid = 1000000;//保证加载更多在加载完成前一直显示
                 Tool.get('AaPackageOrderQuery',{
-                    userId:1,
+                    userId:Tool.getUserInfo('userId'),
                     status:2,
                     page:this.pagePaid,
                     pageSize:this.pageSize,
@@ -228,7 +228,7 @@
                 self.pageUnEval ++;
                 self.totalCountUnEval = 1000000;//保证加载更多在加载完成前一直显示
                 Tool.get('AaPackageOrderQuery',{
-                    userId:1,
+                    userId:Tool.getUserInfo('userId'),
                     status:3,
                     page:this.pageUnEval,
                     pageSize:this.pageSize,
@@ -240,7 +240,10 @@
         },
         created:function(){
             this.orderQueryAll();
-        }
+        },
+        beforeRouteEnter:(to,from,next)=>{
+            Tool.routerEnter(to,from,next)
+        },
     }
 </script>
 <style lang="less" scoped>

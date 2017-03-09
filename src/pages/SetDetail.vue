@@ -243,7 +243,10 @@
                     return '指定服务中心使用'
                 }
             }
-        }   
+        },
+        beforeRouteEnter:(to,from,next)=>{
+            Tool.routerEnter(to,from,next)
+        },   
     }
 </script>
 <style scoped lang="less">

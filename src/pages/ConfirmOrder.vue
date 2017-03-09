@@ -139,7 +139,7 @@
                 var end = today.substring(0,4) - 0 + 3 + today.substring(4,10);
                 var endTime = new Date(end).getTime();
                 Tool.post('AaPackageOrder',{
-                    userId:1,
+                    userId:Tool.getUserInfo('userId'),
                     allNumber:this.packageInfo.setInfo.setMealNumber,
                     expirationDateTimestamp:endTime,
                     vin:this.packageInfo.userInfo.vin,
@@ -181,7 +181,10 @@
                 var endday = today.substring(0,4) - 0 + 3 + today.substring(4,10);
                 return endday;
             }
-        }
+        },
+        beforeRouteEnter:(to,from,next)=>{
+            Tool.routerEnter(to,from,next)
+        },
     }
 </script>
 <style lang="less" scoped>

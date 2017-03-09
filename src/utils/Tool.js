@@ -243,11 +243,15 @@ Tool.getCurrentDate = function(type='date'){
 /**
  * 本地存储
  */
-Tool.localItem = function(key, vlaue){
+Tool.localItem = function(key, value){
     if(arguments.length == 1){
         return localStorage.getItem(key);
     }else{
-        return localStorage.setItem(key,value);
+        if(typeof value == 'object'){
+            return localStorage.setItem(key,JSON.stringify(value));
+        }else{
+            return localStorage.setItem(key,value);
+        }
     }
 }
 
@@ -278,6 +282,23 @@ Tool.removeObject = function(obj){
         obj = '';
     }
     return ;
+}
+
+Tool.getUserInfo = function(key){
+    var user = localStorage.getItem('userInfo');
+    if(user){
+        return JSON.parse(user)[key];
+    }else{
+        return false;
+    }
+}
+
+Tool.routerEnter = function(to,from,next){//确定用户是否已经登陆
+    if(Tool.localItem('userInfo') && Tool.getUserInfo('userId')){
+        next();
+    }else{
+        next({name:'login'});
+    }
 }
 
 export default Tool;

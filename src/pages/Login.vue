@@ -8,32 +8,59 @@
            <div class="person-picture"></div>
            <div class="form-group">
                 <img src="../assets/user-name.png" class="name-picture">
-                <input type="text" placeholder="长安商城用户名" class="user-name">
+                <input type="text" placeholder="长安商城用户名" class="user-name" v-model="tel">
            </div>
            <div class="form-group">
                  <img src="../assets/user-pwd.png" class="pwd-picture">
-                <input type="text" placeholder="长安商城用户密码" class="user-pwd">
+                <input type="password" placeholder="长安商城用户密码" class="user-pwd" v-model="password">
            </div>
 
-           <div class="login-btn">登录</div>
-           <div class="register-btn">注册</div>
+           <div class="login-btn" @click="login">登录</div>
+           <div class="register-btn" @click="register">注册</div>
         </div>
 	</div>
   </div>
 </template>
 <script>
-import NavBar from '../components/NavBar';
- export default{
- 	data (){
- 		return{
-   
- 		}
- 	},
- 	components:{
-        NavBar,
-    }
-
- }
+	import NavBar from '../components/NavBar';
+	import Tool from '../utils/Tool';
+	import { Toast } from 'mint-ui'
+ 	export default{
+		data (){
+			return{
+				tel:'',
+				password:''
+			}
+		},
+		components:{
+			NavBar,
+		},
+		methods:{
+			register:function(){
+				this.$router.push({name:'register'})
+			},
+			login:function(){
+				Tool.post('loginCode',{
+					mobile:this.tel,
+					password:this.password
+				},(data)=>{
+					if(data.code == 200){
+						Toast({
+							duration:1000,
+							message:data.msg
+						})
+						Tool.localItem("userInfo",data.data)
+						this.$router.push({name:'maintainset'});
+					}else{
+						Toast({
+							duration:1000,
+							message:data.msg
+						})
+					}
+				})
+			}
+		}
+ 	}
  </script>
 
  <style lang="less" scoped>

@@ -5,9 +5,9 @@
             <i class="iconfont icon-circle active" v-else="active"></i>
         </div>
         <div class="store-info" flex="dir:left cross:center box:first">
-            <div class="store-url">
+            <!--<div class="store-url">
                 <img v-lazy="item.photoUrl"/>
-            </div>
+            </div>-->
             <div class="info-content" flex="dir:top cross:top box:mean">
                 <div class="line" flex="dir:left cross:center main:justify">
                     <span class="store-name">{{item.storeName}}</span>

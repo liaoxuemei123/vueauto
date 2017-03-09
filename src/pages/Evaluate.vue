@@ -132,7 +132,10 @@
                         return '非常不满';
                 }
             }
-        }
+        },
+        beforeRouteEnter:(to,from,next)=>{
+            Tool.routerEnter(to,from,next)
+        },
     }
 </script>
 <style lang="less" scoped>

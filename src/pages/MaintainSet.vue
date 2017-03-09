@@ -152,7 +152,10 @@
         activated:function(){
             this.$store.commit('SET_RESET_FLAS',true);
             this.$store.commit('SET_PACKAGE_STOREINFO',{});
-        }
+        },
+        beforeRouteEnter:(to,from,next)=>{
+            Tool.routerEnter(to,from,next)
+        },
     }
 </script>
 <style lang="less" scoped>
