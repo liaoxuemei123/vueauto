@@ -18,7 +18,7 @@
                 <div class="payment-mode">
                     <div class="payment-item" flex="dir:left cross:center box:justify" @click="paymentMode=1">
                         <div class="pay-url">
-                            <img src="../assets/payment-union.jpg" alt="">
+                            <img src="../assets/payment-wepay.jpg" alt="">
                         </div>
                         <div class="payment-info" flex="dir:top box:mean">
                             <span class="mode" flex="dir:left cross:center">微信支付</span>
@@ -31,7 +31,7 @@
                     </div>
                     <div class="payment-item" flex="dir:left cross:center box:justify" @click="paymentMode=2">
                         <div class="pay-url">
-                            <img src="../assets/payment-wepay.jpg" alt="">
+                            <img src="../assets/payment-union.jpg" alt="">
                         </div>
                         <div class="payment-info" flex="dir:top box:mean">
                             <span class="mode" flex="dir:left cross:center">银联支付</span>
@@ -99,24 +99,27 @@
             .order-info{
                 height: 3rem;
                 overflow: hidden;
-                background: radial-gradient(rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0) 0.1rem, #fff 0.2rem);
-                background-size: 0.6rem 1.2rem;
-                background-position: 0rem 0.4rem;
-                padding: 0.6rem 0.6rem 1rem 0.6rem;
+                background: #fff;
+                padding: 0.6rem 0.6rem 0.4rem 0.6rem;
                 font-size: 0.64rem;
                 color: #333;
                 position: relative;
                 z-index: 0;
-            }
-            .order-info:before{
-                background-color: #fff;
-                content: '';
-                position: absolute;
-                top:0;
-                bottom:0.2rem;
-                left:0;
-                right:0;
-                z-index: -1;
+                &:after{
+                    position:absolute;
+                    z-index:1;
+                    left:0;
+                    right:0;
+                    bottom:0rem;
+                    display: block;
+                    content: "";
+                    height: 20px;
+                    background: #ffffff;
+                    background-image: -webkit-gradient(linear,50% 0,0 100%, from(transparent), color-stop(.5,transparent), color-stop(.5,#EFEFEE), to(#EFEFEE) ), -webkit-gradient(linear,50% 0,100% 100%, from(transparent), color-stop(.5,transparent), color-stop(.5,#efefef), to(#efefef) );
+                    background-size: 12px 5px;
+                    background-repeat: repeat-x;
+                    background-position: 0 100%;
+                }
             }
             .payment-mode{
                 margin-top:0.4rem;

@@ -97,22 +97,20 @@
             },
             onCarChange:function(picker,values){
                 if(values[0]&&values[1]){
-                    this.carModel.modelId = values[1].id;
-                    this.carModel.modelName = values[1].name;
-                    this.carModel.seriesName = values[0].name;
+                    this.carModel.displacement = values[1].name;
+                    this.carModel.vehicleModel = values[0].name;
                     picker.setSlotValues(1,this.carData.modelList[values[0].index]);
                 }
             },
             submitModelInfo:function(){
-                if(this.carModel.modelId){
+                if(this.carModel.displacement){
                     this.$store.commit('SET_PACKAGE_MODEL',this.carModel);
                 }else{
-                    this.carModel.modelId = this.carData.modelList[0][0].id;
-                    this.carModel.modelName = this.carData.modelList[0][0].name;
-                    this.carModel.seriesName = this.carData.seriesList[0].name;
+                    this.carModel.displacement = this.carData.modelList[0][0].name;
+                    this.carModel.vehicleModel = this.carData.seriesList[0].name;
                     this.$store.commit('SET_PACKAGE_MODEL',this.carModel);
                 }
-                this.pickerModel = this.carModel.seriesName + ' ' + this.carModel.modelName;
+                this.pickerModel = this.carModel.vehicleModel + ' ' + this.carModel.displacement;
                 this.carModel = {};
                 this.carShow = false;
             },
@@ -129,7 +127,7 @@
                     for(var i=0;i<data.data.length;i++){
                         ModelList[i] = [];
                         for(var j=0;j< data.data[i].modelName.length;j++){
-                            ModelList[i].push({name:data.data[i].modelName[j].displacement,id:data.data[i].modelName[j].modelId})
+                            ModelList[i].push({name:data.data[i].modelName[j][1]})
                         }
                     }
                     var param = {

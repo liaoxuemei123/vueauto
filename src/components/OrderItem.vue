@@ -12,7 +12,7 @@
             <div class="line">
                 <div class="car-infon" flex="dir:left cross:center">
                     <div class="title">车辆信息：</div>
-                    <div class="label">{{item.carName}}</div>
+                    <div class="label">{{item.carType}}</div>
                 </div>
             </div>
             <div class="line">

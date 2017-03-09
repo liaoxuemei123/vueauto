@@ -169,7 +169,8 @@
             // },
             getMealList:function(callback){
                 Tool.get('getSetMealList',{
-                    vehicleModelId:this.packageInfo.modelInfo.modelId || '',
+                    vehicleModel:this.packageInfo.modelInfo.vehicleModel || '',
+                    displacement:this.packageInfo.modelInfo.displacement || '',
                 },(data)=>{
                     this.setMealList = data.data;
                     callback && callback();
@@ -192,7 +193,8 @@
             },
             getPackagePriceRange:function(){
                 Tool.get('getPackagePriceRange',{
-                    vehicleModelId:this.packageInfo.modelInfo.modelId,
+                    vehicleModel:this.packageInfo.modelInfo.vehicleModel || '',
+                    displacement:this.packageInfo.modelInfo.displacement || '',
                     discount:this.setInfo.discount,
                     setMealNumber:this.setInfo.setMealNumber,
                 },(data)=>{

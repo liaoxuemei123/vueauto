@@ -59,7 +59,7 @@
                         </div>
                         <div class="bottom-item" flex="dir:left cross:center main:left">
                             <div class="title"><i class="iconfont icon-motor"></i>排量:</div>
-                            <div class="value">{{packageInfo.modelInfo.modelName}}</div>
+                            <div class="value">{{this.packageInfo.modelInfo.displacement}}</div>
                         </div>
                         
                     </div>
@@ -70,7 +70,7 @@
                         </div>
                         <div class="bottom-item" flex="dir:left cross:center main:left">
                             <div class="title"><i class="iconfont icon-car"></i>车型:</div>
-                            <div class="value">{{packageInfo.modelInfo.seriesName}}</div>
+                            <div class="value">{{this.packageInfo.modelInfo.vehicleModel}}</div>
                         </div>
                     </div>
                 </div>
@@ -148,7 +148,7 @@
                     phone:this.packageInfo.userInfo.tel,
                     linkman:this.packageInfo.userInfo.contact,
                     orderPrice:this.packageInfo.setDetail.price,
-                    carType:this.packageInfo.modelInfo.modelId,
+                    carType:this.packageInfo.modelInfo.vehicleModel + ' ' + this.packageInfo.modelInfo.displacement,
                     setMealId:this.packageInfo.setDetail.mealId,
                 },(data)=>{
                     Toast(data.msg);
