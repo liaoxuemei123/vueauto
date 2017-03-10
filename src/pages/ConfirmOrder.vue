@@ -54,8 +54,8 @@
                     </div>
                     <div class="bottom" flex="dir:left box:mean">
                         <div class="bottom-item" flex="dir:left cross:center main:left">
-                            <div class="title"><i class="iconfont icon-motor"></i>发动机号:</div>
-                            <div class="value">{{packageInfo.userInfo.motorId}}</div>
+                            <div class="title"><i class="iconfont icon-car"></i>车型:</div>
+                            <div class="value">{{this.packageInfo.modelInfo.vehicleModel}}</div>
                         </div>
                         <div class="bottom-item" flex="dir:left cross:center main:left">
                             <div class="title"><i class="iconfont icon-motor"></i>排量:</div>
@@ -69,8 +69,8 @@
                             <div class="value">{{packageInfo.userInfo.vin}}</div>
                         </div>
                         <div class="bottom-item" flex="dir:left cross:center main:left">
-                            <div class="title"><i class="iconfont icon-car"></i>车型:</div>
-                            <div class="value">{{this.packageInfo.modelInfo.vehicleModel}}</div>
+                            <div class="title"><i class="iconfont icon-motor"></i>发动机号:</div>
+                            <div class="value">{{packageInfo.userInfo.motorId}}</div>
                         </div>
                     </div>
                 </div>

@@ -39,7 +39,8 @@
                                 <span class="index">{{index+1}}</span>
                                 <span class="info">{{item.createDate}}/{{item.storeId}}</span>
                             </div>
-                            <span class="evaluate" @click="goEvaluate(index)">去评价</span>
+                            <span class="evaluate" @click="goEvaluateDetail(index)" v-if="item.isEvaluate == 1">查看评价</span>
+                            <span class="evaluate" @click="goEvaluate(index)" v-else="item.isEvaluate == 1">去评价</span>
                         </div>
                     </div>
                 </div>
@@ -88,7 +89,20 @@
                 })
             },
             goEvaluate:function(index){
-                this.$router.push({name:'evaluate',query:{orderId:this.useList[index].orderId,storeId:this.useList[index].storeId}});
+                this.$router.push({name:'evaluate',query:{
+                    orderId:this.useList[index].orderId,
+                    storeId:this.useList[index].storeId,
+                    vehicleModel:this.orderInfo.carType,
+                    orderDetailId:this.useList[index].id,
+                }});
+            },
+            goEvaluateDetail:function(index){
+                this.$router.push({name:'evaluatedetail',query:{
+                    orderId:this.useList[index].orderId,
+                    storeId:this.useList[index].storeId,
+                    vehicleModel:this.orderInfo.carType,
+                    id:this.useList[index].id,
+                }})
             }
         },
         beforeRouteEnter:(to,from,next)=>{

@@ -5,6 +5,7 @@
                 title='用户点评'
                 rightContent='发表'
                 :otherClass='true'
+                :onRight="publicEvaluate"
             />
             <div class="page-content" flex="dir:top box:first">
                 <div class="evaluate">
@@ -14,7 +15,7 @@
                     <div class="content">
                         <div class="score-total" flex="dir:left cross:center">
                             <span>总体评分</span>
-                            <div class="score-evaluate" flex="dir:left cross:center" :style="{background:'-webkit-linear-gradient(-180deg, #d9d9d9 ' + totalPercent + ', #ff3b2f 10px)','-webkit-background-clip':'text'}">
+                            <div class="score-evaluate" flex="dir:left cross:center" :style="{'background-image':'-webkit-linear-gradient(-180deg, #d9d9d9 ' + totalPercent + ', #ff3b2f 10px)','-webkit-background-clip':'text'}">
                                 <div class="score-evaluate-item" v-for="i in [1,2,3,4,5]">
                                     <div class="iconfont icon-start dark"></div>
                                 </div>
@@ -75,7 +76,7 @@
                         <div class="base-info">
                             <div class="info-item" flex="dir:left cross:center">
                                 <div class="label">所选车型：</div>
-                                <div class="value">CS75</div>
+                                <div class="value">{{query.vehicleModel}}</div>
                             </div>
                             <div class="info-item" flex="dir:left cross:center">
                                 <div class="label">服务类型：</div>
@@ -86,6 +87,7 @@
                             <textarea
                                 rows='5 '
                                 placeholder="请描述一下你在4S店的服务经历帮助一下其他小伙伴        写够15字才是好同志"
+                                v-model="explain"
                             >
                             </textarea>
                         </div>
@@ -102,6 +104,7 @@
 <script>
     import NavBar from '../components/NavBar';
     import Tool from '../utils/Tool';
+    import { Toast } from 'mint-ui';
     export default {
         data () {
             return {
@@ -110,7 +113,8 @@
                 facilityEvaluate:5,
                 serverAttitude:5,
                 softwareOperate:5,
-                query:''
+                query:'',
+                explain:'',
             }
         },
         components:{
@@ -119,6 +123,28 @@
         computed:{
             'totalPercent':function(){
                 return ((5-this.totalEvaluate)/5)*100 + '%'
+            }
+        },
+        methods:{
+            publicEvaluate:function(){
+                Tool.post('evaluate',{
+                    totalEvaluate:this.totalEvaluate - 0,
+                    specialityLevel:this.specialityLevel,
+                    facilityEvaluate:this.facilityEvaluate,
+                    serverAttitude:this.serverAttitude,
+                    softwareOperate:this.softwareOperate,
+                    serviceType:1,
+                    explains:this.explain,
+                    ...this.query
+                },(data)=>{
+                    if(data.code == 200){
+                        Toast({
+                            message:"评论发表成功！",
+                            duration:1000
+                        })
+                        this.$router.go(-1);
+                    }
+                })
             }
         },
         watch:{
@@ -156,7 +182,6 @@
         },
         activated:function(){
             this.query = this.$route.query;
-            console.log(this.query);
         }
     }
 </script>

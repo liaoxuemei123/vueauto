@@ -25,14 +25,13 @@
                 <div class="evaluate-detail-container">
                     <div class="score-total" flex="dir:left cross:center">
                         <span>总体评分</span>
-                        <div class="score-evaluate" flex="dir:left cross:center">
+                        <div class="score-evaluate" flex="dir:left cross:center" :style="{'background-image':'-webkit-linear-gradient(-180deg, #d9d9d9 ' + totalPercent + ', #ff3b2f 10px)'}" ref="total">
                             <div class="score-evaluate-item" v-for="i in [1,2,3,4,5]">
-                                <div class="iconfont icon-start" v-if="i<=score.total"></div>
-                                <div class="iconfont icon-start dark" v-else="i<=score.total"></div>
+                                <div class="iconfont icon-start dark"></div>
                             </div>
                         </div>
                         <div class="score">
-                            {{score.total}}
+                            {{evaluate.totalEvaluate}}
                         </div>
                     </div>
                     <div class="score-single">
@@ -40,47 +39,47 @@
                             <span>服务描述</span>
                             <div class="score-evaluate" flex="dir:left cross:center">
                                 <div class="score-evaluate-item" v-for="i in [1,2,3,4,5]">
-                                    <div class="iconfont icon-smile" v-if="i<=score.service"></div>
-                                    <div class="iconfont icon-smile unhappy" v-else="i<=score.service"></div>
+                                    <div class="iconfont icon-smile" v-if="i<=evaluate.serverAttitude"></div>
+                                    <div class="iconfont icon-smile unhappy" v-else="i<=evaluate.serverAttitude"></div>
                                 </div>
                             </div>
-                            <div class="score score-service">{{score.service | scoreFilter}}</div>
+                            <div class="score score-service">{{evaluate.serverAttitude | scoreFilter}}</div>
                         </div>
                         <div class="single-item" flex="dir:left cross:center">
                             <span>专业水平</span>
                             <div class="score-evaluate" flex="dir:left cross:center">
                                 <div class="score-evaluate-item" v-for="i in [1,2,3,4,5]">
-                                    <div class="iconfont icon-smile" v-if="i<=score.pro"></div>
-                                    <div class="iconfont icon-smile unhappy" v-else="i<=score.pro"></div>
+                                    <div class="iconfont icon-smile" v-if="i<=evaluate.specialityLevel"></div>
+                                    <div class="iconfont icon-smile unhappy" v-else="i<=evaluate.specialityLevel"></div>
                                 </div>
                             </div>
-                            <div class="score score-service">{{score.pro | scoreFilter}}</div>
+                            <div class="score score-service">{{evaluate.specialityLevel | scoreFilter}}</div>
                         </div>
                         <div class="single-item" flex="dir:left cross:center">
                             <span>设施环境</span>
                             <div class="score-evaluate" flex="dir:left cross:center">
                                 <div class="score-evaluate-item" v-for="i in [1,2,3,4,5]">
-                                    <div class="iconfont icon-smile" v-if="i<=score.envi"></div>
-                                    <div class="iconfont icon-smile unhappy" v-else="i<=score.envi"></div>
+                                    <div class="iconfont icon-smile" v-if="i<=evaluate.facilityEvaluate"></div>
+                                    <div class="iconfont icon-smile unhappy" v-else="i<=evaluate.facilityEvaluate"></div>
                                 </div>
                             </div>
-                            <div class="score score-service">{{score.envi | scoreFilter}}</div>
+                            <div class="score score-service">{{evaluate.facilityEvaluate | scoreFilter}}</div>
                         </div>
                         <div class="single-item" flex="dir:left cross:center">
-                            <span>软件环境</span>
+                            <span>软件操作</span>
                             <div class="score-evaluate" flex="dir:left cross:center">
                                 <div class="score-evaluate-item" v-for="i in [1,2,3,4,5]">
-                                    <div class="iconfont icon-smile" v-if="i<=score.software"></div>
-                                    <div class="iconfont icon-smile unhappy" v-else="i<=score.software"></div>
+                                    <div class="iconfont icon-smile" v-if="i<=evaluate.softwareOperate"></div>
+                                    <div class="iconfont icon-smile unhappy" v-else="i<=evaluate.softwareOperate"></div>
                                 </div>
                             </div>
-                            <div class="score score-service">{{score.software | scoreFilter}}</div>
+                            <div class="score score-service">{{evaluate.softwareOperate | scoreFilter}}</div>
                         </div>
                     </div>
                     <div class="service-info" flex="dir:left box:mean cross:center">
                         <div class="service-item" flex="dir:left">
                             <div class="label">所选车型：</div>
-                            <div class="value">CS75</div>
+                            <div class="value">{{evaluate.vehicleModel}}</div>
                         </div>
                         <div class="service-item" flex="dir:left main:right">
                             <div class="label">服务类型：</div>
@@ -91,12 +90,12 @@
                 <div class="description-container">
                     <div class="description">
                         <p>
-                            {{description.des}}
+                            {{evaluate.explains}}
                         </p>
-                        <div class="time">{{description.time}}</div>
+                        <div class="time">{{evaluate.createDate}}</div>
                     </div>
                     <div class="image-list" flex="dir:left cross:center">
-                        <div class="image-container" v-for="(item,index) in description.imagelist" @click="showPicture(index)">
+                        <div class="image-container" v-for="(item,index) in evaluate.attachment" @click="showPicture(index)">
                             <img v-lazy="item">
                         </div>
                     </div>
@@ -119,32 +118,12 @@
 <script>
     import NavBar from '../components/NavBar';
     import Tool from '../utils/Tool';
+    import { Toast } from 'mint-ui';
     export default {
         data () {
             return {
-                storeInfo:{
-                    photoUrl:"https://zos.alipayobjects.com/rmsportal/dKbkpPXKfvZzWCM.png",
-                    storeName:'重庆市名义长安4S店',
-                    distance:2031,
-                    address:'重庆市南岸区弹子石国际社区福民路38号9层',
-                    tel:15178831138
-                },
-                score:{
-                    service:1,
-                    pro:5,
-                    envi:5,
-                    software:5,
-                    total:5,
-                },
-                description:{
-                    des:'服务态度非常好，工人师傅技术水平高，强烈建议大家来做保养，一定不会失望的。',
-                    time:'2017-02-18',
-                    imagelist:[
-                        'http://img2.imgtn.bdimg.com/it/u=1753824304,266975650&fm=23&gp=0.jpg',
-                        'http://pic1.win4000.com/wallpaper/2/57b4342b46320.jpg',
-                        'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1488789566409&di=90296c3b1ce8b9223650d1b746c1d714&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fbaike%2Fpic%2Fitem%2F5fdf8db1cb134954a4d833a0534e9258d0094a34.jpg'
-                    ]
-                },
+                storeInfo:{},
+                evaluate:{},
                 showpic:false,
                 pictureShowUrl:'',
                 scale:false,
@@ -153,10 +132,16 @@
                     y:0,
                 },
                 showIndex:0,
+                query:'',
             }
         },
         components:{
             NavBar,
+        },
+        computed:{
+            'totalPercent':function(){
+                return ((5-this.evaluate.totalEvaluate)/5)*100 + '%'
+            }
         },
         methods:{
             showPicture:function(index){
@@ -206,6 +191,15 @@
                         return '非常不满';
                 }
             }
+        },
+        activated:function(){
+            this.query = this.$route.query;
+            Tool.get('evaluateQuery',{...this.query},(data)=>{
+                if(data.code == 200){
+                    this.evaluate = data.data.evaluate;
+                    this.storeInfo = data.data.store;
+                }
+            })
         },
         beforeRouteEnter:(to,from,next)=>{
             Tool.routerEnter(to,from,next)
@@ -283,14 +277,12 @@
                         font-size:0.58rem;
                         .store-name{
                             font-size:0.64rem;
-                            margin-right:0.3rem;
                             font-weight:bold;
                             white-space: nowrap;
                         }
                         .store-distance{
                             font-size: 0.56rem;
                             color: #a2a2a2;
-                            margin-right: 0.3rem;
                             display: inline-block;
                         }
                         .store-address{
@@ -352,8 +344,8 @@
                     }
                 }
                 .score-total{
-                    height:2.5rem;
-                    line-height:2.5rem;
+                    height:2.3rem;
+                    line-height:2.3rem;
                     border-bottom:1px solid #d9d9d9;
                     span{
                         width:20%;
@@ -361,6 +353,12 @@
                     .score-evaluate{
                         width:60%;
                         text-align:center;
+                        font-size:0.8rem;
+                        background:-webkit-linear-gradient(-180deg, #d9d8d4 90%, #ff853f 10px);
+                        -webkit-background-clip: text;
+                        background-clip: text;
+                        -webkit-text-fill-color: transparent;
+                        padding: 0 0.1rem;
                         .score-evaluate-item{
                             margin-left:0.5rem;
                             .iconfont{
