@@ -4,7 +4,7 @@
 import { Indicator, Toast } from 'mint-ui'
 const Tool = {};
 const target = 'http://172.20.10.5:8080/anan-management/app/';//默认的远程服务器地址
-const CLOSE_NETWORK = false;//在本地调试时关闭网络，只调整静态页面
+const CLOSE_NETWORK = true;//在本地调试时关闭网络，只调整静态页面
 
 var requestPool = [];//请求池
 
@@ -61,6 +61,9 @@ Tool.ajax = function(mySetting){
             xhr.ontimeout  = ()=>{
                 this.explain = 'timeout'
             }
+            setTimeout(()=>{
+                xhr.explain = 'timeout'
+            },setting.timeout)
             xhr.onabort = () => {
                 xhr.explain = 'abort'
             }
@@ -297,7 +300,8 @@ Tool.routerEnter = function(to,from,next){//确定用户是否已经登陆
     if(Tool.localItem('userInfo') && Tool.getUserInfo('userId')){
         next();
     }else{
-        next({name:'login'});
+        next();
+        //next({name:'login'});
     }
 }
 

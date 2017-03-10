@@ -29,7 +29,7 @@
                 <div class="oprater" flex="dir:left cross:center">
                     <div class="pay" v-if="item.status == 2">去支付</div>
                     <div class="cancel" v-if="item.status == 1">退单</div>
-                    <div class="evaluate" @click="goEvaluate" v-if="item.status == 4">去评价</div>
+                    <!--<div class="evaluate" @click="goEvaluate" v-if="item.status == 4">去评价</div>-->
                     <div class="detail" @click="viewDetail(item.orderNo)">查看详情</div>
                 </div>
             </div>

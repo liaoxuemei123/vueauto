@@ -14,56 +14,55 @@
                     <div class="content">
                         <div class="score-total" flex="dir:left cross:center">
                             <span>总体评分</span>
-                            <div class="score-evaluate" flex="dir:left cross:center">
-                                <div class="score-evaluate-item" v-for="i in [1,2,3,4,5]" @click="score.total = i">
-                                    <div class="iconfont icon-start" v-if="i<=score.total"></div>
-                                    <div class="iconfont icon-start dark" v-else="i<=score.total"></div>
+                            <div class="score-evaluate" flex="dir:left cross:center" :style="{background:'-webkit-linear-gradient(-180deg, #d9d9d9 ' + totalPercent + ', #ff3b2f 10px)','-webkit-background-clip':'text'}">
+                                <div class="score-evaluate-item" v-for="i in [1,2,3,4,5]">
+                                    <div class="iconfont icon-start dark"></div>
                                 </div>
                             </div>
                             <div class="score">
-                                {{score.total}}
+                                {{totalEvaluate}}
                             </div>
                         </div>
                         <div class="score-single">
                             <div class="single-item" flex="dir:left cross:center">
                                 <span>服务描述</span>
                                 <div class="score-evaluate" flex="dir:left cross:center">
-                                    <div class="score-evaluate-item" v-for="i in [1,2,3,4,5]" @click="score.service = i">
-                                        <div class="iconfont icon-smile" v-if="i<=score.service"></div>
-                                        <div class="iconfont icon-smile unhappy" v-else="i<=score.service"></div>
+                                    <div class="score-evaluate-item" v-for="i in [1,2,3,4,5]" @click="serverAttitude = i">
+                                        <div class="iconfont icon-smile" v-if="i<=serverAttitude"></div>
+                                        <div class="iconfont icon-smile unhappy" v-else="i<=serverAttitude"></div>
                                     </div>
                                 </div>
-                                <div class="score score-service">{{score.service | scoreFilter}}</div>
+                                <div class="score score-service">{{serverAttitude | scoreFilter}}</div>
                             </div>
                             <div class="single-item" flex="dir:left cross:center">
                                 <span>专业水平</span>
                                 <div class="score-evaluate" flex="dir:left cross:center">
-                                    <div class="score-evaluate-item" v-for="i in [1,2,3,4,5]" @click="score.pro = i">
-                                        <div class="iconfont icon-smile" v-if="i<=score.pro"></div>
-                                        <div class="iconfont icon-smile unhappy" v-else="i<=score.pro"></div>
+                                    <div class="score-evaluate-item" v-for="i in [1,2,3,4,5]" @click="specialityLevel = i">
+                                        <div class="iconfont icon-smile" v-if="i<=specialityLevel"></div>
+                                        <div class="iconfont icon-smile unhappy" v-else="i<=specialityLevel"></div>
                                     </div>
                                 </div>
-                                <div class="score score-service">{{score.pro | scoreFilter}}</div>
+                                <div class="score score-service">{{specialityLevel | scoreFilter}}</div>
                             </div>
                             <div class="single-item" flex="dir:left cross:center">
                                 <span>设施环境</span>
                                 <div class="score-evaluate" flex="dir:left cross:center">
-                                    <div class="score-evaluate-item" v-for="i in [1,2,3,4,5]" @click="score.envi = i">
-                                        <div class="iconfont icon-smile" v-if="i<=score.envi"></div>
-                                        <div class="iconfont icon-smile unhappy" v-else="i<=score.envi"></div>
+                                    <div class="score-evaluate-item" v-for="i in [1,2,3,4,5]" @click="facilityEvaluate = i">
+                                        <div class="iconfont icon-smile" v-if="i<=facilityEvaluate"></div>
+                                        <div class="iconfont icon-smile unhappy" v-else="i<=facilityEvaluate"></div>
                                     </div>
                                 </div>
-                                <div class="score score-service">{{score.envi | scoreFilter}}</div>
+                                <div class="score score-service">{{facilityEvaluate | scoreFilter}}</div>
                             </div>
                             <div class="single-item" flex="dir:left cross:center">
-                                <span>软件环境</span>
+                                <span>软件操作</span>
                                 <div class="score-evaluate" flex="dir:left cross:center">
-                                    <div class="score-evaluate-item" v-for="i in [1,2,3,4,5]" @click="score.software = i">
-                                        <div class="iconfont icon-smile" v-if="i<=score.software"></div>
-                                        <div class="iconfont icon-smile unhappy" v-else="i<=score.software"></div>
+                                    <div class="score-evaluate-item" v-for="i in [1,2,3,4,5]" @click="softwareOperate = i">
+                                        <div class="iconfont icon-smile" v-if="i<=softwareOperate"></div>
+                                        <div class="iconfont icon-smile unhappy" v-else="i<=softwareOperate"></div>
                                     </div>
                                 </div>
-                                <div class="score score-service">{{score.software | scoreFilter}}</div>
+                                <div class="score score-service">{{softwareOperate | scoreFilter}}</div>
                             </div>
                         </div>
                     </div>
@@ -101,21 +100,40 @@
     </div>
 </template>
 <script>
-    import NavBar from '../components/NavBar'
+    import NavBar from '../components/NavBar';
+    import Tool from '../utils/Tool';
     export default {
         data () {
             return {
-                score:{
-                    service:1,
-                    pro:5,
-                    envi:5,
-                    software:5,
-                    total:5,
-                }
+                totalEvaluate:'5.0',
+                specialityLevel:5,
+                facilityEvaluate:5,
+                serverAttitude:5,
+                softwareOperate:5,
+                query:''
             }
         },
         components:{
             NavBar
+        },
+        computed:{
+            'totalPercent':function(){
+                return ((5-this.totalEvaluate)/5)*100 + '%'
+            }
+        },
+        watch:{
+            'specialityLevel':function(val){
+                this.totalEvaluate = ((this.specialityLevel + this.facilityEvaluate + this.serverAttitude + this.softwareOperate)/4).toFixed(1);
+            },
+            'facilityEvaluate':function(val){
+                this.totalEvaluate = ((this.specialityLevel + this.facilityEvaluate + this.serverAttitude + this.softwareOperate)/4).toFixed(1);
+            },
+            'serverAttitude':function(val){
+                this.totalEvaluate = ((this.specialityLevel + this.facilityEvaluate + this.serverAttitude + this.softwareOperate)/4).toFixed(1);
+            },
+            'softwareOperate':function(val){
+                this.totalEvaluate = ((this.specialityLevel + this.facilityEvaluate + this.serverAttitude + this.softwareOperate)/4).toFixed(1);
+            }
         },
         filters:{
             scoreFilter:function(val){
@@ -136,6 +154,10 @@
         beforeRouteEnter:(to,from,next)=>{
             Tool.routerEnter(to,from,next)
         },
+        activated:function(){
+            this.query = this.$route.query;
+            console.log(this.query);
+        }
     }
 </script>
 <style lang="less" scoped>
@@ -206,13 +228,18 @@
                     .score-total{
                         height:2.3rem;
                         line-height:2.3rem;
-                        border-top:1px solid #d9d9d9;
+                        border-bottom:1px solid #d9d9d9;
                         span{
                             width:20%;
                         }
                         .score-evaluate{
                             width:60%;
                             text-align:center;
+                            font-size:0.8rem;
+                            background:-webkit-linear-gradient(-180deg, #d9d8d4 90%, #ff853f 10px);
+                            -webkit-background-clip: text;
+                            -webkit-text-fill-color: transparent;
+                            padding: 0 0.1rem;
                             .score-evaluate-item{
                                 margin-left:0.5rem;
                                 .iconfont{
