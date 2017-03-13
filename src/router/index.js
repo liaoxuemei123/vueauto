@@ -15,6 +15,7 @@ import Evaluate from 'pages/Evaluate';
 import EvaluateDetail from 'pages/EvaluateDetail';
 import Login from 'pages/Login';
 import Register from 'pages/Register';
+import ViewStore from 'pages/ViewStore';
 
 Vue.use(Router)
 
@@ -29,6 +30,11 @@ export default new Router({
       path:'/store',
       name:'store',
       component:Store,
+    },
+    {
+      path:'/viewstore',
+      name:'viewstore',
+      component:ViewStore,
     },
     {
       path:'/maintainset',

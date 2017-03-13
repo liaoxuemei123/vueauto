@@ -7,17 +7,17 @@
                 :value="pickerModel"
             />
             <div class="page-content">
-                <div class="up-title title">
+                <!--<div class="up-title title">
                     <span>两年以上车龄专享</span>
-                </div>
+                </div>-->
                 <div class="up">
                     <div class="set-item" v-for="(item, index) in setlist.up">
                         <set-item :item="item"  :onClick="viewDetail.bind(this,item)"/>
                     </div>
                 </div>
-                <div class="down-title title">
+                <!--<div class="down-title title">
                     <span>两年以内车龄专享</span>
-                </div>
+                </div>-->
                 <div class="down">
                     <div class="set-item" v-for="(item, index) in setlist.down">
                         <set-item :item="item"  :onClick="viewDetail.bind(this,item)"/>
@@ -226,6 +226,7 @@
             .set-item{
                 height:7.7rem;
                 width:49%;
+                margin-bottom:0.3rem;
                 display:inline-block;
                 background-color:#fff;
                 box-shadow:0px 2px 3px #ccc;

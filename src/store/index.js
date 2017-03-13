@@ -92,7 +92,6 @@ const store = new Vuex.Store({
         },
         SET_PACKAGE_USERINFO:function(state,param){
             state.packageInfo.userInfo = param;
-            console.log(state.packageInfo.userInfo);
         }
     },
     getters:{

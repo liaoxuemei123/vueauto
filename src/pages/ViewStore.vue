@@ -8,7 +8,7 @@
             <div class="page-content" flex="dir:top box:first">
                 <div class="city-select" @click="cityShow = !cityShow">
                     <div class="input-control" flex="dir:left cross:center">
-                        <input type="text" v-model="selectedCity" placeholder="请选择城市" readonly >
+                        <input type="text" v-model="selectedCity" placeholder="请选择城市"readonly >
                     </div>
                     <i class="iconfont icon-up" v-if="cityShow"></i>
                     <i class="iconfont icon-down" v-else="cityShow"></i>
@@ -18,16 +18,9 @@
                         <div class="overflow-container">
                             <div class="store-list">
                                 <div class="store-item" v-for="(item, index) in storelist">
-                                    <store-item :item="item" :onClick="selectItem.bind(this, index)" :active="index == select"/>
+                                    <view-store-item :item="item"/>
                                 </div>
                             </div>
-                        </div>
-                        <div class="button-control">
-                            <btn-com
-                                title="确定"
-                                background="#00bffe"
-                                :onClick="submitStore"
-                            />
                         </div>
                     </div>
                     <transition name="fade">
@@ -54,10 +47,12 @@
 <script>
     import Search from '../components/Search';
     import BtnCom from '../components/BtnCom';
-    import StoreItem from '../components/StoreItem';
+    import ViewStoreItem from '../components/ViewStoreItem';
     import Tool from '../utils/Tool';
     import { mapState } from 'vuex';
     import { Indicator, Toast } from 'mint-ui';
+    import cityList from '../js/citylist';
+    const defaultI = 1;
     export default {
         data () {
             return {
@@ -67,15 +62,15 @@
                 citylist:[
                     {
                         flex:1,
-                        defaultIndex:0,
-                        values:[],
+                        defaultIndex:defaultI,
+                        values:Object.keys(cityList),
                         className:'province',
                     },{
                         divider:true,
                         content:'-'
                     },{
                         flex:1,
-                        values:[],
+                        values:Object.keys(cityList[Object.keys(cityList)[defaultI]]),
                         className:'city'
                     }
                 ],
@@ -87,19 +82,15 @@
         components:{
             Search,
             BtnCom,
-            StoreItem
+            ViewStoreItem
         },
         methods:{
-            selectItem:function(id){
-                this.select = id;
-            },
             search:function(e){
                 var target = $(e.target).find('input');
                 this.getStoreList(target.val());
             },
             getStoreList:function(name='',callback){
                 var self = this;
-                console.log(this.cityInfo.lng)
                 Tool.get('getStoreList',{
                     gpsLongitude:this.cityInfo.lng ||self.geolocation.point.lon,
                     gpsLatitude:this.cityInfo.lat || self.geolocation.point.lat,
@@ -110,27 +101,6 @@
                     callback && callback();
                 })
             },
-            submitStore:function(){
-                if(this.$store.getters.prepage[this.$store.getters.prepage.length-2].name == 'setdetail'){
-                    setTimeout(()=>{
-                        var data = {};
-                        data.id = this.storelist[this.select].id;
-                        data.storeName = this.storelist[this.select].storeName;
-                        data.photoUrl = this.storelist[this.select].photoUrl;
-                        this.$store.commit('SET_PACKAGE_STOREINFO',data);
-                        this.$router.back();
-                    })
-                }else{
-                    setTimeout(()=>{
-                        var data = {};
-                        data.id = this.storelist[this.select].id;
-                        data.storeName = this.storelist[this.select].storeName;
-                        data.photoUrl = this.storelist[this.select].photoUrl;
-                        this.$store.commit('SET_SUBSTOREINFO',data);
-                        this.$router.back();
-                    })
-                }
-            },
             onCityChange:function(picker,values){
                 if(values[0]&&values[1]){
                     this.cityInfo.province = values[1].name;
@@ -138,7 +108,6 @@
                     this.cityInfo.code = values[1].id;
                     picker.setSlotValues(1,this.cityData.citys[values[0].index]);
                 }
-
             },
             selectCity:function(){
                 if(!this.cityInfo.province){

@@ -15,9 +15,6 @@
                         <inp-com title="发动机号后六位" :value="userInfo.motorId" placeholder="输入发动机号后六位" :onBlur="updateMotorId.bind(this)" :maxlength="'6'" :rightArrow="true" />
                     </div>
                     <div class="input-control">
-                        <inp-com title="服务中心" :value="packageInfo.storeInfo.storeName" :onClick="goStore" :readonly="true" :placeholder="storeTip" :rightArrow="true" />
-                    </div>
-                    <div class="input-control">
                         <inp-com title="姓名" :value="userInfo.contact" placeholder="输入姓名" :onBlur="updateContact.bind(this)" :rightArrow="true" />
                     </div>
                     <div class="input-control">
@@ -56,8 +53,6 @@
     export default {
         data () {
             return {
-                isSelectStore:true,
-                storeTip:'选择服务中心',
                 userInfo:{
                     vin:'',
                     motorId:'',
@@ -76,25 +71,8 @@
                 'packageInfo'
             ])
         },
-        watch:{
-            'isSelectStore':function(val){
-                if(val){
-                    this.storeTip = '选择服务中心';
-                }else{
-                    this.storeTip = '服务中心通用';
-                }
-            }
-        },
         methods:{
             nextPage:function(){
-                if(this.packageInfo.setInfo.isUniversal == 0 && !this.packageInfo.storeInfo.id){
-                    Toast({
-                        message:'请选择店铺',
-                        position:'bottom',
-                        duration:1000,
-                    });
-                    return false;
-                }
                 if(!this.userInfo.vin){
                     Toast({
                         message:'请输入车架号',
@@ -136,11 +114,6 @@
             goHome:function(){
                 this.$router.go(-2)
             },
-            goStore:function(){
-                if(this.isSelectStore){
-                    this.$router.push({name:'store'});
-                }
-            },
             updateComment:function(e){
                 this.userInfo.message = $(e.target).val();
             },
@@ -155,13 +128,6 @@
             },
             updateTel:function(e){
                 this.userInfo.tel = $(e.target).val();
-            }
-        },
-        activated:function(){
-            if(this.packageInfo.setInfo.isUniversal == 0){
-                this.isSelectStore = true;
-            }else{
-                this.isSelectStore = false;
             }
         },
         beforeRouteEnter:(to,from,next)=>{

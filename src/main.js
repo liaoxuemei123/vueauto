@@ -26,10 +26,11 @@ router.beforeEach((to,from,next)=>{
   const pageStack = store.getters.pageStack;
   const toIndex = getIndex(pageStack, to.path);
   const toPath = to.path;
+  const toName = to.name;
   Tool.clearRequestPool();//切换页面的时候把上一个页面的请求全部中断掉
   if(toIndex == -1){
     store.commit('SET_MODE','push');
-    store.commit('PUSH_PAGE',{path:toPath,index:pageStack.length});
+    store.commit('PUSH_PAGE',{path:toPath,index:pageStack.length,name:toName});
   }else if(toIndex === -2){
     store.commit('SET_MODE','pop');
     store.commit('CLEAR_PAGE');//保证把前面的页面全部弹出页面栈

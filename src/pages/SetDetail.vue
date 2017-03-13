@@ -36,6 +36,11 @@
                             </div>
                         </div>
                     </div>
+                    <div class="select-store">
+                        <div class="input-control">
+                            <inp-com title="服务中心" :value="packageInfo.storeInfo.storeName" :onClick="goStore" :readonly="true" :placeholder="storeTip" :rightArrow="true" />
+                        </div>
+                    </div>
                     <!--<div class="input-container">
                         <inp-com
                             title="套餐机油选择"
@@ -135,7 +140,9 @@
                     price:'',
                     mealId:'',
                     mealName:''
-                }
+                },
+                storeTip:'选择服务中心',
+                isSelectStore:true,
             }
         },
         components:{
@@ -147,10 +154,27 @@
                 'packageInfo'
             ])
         },
+        watch:{
+            'isSelectStore':function(val){
+                if(val){
+                    this.storeTip = '选择服务中心';
+                }else{
+                    this.storeTip = '查看服务中心';
+                }
+            }
+        },
         methods:{
             nextPage:function(){
                 if(!this.setDetail.price){
                     Toast('请选择机油');
+                    return false;
+                }
+                if(this.setInfo.isUniversal == 0 && !this.packageInfo.storeInfo.id){
+                    Toast({
+                        message:'请选择店铺',
+                        position:'bottom',
+                        duration:1000,
+                    });
                     return false;
                 }
                 this.$store.commit('SET_PACKAGE_SETINFO',this.setInfo);
@@ -210,7 +234,15 @@
                     mealId:'',
                     mealName:''
                 }
-            }
+            },
+            goStore:function(){
+                this.$store.commit('SET_RESET_FLAS',false);
+                if(this.isSelectStore){
+                    this.$router.push({name:'store'});
+                }else{
+                    this.$router.push({name:'viewstore'});
+                }
+            },
         },
         activated:function(){
             this.setInfo = this.$route.query;
@@ -221,6 +253,11 @@
                     this.getPackagePriceRange();
                     this.getMealList();
                 },0)
+            }
+            if(this.setInfo.isUniversal == 0){
+                this.isSelectStore = true;
+            }else{
+                this.isSelectStore = false;
             }
         },
         filters:{
@@ -397,6 +434,10 @@
                 }    
                 .input-container{
                     margin-top:0.43rem;
+                }
+                .select-store{
+                    margin-top:0.43rem;
+                    box-shadow:0px 1px 3px #aaa;
                 }
                 .meal-list-container{
                     margin-top:0.43rem;
