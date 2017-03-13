@@ -123,6 +123,7 @@
                         this.cityInfo.lng = data.result.location.lng;
                     }
                     this.getStoreList();
+                    this.cityInfo = {};
                 })
             },
             getCityList:function(callback){
