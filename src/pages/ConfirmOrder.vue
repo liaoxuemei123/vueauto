@@ -115,9 +115,6 @@
             }
         },
         computed:{
-            'expirationDateTimestamp':function(){
-
-            },
             ...mapState([
                 'packageInfo'
             ])
