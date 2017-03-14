@@ -111,7 +111,7 @@
     export default {
         data () {
             return {
-                sure:false
+                sure:true
             }
         },
         computed:{
@@ -159,7 +159,6 @@
             }
         },
         activated:function(){
-            console.log(this.packageInfo);
         },
         filters:{
             universalFilter:function(val){
