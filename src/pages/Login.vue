@@ -4,8 +4,8 @@
 		<nav-bar 
             title="长安通行证登录"
         />
-        <div class="page-content">
-           <div class="person-picture"></div>
+        <div class="page-content" :style="{'background-image':'url('+require('../assets/bg.png')+')'}">
+           <div class="person-picture" :style="{'background-image':'url('+require('../assets/person-picture.png')+')'}"></div>
            <div class="form-group">
                 <img src="../assets/user-name.png" class="name-picture">
                 <input type="text" placeholder="长安商城用户名" class="user-name" v-model="tel">
@@ -71,13 +71,11 @@
         .page-content{
             height:100%;
             overflow: auto;
-            background-image: url(../assets/bg.png);
             background-position: center center;
             background-size: 100% 100%;
             .person-picture{
             	/*border:solid;*/
             	height:1.546rem;
-            	background-image: url(../assets/person-picture.png);
             	background-repeat: no-repeat;
             	background-size: 10%;
             	background-position: center center;

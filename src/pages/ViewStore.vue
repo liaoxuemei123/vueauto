@@ -51,7 +51,6 @@
     import Tool from '../utils/Tool';
     import { mapState } from 'vuex';
     import { Indicator, Toast } from 'mint-ui';
-    import cityList from '../js/citylist';
     const defaultI = 1;
     export default {
         data () {
