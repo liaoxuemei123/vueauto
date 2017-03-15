@@ -123,7 +123,7 @@
                     bottom:0rem;
                     display: block;
                     content: "";
-                    height: 20px;
+                    height: 10px;
                     background: #ffffff;
                     background-image: -webkit-gradient(linear,50% 0,0 100%, from(transparent), color-stop(.5,transparent), color-stop(.5,#EFEFEE), to(#EFEFEE) ), -webkit-gradient(linear,50% 0,100% 100%, from(transparent), color-stop(.5,transparent), color-stop(.5,#efefef), to(#efefef) );
                     background-size: 12px 5px;

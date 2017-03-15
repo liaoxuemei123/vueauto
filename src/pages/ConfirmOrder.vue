@@ -228,6 +228,10 @@
                             color:#fc4c1d;
                             font-size:0.54rem;
                         }
+                        .set-des1{
+                            overflow: auto;
+                            white-space: nowrap;
+                        }
                         .set-des2{
                             color:#fc4c1d;
                         }

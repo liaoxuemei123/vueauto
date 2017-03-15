@@ -14,7 +14,7 @@
                     <i class="iconfont icon-down" v-else="cityShow"></i>
                 </div>
                 <div class="store-list-container">
-                    <div class="container-content" flex="dir:top box:last">
+                    <div class="container-content" flex="dir:top">
                         <div class="overflow-container">
                             <div class="store-list">
                                 <div class="store-item" v-for="(item, index) in storelist">
@@ -51,7 +51,6 @@
     import Tool from '../utils/Tool';
     import { mapState } from 'vuex';
     import { Indicator, Toast } from 'mint-ui';
-    const defaultI = 1;
     export default {
         data () {
             return {
@@ -61,15 +60,15 @@
                 citylist:[
                     {
                         flex:1,
-                        defaultIndex:defaultI,
-                        values:Object.keys(cityList),
+                        defaultIndex:0,
+                        values:[],
                         className:'province',
                     },{
                         divider:true,
                         content:'-'
                     },{
                         flex:1,
-                        values:Object.keys(cityList[Object.keys(cityList)[defaultI]]),
+                        values:[],
                         className:'city'
                     }
                 ],
@@ -117,7 +116,7 @@
                 this.selectedCity = this.cityInfo.province + ' ' + this.cityInfo.city;
                 this.cityShow = false;
                 Tool.getLocation(this.selectedCity,(data)=>{
-                    if(data.result.location){
+                    if(data.result && data.result.location){
                         this.cityInfo.lat = data.result.location.lat;
                         this.cityInfo.lng = data.result.location.lng;
                     }

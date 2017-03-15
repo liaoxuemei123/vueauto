@@ -149,7 +149,7 @@
                 this.selectedCity = this.cityInfo.province + ' ' + this.cityInfo.city;
                 this.cityShow = false;
                 Tool.getLocation(this.selectedCity,(data)=>{
-                    if(data.result.location){
+                    if(data.result && data.result.location){
                         this.cityInfo.lat = data.result.location.lat;
                         this.cityInfo.lng = data.result.location.lng;
                     }

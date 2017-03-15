@@ -245,6 +245,7 @@
             },
         },
         activated:function(){
+            console.log(this.setInfo);
             this.setInfo = this.$route.query;
             this.setInfo.validate = new Date().getTime();
             if(this.packageInfo.reset){
@@ -274,7 +275,8 @@
                 return '3年'
             },
             universalFilter:function(val){
-                if(val){
+                if(val != 0){
+                    console.log(val);
                     return '全国服务中心通用'
                 }else{
                     return '指定服务中心使用'
