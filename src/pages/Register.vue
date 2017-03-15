@@ -102,7 +102,7 @@
 				}
 				if(this.password != this.pwd || !this.password || !this.pwd){
 					Toast({
-                        message:'两次输入密码不一致',
+                        message:'两次输入密码不一致或输入为空',
                         duration:1000,
                     });
                     return false;

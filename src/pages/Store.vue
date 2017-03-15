@@ -133,8 +133,8 @@
             },
             onCityChange:function(picker,values){
                 if(values[0]&&values[1]){
-                    this.cityInfo.province = values[1].name;
-                    this.cityInfo.city = values[0].name;
+                    this.cityInfo.province = values[0].name;
+                    this.cityInfo.city = values[1].name;
                     this.cityInfo.code = values[1].id;
                     picker.setSlotValues(1,this.cityData.citys[values[0].index]);
                 }

@@ -3,7 +3,8 @@
  */
 import { Indicator, Toast } from 'mint-ui'
 const Tool = {};
-const target = 'http://10.17.5.128:8080/maintenance-plug/app/';//默认的远程服务器地址
+//const target = 'http://10.17.5.128:8080/maintenance-plug/app/';//测试环境地址
+const target = 'http://192.168.191.2:8080/anan-management/app/';
 const CLOSE_NETWORK = false;//在本地调试时关闭网络，只调整静态页面
 
 var requestPool = [];//请求池
