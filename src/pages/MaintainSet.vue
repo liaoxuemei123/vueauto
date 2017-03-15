@@ -2,9 +2,10 @@
     <div class="page-container">
         <div class="maintainset-page page" flex="dir:top box:first">
             <select-nav 
-                placeholder="搜索套餐"
+                placeholder="搜索车型"
                 :onDropDown="dropMenuShow"
                 :value="pickerModel"
+                :onInput="onSearch.bind(this)"
             />
             <div class="page-content">
                 <!--<div class="up-title title">
@@ -39,6 +40,16 @@
                         </div>
                     </div>
                 </transition>
+                <transition name="fade">
+                    <div class="search-down-list" v-if="searchShow">
+                        <div class="match-list">
+                            <div class="match-item" v-for="(item,index) in matchList" @click="selectMacth(item)">
+                                {{item.name}}
+                            </div>
+                        </div>
+                    </div>
+                </transition>
+
             </div>
         </div>
     </div>
@@ -75,6 +86,17 @@
                 carModel:{},
                 carShow:false,
                 pickerModel:'',
+                searchShow:false,
+                matchList:[
+                    {
+                        name:'CS75 1.5T',
+                        id:1,
+                    },
+                    {
+                        name:'CS75 1.0T',
+                        id:1,
+                    }
+                ],
             }
         },
         components:{
@@ -116,6 +138,19 @@
             },
             dropMenuShow:function(){
                 this.carShow = !this.carShow ;
+                this.searchShow = false;
+            },
+            onSearch:function(e){
+                if(!$(e.target).is(":focus")) return; 
+                if($(e.target).val()){
+                    this.searchShow = true;
+                    this.carShow = false;
+                }else{
+                    this.searchShow = false;
+                }
+            },
+            selectMacth:function(item){
+
             },
             getCarList:function(callback){
                 Tool.get('queryCarList',{},(data)=>{
@@ -195,6 +230,22 @@
                     }
                     .sure{
                         padding-right:1.5rem;
+                    }
+                }
+            }
+            .search-down-list{
+                position:absolute;
+                top:0rem;
+                width:100%;
+                background-color:#fff;
+                padding:0.5rem 0rem;
+                .match-list{
+                    padding:0 5%;
+                    .match-item{
+                        line-height:1.5rem;
+                        & + div{
+                            border-top:1px solid #efefef;
+                        }
                     }
                 }
             }

@@ -23,6 +23,7 @@ export default {
 	},
 	created:function(){
 		var self = this;
+		//this.$router.push({name:'maintainset'});
 		// var geolocation = new BMap.Geolocation();
         // var gc = new BMap.Geocoder();
         // geolocation.getCurrentPosition(function(position){
