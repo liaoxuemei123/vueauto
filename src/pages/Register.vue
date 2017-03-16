@@ -107,6 +107,13 @@
                     });
                     return false;
 				}
+				if(!(/^(?=.*[a-zA-Z]){8,16}(?=.*[0-9]){8,16}.{8,16}$/.test(this.password))){
+					Toast({
+                        message:'密码应为8-16的字符或数字',
+                        duration:1000,
+                    });
+                    return false;
+				}
 				Tool.post('registerCode',{
 					mobile:this.tel,
 					code:this.smsCode,
@@ -118,7 +125,7 @@
 							duration:1000,
 						});
 						Tool.localItem("userInfo",data.data);
-						this.$router.push({name:'maintainset'})
+						this.$router.go(-2);
 					}else{
 						Toast({
 							message:data.msg,

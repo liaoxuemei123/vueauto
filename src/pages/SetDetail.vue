@@ -41,6 +41,7 @@
                             <inp-com title="服务中心" :value="packageInfo.storeInfo.storeName" :onClick="goStore" :readonly="true" :placeholder="storeTip" :rightArrow="true" />
                         </div>
                     </div>
+                    <div class="tips" v-if="setInfo.isUniversal == 1">提示：请查看可以使用的服务中心</div>
                     <!--<div class="input-container">
                         <inp-com
                             title="套餐机油选择"
@@ -434,6 +435,11 @@
                 }    
                 .input-container{
                     margin-top:0.43rem;
+                }
+                .tips{
+                    margin: 0.5rem 0.5rem;
+                    color: #fc4c1d;
+                    font-size: 0.51rem;
                 }
                 .select-store{
                     margin-top:0.43rem;

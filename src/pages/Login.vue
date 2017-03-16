@@ -37,7 +37,7 @@
 		},
 		methods:{
 			register:function(){
-				this.$router.back();
+				this.$router.push({name:'register'});
 			},
 			login:function(){
 				Tool.post('loginCode',{
@@ -50,7 +50,7 @@
 							message:data.msg
 						})
 						Tool.localItem("userInfo",data.data)
-						this.$router.push({name:'maintainset'});
+						this.$router.back();
 					}else{
 						Toast({
 							duration:1000,

@@ -7,6 +7,9 @@
             <input :type="type" :placeholder="placeholder" :value="value" @input="onInput"/>
             <i class="iconfont icon-little-arrow" @click="onDropDown"></i>
         </div>
+        <div class="right-button button" @click="goOrder">
+            <i class="iconfont icon-order"></i>
+        </div>
     </div>
 </template>
 <script>
@@ -45,6 +48,9 @@
             goBack:function(){
                 this.$router.go(-1);
             },
+            goOrder:function(){
+                this.$router.push({name:'myorder'})
+            }
         }
     }
 </script>
@@ -72,12 +78,11 @@
             line-height: 2.1rem;
             width:90%;
             overflow:hidden;
-            margin-right:0.5rem;
             position:relative;
             z-index:1;
             input{
                 font-family: "Microsoft YaHei";
-                width:90%;
+                width:88%;
                 padding:0.32rem 0.64rem;
                 border:none;
                 border-radius: 0.2rem;
@@ -89,7 +94,7 @@
                 position:absolute;
                 z-index:2;
                 top:0;
-                right:0.1rem;
+                right:0.3rem;
             }
         }
     }
