@@ -7,9 +7,6 @@ const Tool = {};
 //const target = 'http://192.168.191.2:8080/maintenance-plug/app/';
 const target = 'http://www.dajiankangyangsheng.com/maintenance-plug/app/';//公网测试环境
 const CLOSE_NETWORK = false;//在本地调试时关闭网络，只调整静态页面
-
-Tool.address = 'http://www.dajiankangyangsheng.com/ubiweb';
-
 var requestPool = [];//请求池
 
 Tool.ajax = function(mySetting){
@@ -310,6 +307,72 @@ Tool.routerEnter = function(to,from,next){//确定用户是否已经登陆
     }else{
         //next();
         next({name:'login'});
+    }
+}
+Tool.urldecode = function(str, charset, callback) {
+    var script = document.createElement('script');
+    script.id = '_urlDecodeFn_';
+    window._urlDecodeFn_ = callback;
+    if (document.all) {
+        if(navigator.userAgent.indexOf('MSIE 8')>-1){
+            //对于ie8做特别hack
+            var link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.charset = charset;
+            link.href = 'data:text/plain;charset=' + charset + ',%23_decode_hidden_el_for_test_%7Bbackground-image%3Aurl(' + str + ')%7D';
+            alert(link.href);
+            document.body.appendChild(link);
+            //然后创建一个隐藏的div，应用这个样式
+            var div = document.createElement('div');
+            div.id = '_decode_hidden_el_for_test_';
+            div.style.display = 'none';
+            document.body.appendChild(div);
+            setTimeout(function(){
+                callback(document.getElementById('_decode_hidden_el_for_test_').currentStyle['backgroundImage'].match(/\("data\:text\/(.+)"\)/)[1]);
+                link.parentNode.removeChild(link);
+                div.parentNode.removeChild(div);
+            }, 300)
+        }else{
+            //隐藏iframe截获提交的字符串
+            if (!window['_urlDecode_iframe_']) {
+                var iframe;
+                if(document.all){
+                    try{
+                        iframe = document.createElement('<iframe name="_urlDecode_iframe_"></iframe>');
+                    }catch(e){
+                        iframe = document.createElement('iframe');
+                        //iframe.name = '_urlDecode_iframe_';
+                        iframe.setAttribute('name', '_urlDecode_iframe_');
+                    }
+                }else{
+                    iframe = document.createElement('iframe');
+                    //iframe.name = '_urlDecode_iframe_';
+                    iframe.setAttribute('name', '_urlDecode_iframe_');
+                }
+                //iframe.name = '_urlDecode_iframe_';
+                iframe.setAttribute('name', '_urlDecode_iframe_');
+                iframe.style.display = 'none';
+                iframe.width = "0";
+                iframe.height = "0";
+                iframe.scrolling = "no";
+                iframe.allowtransparency = "true";
+                iframe.frameborder = "0";
+                iframe.src = 'about:blank';
+                document.body.appendChild(iframe);
+            }
+            //ie下需要指明charset，然后src=datauri才可以
+            iframe.contentWindow.document.write('<html><scrip' + 't charset="gbk" src="data:text/javascript;charset=gbk,parent._decodeStr_=\'' + str + '\'"></s'+'cript></html>');
+            setTimeout(function() {
+                callback(_decodeStr_);
+                iframe.parentNode.removeChild(iframe);
+            }, 300)
+        }
+    } else {
+        var src = 'data:text/javascript;charset=' + charset + ',_urlDecodeFn_("' + str + '");';
+        src += 'document.getElementById("_urlDecodeFn_").parentNode.removeChild(document.getElementById("_urlDecodeFn_"));';
+        script.src = src;
+        document.body.appendChild(script);
     }
 }
 

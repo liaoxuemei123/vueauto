@@ -8,11 +8,11 @@
                 <div class="order-info" flex="dir:top box:mean">
                     <div class="order-name" flex="dir:left cross:center">
                         <span class="title">订单名称：</span>
-                        <span class="value">{{packageInfo.setInfo.packageName}}</span>
+                        <span class="value">{{orderInfo.packageName}}</span>
                     </div>
                     <div class="order-price" flex="dir:left cross:center">
                         <span class="title">订单金额：</span>
-                        <span class="value">{{packageInfo.setDetail.price}}</span>
+                        <span class="value">{{orderInfo.orderPrice}}</span>
                     </div>
                 </div>
                 <div class="payment-mode">
@@ -58,7 +58,7 @@
                 </div>
             </div>
             <div class="button-control">
-                <div class="sure-pay">
+                <div class="sure-pay" @click="pay">
                     确认支付
                 </div>
             </div>
@@ -73,6 +73,11 @@
         data () {
             return {
                 paymentMode:1,
+                orderNo:'',
+                orderInfo:{
+                    packageName:'',
+                    orderPrice:'',
+                }
             }
         },
         computed:{
@@ -80,17 +85,119 @@
                 'packageInfo'
             ])
         },
+        methods:{
+            pay:function(){
+                if(this.paymentMode == 1){
+                    window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxdb8e2be3d93b6c3f&redirect_uri=http://www.dajiankangyangsheng.com%2Fubiweb%2F%23%2Forderpay&response_type=code&scope=snsapi_base&state=" + this.orderNo + ',' + this.orderInfo.packageName + "#wechat_redirect";
+                }
+            }
+        },
         components:{
             NavBar,
+        },
+        activated:function(){
+            var self = this;
+            if(this.$route.params && this.$route.params.orderNo){
+                this.orderNo = this.$route.params.orderNo;
+                this.orderInfo.packageName = this.packageInfo.setInfo.packageName;
+                this.orderInfo.orderPrice = this.packageInfo.setDetail.price;
+            }
+            var params = window.location.href.split("?")[1];
+            if(params){
+                params = params.split('#')[0];
+                var items = params.split('&');
+                var code = '';
+                var orderNo = '';
+                var packageName = '';
+                for(var i=0;i<items.length;i++){
+                    var key = items[i].split("=")[0];
+                    var value = items[i].split("=")[1];
+                    if(key == "code"){
+                        code = value;
+                    }
+                    if(key == "state"){
+                        Tool.urldecode(value,'utf-8',(str)=>{
+                            var temp =  str.split(',')
+                            orderNo = temp[0];
+                            packageName = temp[1];
+                            if(orderNo && packageName){
+                                Tool.get('AaPackageOrderDetail',{orderNo},(data)=>{
+                                    if(data.code == 200){
+                                        this.orderInfo = data.data.PackageOrder;
+                                        this.orderInfo.packageName = packageName;
+                                        if(code){
+                                            Tool.get('getOpenId',{code},(data) => {
+                                                alert(data.code);
+                                                if(data.code == 200){
+                                                    var openid = data.data.accessToken.openid;
+                                                    var payData = {
+                                                        total_fee:( this.orderInfo.orderPrice - 0 ) * 100,
+                                                        body:'lll',
+                                                        openid:openid,
+                                                        orderId:orderNo
+                                                    }
+                                                    Tool.get('packageOrderPay',payData,(data)=>{
+                                                        alert("oo");
+                                                        if(data.code == 200){
+                                                            function onBridgeReady(){
+                                                                WeixinJSBridge.invoke(
+                                                                'getBrandWCPayRequest', {
+                                                                        "appId":data.data.payRequestVo.appId,
+                                                                        "timeStamp":data.data.payRequestVo.timeStamp,     
+                                                                        "nonceStr":data.data.payRequestVo.nonceStr,
+                                                                        "package":"prepay_id=" + data.data.payRequestVo.prepay_id,   
+                                                                        "signType":"MD5",
+                                                                        "paySign":data.data.payRequestVo.paySign, 
+                                                                    },
+                                                                    function(res){     
+                                                                        if(res.err_msg == "get_brand_wcpay_request:ok" ) {
+                                                                            Tool.get('payCallback',{"out_trade_no":orderNo,"result_code":"SUCCESS"},(data)=>{
+                                                                                if(data.code == 200){
+                                                                                    alert("callback");
+                                                                                    Toast({
+                                                                                        message:'支付成功',
+                                                                                        duration:1000,
+                                                                                    })
+                                                                                    self.$router.push({name:'maintainset'});
+                                                                                }
+                                                                            })
+                                                                        }
+                                                                    }
+                                                                );
+                                                            }
+                                                            if (typeof WeixinJSBridge == "undefined"){
+                                                                if( document.addEventListener ){
+                                                                    document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+                                                                }else if (document.attachEvent){
+                                                                    document.attachEvent('WeixinJSBridgeReady', onBridgeReady); 
+                                                                    document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+                                                                }
+                                                            }else{
+                                                                onBridgeReady();
+                                                            }
+                                                        }else{
+                                                            Toast({
+                                                                message:'支付参数出错',
+                                                                duration:1000,
+                                                            })
+                                                        }
+                                                    })
+                                                }
+                                            })
+                                        }
+                                    }
+                                })
+                            }
+                        });
+                    }
+                }
+            }
         },
         beforeRouteLeave:function(to,from,next){
             if(to.name == 'confirmorder'){
                 next({name:'maintainset'});//防止2次下单
             }
             next();
-        },
-        activated:function(){
-
         },
         beforeRouteEnter:(to,from,next)=>{
             Tool.routerEnter(to,from,next)

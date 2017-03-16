@@ -150,8 +150,7 @@
                 },(data)=>{
                     Toast(data.msg);
                     if(data.code == 200){
-                        window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx4fc4e716590caa3e&redirect_uri=" + Tool.address + "%2f%23%2forderpay&response_type=code&scope=snsapi_base&state=" + data + "#wechat_redirect";
-                        //this.$router.push({name:'orderpay',params:{orderNo:data}});
+                        this.$router.push({name:'orderpay',params:{orderNo:data.data}});
                     }
                 })
             }
