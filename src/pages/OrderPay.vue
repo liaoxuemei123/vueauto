@@ -8,11 +8,11 @@
                 <div class="order-info" flex="dir:top box:mean">
                     <div class="order-name" flex="dir:left cross:center">
                         <span class="title">订单名称：</span>
-                        <span class="value">{{order.setName}}</span>
+                        <span class="value">{{packageInfo.setInfo.packageName}}</span>
                     </div>
                     <div class="order-price" flex="dir:left cross:center">
                         <span class="title">订单金额：</span>
-                        <span class="value">{{order.price}}</span>
+                        <span class="value">{{packageInfo.setDetail.price}}</span>
                     </div>
                 </div>
                 <div class="payment-mode">
@@ -68,15 +68,17 @@
 <script>
     import NavBar from '../components/NavBar';
     import Tool from '../utils/Tool';
+    import { mapState } from 'vuex';
     export default {
         data () {
             return {
-                order:{
-                    setName:"D套餐（买三送一）",
-                    price:450,
-                },
                 paymentMode:1,
             }
+        },
+        computed:{
+            ...mapState([
+                'packageInfo'
+            ])
         },
         components:{
             NavBar,
@@ -86,6 +88,9 @@
                 next({name:'maintainset'});//防止2次下单
             }
             next();
+        },
+        activated:function(){
+
         },
         beforeRouteEnter:(to,from,next)=>{
             Tool.routerEnter(to,from,next)

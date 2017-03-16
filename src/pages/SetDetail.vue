@@ -21,6 +21,7 @@
                             </div>
                             <div class="line" flex="dir:left cross:center">
                                 <span class="price-range" v-if="setDetail.price"><span class="doller">￥</span>{{setDetail.price}}</span>
+                                <span class="origin-price" v-if="setDetail.originPrice"><span class="doller">￥</span>{{setDetail.originPrice}}</span>
                                 <span class="price-range" v-else="setDetail.price"><span class="doller">￥</span>{{priceRange.minprice}}-{{priceRange.maxprice}}</span>
                             </div>
                         </div>
@@ -207,6 +208,7 @@
                 var discount = (this.setInfo.discount - 0)/10;
                 var univalent = this.setMealList[this.selectMeal].unitPrice;
                 this.setDetail.price = ( number * discount * univalent ).toFixed(2);
+                this.setDetail.originPrice = ( number * univalent ).toFixed(2);
                 this.setDetail.mealId = this.setMealList[this.selectMeal].id;
                 this.setDetail.mealName = this.setMealList[this.selectMeal].engineOil + this.setMealList[this.selectMeal].pieceNumber;
                 this.popupVisible = false;
@@ -427,6 +429,14 @@
                             color:#fd3c2d;
                             font-size:0.67rem;
                             font-weight:bold;
+                            .doller{
+                                font-size:0.51rem;
+                            }
+                        }
+                        .origin-price{
+                            color:#888;
+                            text-decoration: line-through;
+                            margin-left:0.3rem;
                             .doller{
                                 font-size:0.51rem;
                             }

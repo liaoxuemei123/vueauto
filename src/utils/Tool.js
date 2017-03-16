@@ -8,6 +8,8 @@ const Tool = {};
 const target = 'http://www.dajiankangyangsheng.com/maintenance-plug/app/';//公网测试环境
 const CLOSE_NETWORK = false;//在本地调试时关闭网络，只调整静态页面
 
+Tool.address = 'http://www.dajiankangyangsheng.com/ubiweb';
+
 var requestPool = [];//请求池
 
 Tool.ajax = function(mySetting){

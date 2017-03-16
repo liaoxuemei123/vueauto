@@ -40,6 +40,20 @@
 				this.$router.push({name:'register'});
 			},
 			login:function(){
+				if(!this.tel){
+					Toast({
+						duration:1000,
+						message:'请输入用户名'
+					})
+					return false;
+				}
+				if(!this.password){
+					Toast({
+						duration:1000,
+						message:'请输入密码'
+					})
+					return false;
+				}
 				Tool.post('loginCode',{
 					mobile:this.tel,
 					password:this.password

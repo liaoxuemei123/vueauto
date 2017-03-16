@@ -44,7 +44,7 @@
                     <div class="search-down-list" v-if="searchShow">
                         <div class="match-list">
                             <div class="match-item" v-for="(item,index) in matchList" @click="selectMacth(item)">
-                                {{item.name}}
+                                {{item.modelName}}
                             </div>
                         </div>
                     </div>
@@ -87,16 +87,8 @@
                 carShow:false,
                 pickerModel:'',
                 searchShow:false,
-                matchList:[
-                    {
-                        name:'CS75 1.5T',
-                        id:1,
-                    },
-                    {
-                        name:'CS75 1.0T',
-                        id:1,
-                    }
-                ],
+                carSelectList:[],
+                matchList:[],
             }
         },
         components:{
@@ -145,16 +137,30 @@
                 var text = $(e.target).val()
                 this.pickerModel = text;
                 if(text){
-                    setTimeout(()=>{
-                        this.searchShow = true;
-                        this.carShow = false;
-                    },0);
+                    this.matchList = [];
+                    for(var i = 0; i<this.carSelectList.length;i++){
+                        if(this.matchList.length > 4) break;
+                        if(this.carSelectList[i].modelName.indexOf(text)>=0){
+                            this.matchList.push(this.carSelectList[i]);
+                        }
+                    }
+                    if(!this.searchShow){
+                        setTimeout(()=>{
+                            this.searchShow = true;
+                            this.carShow = false;
+                        },0);
+                    }
                 }else{
                     this.searchShow = false;
                 }
             },
             selectMacth:function(item){
-
+                this.carModel.displacement = item.displacement;
+                this.carModel.vehicleModel = item.seriesName;
+                this.$store.commit('SET_PACKAGE_MODEL',this.carModel);
+                this.pickerModel = this.carModel.vehicleModel + ' ' + this.carModel.displacement;
+                this.carModel = {};
+                this.searchShow = false;
             },
             getCarList:function(callback){
                 Tool.get('queryCarList',{},(data)=>{
@@ -175,6 +181,9 @@
                     }
                     this.carData = param;
                     callback && callback();
+                })
+                Tool.get('getCarList',{},(data)=>{
+                    this.carSelectList = data.data;
                 })
             },
             initSelector:function(){
