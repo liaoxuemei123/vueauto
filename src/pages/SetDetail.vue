@@ -281,9 +281,9 @@
                 }
             }
         },
-        beforeRouteEnter:(to,from,next)=>{
-            Tool.routerEnter(to,from,next)
-        },   
+        // beforeRouteEnter:(to,from,next)=>{
+        //     Tool.routerEnter(to,from,next)
+        // },   
     }
 </script>
 <style scoped lang="less">

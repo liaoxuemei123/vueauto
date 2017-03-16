@@ -12,7 +12,7 @@
                                 {{item.label}}
                             </div>
                         </div>
-                        <div class="after" :style="{'left':( activeTab * 25 ) + 4 + '%'}"></div>
+                        <div class="after" :style="{'left':( activeTab * 33 ) + 7 + '%'}"></div>
                     </div>
                 </div>
                 <div class="order-list-container">
@@ -74,7 +74,6 @@
                     {value:0, label:'全部'},
                     {value:1, label:'待支付'},
                     {value:2, label:'已支付'},
-                    {value:3, label:'待评价'}
                 ],
                 orderList:[],
                 unpaidList:[],
@@ -278,7 +277,7 @@
                 }
                 .tab-container .after{
                     display:block;
-                    width:16%;
+                    width:20%;
                     height:2px;
                     background-color:#379df2;
                     position:absolute;

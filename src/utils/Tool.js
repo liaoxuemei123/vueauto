@@ -3,8 +3,9 @@
  */
 import { Indicator, Toast } from 'mint-ui'
 const Tool = {};
-//const target = 'http://10.17.5.128:8080/maintenance-plug/app/';//测试环境地址
-const target = 'http://192.168.191.2:8080/anan-management/app/';
+//const target = 'http://10.17.5.128:8080/maintenance-plug/app/';//内网测试环境地址
+//const target = 'http://192.168.191.2:8080/maintenance-plug/app/';
+const target = 'http://www.dajiankangyangsheng.com/maintenance-plug/app/';//公网测试环境
 const CLOSE_NETWORK = false;//在本地调试时关闭网络，只调整静态页面
 
 var requestPool = [];//请求池
@@ -187,14 +188,18 @@ Tool.get = function (pathname, data, success, error) {
  * @param {string} address 当前位置名称
  */
 Tool.getLocation = function(address,success,error){
-    var setting = {
-        url:'http://api.map.baidu.com/geocoder/v2/',
+    $.ajax({
+        url:"http://api.map.baidu.com/geocoder/v2/?address="+address+"&output=json&ak=V5qLiGqxsGZZpRt8nqUERSpA2A18MLjk",
         type:'GET',
-        data:{ak:'V5qLiGqxsGZZpRt8nqUERSpA2A18MLjk',output:'json',address:address},
-        success: success || function () { }, //请求成功执行方法
-        error: error || function () { } //请求失败执行方法
-    }
-    return Tool.ajax(setting);
+        dataType:'jsonp',
+        jsonp:'callback',
+        jsonpCallback:'jscb',
+        success:success || function(){
+        },
+        error:error || function(){
+
+        },
+    })
 }
 /**
  * 清空请求池中的所有请求

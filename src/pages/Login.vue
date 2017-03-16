@@ -37,7 +37,7 @@
 		},
 		methods:{
 			register:function(){
-				this.$router.push({name:'register'})
+				this.$router.back();
 			},
 			login:function(){
 				Tool.post('loginCode',{
@@ -121,7 +121,6 @@
             	background-color:red;
 
             }
-            
         }
     }
  </style>

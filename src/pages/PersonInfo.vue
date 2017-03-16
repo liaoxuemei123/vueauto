@@ -28,7 +28,7 @@
                     <div class="input-control">
                         <inp-com title="备注" :readonly="true" placeholder="请输入100字内留言" :rightArrow="true" />
                         <div class="text-control" flex="dir:top">
-                        <textarea rows="5" maxlength='100' placeholder="请输入预约描述" @input="updateComment"></textarea>
+                        <textarea rows="5" maxlength='100' placeholder="请输入100字内留言" @input="updateComment"></textarea>
                         <div class="show-length">
                             {{userInfo.message.length}}/100
                         </div>
