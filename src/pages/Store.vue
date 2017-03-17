@@ -99,7 +99,6 @@
             },
             getStoreList:function(name='',callback){
                 var self = this;
-                console.log(this.cityInfo.lng)
                 Tool.get('getStoreList',{
                     gpsLongitude:this.cityInfo.lng ||self.geolocation.point.lon,
                     gpsLatitude:this.cityInfo.lat || self.geolocation.point.lat,
@@ -111,7 +110,7 @@
                 })
             },
             submitStore:function(){
-                if(this.$store.getters.prepage[this.$store.getters.prepage.length-2].name == 'setdetail'){
+                if(this.$store.getters.prepage.name == 'setdetail'){
                     setTimeout(()=>{
                         var data = {};
                         data.id = this.storelist[this.select].id;

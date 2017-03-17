@@ -24,7 +24,7 @@
 <script>
 	import NavBar from '../components/NavBar';
 	import Tool from '../utils/Tool';
-	import { Toast } from 'mint-ui'
+	import { Toast } from 'mint-ui';
  	export default{
 		data (){
 			return{
@@ -37,7 +37,7 @@
 		},
 		methods:{
 			register:function(){
-				this.$router.push({name:'register'});
+				this.$router.push({name:'register',params:this.$route.params});
 			},
 			login:function(){
 				if(!this.tel){
@@ -63,8 +63,8 @@
 							duration:1000,
 							message:data.msg
 						})
-						Tool.localItem("userInfo",data.data)
-						this.$router.back();
+						Tool.localItem("userInfo",data.data);
+						this.$router.push({path:this.$route.params.to});
 					}else{
 						Toast({
 							duration:1000,
@@ -73,6 +73,9 @@
 					}
 				})
 			}
+		},
+		beforeRouteEnter:(to,from,next)=>{
+			next();
 		}
  	}
  </script>

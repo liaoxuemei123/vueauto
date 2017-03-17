@@ -31,15 +31,35 @@ router.beforeEach((to,from,next)=>{
   if(toIndex == -1){
     store.commit('SET_MODE','push');
     store.commit('PUSH_PAGE',{path:toPath,index:pageStack.length,name:toName});
+    goFoward(to,from,next);
   }else if(toIndex === -2){
     store.commit('SET_MODE','pop');
     store.commit('CLEAR_PAGE');//保证把前面的页面全部弹出页面栈
-  }else{
+    next();
+  }else if(toIndex === -3){//防止一个页面两次入栈
+    return;
+  }else{//把页面弹出栈
     store.commit('SET_MODE','pop');
     store.commit('POP_PAGE',pageStack.length - toIndex - 1);
+    goBack(to,from,next);
   }
-  next();
 })
+
+function goBack(to,from,next){
+  if(to.name == 'register'){//防止登录过后返回时回到注册页或登录页
+    router.go(-2)
+    next();
+  }else if(to.name == 'login' && from != 'register'){
+    router.go(-1)
+    next();
+  }else{
+    next();
+  }
+}
+
+function goFoward(to,from,next){
+  next();
+}
 
 function getIndex (list,path){
   if(path == '/' || !path){
@@ -47,8 +67,13 @@ function getIndex (list,path){
   }
   for(var i = 0; i < list.length; i++){
     if(path == list[i].path){
-      return i;
+      break;
     }
+  }
+  if(i == list.length-1){
+    return -3;
+  }else if(i<list.length){
+    return i;
   }
   return -1;
 }

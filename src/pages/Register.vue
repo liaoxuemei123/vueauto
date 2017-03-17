@@ -125,7 +125,7 @@
 							duration:1000,
 						});
 						Tool.localItem("userInfo",data.data);
-						this.$router.go(-2);
+						this.$router.push({path:this.$route.params.to});
 					}else{
 						Toast({
 							message:data.msg,

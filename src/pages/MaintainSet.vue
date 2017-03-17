@@ -13,7 +13,7 @@
                 </div>
                 <div class="down">
                     <div class="set-item" v-for="(item, index) in setlist.down">
-                        <set-item :item="item"  :onClick="viewDetail.bind(this,item)"/>
+                        <set-item :item="item"/>
                     </div>
                 </div>
                 <div class="down-title title">
@@ -21,7 +21,7 @@
                 </div>
                 <div class="up">
                     <div class="set-item" v-for="(item, index) in setlist.up">
-                        <set-item :item="item"  :onClick="viewDetail.bind(this,item)"/>
+                        <set-item :item="item"/>
                     </div>
                 </div>
                 <transition name="fade">
@@ -60,7 +60,6 @@
     import SelectNav from '../components/SelectNav';
     import SetItem from '../components/SetItem';
     import Tool from '../utils/Tool';
-    import { Toast } from 'mint-ui';
     const defaultI = 0;
     export default {
         data () {
@@ -98,13 +97,6 @@
             SetItem
         },
         methods:{
-            viewDetail:function(item){
-                if(this.pickerModel){
-                    this.$router.push({path:'setdetail/'+item.id,query:item});
-                }else{
-                    Toast("请选择车型");
-                }
-            },
             getPackageList:function(){
                 Tool.get('getPackageList',{},(data)=>{
                     this.setlist.up = data.data.twoup;

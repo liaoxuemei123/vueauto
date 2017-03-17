@@ -2,6 +2,9 @@
  * @author flyerjay
  */
 import { Indicator, Toast } from 'mint-ui'
+import router from '../router';
+import store from '../store';
+
 const Tool = {};
 //const target = 'http://10.17.5.128:8080/maintenance-plug/app/';//内网测试环境地址
 //const target = 'http://192.168.191.2:8080/maintenance-plug/app/';
@@ -292,6 +295,9 @@ Tool.removeObject = function(obj){
     return ;
 }
 
+/**
+ * 获取用户信息
+ */
 Tool.getUserInfo = function(key){
     var user = localStorage.getItem('userInfo');
     if(user){
@@ -300,13 +306,15 @@ Tool.getUserInfo = function(key){
         return false;
     }
 }
-
+/**
+ * 路由登录逻辑
+ */
 Tool.routerEnter = function(to,from,next){//确定用户是否已经登陆
     if(Tool.localItem('userInfo') && Tool.getUserInfo('userId')){
         next();
     }else{
-        //next();
-        next({name:'login'});
+        store.commit('POP_PAGE',1);//在进入login之前把已进栈但是没有被访问的页面清理出栈
+        next({name:'login',params:{to:to.path}});
     }
 }
 Tool.urldecode = function(str, charset, callback) {

@@ -1,5 +1,5 @@
 <template>
-    <div class="set-container" @click="onClick" flex="dir:top box:first">
+    <div class="set-container" @click="viewDetail(item)" flex="dir:top box:first">
         <div class="set-image">
             <div class="image-container">
                 <img v-lazy="item.packageImage">
@@ -17,6 +17,7 @@
     </div>
 </template>
 <script>
+    import { Toast } from 'mint-ui';
     export default {
         data () {
             return {
@@ -27,13 +28,16 @@
             item:{
                 type:Object,
                 default:{}
-            },
-            onClick:{
-                type:Function,
-                default:function(){
-                    return ;
-                }
             }
+        },
+        methods:{
+            viewDetail:function(item){
+                if(this.$parent.pickerModel){
+                    this.$router.push({path:'setdetail/'+item.id,query:item});
+                }else{
+                    Toast("请选择车型");
+                }
+            },
         },
         filters:{
             universalFilter:function(val){

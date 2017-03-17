@@ -13,7 +13,7 @@
                     <i class="iconfont icon-up" v-if="cityShow"></i>
                     <i class="iconfont icon-down" v-else="cityShow"></i>
                 </div>
-                <div class="store-list-container">
+                <div class="store-list-container" flex="dir:top">
                     <div class="container-content" flex="dir:top">
                         <div class="overflow-container">
                             <div class="store-list">
@@ -206,6 +206,10 @@
                 background:transparent;
                 .container-content{
                     height:100%;
+                    -webkit-box-flex: 1;
+                    flex-grow: 1;
+                    flex-shrink: 1;
+                    flex-basis: 0;
                     .overflow-container{
                         overflow:auto;
                         .store-list{

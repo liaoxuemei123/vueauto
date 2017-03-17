@@ -102,7 +102,7 @@ const store = new Vuex.Store({
             return state.subscribeInfo;
         },
         prepage:function(state,getters){
-            return state.pageStack;
+            return state.pageStack[state.pageStack.length - 2];
         }
     }
 
