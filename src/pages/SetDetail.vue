@@ -16,7 +16,7 @@
                             <div class="line" flex="dir:left cross:center">
                                 <span class="car-type">{{packageInfo.modelInfo.seriesName}}</span>
                                 <span class="des1">{{setInfo.packageName}}</span>
-                                <span class="des2">({{setInfo.beginVehicleAge|ageFilter}})</span>
+                                <span class="des2">({{setInfo.isUniversal|universalFilter}})</span>
                             </div>
                             <div class="line" flex="dir:left cross:center">
                                 <span class="price-range" v-if="setDetail.price"><span class="doller">￥</span>{{setDetail.price}}</span>
@@ -80,7 +80,7 @@
                 </div>
                 <div class="button-control">
                     <div class="next-button" @click="nextPage">
-                        下一步
+                        立即购买
                     </div>
                 </div>
             </div>
@@ -183,15 +183,6 @@
                 this.$store.commit('SET_RESET_FLAS',false);
                 this.$router.push({name:'personinfo'});
             },
-            // popOilSelect:function(){
-            //     if(this.setMealList.length < 1){
-            //         this.getMealList(()=>{
-            //             this.popupVisible = true;
-            //         })
-            //     }else{
-            //         this.popupVisible = true;
-            //     }
-            // },
             getMealList:function(callback){
                 Tool.get('getSetMealList',{
                     vehicleModel:this.packageInfo.modelInfo.vehicleModel || '',
@@ -283,9 +274,6 @@
                 }
             }
         },
-        // beforeRouteEnter:(to,from,next)=>{
-        //     Tool.routerEnter(to,from,next)
-        // },   
     }
 </script>
 <style scoped lang="less">

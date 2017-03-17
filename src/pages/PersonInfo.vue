@@ -26,7 +26,7 @@
                         <div class="button" flex="dir:left cross:center main:right"><span>获取验证码</span></div>
                     </div>
                     <div class="input-control">
-                        <inp-com title="备注" :readonly="true" placeholder="请输入100字内留言" :rightArrow="true" />
+                        <inp-com title="备注" :readonly="true" :rightArrow="true" />
                         <div class="text-control" flex="dir:top">
                         <textarea rows="5" maxlength='100' placeholder="请输入100字内留言" @input="updateComment"></textarea>
                         <div class="show-length">
