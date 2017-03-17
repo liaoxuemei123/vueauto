@@ -69,6 +69,7 @@
     import NavBar from '../components/NavBar';
     import Tool from '../utils/Tool';
     import { mapState } from 'vuex';
+    import { Toast } from 'mint-ui';
     export default {
         data () {
             return {
@@ -127,7 +128,6 @@
                                         this.orderInfo.packageName = packageName;
                                         if(code){
                                             Tool.get('getOpenId',{code},(data) => {
-                                                alert(data.code);
                                                 if(data.code == 200){
                                                     var openid = data.data.accessToken.openid;
                                                     var payData = {
@@ -137,7 +137,6 @@
                                                         orderId:orderNo
                                                     }
                                                     Tool.get('packageOrderPay',payData,(data)=>{
-                                                        alert("oo");
                                                         if(data.code == 200){
                                                             function onBridgeReady(){
                                                                 WeixinJSBridge.invoke(
@@ -153,7 +152,6 @@
                                                                         if(res.err_msg == "get_brand_wcpay_request:ok" ) {
                                                                             Tool.get('payCallback',{"out_trade_no":orderNo,"result_code":"SUCCESS"},(data)=>{
                                                                                 if(data.code == 200){
-                                                                                    alert("callback");
                                                                                     Toast({
                                                                                         message:'支付成功',
                                                                                         duration:1000,

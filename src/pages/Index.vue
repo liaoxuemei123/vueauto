@@ -16,6 +16,8 @@
                     date-format="{value}日"
                     hour-format="{value}时"
                     minute-format="{value}分"
+                    :startDate="startDate"
+                    :endDate="endDate"
                     >
                 </mt-datetime-picker>
                 <div class="input-control">
@@ -51,7 +53,7 @@
                     <inp-com title="联系电话" type="number" icon="icon-phone" placeholder="请输入联系电话" :onBlur="updatePhone.bind(this)" :value="subscribeInfo.phone"/>
                 </div>
                 <div class="input-control" flex="dir:top">
-                    <inp-com title="预约描述" :onClick="expandDes" placeholder="预约描述..." type="text" icon="icon-comment" :readonly='true'/>
+                    <inp-com title="预约描述" :onClick="expandDes" type="text" icon="icon-comment" :readonly='true'/>
                     <div class="text-control" flex="dir:top"  v-if="desExpand">
                         <textarea rows="5" maxlength='100' placeholder="请输入预约描述" @input="updateDes" :value="subscribeInfo.description"></textarea>
                         <div class="show-length">
@@ -88,6 +90,13 @@
             }
         },
         computed:{
+            'startDate':function(){
+                return new Date();
+            },
+            'endDate':function(){
+                var year = new Date().getFullYear();
+                return new Date(year+1 + '-12-31');
+            },
             ...mapState([
                 'subscribeInfo',
             ])

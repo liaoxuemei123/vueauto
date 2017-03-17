@@ -11,16 +11,16 @@
                 <div class="up-title title">
                     <span>全国服务中心通用</span>
                 </div>
-                <div class="up">
-                    <div class="set-item" v-for="(item, index) in setlist.up">
+                <div class="down">
+                    <div class="set-item" v-for="(item, index) in setlist.down">
                         <set-item :item="item"  :onClick="viewDetail.bind(this,item)"/>
                     </div>
                 </div>
                 <div class="down-title title">
-                    <span>指定服务商使用</span>
+                    <span>指定服务中心使用</span>
                 </div>
-                <div class="down">
-                    <div class="set-item" v-for="(item, index) in setlist.down">
+                <div class="up">
+                    <div class="set-item" v-for="(item, index) in setlist.up">
                         <set-item :item="item"  :onClick="viewDetail.bind(this,item)"/>
                     </div>
                 </div>
@@ -29,7 +29,9 @@
                 </transition>
                 <transition name="slide-down">
                     <div class="down-list" v-if="carShow">
-                        <mt-picker :slots="carlist" @change="onCarChange" valueKey="name"></mt-picker>
+                        <div class="down-container">
+                            <mt-picker :slots="carlist" @change="onCarChange" valueKey="name"></mt-picker>
+                        </div>
                         <div class="toolbar" flex="dir:left box:mean">
                             <div class="cancel" @click="carShow=false" flex="dir:left cross:center main:left">
                                 取消
@@ -234,6 +236,9 @@
                 top:0rem;
                 width:100%;
                 background-color:#fff;
+                .down-container{
+                    padding:0 3rem;
+                }
                 .toolbar{
                     height:1.5rem;
                     font-size:0.67rem;

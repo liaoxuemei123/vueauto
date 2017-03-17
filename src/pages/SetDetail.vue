@@ -4,7 +4,6 @@
             <nav-bar
                 title="套餐详情"
             />
-            
             <div class="page-content" flex="dir:top box:last">
                 <div class="detail-container">
                     <div class="set-container">
