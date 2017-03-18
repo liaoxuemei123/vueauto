@@ -9,7 +9,7 @@
             <div class="page-content">
                 <div class="input-container">
                     <div class="input-control">
-                        <inp-com title="车架号" :value="userInfo.vin" placeholder="输入车架号" :rightArrow="true" :onBlur="updateVIN.bind(this)"/>
+                        <inp-com title="车架号" :value="userInfo.vin" placeholder="输入车架号" maxlength='17' :rightArrow="true" :onBlur="updateVIN.bind(this)"/>
                     </div>
                     <div class="input-control">
                         <inp-com title="发动机号后六位" :value="userInfo.motorId" placeholder="输入发动机号后六位" :onBlur="updateMotorId.bind(this)" :maxlength="'6'" :rightArrow="true" />
@@ -22,7 +22,7 @@
                     </div>
                     <div class="input-control-custom" flex="dir:left cross:center box:justify">
                         <div class="label">验证码</div>
-                        <input type="text">
+                        <input type="number">
                         <div class="button" flex="dir:left cross:center main:right"><span>获取验证码</span></div>
                     </div>
                     <div class="input-control">
@@ -186,6 +186,7 @@
                         outline:none;
                         border:none;
                         font-size:0.58rem;
+                        text-align:right;
                     }
                     .button{
                         width:4rem;

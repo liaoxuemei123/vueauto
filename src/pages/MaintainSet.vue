@@ -24,6 +24,9 @@
                         <set-item :item="item"/>
                     </div>
                 </div>
+                <div class="down-title title" @click="goOrder">
+                    <span>查看订单</span>
+                </div>
                 <transition name="fade">
                     <div class="down-list-mask" v-if="carShow" @click="carShow=false"></div>
                 </transition>
@@ -43,7 +46,7 @@
                     </div>
                 </transition>
                 <transition name="fade">
-                    <div class="search-down-list" v-if="searchShow">
+                    <div class="search-down-list" v-if="searchShow && matchList.length > 0">
                         <div class="match-list">
                             <div class="match-item" v-for="(item,index) in matchList" @click="selectMacth(item)">
                                 {{item.modelName}}
@@ -185,6 +188,9 @@
                     this.carlist[0].values = this.carData.seriesList;
                     this.carlist[2].values = this.carData.modelList[0];
                 })
+            },
+            goOrder:function(){
+                this.$router.push({name:'myorder'});
             }
         },
         created:function(){

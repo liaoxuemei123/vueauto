@@ -18,7 +18,7 @@
                         <div class="car">车型：{{orderInfo.carType}}</div>
                         <div class="oil">机油：{{orderInfo.engineOil}}</div>
                         <div class="VIN">VIN：{{orderInfo.vin}}</div>
-                        <div class="pay-time">支付时间：{{orderInfo.createDate}}</div>
+                        <div class="pay-time" v-if='orderInfo.status == 2'>支付时间：{{orderInfo.paySuccessDate | timeFilter}}</div>
                         <div class="price">总额：{{orderInfo.orderPrice}}</div>
                     </div>
                     <div class="section">
@@ -42,6 +42,9 @@
                             <span class="evaluate" @click="goEvaluateDetail(index)" v-if="item.isEvaluate == 1">查看评价</span>
                             <span class="evaluate" @click="goEvaluate(index)" v-else="item.isEvaluate == 1">去评价</span>
                         </div>
+                    </div>
+                    <div class="no-record" v-if="useList.length == 0">
+                        当前无保养
                     </div>
                 </div>
             </div>
@@ -75,6 +78,9 @@
                         return "待评价";
                         break;
                 }
+            },
+            timeFilter:function(val){
+                return Tool.formatDate(val,'fulltime');
             }
         },
         methods:{
@@ -187,6 +193,12 @@
                     .use-item + div{
                         border-top:1px solid #efefef;
                     }
+                }
+                .no-record{
+                    line-height:3em;
+                    background-color:#efefef;
+                    padding:0 3%;
+                    font-size:0.51rem;
                 }
             }
         }

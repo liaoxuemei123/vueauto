@@ -13,6 +13,7 @@
     </div>
 </template>
 <script>
+    import router from 'router';
     export default {
         data () {
             return {
@@ -37,15 +38,15 @@
             search:{
                 type:Function,
                 default:function(key){
-                    console.log(key);
+                }
+            },
+            goBack:{
+                type:Function,
+                default:function(){
+                    router.go(-1);
                 }
             }
         },
-        methods:{
-            goBack:function(){
-                this.$router.go(-1);
-            },
-        }
     }
 </script>
 <style scoped lang="less">

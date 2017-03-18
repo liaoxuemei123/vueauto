@@ -75,6 +75,12 @@
                                     {{setInfo.isUniversal|universalFilter}}
                                 </div>
                             </div>
+                            <div class="info-item">
+                                <div class="item-name">使用方法：</div>
+                                <div class="info">
+                                    到店保养前告知服务顾问已购买套餐即可使用
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

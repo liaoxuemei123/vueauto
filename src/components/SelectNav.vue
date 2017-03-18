@@ -13,6 +13,7 @@
     </div>
 </template>
 <script>
+    import router from '../router'
     export default {
         data () {
             return {
@@ -42,12 +43,15 @@
                 default:function(){
                     return;
                 }
+            },
+            goBack:{
+                type:Function,
+                default:function(){
+                    router.go(-1);
+                }
             }
         },
         methods:{
-            goBack:function(){
-                this.$router.go(-1);
-            },
             goOrder:function(){
                 this.$router.push({name:'myorder'})
             }

@@ -217,9 +217,9 @@ Tool.clearRequestPool =function(){
 
 
 /**
- * 时间格式化 支持date、time、onlytime三种格式，传入的日期可以是时间戳也可以是时间字符串;
+ * 时间格式化 支持date、time、onlytime,fulltime三种格式，传入的日期可以是时间戳也可以是时间字符串;
  * @param {str} String,Date,timeTemp
- * @param type String 'date,tiem,onlytime' 
+ * @param type String 'date,tiem,onlytime,fulltime' 
  */
 Tool.formatDate = function(str,type='date'){
     var date = new Date(str);
@@ -231,6 +231,8 @@ Tool.formatDate = function(str,type='date'){
     var h = date.getHours();
     var min = date.getMinutes();
     min = min < 10 ? ( "0" + min ) : min;
+    var s = date.getSeconds();
+    s = s < 10 ? ( "0" +s ) : s; 
     switch(type){
         case 'date':
             return y + '-' + m + '-' + d;
@@ -239,6 +241,8 @@ Tool.formatDate = function(str,type='date'){
             return y + '-' + m + '-' + d + ' ' + h + ':' + min;
         case 'onlytime':
             return h + ':' + min;
+        case 'fulltime':
+            return y + '-' + m + '-' + d + ' ' + h + ':' + min + ':' + s;
     }   
 }
 /**
