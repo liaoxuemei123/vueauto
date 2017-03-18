@@ -6,6 +6,7 @@
                 :onDropDown="dropMenuShow"
                 :value="pickerModel"
                 :onInput="onSearch.bind(this)"
+                :goBack="customBack.bind(this)"
             />
             <div class="page-content">
                 <div class="up-title title">
@@ -190,7 +191,10 @@
                 })
             },
             goOrder:function(){
-                this.$router.push({name:'myorder'});
+                this.$router.push({path:'myorder'});
+            },
+            customBack:function(){
+                return false;
             }
         },
         created:function(){

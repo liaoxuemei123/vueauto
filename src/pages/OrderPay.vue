@@ -156,7 +156,7 @@
                                                                                         message:'支付成功',
                                                                                         duration:1000,
                                                                                     })
-                                                                                    self.$router.push({name:'maintainset'});
+                                                                                    self.$router.push({path:'orderdetail/'+orderNo});
                                                                                 }
                                                                             })
                                                                         }

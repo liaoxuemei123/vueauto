@@ -50,6 +50,9 @@ const store = new Vuex.Store({
         PUSH_PAGE:function(state,page){
             state.pageStack.push(page);
         },
+        INSERT_PAGE:function(state,page,index){//往栈中插入一个页面。
+            state.pageStack.splice(index,0,page);
+        },
         POP_PAGE:function(state,number = 0){
             for(var i=0;i<number;i++){
                  state.pageStack.pop();

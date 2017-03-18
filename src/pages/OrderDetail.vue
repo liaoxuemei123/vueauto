@@ -3,6 +3,7 @@
         <div class="order-detail-page page" flex="dir:top box:first">
             <nav-bar
                 title="订单详情"
+                :goBack="customBack.bind(this)"
             />
             <div class="page-content">
                 <div class="order-detail">
@@ -109,6 +110,15 @@
                     vehicleModel:this.orderInfo.carType,
                     id:this.useList[index].id,
                 }})
+            },
+            customBack:function(){
+                var prepage = this.$store.getters.prepage;
+                if(!prepage || prepage.name != 'myorder'){
+                    this.$store.commit('INSERT_PAGE',{path:'/myorder',index:prepage?prepage.index+1:1,name:'myorder'});
+                    this.$router.push({name:'myorder'})
+                }else{
+                    this.$router.back();
+                }
             }
         },
         beforeRouteEnter:(to,from,next)=>{

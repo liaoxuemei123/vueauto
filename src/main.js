@@ -58,7 +58,7 @@ function goBack(to,from,next){
 }
 
 function goFoward(to,from,next){
-  next();
+    next();
 }
 
 function getIndex (list,path){

@@ -3,6 +3,7 @@
         <div class="page myorder-page" flex="dir:top box:first">
             <nav-bar
                 title="我的订单"
+                :goBack="customBack.bind(this)"
             />
             <div class="page-content" flex="dir:top box:first">
                 <div class="tab">
@@ -235,6 +236,15 @@
                     this.unevalList = this.unevalList.concat(data.data.data);
                     this.totalCountUnEval = data.data.totalCount;
                 })
+            },
+            customBack:function(){
+                var prepage = this.$store.getters.prepage;
+                if(!prepage || prepage.name != 'maintainset'){//这里的逻辑智能保证按正常的后退键管用。
+                    this.$store.commit('INSERT_PAGE',{path:'/maintainset',index:0,name:'maintainset'});
+                    this.$router.push({name:'maintainset'})
+                }else{
+                    this.$router.back();
+                }
             }
         },
         created:function(){
