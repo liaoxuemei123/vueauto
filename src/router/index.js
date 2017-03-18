@@ -19,7 +19,28 @@ import ViewStore from 'pages/ViewStore';
 
 Vue.use(Router)
 
+const scrollBehavior = (to, from, savedPosition) => {
+  if (savedPosition) {
+    // savedPosition is only available for popstate navigations.
+    return savedPosition
+  } else {
+    const position = {}
+    // new navigation.
+    // scroll to anchor by returning the selector
+    if (to.hash) {
+      position.selector = to.hash
+    }
+    // check if any matched route config has meta that requires scrolling to top
+    if (to.matched.some(m => m.meta.scrollToTop)) {
+      position.x = 0
+      position.y = 0
+    }
+    return position
+  }
+}
+
 export default new Router({
+  scrollBehavior,
   routes: [
     {
       path: '/',

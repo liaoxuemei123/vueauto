@@ -36,6 +36,7 @@
                     this.$router.push({path:'setdetail/'+item.id,query:item});
                 }else{
                     Toast("请选择车型");
+                    $('.select-bar input').focus();
                 }
             },
         },
