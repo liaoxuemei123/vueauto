@@ -26,8 +26,8 @@
                         </div>
                     </div>
                     <div class="meal-list-container">
-                        <div class="title">套餐机油选择</div>
-                        <div class="meal-list">
+                        <div class="title"  @click="mealListShow = !mealListShow">套餐机油选择</div>
+                        <div class="meal-list" v-if="mealListShow">
                             <div class="meal-item" @click="selectedMeal(index)" v-for="(item,index) in setMealList" flex="dir:left cross:center">
                                 <i class="iconfont icon-select" v-if="selectMeal == index"></i>
                                 <i class="iconfont icon-circle active" v-else="selectMeal == index"></i>
@@ -137,6 +137,7 @@
             return {
                 setInfo:{},
                 popupVisible:false,
+                mealListShow:false,
                 priceRange:{
                     minprice:0,
                     maxprice:0,
@@ -452,14 +453,15 @@
                     margin-top:0.43rem;
                     background-color:#fff;
                     box-shadow:0px 1px 3px #aaa;
-                    padding:0.2rem 3%;
+                    padding:0.2rem 3% 0 3%;
                     .title{
                         height:1.6rem;
                         line-height:1.6rem;
-                        border-bottom:1px solid #d9d9d9;
                         font-size:0.68rem;
                     }
                     .meal-list{
+                        border-top:1px solid #d9d9d9;
+                        padding-bottom:0.2rem; 
                         .meal-item{
                             height:1.5rem;
                             .iconfont{
