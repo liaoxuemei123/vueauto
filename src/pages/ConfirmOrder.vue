@@ -8,7 +8,7 @@
                 <div class="set-info">
                     <div class="top" flex="dir:left box:first">
                         <div class="store-url" flex="dir:left cross:center">
-                            <img :src="packageInfo.storeInfo.photoUrl">
+                            <img :src="packageInfo.setInfo.packageImage">
                         </div>
                         <div class="set-detail" flex="dir:top box:mean">
                             <div class="line" flex="dir:left cross:center main:justify">
@@ -158,6 +158,7 @@
             }
         },
         activated:function(){
+            console.log(this.packageInfo);
         },
         filters:{
             universalFilter:function(val){
