@@ -85,14 +85,14 @@
         methods:{
             search:function(e){
                 var target = $(e.target).find('input');
-                this.getStoreList(target.val());
+                this.getStoreList();
             },
             getStoreList:function(name='',callback){
                 var self = this;
                 Tool.get('getStoreList',{
                     gpsLongitude:this.cityInfo.lng ||self.geolocation.point.lon,
                     gpsLatitude:this.cityInfo.lat || self.geolocation.point.lat,
-                    storename:name,
+                    storename:this.$children[0].$refs.search.value || '',
                     area:this.cityInfo.code || '',
                 },function(data){
                     self.storelist = data.data;
@@ -147,7 +147,7 @@
             }
         },
         activated:function(){
-            this.getStoreList('',() => {
+            this.getStoreList(() => {
                 var storeInfo = this.$store.getters.subscribeInfo.storeInfo;
                 for(var i=0;i<this.storelist.length;i++){
                     if(storeInfo.id == this.storelist[i].id){

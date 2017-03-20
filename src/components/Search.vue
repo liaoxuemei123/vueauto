@@ -5,7 +5,7 @@
         </div>
         <div class="search-bar">
             <form @submit.prevent="search">
-                <input :type="type" :placeholder="placeholder" :value="key"/>
+                <input :type="type" :placeholder="placeholder" :value="key" ref='search'/>
             </form>
         </div>
         <div class="right-button button" @click="onRight">

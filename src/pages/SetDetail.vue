@@ -26,7 +26,9 @@
                         </div>
                     </div>
                     <div class="meal-list-container">
-                        <div class="title"  @click="mealListShow = !mealListShow">套餐机油选择</div>
+                        <div class="title"  @click="mealListShow = !mealListShow">套餐机油选择
+                            <i class="iconfont" :class="mealListShow?'icon-up':'icon-down'"></i>
+                        </div>
                         <div class="meal-list" v-if="mealListShow">
                             <div class="meal-item" @click="selectedMeal(index)" v-for="(item,index) in setMealList" flex="dir:left cross:center">
                                 <i class="iconfont icon-select" v-if="selectMeal == index"></i>
@@ -458,6 +460,12 @@
                         height:1.6rem;
                         line-height:1.6rem;
                         font-size:0.68rem;
+                        .iconfont{
+                            height:1.6rem;
+                            line-height:1.6rem;
+                            display:inline-block;
+                            float:right;
+                        }
                     }
                     .meal-list{
                         border-top:1px solid #d9d9d9;

@@ -245,10 +245,26 @@
                 }else{
                     this.$router.back();
                 }
-            }
+            },
+            resetData:function(){
+                this.orderList = [];
+                this.unpaidList = [];
+                this.paidList = [];
+                this.unevalList = [];
+                this.activeTab = 0;
+                this.totalCountAll = 0;
+                this.totalCountUnpaid = 0;
+                this.totalCountPaid = 0;
+                this.totalCountUnEval = 0;
+                this.pageAll = 1;
+                this.pageUnpaid = 1;
+                this.pagePaid = 1;
+                this.pageUnEval = 1;
+            },
         },
-        created:function(){
+        activated:function(){
             this.orderQueryAll();
+            this.resetData();
         },
         beforeRouteEnter:(to,from,next)=>{
             Tool.routerEnter(to,from,next)
