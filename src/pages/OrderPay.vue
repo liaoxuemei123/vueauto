@@ -98,6 +98,7 @@
                 }
             },
             startPay:function(){
+                var self = this;
                 var params = window.location.href.split("?")[1];
                 if(params){
                     params = params.split('#')[0];
