@@ -25,7 +25,7 @@
                         <set-item :item="item"/>
                     </div>
                 </div>
-                <div class="down-title title" @click="goOrder">
+                <div class="view-title title" @click="goOrder">
                     <span>查看订单</span>
                 </div>
                 <transition name="fade">
@@ -292,6 +292,13 @@
                 }
                 span:after{
                     right:-1rem;
+                }
+            }
+            .view-title{
+                background-color:#fff;
+                box-shadow: 0px 2px 3px #ccc;
+                span:before,span:after{
+                    display:none;
                 }
             }
             .set-item{

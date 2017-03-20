@@ -9,16 +9,16 @@
             <div class="page-content">
                 <div class="input-container">
                     <div class="input-control">
-                        <inp-com title="车架号" :value="userInfo.vin" placeholder="输入车架号" maxlength='17' :rightArrow="true" :onBlur="updateVIN.bind(this)"/>
+                        <inp-com title="车架号" :value="userInfo.vin" placeholder="输入车架号(不限大小写)" maxlength='17' :onBlur="updateVIN.bind(this)"/>
                     </div>
                     <div class="input-control">
-                        <inp-com title="发动机号后六位" :value="userInfo.motorId" placeholder="输入发动机号后六位" :onBlur="updateMotorId.bind(this)" :maxlength="'6'" :rightArrow="true" />
+                        <inp-com title="发动机号后六位" :value="userInfo.motorId" placeholder="输入发动机号后六位" :onBlur="updateMotorId.bind(this)" :maxlength="'6'"/>
                     </div>
                     <div class="input-control">
-                        <inp-com title="姓名" :value="userInfo.contact" placeholder="输入姓名" :onBlur="updateContact.bind(this)" :rightArrow="true" />
+                        <inp-com title="姓名" :value="userInfo.contact" placeholder="输入姓名" :onBlur="updateContact.bind(this)"/>
                     </div>
                     <div class="input-control">
-                        <inp-com title="手机号" :value="userInfo.tel" placeholder="输入手机号" :onBlur="updateTel.bind(this)" :rightArrow="true" />
+                        <inp-com title="手机号" :value="userInfo.tel" placeholder="输入手机号" :onBlur="updateTel.bind(this)" />
                     </div>
                     <div class="input-control-custom" flex="dir:left cross:center box:justify">
                         <div class="label">验证码</div>
@@ -26,7 +26,7 @@
                         <div class="button" flex="dir:left cross:center main:right"><span>获取验证码</span></div>
                     </div>
                     <div class="input-control">
-                        <inp-com title="备注" :readonly="true" :rightArrow="true" />
+                        <inp-com title="备注" :readonly="true" />
                         <div class="text-control" flex="dir:top">
                         <textarea rows="5" maxlength='100' placeholder="请输入100字内留言" @input="updateComment"></textarea>
                         <div class="show-length">

@@ -22,17 +22,17 @@
                         <div class="pay-time" v-if='orderInfo.status == 2'>支付时间：{{orderInfo.paySuccessDate | timeFilter}}</div>
                         <div class="price">总额：{{orderInfo.orderPrice}}</div>
                     </div>
-                    <div class="section">
+                    <div class="section" v-if="orderInfo.status == 2">
                         <div class="times">使用次数/总次数：{{orderInfo.useNumber}}/{{orderInfo.allNumber}}</div>
                         <div class="deadline">
-                            <span>到期时间：{{orderInfo.expirationDate}}</span>
+                            <span>到期时间：{{orderInfo.expirationDate | expirationFilter}}</span>
                         </div>
                     </div>
-                    <div class="bottom" flex="dir:left cross:center">
+                    <div class="bottom" flex="dir:left cross:center" v-if="orderInfo.status == 2">
                         使用方法：到店保养前告知服务顾问已购买套餐即可使用
                     </div>
                 </div>
-                <div class="use-detail">
+                <div class="use-detail" v-if="orderInfo.status == 2">
                     <div class="header">保养使用明细</div>
                     <div class="use-list">
                         <div class="use-item" v-for="(item, index) in useList" flex="dir:left cross:center main:justify">
@@ -82,6 +82,9 @@
             },
             timeFilter:function(val){
                 return Tool.formatDate(val,'fulltime');
+            },
+            expirationFilter:function(val){
+                return val.substring(0,10) + ' 18:00:00';
             }
         },
         methods:{

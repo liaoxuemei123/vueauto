@@ -18,9 +18,6 @@
                             <div class="line" flex="dir:left cross:center main:justify">
                                 <span class="set-des1">{{packageInfo.setInfo.packageContent}}</span>
                             </div>
-                            <div class="line" flex="dir:left cross:center main:justify">
-                                <span class="set-des2">{{packageInfo.setInfo.beginVehicleAge|ageFilter}}</span>
-                            </div>
                         </div>
                     </div>
                     <div class="explain">
@@ -55,15 +52,9 @@
                     <div class="bottom" flex="dir:left box:mean">
                         <div class="bottom-item" flex="dir:left cross:center main:left">
                             <div class="title"><i class="iconfont icon-car"></i>车型:</div>
-                            <div class="value">{{this.packageInfo.modelInfo.vehicleModel}}</div>
-                        </div>
-                        <div class="bottom-item" flex="dir:left cross:center main:left">
-                            <div class="title"><i class="iconfont icon-motor"></i>排量:</div>
+                            <div class="value">{{this.packageInfo.modelInfo.vehicleModel}}&nbsp;</div>
                             <div class="value">{{this.packageInfo.modelInfo.displacement}}</div>
                         </div>
-                        
-                    </div>
-                    <div class="bottom" flex="dir:left box:mean">
                         <div class="bottom-item" flex="dir:left cross:center main:left">
                             <div class="title"><i class="iconfont icon-motor"></i>发动机号:</div>
                             <div class="value">{{packageInfo.userInfo.motorId}}</div>
@@ -77,7 +68,7 @@
                     </div>
                 </div>
                 <div class="tips">
-                    提示：支付七天过后不能退单。一旦使用套餐不能退单。
+                    提示：支付7天内可退单，套餐一旦使用不能退单。
                 </div>
                 <div class="agree" flex="dir:left cross:center" @click="sure =! sure">
                     <div class="sure-circle" :class="{'sure':sure}">
@@ -177,7 +168,7 @@
             validateFilter:function(val){
                 var today = Tool.formatDate(val);
                 var endday = today.substring(0,4) - 0 + 3 + today.substring(4,10);
-                return endday;
+                return endday + ' 18:00:00';
             }
         },
         beforeRouteEnter:(to,from,next)=>{
@@ -246,6 +237,7 @@
                     line-height:1.7em;
                     .title{
                         font-weight:600;
+                        width:3rem;
                     }
                 }
                 .bottom{

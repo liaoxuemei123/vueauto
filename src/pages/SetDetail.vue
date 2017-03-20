@@ -26,7 +26,9 @@
                         </div>
                     </div>
                     <div class="meal-list-container">
-                        <div class="title"  @click="mealListShow = !mealListShow">套餐机油选择
+                        <div class="title"  @click="mealListShow = !mealListShow">
+                            <span>套餐机油选择</span>
+                            <span class="selected-oil" v-if="setMealList[selectMeal]">{{setMealList[selectMeal].engineOil + ' ' + setMealList[selectMeal].pieceNumber}}</span>
                             <i class="iconfont" :class="mealListShow?'icon-up':'icon-down'"></i>
                         </div>
                         <div class="meal-list" v-if="mealListShow">
@@ -466,6 +468,10 @@
                             display:inline-block;
                             float:right;
                             color:#4b4b4b;
+                        }
+                        .selected-oil{
+                            font-size:0.57rem;
+                            color:#6b6b6b;
                         }
                     }
                     .meal-list{
