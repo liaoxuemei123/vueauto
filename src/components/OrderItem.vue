@@ -27,8 +27,8 @@
                     <div class="label">{{item.orderPrice}}</div>
                 </div>
                 <div class="oprater" flex="dir:left cross:center">
-                    <div class="pay" v-if="item.status == 2">去支付</div>
-                    <div class="cancel" v-if="item.status == 1">退单</div>
+                    <div class="pay" v-if="item.status == 1" @click="goPay(item.orderNo)">去支付</div>
+                    <div class="cancel" v-if="item.status == 2">退单</div>
                     <!--<div class="evaluate" @click="goEvaluate" v-if="item.status == 4">去评价</div>-->
                     <div class="detail" @click="viewDetail(item.orderNo)">查看详情</div>
                 </div>
@@ -70,6 +70,9 @@
             },
             goEvaluate:function(){
                 this.$router.push({path:'evaluate'});
+            },
+            goPay:function(orderNo){
+                this.$router.push({name:'orderpay',params:{orderNo}});
             }
         }
     }
