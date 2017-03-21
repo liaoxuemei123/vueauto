@@ -8,7 +8,7 @@
             <div class="page-content" flex="dir:top box:first">
                 <div class="city-select" @click="cityShow = !cityShow">
                     <div class="input-control" flex="dir:left cross:center">
-                        <input type="text" v-model="selectedCity" placeholder="请选择城市" readonly >
+                        <input type="text" v-model="selectedCity" :placeholder="defaultLocation" readonly >
                     </div>
                     <i class="iconfont icon-up" v-if="cityShow"></i>
                     <i class="iconfont icon-down" v-else="cityShow"></i>
@@ -81,7 +81,8 @@
                 ],
                 cityData:{},
                 cityInfo:{},
-                selectedCity:''
+                selectedCity:'',
+                defaultLocation:''
             }
         },
         components:{
@@ -194,6 +195,7 @@
             });
             this.cityInfo = {};
             this.selectedCity = '';
+            this.defaultLocation = this.geolocation.address.province + ' ' + this.geolocation.address.city;
         },
         computed:{
             ...mapState([

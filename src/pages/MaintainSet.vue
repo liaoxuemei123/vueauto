@@ -55,7 +55,6 @@
                         </div>
                     </div>
                 </transition>
-
             </div>
         </div>
     </div>
@@ -64,6 +63,7 @@
     import SelectNav from '../components/SelectNav';
     import SetItem from '../components/SetItem';
     import Tool from '../utils/Tool';
+    import Scroller from '../components/Scroller'
     const defaultI = 0;
     export default {
         data () {
@@ -98,7 +98,8 @@
         },
         components:{
             SelectNav,
-            SetItem
+            SetItem,
+            Scroller
         },
         methods:{
             getPackageList:function(){
@@ -223,7 +224,7 @@
         .page-content{
             background-color: #efefef;
             height:100%;
-            overflow: auto;
+            overflow: hidden;
             position:relative;
             .down-list-mask{
                 position:absolute;

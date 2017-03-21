@@ -94,7 +94,7 @@
         methods:{
             pay:function(){
                 if(this.paymentMode == 1){
-                    window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxdb8e2be3d93b6c3f&redirect_uri=http://www.dajiankangyangsheng.com%2Fubiweb%2F%23%2Forderpay&response_type=code&scope=snsapi_base&state=" + this.orderNo + ',' + this.orderInfo.packageName + "#wechat_redirect";
+                    window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxdb8e2be3d93b6c3f&redirect_uri=http://www.dajiankangyangsheng.com%2Fubiweb%2F%23%2Forderpay%2F" + this.orderNo + "&response_type=code&scope=snsapi_base&state=" + this.orderNo + ',' + this.orderInfo.packageName + "#wechat_redirect";
                 }
             },
             startPay:function(){
@@ -118,68 +118,90 @@
                                 orderNo = temp[0];
                                 packageName = temp[1];
                                 if(orderNo && packageName){
-                                    Tool.get('AaPackageOrderDetail',{orderNo},(data)=>{
-                                        if(data.code == 200){
-                                            this.orderInfo = data.data.PackageOrder;
-                                            this.orderInfo.packageName = packageName;
+                                    new Promise((res,rej)=>{
+                                        Tool.get('AaPackageOrderDetail',{orderNo},(data)=>{
+                                            if(data.code == 200){
+                                                self.orderInfo = data.data.PackageOrder;
+                                                self.orderInfo.packageName = packageName;
+                                                res(data);
+                                            }else{
+                                                rej();
+                                            }
+                                        })
+                                    }).then((pData)=>{
+                                        return new Promise((res,rej)=>{
                                             if(code){
                                                 Tool.get('getOpenId',{code},(data) => {
                                                     if(data.code == 200){
                                                         var openid = data.data.accessToken.openid;
                                                         var payData = {
-                                                            total_fee:( this.orderInfo.orderPrice - 0 ) * 100,
-                                                            body:this.orderInfo.packageName,
+                                                            total_fee:( self.orderInfo.orderPrice - 0 ) * 100,
+                                                            body:self.orderInfo.packageName,
                                                             openid:openid,
                                                             orderId:orderNo
                                                         }
-                                                        Tool.get('packageOrderPay',payData,(data)=>{
-                                                            if(data.code == 200){
-                                                                function onBridgeReady(){
-                                                                    WeixinJSBridge.invoke(
-                                                                    'getBrandWCPayRequest', {
-                                                                            "appId":data.data.payRequestVo.appId,
-                                                                            "timeStamp":data.data.payRequestVo.timeStamp,     
-                                                                            "nonceStr":data.data.payRequestVo.nonceStr,
-                                                                            "package":"prepay_id=" + data.data.payRequestVo.prepay_id,   
-                                                                            "signType":"MD5",
-                                                                            "paySign":data.data.payRequestVo.paySign, 
-                                                                        },
-                                                                        function(res){     
-                                                                            if(res.err_msg == "get_brand_wcpay_request:ok" ) {
-                                                                                Tool.get('payCallback',{"out_trade_no":orderNo,"result_code":"SUCCESS"},(data)=>{
-                                                                                    if(data.code == 200){
-                                                                                        Toast({
-                                                                                            message:'支付成功',
-                                                                                            duration:1000,
-                                                                                        })
-                                                                                        self.$router.push({path:'orderdetail/'+orderNo});
-                                                                                    }
-                                                                                })
-                                                                            }
-                                                                        }
-                                                                    );
-                                                                }
-                                                                if (typeof WeixinJSBridge == "undefined"){
-                                                                    if( document.addEventListener ){
-                                                                        document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
-                                                                    }else if (document.attachEvent){
-                                                                        document.attachEvent('WeixinJSBridgeReady', onBridgeReady); 
-                                                                        document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
-                                                                    }
-                                                                }else{
-                                                                    onBridgeReady();
-                                                                }
-                                                            }else{
-                                                                Toast({
-                                                                    message:'支付参数出错',
-                                                                    duration:1000,
-                                                                })
-                                                            }
-                                                        })
+                                                        res(payData)
+                                                    }else{
+                                                        rej();
                                                     }
                                                 })
+                                            }else{
+                                                rej();
                                             }
-                                        }
+                                        })
+                                    }).then((pData)=>{
+                                        return new Promise((res,rej)=>{
+                                            Tool.get('packageOrderPay',pData,(data)=>{
+                                                if(data.code == 200){
+                                                    res(data.data);
+                                                }else{
+                                                    Toast({
+                                                        message:'支付参数出错',
+                                                        duration:1000,
+                                                    })
+                                                }
+                                            });
+                                        })
+                                    }).then((pData)=>{
+                                        return new Promise((res,rej)=>{
+                                            function onBridgeReady(){
+                                                WeixinJSBridge.invoke(
+                                                'getBrandWCPayRequest', {
+                                                        "appId":pData.payRequestVo.appId,
+                                                        "timeStamp":pData.payRequestVo.timeStamp,     
+                                                        "nonceStr":pData.payRequestVo.nonceStr,
+                                                        "package":"prepay_id=" + pData.payRequestVo.prepay_id,   
+                                                        "signType":"MD5",
+                                                        "paySign":pData.payRequestVo.paySign, 
+                                                    },
+                                                    function(data){     
+                                                        if(data.err_msg == "get_brand_wcpay_request:ok" ) {
+                                                            res(data);
+                                                        }
+                                                    }
+                                                );
+                                            }
+                                            if (typeof WeixinJSBridge == "undefined"){
+                                                if( document.addEventListener ){
+                                                    document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+                                                }else if (document.attachEvent){
+                                                    document.attachEvent('WeixinJSBridgeReady', onBridgeReady); 
+                                                    document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+                                                }
+                                            }else{
+                                                onBridgeReady();
+                                            }
+                                        })
+                                    }).then((pData)=>{
+                                        Tool.get('payCallback',{"out_trade_no":orderNo,"result_code":"SUCCESS"},(data)=>{
+                                            if(data.code == 200){
+                                                Toast({
+                                                    message:'支付成功',
+                                                    duration:1000,
+                                                })
+                                                self.$router.push({path:'orderdetail/'+orderNo});
+                                            }
+                                        })
                                     })
                                 }
                             });
@@ -193,8 +215,8 @@
         },
         activated:function(){
             var self = this;
-            if(this.$route.params && this.$route.params.orderNo){
-                this.orderNo = this.$route.params.orderNo;
+            if(this.$route.params && this.$route.params.id){
+                this.orderNo = this.$route.params.id;
                 Tool.get('AaPackageOrderDetail',{
                     orderNo:this.orderNo
                 },(data)=>{
@@ -202,13 +224,16 @@
                     this.orderInfo.packageName = data.data.Package.packageName;
                 })
             }
-            this.startPay();
+        },
+        created:function(){
+            this.startPay();//支付界面只有在第一次进入的时候才触发支付，否则不做操作
         },
         beforeRouteLeave:function(to,from,next){
             if(to.name == 'confirmorder'){
                 next({name:'maintainset'});//防止2次下单
+            }else{
+                next();
             }
-            next();
         },
         beforeRouteEnter:(to,from,next)=>{
             Tool.routerEnter(to,from,next)

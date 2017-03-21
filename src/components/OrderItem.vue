@@ -72,7 +72,7 @@
                 this.$router.push({path:'evaluate'});
             },
             goPay:function(orderNo){
-                this.$router.push({name:'orderpay',params:{orderNo}});
+                this.$router.push({path:'/orderpay/'+orderNo});
             }
         }
     }

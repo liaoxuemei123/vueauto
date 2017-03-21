@@ -16,6 +16,7 @@ import EvaluateDetail from 'pages/EvaluateDetail';
 import Login from 'pages/Login';
 import Register from 'pages/Register';
 import ViewStore from 'pages/ViewStore';
+import TestScroller from 'pages/TestScroller';
 
 Vue.use(Router)
 
@@ -78,7 +79,7 @@ export default new Router({
       component:ConfirmOrder,
     },
     {
-      path:'/orderpay',
+      path:'/orderpay/:id',
       name:'orderpay',
       component:OrderPay,
     },
@@ -121,6 +122,11 @@ export default new Router({
       path:'/login',
       name:'login',
       component:Login,
+    },
+    {
+      path:'/testscroller',
+      name:'testscroller',
+      component:TestScroller,
     }
   ]
 })

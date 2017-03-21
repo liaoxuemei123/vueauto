@@ -251,7 +251,6 @@
                 this.unpaidList = [];
                 this.paidList = [];
                 this.unevalList = [];
-                this.activeTab = 0;
                 this.totalCountAll = 0;
                 this.totalCountUnpaid = 0;
                 this.totalCountPaid = 0;
@@ -263,7 +262,13 @@
             },
         },
         activated:function(){
-            this.orderQueryAll();
+            if(this.activeTab == 0){
+                this.orderQueryAll();
+            }else if(this.activeTab == 1){
+                this.orderQueryUnPaid();
+            }else{
+                this.orderQueryPaid();
+            }
             this.resetData();
         },
         beforeRouteEnter:(to,from,next)=>{

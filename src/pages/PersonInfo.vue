@@ -17,10 +17,10 @@
                     <div class="input-control">
                         <inp-com title="姓名" :value="userInfo.contact" placeholder="输入姓名" :onBlur="updateContact.bind(this)"/>
                     </div>
-                    <div class="input-control">
+                    <div class="input-control" >
                         <inp-com title="手机号" :value="userInfo.tel" placeholder="输入手机号" :onBlur="updateTel.bind(this)" />
                     </div>
-                    <div class="input-control-custom" flex="dir:left cross:center box:justify">
+                    <div class="input-control-custom" flex="dir:left cross:center box:justify" v-if="userInfo.tel != userMoblie">
                         <div class="label">验证码</div>
                         <input type="number">
                         <div class="button" flex="dir:left cross:center main:right"><span>获取验证码</span></div>
@@ -59,7 +59,8 @@
                     contact:'',
                     tel:'',
                     message:'',
-                }
+                },
+                userMoblie:''
             }
         },
         components:{
@@ -132,6 +133,10 @@
         },
         beforeRouteEnter:(to,from,next)=>{
             Tool.routerEnter(to,from,next)
+        },
+        created:function(){
+            this.userInfo.tel = Tool.getUserInfo('mobile');
+            this.userMoblie = Tool.getUserInfo('mobile');
         }
     }
 </script>

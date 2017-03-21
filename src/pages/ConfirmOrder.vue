@@ -127,7 +127,7 @@
             submitOrder:function(){
                 var today = Tool.formatDate(this.packageInfo.setInfo.validate);
                 var end = today.substring(0,4) - 0 + 3 + today.substring(4,10);
-                var endTime = new Date(end).getTime();
+                var endTime = new Date(end).getTime()+36000000;
                 Tool.post('AaPackageOrder',{
                     userId:Tool.getUserInfo('userId'),
                     allNumber:this.packageInfo.setInfo.setMealNumber,
@@ -143,7 +143,7 @@
                 },(data)=>{
                     Toast(data.msg);
                     if(data.code == 200){
-                        this.$router.push({name:'orderpay',params:{orderNo:data.data}});
+                        this.$router.push({path:'/orderpay/'+data.data});
                     }
                 })
             }
@@ -152,14 +152,14 @@
         },
         filters:{
             universalFilter:function(val){
-                if(val){
+                if(val != 0){
                     return '全国服务中心通用'
                 }else{
                     return '指定服务中心使用'
                 }
             },
             ageFilter:function(val){
-                if(val){
+                if(val == 0){
                     return '两年以上车龄专享'
                 }else{
                     return '两年以内车龄专享'
