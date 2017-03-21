@@ -37,7 +37,7 @@
                             <mt-picker :slots="carlist" @change="onCarChange" valueKey="name"></mt-picker>
                         </div>
                         <div class="toolbar" flex="dir:left box:mean">
-                            <div class="cancel" @click="carShow=false" flex="dir:left cross:center main:left">
+                            <div class="cancel" v-tap="hide" flex="dir:left cross:center main:left">
                                 取消
                             </div>
                             <div class="sure" flex="dir:left cross:center main:right" @click="submitModelInfo">
@@ -107,6 +107,9 @@
                     this.setlist.up = data.data.twoup;
                     this.setlist.down = data.data.twodown;
                 })
+            },
+            hide:function(){
+                this.carShow=false
             },
             onCarChange:function(picker,values){
                 if(values[0]&&values[1]){

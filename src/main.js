@@ -10,6 +10,7 @@ import 'normalize.css';
 import './style/base.css';
 import './style/iconfont.less';
 import Tool from './utils/Tool';
+import './utils/Tap';
 const FastClick = require('fastclick')
 Vue.use(MintUI);
 

@@ -1,5 +1,5 @@
 <template>
-    <div class="set-container" @click="viewDetail(item)" flex="dir:top box:first">
+    <div class="set-container" v-tap="viewDetail.bind(this,item)" flex="dir:top box:first">
         <div class="set-image">
             <div class="image-container">
                 <img v-lazy="item.packageImage">
