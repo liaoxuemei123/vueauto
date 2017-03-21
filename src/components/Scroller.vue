@@ -22,8 +22,6 @@
                 mouseWheel: true,
                 isPullToRefresh: true,
                 tap:true,
-                preventDefault:false,
-                preventDefaultException:{tagName:/^(INPUT|TEXTAREA|BUTTON|SELECT|A)$/},
             })
         }
     }
