@@ -44,8 +44,9 @@
             })
         },
         beforeDestroy:function(){
-            this.mySroller = {};
+            this.mySroller = {};//卸载组件
             this.mySroller.on('scroll',function(){});
+            this.scrollerInfo.y = 0;
         }
 
     }
