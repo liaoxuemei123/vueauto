@@ -14,6 +14,18 @@
                 scrollerInfo:{},
             }
         },
+        methods:{
+            isPc:function(){
+                var UA = navigator.userAgent;
+                var agents = ["Android", "iPhone", "Windows Phone", "iPad", "iPod"];
+                for (var i = 0;i < agents.length;i++){
+                    if(UA.indexOf(agents[i])){
+                        return false;
+                    }
+                }
+                return true;
+            }
+        },
         updated:function(){
             var self = this;
             if(!$.isEmptyObject(this.mySroller)){

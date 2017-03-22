@@ -1,3 +1,6 @@
+/**
+ * @author flyerjay
+ */
 import Vue from 'vue';
 
 const Util = {

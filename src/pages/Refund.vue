@@ -14,7 +14,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="button-control">
+                <div class="button-control" @click="submitRefund">
                     <div class="refund-button">提交申请</div>
                 </div>
             </div>
@@ -23,17 +23,26 @@
 </template>
 <script>
     import NavBar from '../components/NavBar';
+    import Tool from '../utils/Tool';
     export default{
         data () {
             return {
                 message:'',
+                orderNo:'',
+            }
+        },
+        methods:{
+            submitRefund:function(){
+                Tool.get('refundPay',{tradeNo:this.orderNo},(data)=>{
+
+                });
             }
         },
         components:{
             NavBar
         },
         activated:function(){
-            var orderNo = this.$route.params.id;
+            this.orderNo = this.$route.params.id;
         }
     }
 </script>

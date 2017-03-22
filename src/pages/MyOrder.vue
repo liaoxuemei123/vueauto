@@ -17,8 +17,8 @@
                     </div>
                 </div>
                 <div class="order-list-container">
-                    <transition :name="animate">
-                        <div class="tab-all tabs" key="all" v-if="activeTab == 0">
+                    <transition-group :name="animate">
+                        <div class="tab-all tabs" key="all" v-show="activeTab == 0">
                             <div class="order-list">
                                 <div class="order-item" v-for="(item, index) in orderList">
                                     <order-item :item="item"></order-item>
@@ -28,7 +28,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-unpaid tabs" key="unpaid" v-if="activeTab == 1">
+                        <div class="tab-unpaid tabs" key="unpaid" v-show="activeTab == 1">
                             <div class="order-list">
                                 <div class="order-item" v-for="(item, index) in unpaidList">
                                     <order-item :item="item"></order-item>
@@ -38,7 +38,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-paid tabs" key="paid" v-if="activeTab == 2">
+                        <div class="tab-paid tabs" key="paid" v-show="activeTab == 2">
                             <div class="order-list">
                                 <div class="order-item" v-for="(item, index) in paidList">
                                     <order-item :item="item"></order-item>
@@ -48,7 +48,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-unevaluate tabs" key="unevaluate" v-if="activeTab == 3">
+                        <div class="tab-unevaluate tabs" key="unevaluate" v-show="activeTab == 3">
                             <div class="order-list">
                                 <div class="order-item" v-for="(item, index) in unevalList">
                                     <order-item :item="item"></order-item>
@@ -58,7 +58,7 @@
                                 </div>
                             </div>
                         </div>
-                    </transition>
+                    </transition-group>
                 </div>
             </div>
         </div>
