@@ -245,6 +245,7 @@
                 this.setMealList = [];
                 this.selectMeal = -1;
                 this.priceRange = {};
+                this.mealListShow = false;
                 this.setDetail = {
                     price:'',
                     mealId:'',

@@ -14,13 +14,13 @@
                     <i class="iconfont icon-down" v-else="cityShow"></i>
                 </div>
                 <div class="store-list-container" flex="dir:top">
-                    <div class="container-content" flex="dir:top">
-                        <div class="overflow-container">
-                            <div class="store-list">
+                    <div class="container-content" flex="dir:top box:mean">
+                        <div class="overflow-container" flex="dir:top box:mean">
+                            <scroller>
                                 <div class="store-item" v-for="(item, index) in storelist">
                                     <view-store-item :item="item"/>
                                 </div>
-                            </div>
+                            </scroller>
                         </div>
                     </div>
                     <transition name="fade">
@@ -51,6 +51,7 @@
     import Tool from '../utils/Tool';
     import { mapState } from 'vuex';
     import { Indicator, Toast } from 'mint-ui';
+    import Scroller from '../components/Scroller';
     export default {
         data () {
             return {
@@ -81,7 +82,8 @@
         components:{
             Search,
             BtnCom,
-            ViewStoreItem
+            ViewStoreItem,
+            Scroller
         },
         methods:{
             search:function(e){
@@ -186,7 +188,7 @@
                 height:1.8rem;
                 line-height:1.8rem;
                 background-color:#fff;
-                box-shadow:0px 1px 3px #ccc;
+                margin-bottom:1px;
                 .input-control{
                     width:100%;
                     height:1.8rem;
@@ -213,10 +215,7 @@
                     flex-shrink: 1;
                     flex-basis: 0;
                     .overflow-container{
-                        overflow:auto;
-                        .store-list{
-                            margin-top:0.5rem;
-                        }
+                        overflow:hidden;
                     }
                 }
                 .down-list-mask{

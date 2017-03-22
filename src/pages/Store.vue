@@ -15,12 +15,12 @@
                 </div>
                 <div class="store-list-container" flex="dir:top">
                     <div class="container-content" flex="dir:top box:last">
-                        <div class="overflow-container">
-                            <div class="store-list">
+                        <div class="overflow-container" flex="dir:top box:mean">
+                            <scroller>
                                 <div class="store-item" v-for="(item, index) in storelist">
                                     <store-item :item="item" :onClick="selectItem.bind(this, index)" :active="index == select"/>
                                 </div>
-                            </div>
+                            </scroller>
                         </div>
                         <div class="button-control">
                             <btn-com
@@ -58,6 +58,7 @@
     import Tool from '../utils/Tool';
     import { mapState } from 'vuex';
     import { Indicator, Toast } from 'mint-ui';
+    import Scroller from '../components/Scroller';
     export default {
         data () {
             return {
@@ -88,7 +89,8 @@
         components:{
             Search,
             BtnCom,
-            StoreItem
+            StoreItem,
+            Scroller
         },
         methods:{
             selectItem:function(id){
@@ -179,6 +181,13 @@
                 })
             }
         },
+        updated:function(){
+            for(var i=0;i<this.$children.length;i++){
+                if(this.$children[i].mySroller){
+                    this.$children[i].mySroller.scrollTo(0,this.$children[i].scrollerInfo.y);
+                }
+            }
+        },
         activated:function(){
             this.getStoreList(() => {
                 var storeInfo = this.$store.getters.subscribeInfo.storeInfo;
@@ -218,7 +227,7 @@
                 height:1.8rem;
                 line-height:1.8rem;
                 background-color:#fff;
-                box-shadow:0px 1px 3px #ccc;
+                margin-bottom:1px;
                 .input-control{
                     width:100%;
                     height:1.8rem;
@@ -245,10 +254,7 @@
                     flex-shrink: 1;
                     flex-basis: 0;
                     .overflow-container{
-                        overflow:auto;
-                        .store-list{
-                            margin-top:0.5rem;
-                        }
+                        overflow:hidden;
                     }
                 }
                 .down-list-mask{

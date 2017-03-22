@@ -1,5 +1,5 @@
 <template>
-    <div class="item-container" flex="dir:left cross:center box:first" @click="onClick">
+    <div class="item-container" flex="dir:left cross:center box:first" v-tap="onClick">
         <div class="select" flex="main:right cross:center">
             <i class="iconfont icon-select" v-if="active"></i>
             <i class="iconfont icon-circle active" v-else="active"></i>
