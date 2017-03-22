@@ -14,6 +14,12 @@
                 scrollerInfo:{},
             }
         },
+        props:{
+            refMark:{
+                type:String,
+                default:''
+            }
+        },
         methods:{
             isPc:function(){
                 var UA = navigator.userAgent;

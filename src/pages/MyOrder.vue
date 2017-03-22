@@ -19,44 +19,44 @@
                 <div class="order-list-container">
                     <transition-group :name="animate">
                         <div class="tab-all tabs" key="all" v-show="activeTab == 0">
-                            <div class="order-list">
+                            <scroller refMark='0'>
                                 <div class="order-item" v-for="(item, index) in orderList">
                                     <order-item :item="item"></order-item>
                                 </div>
-                                <div class="load-more" @click="loadMoreAll" v-if="(pageAll)*pageSize < totalCountAll">
+                                <div class="load-more" v-tap="loadMoreAll" v-if="(pageAll)*pageSize < totalCountAll">
                                     加载更多。。。
                                 </div>
-                            </div>
+                            </scroller>
                         </div>
                         <div class="tab-unpaid tabs" key="unpaid" v-show="activeTab == 1">
-                            <div class="order-list">
+                            <scroller refMark='1'>
                                 <div class="order-item" v-for="(item, index) in unpaidList">
                                     <order-item :item="item"></order-item>
                                 </div>
-                                <div class="load-more" @click="loadMoreUnpaid" v-if="(pageUnpaid)*pageSize < totalCountUnpaid">
+                                <div class="load-more" v-tap="loadMoreUnpaid" v-if="(pageUnpaid)*pageSize < totalCountUnpaid">
                                     加载更多。。。
                                 </div>
-                            </div>
+                            </scroller>
                         </div>
                         <div class="tab-paid tabs" key="paid" v-show="activeTab == 2">
-                            <div class="order-list">
+                            <scroller refMark='2'>
                                 <div class="order-item" v-for="(item, index) in paidList">
                                     <order-item :item="item"></order-item>
                                 </div>
-                                <div class="load-more" @click="loadMorePaid" v-if="(pagePaid)*pageSize < totalCountPaid">
+                                <div class="load-more" v-tap="loadMorePaid" v-if="(pagePaid)*pageSize < totalCountPaid">
                                     加载更多。。。
                                 </div>
-                            </div>
+                            </scroller>
                         </div>
                         <div class="tab-unevaluate tabs" key="unevaluate" v-show="activeTab == 3">
-                            <div class="order-list">
+                            <scroller refMark='3'>
                                 <div class="order-item" v-for="(item, index) in unevalList">
                                     <order-item :item="item"></order-item>
                                 </div>
-                                <div class="load-more" @click="loadMoreUnEval" v-if="(pageUnEval)*pageSize < totalCountUnEval">
+                                <div class="load-more" v-tap="loadMoreUnEval" v-if="(pageUnEval)*pageSize < totalCountUnEval">
                                     加载更多。。。
                                 </div>
-                            </div>
+                            </scroller>
                         </div>
                     </transition-group>
                 </div>
@@ -68,6 +68,7 @@
     import NavBar from '../components/NavBar';
     import OrderItem  from '../components/OrderItem';
     import Tool from '../utils/Tool';
+    import Scroller from '../components/Scroller';
     export default {
         data () {
             return {
@@ -95,7 +96,8 @@
         },
         components:{
             NavBar,
-            OrderItem
+            OrderItem,
+            Scroller
         },
         watch:{
             'activeTab':function(newdata,old){
@@ -261,6 +263,13 @@
                 this.pageUnEval = 1;
             },
         },
+        updated:function(){
+            for(var i = 0;i < this.$children[1].$children.length;i++){
+                if(this.$children[1].$children[i].refMark == this.activeTab){
+                    this.$children[1].$children[i].mySroller.scrollTo(0,this.$children[1].$children[i].scrollerInfo.y);
+                }
+            }
+        },
         activated:function(){
             if(this.activeTab == 0){
                 this.orderQueryAll();
@@ -317,24 +326,23 @@
                 }
             }
             .order-list-container{
-                overflow:auto;
+                overflow:hidden;
                 position:relative;
                 .tabs{
                     position:absolute;
                     width:100%;
-                    .order-list{
-                        .order-item{
-                            background-color:#fff;
-                            padding:0.4rem 5%;
-                            margin-bottom:0.5rem;
-                            box-shadow:0px 1px 2px #ccc;
-                        }
-                        .load-more{
-                            height:1.5rem;
-                            background-color:#fff;
-                            text-align:center;
-                            line-height:1.5rem;
-                        }
+                    height:100%;
+                    .order-item{
+                        background-color:#fff;
+                        padding:0.4rem 5%;
+                        margin-bottom:0.5rem;
+                        box-shadow:0px 1px 2px #ccc;
+                    }
+                    .load-more{
+                        height:1.5rem;
+                        background-color:#fff;
+                        text-align:center;
+                        line-height:1.5rem;
                     }
                 }
             }

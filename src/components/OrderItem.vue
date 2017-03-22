@@ -24,10 +24,10 @@
         </div>
         <div class="footer">
             <div class="oprater" flex="dir:left cross:center main:right">
-                <div class="pay" v-if="item.status == 1" @click="goPay(item.orderNo)">去支付</div>
-                <div class="cancel" v-if="item.status == 2" @click="refund(item.orderNo)">退款</div>
+                <div class="pay" v-if="item.status == 1" v-tap="goPay.bind(this,item.orderNo)">去支付</div>
+                <div class="cancel" v-if="item.status == 2" v-tap="refund.bind(this,item.orderNo)">退款</div>
                 <!--<div class="evaluate" @click="goEvaluate" v-if="item.status == 4">去评价</div>-->
-                <div class="detail" @click="viewDetail(item.orderNo)">查看详情</div>
+                <div class="detail" v-tap="viewDetail.bind(this,item.orderNo)" v-if="item.status != 1">查看详情</div>
             </div>
         </div>
     </div>
