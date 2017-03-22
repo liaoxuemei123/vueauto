@@ -25,7 +25,7 @@
         <div class="footer">
             <div class="oprater" flex="dir:left cross:center main:right">
                 <div class="pay" v-if="item.status == 1" @click="goPay(item.orderNo)">去支付</div>
-                <div class="cancel" v-if="item.status == 2">退单</div>
+                <div class="cancel" v-if="item.status == 2" @click="refund(item.orderNo)">退款</div>
                 <!--<div class="evaluate" @click="goEvaluate" v-if="item.status == 4">去评价</div>-->
                 <div class="detail" @click="viewDetail(item.orderNo)">查看详情</div>
             </div>
@@ -33,6 +33,7 @@
     </div>
 </template>
 <script>
+    import Tool from '../utils/Tool'
     export default {
         data () {
             return {
@@ -69,6 +70,9 @@
             },
             goPay:function(orderNo){
                 this.$router.push({path:'/orderpay/'+orderNo});
+            },
+            refund:function(orderNo){
+                this.$router.push({path:'/refund/'+orderNo})
             }
         }
     }
@@ -98,7 +102,7 @@
             }
             .order-info{
                 height:1.5rem;
-                font-size:0.58rem;
+                font-size:0.54rem;
                 border-bottom:1px solid #efefef;
                 .order-total{
                     margin-right:0.5rem;

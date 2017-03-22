@@ -17,6 +17,7 @@ import Login from 'pages/Login';
 import Register from 'pages/Register';
 import ViewStore from 'pages/ViewStore';
 import TestScroller from 'pages/TestScroller';
+import Refund from 'pages/Refund';
 
 Vue.use(Router)
 
@@ -127,6 +128,11 @@ export default new Router({
       path:'/testscroller',
       name:'testscroller',
       component:TestScroller,
+    },
+    {
+      path:'/refund/:id',
+      name:'refund',
+      component:Refund,
     }
   ]
 })

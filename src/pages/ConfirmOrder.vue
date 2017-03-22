@@ -140,6 +140,7 @@
                     orderPrice:this.packageInfo.setDetail.price,
                     carType:this.packageInfo.modelInfo.vehicleModel + ' ' + this.packageInfo.modelInfo.displacement,
                     setMealId:this.packageInfo.setDetail.mealId,
+                    storeId:this.packageInfo.storeInfo.id || '',
                 },(data)=>{
                     Toast(data.msg);
                     if(data.code == 200){
@@ -149,6 +150,7 @@
             }
         },
         activated:function(){
+            console.log(this.packageInfo);
         },
         filters:{
             universalFilter:function(val){

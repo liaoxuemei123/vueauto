@@ -199,7 +199,7 @@
                                                     message:'支付成功',
                                                     duration:1000,
                                                 })
-                                                self.$router.push({path:'orderdetail/'+orderNo});
+                                                self.$router.push({path:'/orderdetail/'+orderNo});
                                             }
                                         })
                                     })
