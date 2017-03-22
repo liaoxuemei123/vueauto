@@ -1,37 +1,33 @@
 <template>
     <div class="order-container">
         <div class="header" flex="dir:left cross:center main:justify">
-            <div class="order-id">
-                订单编号：{{item.orderNo}}
+            <div class="order-time">
+                {{item.createDate}}
             </div>
             <div class="order-state">
                 {{item.status | stateFilter}}
             </div>
         </div>
         <div class="body">
-            <div class="line">
-                <div class="car-infon" flex="dir:left cross:center">
-                    <div class="title">车辆信息：</div>
-                    <div class="label">{{item.carType}}</div>
-                </div>
-            </div>
-            <div class="line">
-                <div class="order-time" flex="dir:left cross:center">
-                    <div class="title">下单时间：</div>
-                    <div class="label">{{item.createDate}}</div>
-                </div>
-            </div>
-            <div class="line" flex="dir:left main:justify cross:baseline">
-                <div class="order-price" flex="dir:left">
-                    <div class="title">总额：</div>
+            <div class="order-name">{{item.packageName}}</div>
+            <div class="order-info" flex="dir:left main:right cross:center">
+                <div class="order-total" flex="dir:left">
+                    <div class="title">合计:￥</div>
                     <div class="label">{{item.orderPrice}}</div>
                 </div>
-                <div class="oprater" flex="dir:left cross:center">
-                    <div class="pay" v-if="item.status == 1" @click="goPay(item.orderNo)">去支付</div>
-                    <div class="cancel" v-if="item.status == 2">退单</div>
-                    <!--<div class="evaluate" @click="goEvaluate" v-if="item.status == 4">去评价</div>-->
-                    <div class="detail" @click="viewDetail(item.orderNo)">查看详情</div>
+                <div class="order-price" flex="dir:left">
+                    <div class="title">实付:￥</div>
+                    <div class="label">{{item.orderPrice}}</div>
                 </div>
+            </div>
+            
+        </div>
+        <div class="footer">
+            <div class="oprater" flex="dir:left cross:center main:right">
+                <div class="pay" v-if="item.status == 1" @click="goPay(item.orderNo)">去支付</div>
+                <div class="cancel" v-if="item.status == 2">退单</div>
+                <!--<div class="evaluate" @click="goEvaluate" v-if="item.status == 4">去评价</div>-->
+                <div class="detail" @click="viewDetail(item.orderNo)">查看详情</div>
             </div>
         </div>
     </div>
@@ -84,32 +80,43 @@
         color:#222;
         .header{
             border-bottom:1px solid #efefef;
-            font-size:0.67rem;
+            font-size:0.58rem;
             line-height:2em;
+            .order-time{
+                color:#888;
+            }
             .order-state{
                 color:#389cf1;
             }
         }
         .body{
-            font-size:0.58rem;
-            margin:0.4rem 0;
-            .oprater{
-                font-size:0.51rem;
-                .pay,.cancel,.evaluate{
-                    color:#666;
-                    padding:0rem 0.3rem;
-                    border:1px solid #666;
-                    border-radius:2px;
-                    margin-left:0.2rem;
-                    margin-bottom:0rem;
-                    box-shadow:none;
+            font-size:0.67rem;
+            .order-name{
+                height:2.4rem;
+                line-height:2.4rem;
+                border-bottom:1px solid #efefef;
+            }
+            .order-info{
+                height:1.5rem;
+                font-size:0.58rem;
+                border-bottom:1px solid #efefef;
+                .order-total{
+                    margin-right:0.5rem;
                 }
-                .detail{
-                    color:#ff3c30;
-                    padding:0rem 0.3rem;
-                    border:1px solid #ff3c30;
-                    border-radius:1px;
+            }
+        }
+        .footer{
+            font-size:0.51rem;
+            color:#4b4b4b;
+            .oprater{
+                height:1.5rem;
+                &>div{
                     margin-left:0.5rem;
+                }
+                &>div{
+                    padding:0.05rem 0.5rem;
+                    border:1px solid #aaa;
+                    border-radius:0.2rem;
                 }
             }
         }

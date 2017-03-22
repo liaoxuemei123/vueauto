@@ -5,89 +5,91 @@
                 title="套餐详情"
             />
             <div class="page-content" flex="dir:top box:last">
-                <div class="detail-container">
-                    <div class="set-container">
-                        <div class="set-image">
-                            <div class="image-container">
-                                <img :src="setInfo.packageImage" >
-                            </div>
-                        </div>
-                        <div class="set-detail" flex="dir:top box:mean">
-                            <div class="line" flex="dir:left cross:center">
-                                <span class="car-type">{{packageInfo.modelInfo.seriesName}}</span>
-                                <span class="des1">{{setInfo.packageName}}</span>
-                                <span class="des2">({{setInfo.isUniversal|universalFilter}})</span>
-                            </div>
-                            <div class="line" flex="dir:left cross:center">
-                                <span class="price-range" v-if="setDetail.price"><span class="doller">￥</span>{{setDetail.price}}</span>
-                                <span class="origin-price" v-if="setDetail.originPrice"><span class="doller">￥</span>{{setDetail.originPrice}}</span>
-                                <span class="price-range" v-else="setDetail.price"><span class="doller">￥</span>{{priceRange.minprice}}-{{priceRange.maxprice}}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="meal-list-container">
-                        <div class="title"  @click="mealListShow = !mealListShow">
-                            <span>套餐机油选择</span>
-                            <span class="selected-oil" v-if="setMealList[selectMeal]">{{setMealList[selectMeal].engineOil + ' ' + setMealList[selectMeal].pieceNumber}}</span>
-                            <i class="iconfont" :class="mealListShow?'icon-up':'icon-down'"></i>
-                        </div>
-                        <div class="meal-list" v-if="mealListShow">
-                            <div class="meal-item" @click="selectedMeal(index)" v-for="(item,index) in setMealList" flex="dir:left cross:center">
-                                <i class="iconfont icon-select" v-if="selectMeal == index"></i>
-                                <i class="iconfont icon-circle active" v-else="selectMeal == index"></i>
-                                <div class="oil-brand">{{item.engineOil}}</div>
-                                <div class="oil-piece">{{item.pieceNumber}}</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="select-store">
-                        <div class="input-control">
-                            <inp-com title="服务中心" :value="packageInfo.storeInfo.storeName" :onClick="goStore" :readonly="true" :placeholder="storeTip" :rightArrow="true" />
-                        </div>
-                    </div>
-                    <div class="tips" v-if="setInfo.isUniversal == 1">提示：请查看可以使用的服务中心</div>
-                    <!--<div class="input-container">
-                        <inp-com
-                            title="套餐机油选择"
-                            :readonly="true"
-                            :rightArrow="true"
-                            placeholder="请选择机油"
-                            :onClick="popOilSelect"
-                            :value="setDetail.mealName"
-                        />
-                    </div>-->
-                    <div class="info-container">
-                        <div class="title">
-                            套餐信息
-                        </div>
-                        <div class="info-content">
-                            <div class="info-item">
-                                <div class="item-name">保养项目：</div>
-                                <div class="info">
-                                    {{setInfo.packageContent}}
+                <scroller>
+                    <div class="detail-container">
+                        <div class="set-container">
+                            <div class="set-image">
+                                <div class="image-container">
+                                    <img :src="setInfo.packageImage" >
                                 </div>
                             </div>
-                            <div class="info-item">
-                                <div class="item-name">有效期：</div>
-                                <div class="info">
-                                    {{setInfo.validate|validateFilter}}
+                            <div class="set-detail" flex="dir:top box:mean">
+                                <div class="line" flex="dir:left cross:center">
+                                    <span class="car-type">{{packageInfo.modelInfo.seriesName}}</span>
+                                    <span class="des1">{{setInfo.packageName}}</span>
+                                    <span class="des2">({{setInfo.isUniversal|universalFilter}})</span>
                                 </div>
-                            </div>
-                            <div class="info-item">
-                                <div class="item-name">适用范围：</div>
-                                <div class="info">
-                                    {{setInfo.isUniversal|universalFilter}}
-                                </div>
-                            </div>
-                            <div class="info-item">
-                                <div class="item-name">使用方法：</div>
-                                <div class="info">
-                                    到店保养前告知服务顾问已购买套餐即可使用
+                                <div class="line" flex="dir:left cross:center">
+                                    <span class="price-range" v-if="setDetail.price"><span class="doller">￥</span>{{setDetail.price}}</span>
+                                    <span class="origin-price" v-if="setDetail.originPrice"><span class="doller">￥</span>{{setDetail.originPrice}}</span>
+                                    <span class="price-range" v-else="setDetail.price"><span class="doller">￥</span>{{priceRange.minprice}}-{{priceRange.maxprice}}</span>
                                 </div>
                             </div>
                         </div>
+                        <div class="meal-list-container">
+                            <div class="title"  v-tap.prevent="toggleMeal">
+                                <span>套餐机油选择</span>
+                                <span class="selected-oil" v-if="setMealList[selectMeal]">{{setMealList[selectMeal].engineOil + ' ' + setMealList[selectMeal].pieceNumber}}</span>
+                                <i class="iconfont" :class="mealListShow?'icon-up':'icon-down'"></i>
+                            </div>
+                            <div class="meal-list" v-if="mealListShow">
+                                <div class="meal-item" v-tap.prevent="selectedMeal.bind(this,index)" v-for="(item,index) in setMealList" flex="dir:left cross:center">
+                                    <i class="iconfont icon-select" v-if="selectMeal == index"></i>
+                                    <i class="iconfont icon-circle active" v-else="selectMeal == index"></i>
+                                    <div class="oil-brand">{{item.engineOil}}</div>
+                                    <div class="oil-piece">{{item.pieceNumber}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="select-store">
+                            <div class="input-control">
+                                <inp-com title="服务中心" :value="packageInfo.storeInfo.storeName" :onClick="goStore" :readonly="true" :placeholder="storeTip" :rightArrow="true" />
+                            </div>
+                        </div>
+                        <div class="tips" v-if="setInfo.isUniversal == 1">提示：请查看可以使用的服务中心</div>
+                        <!--<div class="input-container">
+                            <inp-com
+                                title="套餐机油选择"
+                                :readonly="true"
+                                :rightArrow="true"
+                                placeholder="请选择机油"
+                                :onClick="popOilSelect"
+                                :value="setDetail.mealName"
+                            />
+                        </div>-->
+                        <div class="info-container">
+                            <div class="title">
+                                套餐信息
+                            </div>
+                            <div class="info-content">
+                                <div class="info-item">
+                                    <div class="item-name">保养项目：</div>
+                                    <div class="info">
+                                        {{setInfo.packageContent}}
+                                    </div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="item-name">有效期：</div>
+                                    <div class="info">
+                                        {{setInfo.validate|validateFilter}}
+                                    </div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="item-name">适用范围：</div>
+                                    <div class="info">
+                                        {{setInfo.isUniversal|universalFilter}}
+                                    </div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="item-name">使用方法：</div>
+                                    <div class="info">
+                                        到店保养前告知服务顾问已购买套餐即可使用
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                </scroller>
                 <div class="button-control">
                     <div class="next-button" @click="nextPage">
                         立即购买
@@ -136,6 +138,7 @@
     import Tool from '../utils/Tool';
     import { mapState } from 'vuex';
     import { Toast } from 'mint-ui';
+    import Scroller from '../components/Scroller';
     export default {
         data () {
             return {
@@ -155,16 +158,25 @@
                 },
                 storeTip:'选择服务中心',
                 isSelectStore:true,
+                scrollerY:0,//记录scroller的位置
             }
         },
         components:{
             NavBar,
-            InpCom
+            InpCom,
+            Scroller
         },
         computed:{
             ...mapState([
                 'packageInfo'
             ])
+        },
+        updated:function(){//IScroll滚动回之前的位置
+            for(var i=0;i<this.$children.length;i++){
+                if(this.$children[i].mySroller){
+                    this.$children[i].mySroller.scrollTo(0,this.$children[i].scrollerInfo.y);
+                }
+            }
         },
         watch:{
             'isSelectStore':function(val){
@@ -247,6 +259,9 @@
                     this.$router.push({name:'viewstore'});
                 }
             },
+            toggleMeal:function(){
+                this.mealListShow = !this.mealListShow
+            }
         },
         activated:function(){
             this.setInfo = this.$route.query;

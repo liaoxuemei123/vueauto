@@ -9,6 +9,7 @@ const Util = {
         detalX:0,
         detalY:0,
         time:0,
+        lastTime:0,
     },
     isPc(){
         var UA = navigator.userAgent;
@@ -21,6 +22,7 @@ const Util = {
         return true;
     },
     onTouchStart(e){
+        if(new Date().getTime() - this.tapInfo.lastTime < 200) return false;//tap在0.2后才能再次触发，避免在翻页的时候出现连续点击导致页面出错
         var touches = e.touches[0];
         this.tapInfo.x1 = touches.pageX;
         this.tapInfo.y1 = touches.pageY;
@@ -34,6 +36,7 @@ const Util = {
         var absX = Math.abs(this.tapInfo.x2 - this.tapInfo.x1);
         var absY = Math.abs(this.tapInfo.y2 - this.tapInfo.y1);
         if(absX < 20 && absY < 20 && time < 200){//严格点击判断条件，避免多次点击的坑
+            this.tapInfo.lastTime = new Date().getTime();
             return true;
         }
         return false;
@@ -62,14 +65,14 @@ const Tap = {
                 el.handler(e)
             },false)
         }else{
-            el.addEventListener('touchstart',function(e){
+            el.addEventListener('touchstart',(e)=>{
                 if (binding.modifiers.stop)
                     e.stopPropagation();
                 if (binding.modifiers.prevent)
                     e.preventDefault();
                 Util.onTouchStart(e);
             },false);
-            el.addEventListener('touchend',function(e){
+            el.addEventListener('touchend',(e)=>{
                 e.preventDefault();
                 var flag = Util.onTouchEnd(e)
                 if(flag){
@@ -78,15 +81,6 @@ const Tap = {
                     return false;
                 }
             },false);
-        }
-    },
-    componentUpdated:function(el){
-        el.handler = function(e){
-            var value = binding.value;
-            if(!value && el.href && !binding.modifiers.prevent){
-                return window.location = el.href;
-            }
-            value.event = e;
         }
     },
     unbind:function(el){
