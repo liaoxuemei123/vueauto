@@ -13,7 +13,7 @@
                                 {{item.label}}
                             </div>
                         </div>
-                        <div class="after" :style="{'left':( activeTab * 33 ) + 7 + '%'}"></div>
+                        <div class="after" :style="{'left':( activeTab * 25 ) + 5 + '%'}"></div>
                     </div>
                 </div>
                 <div class="order-list-container">
@@ -22,6 +22,10 @@
                             <scroller refMark='0'>
                                 <div class="order-item" v-for="(item, index) in orderList">
                                     <order-item :item="item"></order-item>
+                                </div>
+                                <div class="no-goods" flex="dir:top cross:center" v-if="orderList.length == 0">
+                                    <i class="iconfont icon-goods"></i>
+                                    <span>没有相关订单</span>
                                 </div>
                                 <div class="load-more" v-tap="loadMoreAll" v-if="(pageAll)*pageSize < totalCountAll">
                                     加载更多。。。
@@ -33,6 +37,10 @@
                                 <div class="order-item" v-for="(item, index) in unpaidList">
                                     <order-item :item="item"></order-item>
                                 </div>
+                                <div class="no-goods" flex="dir:top cross:center" v-if="unpaidList.length == 0">
+                                    <i class="iconfont icon-goods"></i>
+                                    <span>没有相关订单</span>
+                                </div>
                                 <div class="load-more" v-tap="loadMoreUnpaid" v-if="(pageUnpaid)*pageSize < totalCountUnpaid">
                                     加载更多。。。
                                 </div>
@@ -43,17 +51,25 @@
                                 <div class="order-item" v-for="(item, index) in paidList">
                                     <order-item :item="item"></order-item>
                                 </div>
+                                <div class="no-goods" flex="dir:top cross:center" v-if="paidList.length == 0">
+                                    <i class="iconfont icon-goods"></i>
+                                    <span>没有相关订单</span>
+                                </div>
                                 <div class="load-more" v-tap="loadMorePaid" v-if="(pagePaid)*pageSize < totalCountPaid">
                                     加载更多。。。
                                 </div>
                             </scroller>
                         </div>
-                        <div class="tab-unevaluate tabs" key="unevaluate" v-show="activeTab == 3">
+                        <div class="tab-refund tabs" key="refund" v-show="activeTab == 3">
                             <scroller refMark='3'>
-                                <div class="order-item" v-for="(item, index) in unevalList">
+                                <div class="order-item" v-for="(item, index) in refundList">
                                     <order-item :item="item"></order-item>
                                 </div>
-                                <div class="load-more" v-tap="loadMoreUnEval" v-if="(pageUnEval)*pageSize < totalCountUnEval">
+                                <div class="no-goods" flex="dir:top cross:center" v-if="refundList.length == 0">
+                                    <i class="iconfont icon-goods"></i>
+                                    <span>没有相关订单</span>
+                                </div>
+                                <div class="load-more" v-tap="loadMoreRefund" v-if="(pageRefund)*pageSize < totalCountRefund">
                                     加载更多。。。
                                 </div>
                             </scroller>
@@ -76,20 +92,21 @@
                     {value:0, label:'全部'},
                     {value:1, label:'待支付'},
                     {value:2, label:'已支付'},
+                    {value:3, label:'退款'},
                 ],
                 orderList:[],
                 unpaidList:[],
                 paidList:[],
-                unevalList:[],
+                refundList:[],
                 activeTab:0,
                 totalCountAll:0,
                 totalCountUnpaid:0,
                 totalCountPaid:0,
-                totalCountUnEval:0,
+                totalCountRefund:0,
                 pageAll:1,
                 pageUnpaid:1,
                 pagePaid:1,
-                pageUnEval:1,
+                pageRefund:1,
                 pageSize:5,
                 animate:'left',
             }
@@ -122,10 +139,10 @@
                         }
                         break;
                     case 3:
-                        if(this.unevalList.length<1){
-                            this.pageUnEval = 1;
-                            this.totalCountUnEval = 0;
-                            this.orderQueryUnEval();
+                        if(this.refundList.length<1){
+                            this.pageRefund = 1;
+                            this.totalCountRefund = 0;
+                            this.orderQueryRefund();
                         }
                         break;
                     case 0:
@@ -172,15 +189,15 @@
                     this.totalCountPaid = data.data.totalCount;
                 })
             },
-            orderQueryUnEval:function(){
+            orderQueryRefund:function(){
                 Tool.get('AaPackageOrderQuery',{
                     userId:Tool.getUserInfo('userId'),
                     status:'3',
-                    page:this.pageUnEval,
+                    page:this.pageRefund,
                     pageSize:this.pageSize,
                 },(data)=>{
-                    this.unevalList = data.data.data;
-                    this.totalCountUnEval = data.data.totalCount;
+                    this.refundList = data.data.data;
+                    this.totalCountRefund = data.data.totalCount;
                 })
             },
             loadMoreAll:function(){
@@ -225,18 +242,18 @@
                     this.totalCountPaid = data.data.totalCount;
                 })
             },
-            loadMoreUnEval:function(){
+            loadMoreRefund:function(){
                 var self = this;
-                self.pageUnEval ++;
-                self.totalCountUnEval = 1000000;//保证加载更多在加载完成前一直显示
+                self.pageRefund ++;
+                self.totalCountRefund = 1000000;//保证加载更多在加载完成前一直显示
                 Tool.get('AaPackageOrderQuery',{
                     userId:Tool.getUserInfo('userId'),
                     status:3,
-                    page:this.pageUnEval,
+                    page:this.pageRefund,
                     pageSize:this.pageSize,
                 },(data)=>{
-                    this.unevalList = this.unevalList.concat(data.data.data);
-                    this.totalCountUnEval = data.data.totalCount;
+                    this.refundList = this.refundList.concat(data.data.data);
+                    this.totalCountRefund = data.data.totalCount;
                 })
             },
             customBack:function(){
@@ -252,15 +269,15 @@
                 this.orderList = [];
                 this.unpaidList = [];
                 this.paidList = [];
-                this.unevalList = [];
+                this.refundList = [];
                 this.totalCountAll = 0;
                 this.totalCountUnpaid = 0;
                 this.totalCountPaid = 0;
-                this.totalCountUnEval = 0;
+                this.totalCountRefund = 0;
                 this.pageAll = 1;
                 this.pageUnpaid = 1;
                 this.pagePaid = 1;
-                this.pageUnEval = 1;
+                this.pageRefund = 1;
             },
         },
         updated:function(){
@@ -275,8 +292,10 @@
                 this.orderQueryAll();
             }else if(this.activeTab == 1){
                 this.orderQueryUnPaid();
-            }else{
+            }else if(this.activeTab == 2){
                 this.orderQueryPaid();
+            }else{
+                this.orderQueryRefund();
             }
             this.resetData();
         },
@@ -317,7 +336,7 @@
                 }
                 .tab-container .after{
                     display:block;
-                    width:20%;
+                    width:16%;
                     height:2px;
                     background-color:#379df2;
                     position:absolute;
@@ -332,6 +351,21 @@
                     position:absolute;
                     width:100%;
                     height:100%;
+                    .no-goods{
+                        margin-top:2rem;
+                        width:100%;
+                        overflow:auto;
+                        .iconfont{
+                            font-size:2.5rem;
+                            color:#ccc;
+                        }
+                        span{
+                            height:2rem;
+                            line-height:2rem;
+                            font-size:0.7rem;
+                            color:#aaa;
+                        }
+                    }
                     .order-item{
                         background-color:#fff;
                         padding:0.4rem 5%;

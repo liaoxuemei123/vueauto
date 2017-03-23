@@ -25,7 +25,7 @@ const Util = {
         return true;
     },
     onTouchStart(e){
-        if(new Date().getTime() - this.tapInfo.lastTime < 200) return false;//tap在0.2后才能再次触发，避免在翻页的时候出现连续点击导致页面出错
+        if(new Date().getTime() - this.tapInfo.lastTime < 250) return false;//tap在0.2后才能再次触发，避免在翻页的时候出现连续点击导致页面出错
         var touches = e.touches[0];
         this.tapInfo.x1 = touches.pageX;
         this.tapInfo.y1 = touches.pageY;

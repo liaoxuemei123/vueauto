@@ -35,7 +35,10 @@
                 if(this.$parent.pickerModel){
                     this.$router.push({path:'setdetail/'+item.id,query:item});
                 }else{
-                    Toast("请选择车型");
+                    Toast({
+                        message:"请选择车型",
+                        position:'top',
+                    });
                     $('.select-bar input').focus();
                 }
             },

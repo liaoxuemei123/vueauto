@@ -177,6 +177,9 @@
                                                     function(data){     
                                                         if(data.err_msg == "get_brand_wcpay_request:ok" ) {
                                                             res(data);
+                                                        }else{
+                                                            rej();
+                                                            self.$router.push({name:'maintainset'});
                                                         }
                                                     }
                                                 );
@@ -229,11 +232,10 @@
             this.startPay();//支付界面只有在第一次进入的时候才触发支付，否则不做操作
         },
         beforeRouteLeave:function(to,from,next){
-            if(to.name == 'confirmorder'){
+            if(to.name == 'confirmorder' || to.path == '/confirmorder'){
                 next({name:'maintainset'});//防止2次下单
-            }else{
-                next();
             }
+            next();
         },
         beforeRouteEnter:(to,from,next)=>{
             Tool.routerEnter(to,from,next)

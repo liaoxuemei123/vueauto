@@ -9,7 +9,7 @@
                     <div class="refund-price">
                         <div class="input-control">
                             <span class="title">退款金额：</span>
-                            <span class="value">{{orderInfo.orderPrice}}</span>
+                            <span class="value">￥{{orderInfo.orderPrice|priceFilter}}</span>
                         </div>
                     </div>
                     <div class="refund-reason">
@@ -54,6 +54,16 @@
         },
         activated:function(){
             this.orderNo = this.$route.params.id;
+            Tool.get('AaPackageOrderDetail',{orderNo:this.orderNo},(data) => {
+                if(data.code == 200){
+                    this.orderInfo = data.data.PackageOrder;
+                }
+            })
+        },
+        filters:{
+            priceFilter:function(val){
+                return (val - 0).toFixed(2);
+            }
         }
     }
 </script>

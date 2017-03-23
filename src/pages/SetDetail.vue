@@ -405,7 +405,7 @@
                     box-shadow:0px 1px 3px #aaa;
                     .set-image{
                         .image-container{
-                            height:7.7rem;
+                            height:10rem;
                             background-color:#ccc;
                             position:relative;
                             img{
