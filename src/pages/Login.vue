@@ -127,7 +127,7 @@
             	margin-left: 15%;
             	margin-right: 15%;
             	margin-top: 0.386rem;
-            	border: 1px solid #e5e5e5;
+				border: 1px solid #03A9F4;
             	background-color:#03A9F4;
             	text-align: center;
             	line-height: 1.5rem;	
@@ -135,6 +135,7 @@
             }
             .register-btn{
             	.login-btn;
+				border: 1px solid red;
             	background-color:red;
 
             }

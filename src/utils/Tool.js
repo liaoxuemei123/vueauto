@@ -7,7 +7,7 @@ import store from '../store';
 
 const Tool = {};
 //const target = 'http://10.17.5.128:8080/maintenance-plug/app/';//内网测试环境地址
-//const target = 'http://47.92.24.169:8091/maintenance-plug/app/';
+//const target = 'http://47.92.24.169/maintenance-plug/app/';
 const target = 'http://www.dajiankangyangsheng.com/maintenance-plug/app/';//公网测试环境
 const CLOSE_NETWORK = false;//在本地调试时关闭网络，只调整静态页面
 var requestPool = [];//请求池
