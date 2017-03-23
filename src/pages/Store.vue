@@ -102,7 +102,6 @@
             },
             getStoreList:function(callback){
                 var self = this;
-                console.log(this.cityInfo);
                 Tool.get('getStoreList',{
                     gpsLongitude:this.cityInfo.lng ||self.geolocation.point.lon,
                     gpsLatitude:this.cityInfo.lat || self.geolocation.point.lat,
