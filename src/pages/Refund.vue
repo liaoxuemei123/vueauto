@@ -5,12 +5,20 @@
                 title="申请退款"
             />
             <div class="page-content" flex="dir:top box:last">
-                <div class="input-control">
-                    <div class="input-container">
-                        <div class="title">退款原因:</div>
-                        <textarea v-model="message" rows="5" maxlength="100"></textarea>
-                        <div class="input-info">
-                            {{message.length}}/100
+                <div class="refund-content">
+                    <div class="refund-price">
+                        <div class="input-control">
+                            <span class="title">退款金额：</span>
+                            <span class="value">{{orderInfo.orderPrice}}</span>
+                        </div>
+                    </div>
+                    <div class="refund-reason">
+                        <div class="input-control">
+                            <div class="title">退款原因：</div>
+                            <textarea v-model="message" rows="5" maxlength="100"></textarea>
+                            <div class="input-info">
+                                {{message.length}}/100
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -29,6 +37,9 @@
             return {
                 message:'',
                 orderNo:'',
+                orderInfo:{
+                    orderPrice:'100'
+                }
             }
         },
         methods:{
@@ -61,9 +72,22 @@
             height:100%;
             overflow: hidden;
             position:relative;
-            .input-control{
+            .refund-price{
+                margin-bottom:1px;
+                background-color:#fff;
+                .input-control{
+                    height:1.5rem;
+                    line-height:1.5rem;
+                    padding:0 0.2rem;
+                    color:#888;
+                    .value{
+                        color:#fc4c1d;
+                    }
+                }
+            }
+            .refund-reason{
                 width:100%;
-                .input-container{
+                .input-control{
                     position:relative;
                     .title{
                         height:1.5rem;

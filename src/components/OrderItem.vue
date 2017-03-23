@@ -9,13 +9,22 @@
             </div>
         </div>
         <div class="body">
-            <div class="order-name">{{item.packageName}}</div>
-            <div class="order-info" flex="dir:left main:right cross:center">
+            <div class="order-info" flex="dir:top box:mean">
+                <div class="order-name" flex="dir:left cross:center">
+                    <span class="package-name">{{item.packageName}}</span>
+                    <span class="package-range">(全国服务中心通用)</span>
+                </div>
+                <div class="car-info" flex="dir:left cross:center">
+                    <span class="car-type">{{item.carType}}</span>
+                    <span class="engine-oil">{{item.engineOil}}</span>
+                </div>
+            </div>
+            <div class="price-info" flex="dir:left main:right cross:center">
                 <div class="order-total" flex="dir:left">
                     <div class="title">合计:￥</div>
                     <div class="label">{{item.orderPrice}}</div>
                 </div>
-                <div class="order-price" flex="dir:left">
+                <div class="order-price" flex="dir:left" v-if="item.status != 1">
                     <div class="title">实付:￥</div>
                     <div class="label">{{item.orderPrice}}</div>
                 </div>
@@ -95,17 +104,34 @@
         }
         .body{
             font-size:0.67rem;
-            .order-name{
-                height:2.4rem;
-                line-height:2.4rem;
-                border-bottom:1px solid #efefef;
-            }
             .order-info{
+                padding:0.2rem 0;
+                height:2.6rem;
+                border-bottom:1px solid #efefef;
+                .order-name{
+                    .package-range{
+                        font-size:0.57rem;
+                        margin-left:0.2rem;
+                        color:#fc4c1d;
+                    }
+                }
+                .car-info{
+                    font-size:0.57rem;
+                    .car-type{
+                        margin-right:0.4rem;
+                    }
+                    .engine-oil{
+                        font-size:0.51rem;
+                        color:#888;
+                    }
+                }
+            }
+            .price-info{
                 height:1.5rem;
                 font-size:0.54rem;
                 border-bottom:1px solid #efefef;
-                .order-total{
-                    margin-right:0.5rem;
+                .order-price{
+                    margin-left:0.5rem;
                 }
             }
         }

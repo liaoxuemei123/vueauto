@@ -6,11 +6,11 @@
             </div>
         </div>
         <div class="set-info" flex="dir:top cross:top box:mean">
-            <div class="line">
-                <span class="times">{{item.discount}}折</span>
+            <div class="line" flex="dir:left cross:center">
+                <span class="cut">{{item.discount}}折</span>
                 <span class="des1">{{item.packageName}}</span>
             </div>
-            <div class="line">
+            <div class="line" flex="dir:left cross:center">
                 <span class="range">{{item.isUniversal|universalFilter}}</span>
             </div>
         </div>
@@ -79,12 +79,13 @@
             height:1.2rem;
             padding:0.2rem 0.5rem;
             background-color:#fff;
-            .times{
+            .cut{
                 font-size:0.43rem;
                 color:#fff;
                 background-color:#fc4c1d;
-                padding:0rem 0.1rem;
+                padding:0.05rem 0.1rem;
                 border-radius:0.1rem;
+                margin-right:0.2rem;
             }
             .des1{
                 font-size:0.64rem;

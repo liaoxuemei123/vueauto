@@ -124,7 +124,7 @@
                         this.cityInfo.lng = data.result.location.lng;
                     }
                     this.getStoreList();
-                    this.cityInfo = {};
+                    this.cityInfo.province = '';
                 })
             },
             getCityList:function(callback){

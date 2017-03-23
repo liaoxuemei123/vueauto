@@ -102,6 +102,7 @@
             },
             getStoreList:function(callback){
                 var self = this;
+                console.log(this.cityInfo);
                 Tool.get('getStoreList',{
                     gpsLongitude:this.cityInfo.lng ||self.geolocation.point.lon,
                     gpsLatitude:this.cityInfo.lat || self.geolocation.point.lat,
@@ -156,7 +157,7 @@
                         this.cityInfo.lng = data.result.location.lng;
                     }
                     this.getStoreList();
-                    this.cityInfo = {};
+                    this.cityInfo.province = '';
                 })
             },
             getCityList:function(callback){
