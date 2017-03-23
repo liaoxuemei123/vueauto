@@ -28,7 +28,7 @@
                                     <order-item :item="item"></order-item>
                                 </div>
                                 <div class="load-more" flex="dir:top cross:center" v-if="(pageAll)*pageSize < totalCountAll">
-                                    <div v-tap="loadMoreAll" v-if="allLoad">加载更多</div>
+                                    <div class="start-load" v-tap="loadMoreAll" v-if="allLoad">加载更多</div>
                                     <div flex="dir:left cross:center" v-else="allLoad">加载中<mt-spinner type="fading-circle" :size="12" color="#6b6b6b"></mt-spinner></div>
                                 </div>
                             </scroller>
@@ -43,8 +43,8 @@
                                     <order-item :item="item"></order-item>
                                 </div>
                                 <div class="load-more" flex="dir:top cross:center" v-if="(pageUnpaid)*pageSize < totalCountUnpaid">
-                                    <span v-tap="loadMoreUnpaid" v-if="unpaidLoad">加载更多</span>
-                                    <span flex="dir:left cross:center" v-else="unpaidLoad">加载中<mt-spinner type="fading-circle" :size="12" color="#6b6b6b"></mt-spinner></span>
+                                    <div class="start-load" v-tap="loadMoreUnpaid" v-if="unpaidLoad">加载更多</div>
+                                    <div flex="dir:left cross:center" v-else="unpaidLoad">加载中<mt-spinner type="fading-circle" :size="12" color="#6b6b6b"></mt-spinner></div>
                                 </div>
                             </scroller>
                         </div>
@@ -58,8 +58,8 @@
                                     <order-item :item="item"></order-item>
                                 </div>
                                 <div class="load-more" flex="dir:top cross:center" v-if="(pagePaid)*pageSize < totalCountPaid">
-                                    <span v-tap="loadMorePaid" v-if="paidLoad">加载更多</span>
-                                    <span flex="dir:left cross:center" v-else="paidLoad">加载中<mt-spinner type="fading-circle" :size="12" color="#6b6b6b"></mt-spinner></span>
+                                    <div class="start-load" v-tap="loadMorePaid" v-if="paidLoad">加载更多</div>
+                                    <div flex="dir:left cross:center" v-else="paidLoad">加载中<mt-spinner type="fading-circle" :size="12" color="#6b6b6b"></mt-spinner></div>
                                 </div>
                             </scroller>
                         </div>
@@ -73,8 +73,8 @@
                                     <order-item :item="item"></order-item>
                                 </div>
                                 <div class="load-more" flex="dir:top cross:center main:center" v-if="(pageRefund)*pageSize < totalCountRefund">
-                                    <span v-tap="loadMoreRefund" v-if="refundLoad">加载更多</span>
-                                    <span flex="dir:left cross:center" v-else="refundLoad">加载中<mt-spinner type="fading-circle" :size="12" color="#6b6b6b"></mt-spinner></span>
+                                    <div class="start-load" v-tap="loadMoreRefund" v-if="refundLoad">加载更多</div>
+                                    <div flex="dir:left cross:center" v-else="refundLoad">加载中<mt-spinner type="fading-circle" :size="12" color="#6b6b6b"></mt-spinner></div>
                                 </div>
                             </scroller>
                         </div>
@@ -392,6 +392,10 @@
                         height:1.5rem;
                         background-color:#fff;
                         line-height:1.5rem;
+                        .start-load{
+                            width:100%;
+                            text-align:center
+                        }
                     }
                 }
             }

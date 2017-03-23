@@ -40,7 +40,7 @@
             }
             this.mySroller = new IScroll(this.$el,{
                 probeType: 2,
-                scrollX: false,
+                scrollX: true,
                 scrollY: true,
                 mouseWheel: true,
                 isPullToRefresh: true,
