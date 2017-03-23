@@ -11,7 +11,9 @@
         data () {
             return {
                 mySroller:{},
-                scrollerInfo:{},
+                scrollerInfo:{
+                    y:0,
+                },
             }
         },
         props:{
@@ -35,7 +37,7 @@
         updated:function(){
             var self = this;
             if(!$.isEmptyObject(this.mySroller)){
-                this.mySroller.on('scroll',function(){});
+                this.mySroller.on('scrollEnd',function(){});
                 this.mySroller = {};
             }
             this.mySroller = new IScroll(this.$el,{
@@ -51,10 +53,9 @@
         },
         beforeDestroy:function(){
             this.mySroller = {};//卸载组件
-            this.mySroller.on('scroll',function(){});
+            this.mySroller.on('scrollEnd',function(){});
             this.scrollerInfo.y = 0;
         }
-
     }
 </script>
 <style lang="less" scoped>

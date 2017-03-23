@@ -297,7 +297,7 @@
             },
         },
         updated:function(){
-            if(this.$children[1] && this.$children[1].$children && this.$children[1].length > 0){
+            if(this.$children[1] && this.$children[1].$children.length > 0){
                 for(var i = 0;i < this.$children[1].$children.length;i++){
                     if(this.$children[1].$children[i].refMark == this.activeTab){
                         this.$children[1].$children[i].mySroller.scrollTo(0,this.$children[1].$children[i].scrollerInfo.y);

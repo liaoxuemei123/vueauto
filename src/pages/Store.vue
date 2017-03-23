@@ -182,7 +182,7 @@
             }
         },
         updated:function(){
-            if(this.$children && this.$children.length > 0){
+            if(this.$children.length > 0){
                 for(var i=0;i<this.$children.length;i++){
                     if(this.$children[i].mySroller && this.$children[i].mySroller.scrollTo){
                         this.$children[i].mySroller.scrollTo(0,this.$children[i].scrollerInfo.y);
