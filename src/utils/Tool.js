@@ -22,6 +22,7 @@ Tool.ajax = function(mySetting){
         timeout:30000,
         success:function (data) {},
         error:function (error) {},
+        mask:true,
     }
 
     var aData = [];
@@ -39,9 +40,11 @@ Tool.ajax = function(mySetting){
         return false;
     }
     var xhr = new XMLHttpRequest();
-    Indicator.open({
-        spinnerType:'fading-circle',
-    });
+    if(setting.mask){//是否启用遮罩层
+        Indicator.open({
+            spinnerType:'fading-circle',
+        });
+    }
     try{
         if ( setting.type === 'GET' || setting === 'get') {
             sData = setting.url + '?' + sData;
@@ -164,7 +167,7 @@ Tool.post = function (pathname, data, success, error) {
         type: 'POST', //请求的方式
         data: data, //发给服务器的数据
         success: success,
-        error: error
+        error: error,
     };
     return Tool.ajax(setting);
 };
@@ -175,13 +178,14 @@ Tool.post = function (pathname, data, success, error) {
  * @param {function} success  请求成功执行方法
  * @param {function} error    请求失败执行方法
  */
-Tool.get = function (pathname, data, success, error) {
+Tool.get = function (pathname, data, success, setting, error) {
     var setting = {
         url: target + pathname, //默认ajax请求地址
         type: 'GET', //请求的方式
         data: data, //发给服务器的数据
         success: success || function () { }, //请求成功执行方法
-        error: error || function () { } //请求失败执行方法
+        error: error || function () { }, //请求失败执行方法
+        ...setting//加载自定义的配置，如是否启用mask
     };
     return Tool.ajax(setting);
 };

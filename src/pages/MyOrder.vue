@@ -19,58 +19,62 @@
                 <div class="order-list-container">
                     <transition-group :name="animate">
                         <div class="tab-all tabs" key="all" v-show="activeTab == 0">
+                            <div class="no-goods" flex="dir:top cross:center" v-if="orderList.length == 0">
+                                <i class="iconfont icon-goods"></i>
+                                <span>没有相关订单</span>
+                            </div>
                             <scroller refMark='0'>
                                 <div class="order-item" v-for="(item, index) in orderList">
                                     <order-item :item="item"></order-item>
                                 </div>
-                                <div class="no-goods" flex="dir:top cross:center" v-if="orderList.length == 0">
-                                    <i class="iconfont icon-goods"></i>
-                                    <span>没有相关订单</span>
-                                </div>
-                                <div class="load-more" v-tap="loadMoreAll" v-if="(pageAll)*pageSize < totalCountAll">
-                                    加载更多。。。
+                                <div class="load-more" flex="dir:top cross:center" v-if="(pageAll)*pageSize < totalCountAll">
+                                    <div v-tap="loadMoreAll" v-if="allLoad">加载更多</div>
+                                    <div flex="dir:left cross:center" v-else="allLoad">加载中<mt-spinner type="fading-circle" :size="12" color="#6b6b6b"></mt-spinner></div>
                                 </div>
                             </scroller>
                         </div>
                         <div class="tab-unpaid tabs" key="unpaid" v-show="activeTab == 1">
+                            <div class="no-goods" flex="dir:top cross:center" v-if="unpaidList.length == 0">
+                                <i class="iconfont icon-goods"></i>
+                                <span>没有相关订单</span>
+                            </div>
                             <scroller refMark='1'>
                                 <div class="order-item" v-for="(item, index) in unpaidList">
                                     <order-item :item="item"></order-item>
                                 </div>
-                                <div class="no-goods" flex="dir:top cross:center" v-if="unpaidList.length == 0">
-                                    <i class="iconfont icon-goods"></i>
-                                    <span>没有相关订单</span>
-                                </div>
-                                <div class="load-more" v-tap="loadMoreUnpaid" v-if="(pageUnpaid)*pageSize < totalCountUnpaid">
-                                    加载更多。。。
+                                <div class="load-more" flex="dir:top cross:center" v-if="(pageUnpaid)*pageSize < totalCountUnpaid">
+                                    <span v-tap="loadMoreUnpaid" v-if="unpaidLoad">加载更多</span>
+                                    <span flex="dir:left cross:center" v-else="unpaidLoad">加载中<mt-spinner type="fading-circle" :size="12" color="#6b6b6b"></mt-spinner></span>
                                 </div>
                             </scroller>
                         </div>
                         <div class="tab-paid tabs" key="paid" v-show="activeTab == 2">
+                            <div class="no-goods" flex="dir:top cross:center" v-if="paidList.length == 0">
+                                <i class="iconfont icon-goods"></i>
+                                <span>没有相关订单</span>
+                            </div>
                             <scroller refMark='2'>
                                 <div class="order-item" v-for="(item, index) in paidList">
                                     <order-item :item="item"></order-item>
                                 </div>
-                                <div class="no-goods" flex="dir:top cross:center" v-if="paidList.length == 0">
-                                    <i class="iconfont icon-goods"></i>
-                                    <span>没有相关订单</span>
-                                </div>
-                                <div class="load-more" v-tap="loadMorePaid" v-if="(pagePaid)*pageSize < totalCountPaid">
-                                    加载更多。。。
+                                <div class="load-more" flex="dir:top cross:center" v-if="(pagePaid)*pageSize < totalCountPaid">
+                                    <span v-tap="loadMorePaid" v-if="paidLoad">加载更多</span>
+                                    <span flex="dir:left cross:center" v-else="paidLoad">加载中<mt-spinner type="fading-circle" :size="12" color="#6b6b6b"></mt-spinner></span>
                                 </div>
                             </scroller>
                         </div>
                         <div class="tab-refund tabs" key="refund" v-show="activeTab == 3">
+                            <div class="no-goods" flex="dir:top cross:center" v-if="refundList.length == 0">
+                                <i class="iconfont icon-goods"></i>
+                                <span>没有相关订单</span>
+                            </div>
                             <scroller refMark='3'>
                                 <div class="order-item" v-for="(item, index) in refundList">
                                     <order-item :item="item"></order-item>
                                 </div>
-                                <div class="no-goods" flex="dir:top cross:center" v-if="refundList.length == 0">
-                                    <i class="iconfont icon-goods"></i>
-                                    <span>没有相关订单</span>
-                                </div>
-                                <div class="load-more" v-tap="loadMoreRefund" v-if="(pageRefund)*pageSize < totalCountRefund">
-                                    加载更多。。。
+                                <div class="load-more" flex="dir:top cross:center main:center" v-if="(pageRefund)*pageSize < totalCountRefund">
+                                    <span v-tap="loadMoreRefund" v-if="refundLoad">加载更多</span>
+                                    <span flex="dir:left cross:center" v-else="refundLoad">加载中<mt-spinner type="fading-circle" :size="12" color="#6b6b6b"></mt-spinner></span>
                                 </div>
                             </scroller>
                         </div>
@@ -107,6 +111,10 @@
                 pageUnpaid:1,
                 pagePaid:1,
                 pageRefund:1,
+                allLoad:true,
+                unpaidLoad:true,
+                paidLoad:true,
+                refundLoad:true,
                 pageSize:5,
                 animate:'left',
             }
@@ -204,6 +212,7 @@
                 var self = this;
                 self.pageAll ++;
                 self.totalCountAll = 1000000;//保证加载更多在加载完成前一直显示
+                self.allLoad = false;
                 Tool.get('AaPackageOrderQuery',{
                     userId:Tool.getUserInfo('userId'),
                     status:'',
@@ -212,12 +221,14 @@
                 },(data)=>{
                     this.orderList = this.orderList.concat(data.data.data);
                     this.totalCountAll = data.data.totalCount;
-                })
+                    self.allLoad = true;
+                },{mask:false})
             },
             loadMoreUnpaid:function(){
                 var self = this;
                 self.pageUnpaid ++;
                 self.totalCountUnpaid = 1000000;//保证加载更多在加载完成前一直显示
+                self.unpaidLoad = false;
                 Tool.get('AaPackageOrderQuery',{
                     userId:Tool.getUserInfo('userId'),
                     status:1,
@@ -226,12 +237,14 @@
                 },(data)=>{
                     this.unpaidList = this.unpaidList.concat(data.data.data);
                     this.totalCountUnpaid = data.data.totalCount;
-                })
+                    self.unpaidLoad = true;
+                },{mask:false})
             },
             loadMorePaid:function(){
                 var self = this;
                 self.pagePaid ++;
                 self.totalCountPaid = 1000000;//保证加载更多在加载完成前一直显示
+                self.paidLoad = false;
                 Tool.get('AaPackageOrderQuery',{
                     userId:Tool.getUserInfo('userId'),
                     status:2,
@@ -240,12 +253,14 @@
                 },(data)=>{
                     this.paidList = this.paidList.concat(data.data.data);
                     this.totalCountPaid = data.data.totalCount;
-                })
+                    self.paidLoad = true;
+                },{mask:false})
             },
             loadMoreRefund:function(){
                 var self = this;
                 self.pageRefund ++;
                 self.totalCountRefund = 1000000;//保证加载更多在加载完成前一直显示
+                self.refundLoad = false;
                 Tool.get('AaPackageOrderQuery',{
                     userId:Tool.getUserInfo('userId'),
                     status:3,
@@ -254,7 +269,8 @@
                 },(data)=>{
                     this.refundList = this.refundList.concat(data.data.data);
                     this.totalCountRefund = data.data.totalCount;
-                })
+                    self.refundLoad = true;
+                },{mask:false})
             },
             customBack:function(){
                 var prepage = this.$store.getters.prepage;
@@ -375,7 +391,6 @@
                     .load-more{
                         height:1.5rem;
                         background-color:#fff;
-                        text-align:center;
                         line-height:1.5rem;
                     }
                 }
