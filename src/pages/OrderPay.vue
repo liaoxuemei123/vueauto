@@ -180,7 +180,7 @@
                                                         }else if(data.err_msg == "get_brand_wcpay_request:cancel"){
                                                             rej();
                                                             Toast({
-                                                                message:'取消支付',
+                                                                message:'支付被取消',
                                                                 duration:1000,
                                                             })
                                                             self.$router.push({name:'maintainset'});
