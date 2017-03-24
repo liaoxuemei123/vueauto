@@ -7,8 +7,8 @@ import store from '../store';
 
 const Tool = {};
 //const target = 'http://10.17.5.128:8080/maintenance-plug/app/';//内网测试环境地址
-//const target = 'http://47.92.24.169/maintenance-plug/app/';
-const target = 'http://www.dajiankangyangsheng.com/maintenance-plug/app/';//公网测试环境
+const target = 'http://service.mall.changan.com.cn/maintenance-plug/app/';
+//const target = 'http://www.dajiankangyangsheng.com/maintenance-plug/app/';//公网测试环境
 const CLOSE_NETWORK = false;//在本地调试时关闭网络，只调整静态页面
 var requestPool = [];//请求池
 
@@ -180,6 +180,19 @@ Tool.post = function (pathname, data, success, error) {
  * @param {function} success  请求成功执行方法
  * @param {function} error    请求失败执行方法
  */
+
+Tool.unionPay = function (data, success, setting, error) {
+    var setting = {
+        url:'http://www.dajiankangyangsheng.com/maintenance-plug/unionPay/frontConsume', //默认ajax请求地址
+        type: 'GET', //请求的方式
+        data: data, //发给服务器的数据
+        success: success || function () { }, //请求成功执行方法
+        error: error || function () { }, //请求失败执行方法
+        ...setting//加载自定义的配置，如是否启用mask
+    };
+    return Tool.ajax(setting);
+};
+
 Tool.get = function (pathname, data, success, setting, error) {
     var setting = {
         url: target + pathname, //默认ajax请求地址

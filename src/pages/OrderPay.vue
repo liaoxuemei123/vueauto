@@ -95,6 +95,8 @@
             pay:function(){
                 if(this.paymentMode == 1){
                     window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxdb8e2be3d93b6c3f&redirect_uri=http://www.dajiankangyangsheng.com%2Fubiweb%2F%23%2Forderpay%2F" + this.orderNo + "&response_type=code&scope=snsapi_base&state=" + this.orderNo + ',' + this.orderInfo.packageName + "#wechat_redirect";
+                }else{
+                    window.location.href = "http://www.dajiankangyangsheng.com/maintenance-plug/unionPay/frontConsume?orderId="+this.orderNo;
                 }
             },
             startPay:function(){
