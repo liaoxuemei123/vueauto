@@ -23,7 +23,10 @@
                     <div class="input-control-custom" flex="dir:left cross:center box:justify" v-if="userInfo.tel != userMoblie">
                         <div class="label">验证码</div>
                         <input type="number">
-                        <div class="button" flex="dir:left cross:center main:right"><span>获取验证码</span></div>
+                        <div class="button" flex="dir:left cross:center main:right" >
+                            <span v-if="getCodeState">{{residueTime}}秒后重发</span>
+                            <span v-tap="sendSmsCode" v-else="getCodeState">获取验证码</span>
+                        </div>
                     </div>
                     <div class="input-control">
                         <inp-com title="备注" :readonly="true" />
@@ -60,7 +63,9 @@
                     tel:'',
                     message:'',
                 },
-                userMoblie:''
+                userMoblie:'',
+                getCodeState:false,
+                residueTime:60,
             }
         },
         components:{
@@ -124,8 +129,23 @@
                     return false;
                 }
                 this.userInfo.vin = this.userInfo.vin.toLocaleUpperCase();
-                this.$store.commit('SET_PACKAGE_USERINFO',this.userInfo);
-                this.$router.push({name:'confirmorder'});
+                Tool.get('queryVehicleInfo',{
+                    vin:this.userInfo.vin,
+                    engineNo:this.userInfo.motorId,
+                    isMiniCar:this.packageInfo.modelInfo.vehicleType,
+                },(data)=>{
+                    if(data.code == 200){
+                        console.log(data);
+                        this.$store.commit('SET_PACKAGE_USERINFO',this.userInfo);
+                        this.$router.push({name:'confirmorder'});
+                    }else{
+                        Toast({
+                            message:data.msg,
+                            duration:1000,
+                        })
+                    }
+                    
+                })
             },
             goHome:function(){
                 this.$router.go(-2)
@@ -144,6 +164,21 @@
             },
             updateTel:function(e){
                 this.userInfo.tel = $(e.target).val();
+            },
+            sendSmsCode:function(e){
+                Tool.get('sendSmsCode',{
+					mobile:this.tel,
+				},(data)=>{
+					this.getCodeState = true;
+					var a = setInterval(()=>{
+						this.residueTime -- ;
+						while(this.residueTime < 1){
+							this.getCodeState = false;
+							this.residueTime = 60;
+							clearInterval(a);
+						}
+					},1000)
+				})
             }
         },
         beforeRouteEnter:(to,from,next)=>{

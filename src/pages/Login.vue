@@ -24,6 +24,7 @@
 <script>
 	import NavBar from '../components/NavBar';
 	import Tool from '../utils/Tool';
+	import En from '../utils/Encryption'
 	import { Toast } from 'mint-ui';
  	export default{
 		data (){
@@ -54,24 +55,29 @@
 					})
 					return false;
 				}
-				Tool.post('loginCode',{
-					mobile:this.tel,
-					password:this.password
-				},(data)=>{
-					if(data.code == 200){
-						Toast({
-							duration:1000,
-							message:data.msg
-						})
-						Tool.localItem("userInfo",data.data);
-						this.$router.push({path:this.$route.params.to});
-					}else{
-						Toast({
-							duration:1000,
-							message:data.msg
-						})
-					}
+				En.createPassword(this.password).then((pData)=>{
+					Tool.post('loginCode',{
+						mobile:this.tel,
+						password:pData.password,
+						mod:pData.mod,
+						additional:pData.additional,
+					},(data)=>{
+						if(data.code == 200){
+							Toast({
+								duration:1000,
+								message:data.msg
+							})
+							Tool.localItem("userInfo",data.data);
+							this.$router.push({path:this.$route.params.to});
+						}else{
+							Toast({
+								duration:1000,
+								message:'账号密码错误'
+							})
+						}
+					})
 				})
+				
 			}
 		},
 		beforeRouteEnter:(to,from,next)=>{
