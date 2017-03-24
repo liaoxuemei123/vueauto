@@ -128,7 +128,7 @@ const store = new Vuex.Store({
             return store => {
                 store.subscribe(mutation=>{
                     if(mutation.type == 'LOADING'){
-                        
+                        console.log('数据加载中');
                     }
                     if(mutation.type == 'LOAD_DOWN'){//监听数据加载是否完成，可以写一些依赖于数据加载的方法
                         console.log('本页数据加载完成');

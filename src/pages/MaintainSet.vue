@@ -166,26 +166,30 @@
             },
             getCarList:function(callback){
                 Tool.get('queryCarList',{},(data)=>{
-                    var seriesList = [];
-                    for(var i=0;i<data.data.length;i++){
-                        seriesList.push({name:data.data[i].seriesName,index:i})
-                    }
-                    var ModelList = [];
-                    for(var i=0;i<data.data.length;i++){
-                        ModelList[i] = [];
-                        for(var j=0;j< data.data[i].modelName.length;j++){
-                            ModelList[i].push({name:data.data[i].modelName[j][1]})
+                    if(data.code == 200){
+                        var seriesList = [];
+                        for(var i=0;i<data.data.length;i++){
+                            seriesList.push({name:data.data[i].seriesName,index:i})
                         }
+                        var ModelList = [];
+                        for(var i=0;i<data.data.length;i++){
+                            ModelList[i] = [];
+                            for(var j=0;j< data.data[i].modelName.length;j++){
+                                ModelList[i].push({name:data.data[i].modelName[j][1]})
+                            }
+                        }
+                        var param = {
+                            seriesList:seriesList,
+                            modelList:ModelList,
+                        }
+                        this.carData = param;
+                        callback && callback();
                     }
-                    var param = {
-                        seriesList:seriesList,
-                        modelList:ModelList,
-                    }
-                    this.carData = param;
-                    callback && callback();
                 })
                 Tool.get('getCarList',{},(data)=>{
-                    this.carSelectList = data.data;
+                    if(data.code == 200){
+                        this.carSelectList = data.data;
+                    }
                 })
             },
             initSelector:function(){
