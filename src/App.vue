@@ -10,6 +10,7 @@
 <script>
 import { mapState, mapMutations } from 'vuex';
 import Tool from './utils/Tool';
+import En from './utils/Encryption';
 export default {
 	data () {
 		return {
@@ -25,6 +26,7 @@ export default {
 		var self = this;
 		var geolocation = new BMap.Geolocation();
         var gc = new BMap.Geocoder();
+		En.createPassword();
         geolocation.getCurrentPosition(function(position){
 			self.$store.commit('SET_LOCATION',position);
         });
