@@ -81,9 +81,23 @@
                     });
                     return false;
                 }
+                if(!/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9a-zA-Z]{17}$/.test(this.userInfo.vin)){
+                    Toast({
+                        message:'车架号输入有误',
+                        duration:1000,
+                    });
+                    return false;
+                }
                 if(!this.userInfo.motorId){
                     Toast({
                         message:'请输入发动机号',
+                        duration:1000,
+                    });
+                    return false;
+                }
+                if(this.userInfo.motorId.length != 6){
+                    Toast({
+                        message:'请输入发动机号后6位',
                         duration:1000,
                     });
                     return false;
@@ -109,6 +123,7 @@
                     });
                     return false;
                 }
+                this.userInfo.vin = this.userInfo.vin.toLocaleUpperCase();
                 this.$store.commit('SET_PACKAGE_USERINFO',this.userInfo);
                 this.$router.push({name:'confirmorder'});
             },

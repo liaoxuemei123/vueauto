@@ -150,7 +150,6 @@
             }
         },
         activated:function(){
-            console.log(this.packageInfo);
         },
         filters:{
             universalFilter:function(val){

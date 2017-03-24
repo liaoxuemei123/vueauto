@@ -15,7 +15,7 @@
 						<img src="../assets/user-code.png" class="code-picture">
 						<input type="text" placeholder="请输入验证码" class="user-code" v-model="smsCode">
 					</div>
-					<div class="get-code" v-if="getCodeState">{{residueTime}}</div>
+					<div class="get-code" v-if="getCodeState">{{residueTime}}秒后重发</div>
 					<div class="get-code" v-else="getCodeState" @click="sendSmsCode">获取验证码</div>
 				</div>
 				<div class="form-group">
@@ -180,6 +180,7 @@
 				padding-left: 5%;
 				border:none;
 				outline: none;
+				background:transparent;
 			}
 			
 		}
@@ -211,6 +212,7 @@
 				padding-left: 12%;
 				border:none;
 				outline: none;
+				background:transparent;
 			}
 		}
 		.get-code{
@@ -234,7 +236,6 @@
 			margin-left: 15%;
 			margin-right: 15%;
 			margin-top: 0.386rem;
-			border: 1px solid #03A9F4;
 			background-color:#03A9F4;
 			text-align: center;
 			line-height: 1.5rem;	
@@ -242,6 +243,7 @@
 		}
 		.register-btn{
 			.login-btn;
+			border: 1px solid red;
 			background-color:red;
 
 		}

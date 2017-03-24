@@ -119,6 +119,7 @@
             		border:none;
             		padding-left: 5%;
             		outline: none;
+					background:transparent;
             	}
             }
             .login-btn{
