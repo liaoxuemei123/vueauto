@@ -175,10 +175,21 @@
                                                         "paySign":pData.payRequestVo.paySign, 
                                                     },
                                                     function(data){     
-                                                        if(data.err_msg == "get_brand_wcpay_request:ok" ) {
+                                                        if(data.err_msg == "get_brand_wcpay_request:ok") {
                                                             res(data);
+                                                        }else if(data.err_msg == "get_brand_wcpay_request:cancel"){
+                                                            rej();
+                                                            Toast({
+                                                                message:'取消支付',
+                                                                duration:1000,
+                                                            })
+                                                            self.$router.push({name:'maintainset'});
                                                         }else{
                                                             rej();
+                                                            Toast({
+                                                                message:'支付出错',
+                                                                duration:1000,
+                                                            })
                                                             self.$router.push({name:'maintainset'});
                                                         }
                                                     }

@@ -70,6 +70,21 @@
                 <div class="tips">
                     提示：支付7天内可退单，套餐一旦使用不能退单。
                 </div>
+                <div class="user-lesence">
+                    <h5>长安汽车基础保养套餐服务协议</h5>
+                    <span>重要须知：重庆长安汽车股份有限公司在此特别提醒您仔细阅读本协议中的各个条款，您有权选择同意或者不同意本协议。<span>
+                    <ul>
+                        <li>1. 本套餐内容包括：更换机油、机油滤清器、汽油滤清器的零件费用及对应工时费，转向、驻车、制动等系统专项检查工时费。</li>
+                        <li>2.本套餐使用时，如需增加其它项目，客户需自行承担增加的零件和工时费用。</li>
+                        <li>3.本套餐仅适用于签订协议时所登记的车辆（以VIN码为准），车辆所有权发生转移不影响维保套餐的使用。</li>
+                        <li>4.本套餐在购买7日之内未使用可申请退款。套餐金额将在提出申请10个工作日内退回客户当初购买套餐所使用账户中。</li>
+                        <li>5.本套餐规定的保养次数使用完毕或协议有效期满时，本协议终止。</li>
+                    </ul>
+                    <footer>
+                        <div>重庆长安汽车股份有限公司</div>
+                        <div>2017年4月1日</div>
+                    </footer>
+                </div>
                 <div class="agree" flex="dir:left cross:center" @click="sure =! sure">
                     <div class="sure-circle" :class="{'sure':sure}">
                         <i class="iconfont icon-agree"></i>
@@ -268,11 +283,33 @@
                 color:#fc4c1d;
                 font-size:0.51rem;
             }
+            .user-lesence{
+                font-size:0.51rem;
+                line-height:1.5em;
+                padding:0 3%;
+                color:#666;
+                h5{
+                    margin:0;
+                    font-size:0.64rem;
+                    text-align:center;
+                    color:#444;
+                }
+                ul{
+                    margin:0;
+                    padding:0;
+                    list-style:none;
+                    & li{
+                       padding-left:0; 
+                       text-indent:2em;
+                    }
+                }
+                footer{
+                    text-align:right;
+                }
+            }
             .agree{
-                margin:0rem 0.5rem;
+                margin:0.6rem 0.5rem;
                 color:#ff3b2f;
-                position:absolute;
-                bottom:0.2rem;
                 .sure-circle{
                     border:1px solid #ff3b2f;
                     width:0.51rem;

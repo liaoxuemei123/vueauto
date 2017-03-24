@@ -42,6 +42,7 @@ const store = new Vuex.Store({
             userInfo:{},
         },
         reset:true,
+        load:false,
     },
     mutations:{
         SET_MODE:function(state,mode){
@@ -95,6 +96,12 @@ const store = new Vuex.Store({
         },
         SET_PACKAGE_USERINFO:function(state,param){
             state.packageInfo.userInfo = param;
+        },
+        LOAD_DOWN:function(state){
+            state.load = false;
+        },
+        LOADING:function(state){
+            state.load = true;
         }
     },
     getters:{
@@ -107,8 +114,29 @@ const store = new Vuex.Store({
         prepage:function(state,getters){
             return state.pageStack[state.pageStack.length - 2];
         }
-    }
-
+    },
+    actions:{
+        loadDown:function({commit,dispatch}){
+            commit('LOAD_DOWN');
+        },
+        loading:function({commit,dispatch}){
+            commit('LOADING');
+        }
+    },
+    plugins:[
+        (function(){
+            return store => {
+                store.subscribe(mutation=>{
+                    if(mutation.type == 'LOADING'){
+                        
+                    }
+                    if(mutation.type == 'LOAD_DOWN'){//监听数据加载是否完成，可以写一些依赖于数据加载的方法
+                        console.log('本页数据加载完成');
+                    }
+                })
+            }
+        })()
+    ]
 })
 
 export default store;
