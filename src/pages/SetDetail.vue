@@ -267,7 +267,6 @@
             }
         },
         activated:function(){
-            console.log(this.packageInfo);
             this.setInfo = this.$route.query;
             this.setInfo.validate = new Date().getTime();
             if(this.packageInfo.reset){

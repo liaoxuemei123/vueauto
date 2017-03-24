@@ -98,7 +98,7 @@
             <div class="user-license-mask" v-if="licenseShow" @click="licenseShow=false"></div>
         </transition>
         <transition name="slide-up">
-            <div class="user-license" v-if="licenseShow">
+            <div class="user-license" v-if="licenseShow" flex="dir:top box:justify">
                 <h5>长安汽车基础保养套餐服务协议</h5>
                 <div class="container">
                     <span>重要须知：重庆长安汽车股份有限公司在此特别提醒您仔细阅读本协议中的各个条款，您有权选择同意或者不同意本协议。</span>
@@ -113,6 +113,10 @@
                         <div>重庆长安汽车股份有限公司</div>
                         <div>2017年4月1日</div>
                     </footer>
+                </div>
+                <div class="toolbar" flex="dir:left box:mean">
+                    <div></div>
+                    <div class="close-button" flex="dir:left cross:center main:center">关闭</div>
                 </div>
             </div>
         </transition>
@@ -219,12 +223,11 @@
             font-size:0.51rem;
             line-height:1.5em;
             margin:0 5%;
-            padding:1rem 5%;
             color:#666;
-            width:80%;
+            width:90%;
             position:absolute;
             margin-top:4rem;
-            height:18rem;
+            height:20rem;
             z-index:3;
             background-color:#f8f8f8;
             h5{
@@ -232,12 +235,13 @@
                 font-size:0.64rem;
                 text-align:center;
                 color:#444;
-                padding-bottom:0.2rem;
                 margin-bottom:0.2rem;
                 border-bottom:1px solid #cfcfcf;
+                padding:0.5rem 5% 0.2rem 5%;
             }
             .container{
                 overflow:auto;
+                padding:0.4rem 5%;
                 ul{
                     margin:0;
                     padding:0;
@@ -251,6 +255,14 @@
                 footer{
                     margin-top:0.2rem;
                     text-align:right;
+                }
+            }
+            .toolbar{
+                height:1.5rem;
+                .close-button{
+                    height:100%;
+                    color:#fff;
+                    background-color:#389cf2;
                 }
             }
         }
