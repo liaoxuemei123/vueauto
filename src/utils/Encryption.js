@@ -10,7 +10,7 @@ En.createPassword = function(){
             type:"GET",
 			dataType:"jsonp",
 			jsonp: 'callback',
-            jsonpCallback:'success_jsonpCallback'
+            jsonpCallback:''
         }).then(function(data){
             conole.log(data);
             res();
