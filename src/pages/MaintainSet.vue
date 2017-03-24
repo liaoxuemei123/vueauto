@@ -115,6 +115,7 @@
                 if(values[0]&&values[1]){
                     this.carModel.displacement = values[1].name;
                     this.carModel.vehicleModel = values[0].name;
+                    this.carModel.vehicleType = values[0].type;
                     picker.setSlotValues(1,this.carData.modelList[values[0].index]);
                 }
             },
@@ -124,6 +125,7 @@
                 }else{
                     this.carModel.displacement = this.carData.modelList[0][0].name;
                     this.carModel.vehicleModel = this.carData.seriesList[0].name;
+                    this.carModel.vehicleType = this.carData.seriesList[0].type;
                     this.$store.commit('SET_PACKAGE_MODEL',this.carModel);
                 }
                 this.pickerModel = this.carModel.vehicleModel + ' ' + this.carModel.displacement;
@@ -159,6 +161,7 @@
             selectMacth:function(item){
                 this.carModel.displacement = item.displacement;
                 this.carModel.vehicleModel = item.seriesName;
+                this.carModel.vehicleType = item.vehicleType;
                 this.$store.commit('SET_PACKAGE_MODEL',this.carModel);
                 this.pickerModel = this.carModel.vehicleModel + ' ' + this.carModel.displacement;
                 this.carModel = {};
@@ -169,7 +172,7 @@
                     if(data.code == 200){
                         var seriesList = [];
                         for(var i=0;i<data.data.length;i++){
-                            seriesList.push({name:data.data[i].seriesName,index:i})
+                            seriesList.push({name:data.data[i].seriesName,index:i,type:data.data[i].vehicleType})
                         }
                         var ModelList = [];
                         for(var i=0;i<data.data.length;i++){

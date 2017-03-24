@@ -32,20 +32,26 @@
 <script>
     import NavBar from '../components/NavBar';
     import Tool from '../utils/Tool';
+    import { Toast } from 'mint-ui'
     export default{
         data () {
             return {
                 message:'',
                 orderNo:'',
                 orderInfo:{
-                    orderPrice:'100'
+                    orderPrice:'0'
                 }
             }
         },
         methods:{
             submitRefund:function(){
-                Tool.get('refundPay',{tradeNo:this.orderNo},(data)=>{
-
+                Tool.get('refund',{bytId:this.orderInfo.id,bytYy:this.message},(data)=>{
+                    if(data.code == 200){
+                        Toast(data.msg);
+                        this.$router.back();
+                    }else{
+                        Toast(data.msg);
+                    }
                 });
             }
         },

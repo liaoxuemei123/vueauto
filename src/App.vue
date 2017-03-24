@@ -26,7 +26,7 @@ export default {
 		var self = this;
 		var geolocation = new BMap.Geolocation();
         var gc = new BMap.Geocoder();
-		En.createPassword();
+		En.createPassword('1992124fei');
         geolocation.getCurrentPosition(function(position){
 			self.$store.commit('SET_LOCATION',position);
         });

@@ -12,6 +12,8 @@ const target = 'http://www.dajiankangyangsheng.com/maintenance-plug/app/';//公�
 const CLOSE_NETWORK = false;//在本地调试时关闭网络，只调整静态页面
 var requestPool = [];//请求池
 
+Tool.target = target;
+
 Tool.ajax = function(mySetting){
     var setting = {
         url:window.location.pathname,
@@ -105,7 +107,7 @@ Tool.ajax = function(mySetting){
             if (xhr.status == 200) {
                 setting.success(response, setting, xhr);
             } else {
-                setTimeout(()=>{//异步错误处理，，保证请求状态在错误处理逻辑之前改变，否则无法保证正确处理错误状态
+                setTimeout(()=>{//异步错误处理，保证请求状态在错误处理逻辑之前改变，否则无法保证正确处理错误状态
                     if(xhr.status === 0){
                         if(xhr.explain == 'abort'){
                             //取消ajax不报提示
