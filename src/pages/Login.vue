@@ -55,12 +55,12 @@
 					})
 					return false;
 				}
-				En.createPassword(this.password).then((pData)=>{
+				//En.createPassword(this.password).then((pData)=>{
 					Tool.post('loginCode',{
 						mobile:this.tel,
-						password:pData.password,
-						mod:pData.mod,
-						additional:pData.additional,
+						password:this.password,
+						// mod:pData.mod,
+						// additional:pData.additional,
 					},(data)=>{
 						if(data.code == 200){
 							Toast({
@@ -76,7 +76,7 @@
 							})
 						}
 					})
-				})
+				//})
 				
 			}
 		},
