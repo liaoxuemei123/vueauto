@@ -45,7 +45,7 @@
         },
         methods:{
             submitRefund:function(){
-                Tool.get('refund',{bytId:this.orderInfo.id,bytYy:this.message},(data)=>{
+                Tool.post('refund',{bytId:this.orderInfo.id,bytYy:this.message},(data)=>{
                     if(data.code == 200){
                         Toast(data.msg);
                         this.$router.back();

@@ -270,6 +270,7 @@
                 width:100%;
                 background-color:#fff;
                 padding:0.5rem 0rem;
+                box-shadow: 0px 1px 3px #aaa;
                 .match-list{
                     padding:0 5%;
                     .match-item{
