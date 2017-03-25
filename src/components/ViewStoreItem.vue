@@ -1,6 +1,6 @@
 <template>
-    <div class="item-container" flex="dir:left cross:center box:first">
-        <div class="store-info" flex="dir:left cross:center box:first">
+    <div class="item-container" flex="dir:left cross:center box:mean">
+        <div class="store-info" flex="dir:left cross:center box:mean">
             <div class="info-content" flex="dir:top cross:top box:mean">
                 <div class="line" flex="dir:left cross:center main:justify">
                     <span class="store-name">{{item.storeName}}</span>
@@ -80,6 +80,7 @@
             .info-content{
                 height: 2.6rem;
                 margin-left:0.3rem;
+                position:relative;
                 .line{
                     color:#4b4b4b;
                     width: 100%;
@@ -88,19 +89,25 @@
                         margin-right:0.3rem;
                         font-weight:bold;
                         white-space: nowrap;
+                        display: inline-block;
+                        overflow: hidden;
                     }
                     .store-distance{
                         font-size: 0.56rem;
                         color: #a2a2a2;
-                        margin-right: 0.3rem;
                         display: inline-block;
+                        position:absolute;
+                        right:0.3rem;
+                        background-color:#fff;
+                        padding-left:0.2rem;
                     }
                     .store-address{
                         white-space: nowrap;
                         overflow: hidden;
                         display: inline-block;
                         font-size:0.51rem;
-                        margin-right:0.3rem
+                        margin-right:0.3rem;
+                        overflow: auto;
                     }
                     .store-phone{
                         font-size:0.51rem;

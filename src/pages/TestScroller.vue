@@ -15,6 +15,7 @@
     </div>
 </template>
 <script>
+    //IScroll 测试文件
     import Scroller from '../components/Scroller';
     import NavBar from '../components/NavBar';
     import OrderItem from '../components/OrderItem';

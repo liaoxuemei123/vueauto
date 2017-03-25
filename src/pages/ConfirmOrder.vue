@@ -101,7 +101,7 @@
             <div class="user-license" v-if="licenseShow" flex="dir:top box:justify">
                 <h5>长安汽车基础保养套餐服务协议</h5>
                 <div class="container">
-                    <span>重要须知：重庆长安汽车股份有限公司在此特别提醒您仔细阅读本协议中的各个条款，您有权选择同意或者不同意本协议。</span>
+                    <span class="attention">重要须知：重庆长安汽车股份有限公司在此特别提醒您仔细阅读本协议中的各个条款，您有权选择同意或者不同意本协议。</span>
                     <ul>
                         <li>1. 本套餐内容包括：更换机油、机油滤清器、汽油滤清器的零件费用及对应工时费，转向、驻车、制动等系统专项检查工时费。</li>
                         <li>2.本套餐使用时，如需增加其它项目，客户需自行承担增加的零件和工时费用。</li>
@@ -263,6 +263,7 @@
                 footer{
                     margin-top:0.2rem;
                     text-align:right;
+                    color:#389cf2;
                 }
             }
             .toolbar{

@@ -13,7 +13,7 @@
                                 {{item.label}}
                             </div>
                         </div>
-                        <div class="after" :style="{'left':( activeTab * 25 ) + 5 + '%'}"></div>
+                        <div class="after" :style="{'left':( activeTab * 25 ) + 4 + '%'}"></div>
                     </div>
                 </div>
                 <div class="order-list-container">
