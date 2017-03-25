@@ -490,6 +490,7 @@
                         .selected-oil{
                             font-size:0.57rem;
                             color:#6b6b6b;
+                            margin-left:0.5rem;
                         }
                     }
                     .meal-list{

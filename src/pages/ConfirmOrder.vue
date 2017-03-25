@@ -75,7 +75,7 @@
                         <i class="iconfont icon-agree"></i>
                     </div>
                     <span @click="sure = !sure">我已阅读并同意</span>
-                    <span @click="licenseShow = true">《用户服务协议》</span>
+                    <span @click="licenseShow = true" class="user-license-text">《用户服务协议》</span>
                 </div>
             </div>
             <div class="button-control" flex="dir:left box:first">
@@ -115,8 +115,8 @@
                     </footer>
                 </div>
                 <div class="toolbar" flex="dir:left box:mean">
-                    <div></div>
-                    <div class="close-button" flex="dir:left cross:center main:center">关闭</div>
+                    <div class="sure-button" @click="licenseDisAgree" flex="dir:left cross:center main:center">不同意</div>
+                    <div class="close-button" @click="licenseAgree" flex="dir:left cross:center main:center">同意</div>
                 </div>
             </div>
         </transition>
@@ -175,6 +175,14 @@
                         this.$router.push({path:'/orderpay/'+data.data});
                     }
                 })
+            },
+            licenseDisAgree:function(){
+                this.sure = false;
+                this.licenseShow = false;
+            },
+            licenseAgree:function(){
+                this.sure = true;
+                this.licenseShow = false;
             }
         },
         activated:function(){
@@ -229,7 +237,7 @@
             margin-top:4rem;
             height:20rem;
             z-index:3;
-            background-color:#f8f8f8;
+            background-color:rgba(255,255,255,0.9);
             h5{
                 margin:0;
                 font-size:0.64rem;
@@ -259,7 +267,10 @@
             }
             .toolbar{
                 height:1.5rem;
-                .close-button{
+                .sure-button{
+                    border-right:1px solid #efefef;
+                }
+                .close-button,.sure-button{
                     height:100%;
                     color:#fff;
                     background-color:#389cf2;
@@ -374,6 +385,9 @@
                 }
                 .sure-circle.sure{
                     background-color:#ff3b2f;
+                }
+                .user-license-text{
+                    color:#389cf2;
                 }
             }
         }
