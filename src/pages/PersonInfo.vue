@@ -130,23 +130,23 @@
                     return false;
                 }
                 this.userInfo.vin = this.userInfo.vin.toLocaleUpperCase();
-                // new Promise((res,rej)=>{
-                //     Tool.get('queryVehicleInfo',{
-                //         vin:this.userInfo.vin,
-                //         engineNo:this.userInfo.motorId,
-                //         isMiniCar:this.packageInfo.modelInfo.vehicleType,
-                //     },(data)=>{
-                //         if(data.code == 200){
-                //             res(data);
-                //         }else{
-                //             Toast({
-                //                 message:data.msg,
-                //                 duration:1000,
-                //             })
-                //             rej();
-                //         }
-                //     })
-                // }).then((pData)=>{
+                new Promise((res,rej)=>{
+                    Tool.get('queryVehicleInfo',{
+                        vin:this.userInfo.vin,
+                        engineNo:this.userInfo.motorId,
+                        isMiniCar:this.packageInfo.modelInfo.vehicleType,
+                    },(data)=>{
+                        if(data.code == 200){
+                            res(data);
+                        }else{
+                            Toast({
+                                message:data.msg,
+                                duration:1000,
+                            })
+                            rej();
+                        }
+                    })
+                }).then((pData)=>{
                     if(this.userInfo.tel != this.userMoblie){
                         if(!this.code){
                             Toast({
@@ -168,7 +168,7 @@
                         this.$store.commit('SET_PACKAGE_USERINFO',this.userInfo);
                         this.$router.push({name:'confirmorder'});
                     }
-                //})
+                })
             },
             goHome:function(){
                 this.$router.go(-2)
