@@ -184,8 +184,8 @@
             Tool.routerEnter(to,from,next)
         },
         created:function(){
-            this.userInfo.tel = Tool.getUserInfo('mobile');
-            this.userMoblie = Tool.getUserInfo('mobile');
+            this.userInfo.tel = Tool.getUserInfo('telephone');
+            this.userMoblie = Tool.getUserInfo('telephone');
         }
     }
 </script>

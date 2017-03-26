@@ -45,6 +45,7 @@
 	import Tool from '../utils/Tool';
 	import { Toast } from 'mint-ui';
 	import En from '../utils/Encryption';
+	import errorMsg from '../utils/error_msg';
 	export default{
 		data () {
 			return {
@@ -86,15 +87,22 @@
 					biz:1,
 					picCode:this.picCode,
 				},(data)=>{
-					this.getCodeState = true;
-					var a = setInterval(()=>{
-						this.residueTime -- ;
-						while(this.residueTime < 1){
-							this.getCodeState = false;
-							this.residueTime = 60;
-							clearInterval(a);
-						}
-					},1000)
+					if(data.result == 0){
+						this.getCodeState = true;
+						var a = setInterval(()=>{
+							this.residueTime -- ;
+							while(this.residueTime < 1){
+								this.getCodeState = false;
+								this.residueTime = 60;
+								clearInterval(a);
+							}
+						},1000)
+					}else{
+						Toast({
+                        message:errorMsg[data.result],
+                        duration:1000,
+                    });
+					}
 				})
 			},
 			inputPhone:function(){
@@ -148,7 +156,7 @@
 						mod:pData.mod,
 						additional:pData.additional
 					},(data)=>{
-						if(data.data.result == '0'){
+						if(data.success){
 							Toast({
 								message:'注册成功',
 								duration:1000,
@@ -157,7 +165,7 @@
 							this.$router.push({path:this.$route.params.to});
 						}else{
 							Toast({
-								message:data.msg,
+								message:data.message,
 								duration:1000,
 							});
 						}
