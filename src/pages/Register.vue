@@ -8,7 +8,14 @@
 				<div class="person-picture" :style="{'background-image':'url('+require('../assets/person-picture.png')+')'}"></div>
 				<div class="form-group">
 					<img src="../assets/user-phone.png" class="phone-picture">
-					<input type="text" placeholder="请输入手机号" class="user-phone" v-model="tel">
+					<input type="text" @input="inputPhone" placeholder="请输入手机号" class="user-phone" v-model="tel">
+				</div>
+				<div class="form-imageCode" v-if="picCodeUrl">
+					<div class="code-group">
+						<img src="../assets/user-code.png" class="code-picture">
+						<input type="text" placeholder="图形验证码" class="image-code" v-model="picCode">
+					</div>
+					<div class="image-container" @click="getImageCode"><img :src="picCodeUrl" class="image-url"></div>
 				</div>
 				<div class="form-code">
 					<div class="code-group">
@@ -37,6 +44,7 @@
 	import NavBar from '../components/NavBar';
 	import Tool from '../utils/Tool';
 	import { Toast } from 'mint-ui';
+	import En from '../utils/Encryption';
 	export default{
 		data () {
 			return {
@@ -46,6 +54,8 @@
 				smsCode:'',
 				password:'',
 				pwd:'',
+				picCode:'',
+				picCodeUrl:'',
 			}
 		},
 		methods:{
@@ -64,8 +74,17 @@
                     });
                     return false;
                 }
-				Tool.get('sendSmsCode',{
-					mobile:this.tel,
+				if(!this.picCode){
+					Toast({
+                        message:'请输入图片验证码',
+                        duration:1000,
+                    });
+                    return false;
+				}
+				Tool.post('sendSMSCode',{
+					phone:this.tel,
+					biz:1,
+					picCode:this.picCode,
 				},(data)=>{
 					this.getCodeState = true;
 					var a = setInterval(()=>{
@@ -77,6 +96,13 @@
 						}
 					},1000)
 				})
+			},
+			inputPhone:function(){
+				if(!(/^1[34578]\d{9}$/.test(this.tel))){
+                    return false;
+                }else{
+					this.getImageCode();
+				}
 			},
 			register:function(){
 				if(!this.tel){
@@ -114,26 +140,47 @@
                     });
                     return false;
 				}
-				Tool.post('registerCode',{
-					mobile:this.tel,
-					code:this.smsCode,
-					password:this.password
-				},(data)=>{
-					if(data.code == 200){
-						Toast({
-							message:data.msg,
-							duration:1000,
-						});
-						Tool.localItem("userInfo",data.data);
-						this.$router.push({path:this.$route.params.to});
-					}else{
-						Toast({
-							message:data.msg,
-							duration:1000,
-						});
-					}
+				En.createPassword(this.password).then((pData)=>{
+					Tool.post('registerCode',{
+						mobile:this.tel,
+						code:this.smsCode,
+						password:pData.password,
+						mod:pData.mod,
+						additional:pData.additional
+					},(data)=>{
+						if(data.data.result == '0'){
+							Toast({
+								message:'注册成功',
+								duration:1000,
+							});
+							Tool.localItem("userInfo",data.data);
+							this.$router.push({path:this.$route.params.to});
+						}else{
+							Toast({
+								message:data.msg,
+								duration:1000,
+							});
+						}
+					})
 				})
+			},
+			getImageCode:function(){
+				this.picCodeUrl = Tool.target + 'picCode?phone='+this.tel + '&theImg=' + Math.random();
+			},
+			resetParam:function(){
+				this.getCodeState = false,
+				this.tel = '';
+				this.smsCode = '';
+				this.password = '';
+				this.pwd = '';
+				this.picCode = '';
 			}
+		},
+		activated:function(){
+			this.resetParam();
+		},
+		deactivated:function(){
+			this.picCodeUrl = '';
 		},
 		components:{
 			NavBar,
@@ -182,7 +229,51 @@
 				outline: none;
 				background:transparent;
 			}
-			
+		}
+		.form-imageCode{
+			height: 1.5rem;
+			width: 70%;
+			margin-left: 15%;
+			margin-right: 15%;
+			margin-top: 0.386rem;
+			background:transparent;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			.code-group{
+				width: 60%;
+				height: 1.5rem;
+				border: 1px solid #e5e5e5;
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+				outline:none;
+				.code-picture{
+					height: 1rem;
+					margin-left: 8%;
+					margin-right: 5%;
+				}
+				.image-code{
+					width: 100%;
+					padding-left: 12%;
+					border:none;
+					outline: none;
+					background:transparent;
+				}
+			}
+			.image-container{
+				height: 1.5rem;
+				width: 35%;
+				border: 1px solid #e5e5e5;
+				line-height: 1.5rem;
+				text-align: center;
+				margin-left: 5%;
+				background-color: #e5e5e5;
+				.image-url{
+					width:100%;
+					height:100%;
+				}
+			}
 		}
 		.form-code{
 			height: 1.5rem;

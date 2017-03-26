@@ -50,7 +50,7 @@ function goBack(to,from,next){
   if(to.name == 'register'){//防止登录过后返回时回到注册页或登录页
     router.go(-2)
     next();
-  }else if(to.name == 'login' && from != 'register'){
+  }else if(to.name == 'login' && from.name != 'register'){
     router.go(-1)
     next();
   }else{

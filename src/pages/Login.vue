@@ -24,7 +24,7 @@
 <script>
 	import NavBar from '../components/NavBar';
 	import Tool from '../utils/Tool';
-	import En from '../utils/Encryption'
+	import En from '../utils/Encryption';
 	import { Toast } from 'mint-ui';
  	export default{
 		data (){
@@ -55,17 +55,17 @@
 					})
 					return false;
 				}
-				//En.createPassword(this.password).then((pData)=>{
+				En.createPassword(this.password).then((pData)=>{
 					Tool.post('loginCode',{
 						mobile:this.tel,
-						password:this.password,
-						// mod:pData.mod,
-						// additional:pData.additional,
+						password:pData.password,
+						mod:pData.mod,
+						additional:pData.additional,
 					},(data)=>{
-						if(data.code == 200){
+						if(data.data.result == '0'){
 							Toast({
 								duration:1000,
-								message:data.msg
+								message:'登录成功'
 							})
 							Tool.localItem("userInfo",data.data);
 							this.$router.push({path:this.$route.params.to});
@@ -76,7 +76,7 @@
 							})
 						}
 					})
-				//})
+				})
 				
 			}
 		},

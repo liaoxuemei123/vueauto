@@ -129,22 +129,22 @@
                     return false;
                 }
                 this.userInfo.vin = this.userInfo.vin.toLocaleUpperCase();
-                // Tool.get('queryVehicleInfo',{
-                //     vin:this.userInfo.vin,
-                //     engineNo:this.userInfo.motorId,
-                //     isMiniCar:this.packageInfo.modelInfo.vehicleType,
-                // },(data)=>{
-                //     if(data.code == 200){
+                Tool.get('queryVehicleInfo',{
+                    vin:this.userInfo.vin,
+                    engineNo:this.userInfo.motorId,
+                    isMiniCar:this.packageInfo.modelInfo.vehicleType,
+                },(data)=>{
+                    if(data.code == 1){
                         this.$store.commit('SET_PACKAGE_USERINFO',this.userInfo);
                         this.$router.push({name:'confirmorder'});
-                //     }else{
-                //         Toast({
-                //             message:data.msg,
-                //             duration:1000,
-                //         })
-                //     }
+                    }else{
+                        Toast({
+                            message:data.msg,
+                            duration:1000,
+                        })
+                    }
                     
-                // })
+                })
             },
             goHome:function(){
                 this.$router.go(-2)
