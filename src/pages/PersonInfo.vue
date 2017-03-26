@@ -22,7 +22,7 @@
                     </div>
                     <div class="input-control-custom" flex="dir:left cross:center box:justify" v-if="userInfo.tel != userMoblie">
                         <div class="label">验证码</div>
-                        <input type="number">
+                        <input type="number" v-model="code">
                         <div class="button" flex="dir:left cross:center main:right" >
                             <span v-if="getCodeState">{{residueTime}}秒后重发</span>
                             <span v-tap="sendSmsCode" v-else="getCodeState">获取验证码</span>
@@ -66,6 +66,7 @@
                 userMoblie:'',
                 getCodeState:false,
                 residueTime:60,
+                code:'',
             }
         },
         components:{
@@ -129,22 +130,45 @@
                     return false;
                 }
                 this.userInfo.vin = this.userInfo.vin.toLocaleUpperCase();
-                Tool.get('queryVehicleInfo',{
-                    vin:this.userInfo.vin,
-                    engineNo:this.userInfo.motorId,
-                    isMiniCar:this.packageInfo.modelInfo.vehicleType,
-                },(data)=>{
-                    if(data.code == 1){
+                // new Promise((res,rej)=>{
+                //     Tool.get('queryVehicleInfo',{
+                //         vin:this.userInfo.vin,
+                //         engineNo:this.userInfo.motorId,
+                //         isMiniCar:this.packageInfo.modelInfo.vehicleType,
+                //     },(data)=>{
+                //         if(data.code == 200){
+                //             res(data);
+                //         }else{
+                //             Toast({
+                //                 message:data.msg,
+                //                 duration:1000,
+                //             })
+                //             rej();
+                //         }
+                //     })
+                // }).then((pData)=>{
+                    if(this.userInfo.tel != this.userMoblie){
+                        if(!this.code){
+                            Toast({
+                                message:'请输入验证码',
+                                duration:1000,
+                            })
+                            return false;
+                        }
+                        Tool.get('verifyCode',{
+                            code:this.code,
+                            mobile:this.userInfo.tel,
+                        },(data) => {
+                            if(data.code == 200){
+                                this.$store.commit('SET_PACKAGE_USERINFO',this.userInfo);
+                                this.$router.push({name:'confirmorder'});
+                            }
+                        })
+                    }else{
                         this.$store.commit('SET_PACKAGE_USERINFO',this.userInfo);
                         this.$router.push({name:'confirmorder'});
-                    }else{
-                        Toast({
-                            message:data.msg,
-                            duration:1000,
-                        })
                     }
-                    
-                })
+                //})
             },
             goHome:function(){
                 this.$router.go(-2)
@@ -165,8 +189,8 @@
                 this.userInfo.tel = $(e.target).val();
             },
             sendSmsCode:function(e){
-                Tool.get('sendSmsCode',{
-					mobile:this.tel,
+                Tool.get('wbSendSmsCode',{
+					mobile:this.userInfo.tel,
 				},(data)=>{
 					this.getCodeState = true;
 					var a = setInterval(()=>{
