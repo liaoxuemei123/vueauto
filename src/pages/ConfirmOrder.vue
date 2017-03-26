@@ -170,7 +170,6 @@
                     setMealId:this.packageInfo.setDetail.mealId,
                     storeId:this.packageInfo.storeInfo.id || '',
                 },(data)=>{
-                    Toast(data.msg);
                     if(data.code == 200){
                         this.$router.push({path:'/orderpay/'+data.data});
                     }
