@@ -12,7 +12,7 @@
                         <inp-com title="车架号" :value="userInfo.vin" placeholder="输入车架号(不限大小写)" maxlength='17' :onBlur="updateVIN.bind(this)"/>
                     </div>
                     <div class="input-control">
-                        <inp-com title="发动机号后六位" :value="userInfo.motorId" placeholder="输入发动机号后六位" :onBlur="updateMotorId.bind(this)" :maxlength="'6'"/>
+                        <inp-com title="发动机号后六位" :value="userInfo.motorId" placeholder="输入发动机号后六位" :onBlur="updateMotorId.bind(this)" :maxlength="'10'"/>
                     </div>
                     <div class="input-control">
                         <inp-com title="姓名" :value="userInfo.contact" placeholder="输入姓名" :onBlur="updateContact.bind(this)"/>
@@ -101,13 +101,13 @@
                     });
                     return false;
                 }
-                if(this.userInfo.motorId.length != 6){
-                    Toast({
-                        message:'请输入发动机号后6位',
-                        duration:1000,
-                    });
-                    return false;
-                }
+                // if(this.userInfo.motorId.length != 6){
+                //     Toast({
+                //         message:'请输入发动机号后6位',
+                //         duration:1000,
+                //     });
+                //     return false;
+                // }
                 if(!this.userInfo.contact){
                     Toast({
                         message:'请输入联系人',
@@ -136,7 +136,7 @@
                         engineNo:this.userInfo.motorId,
                         isMiniCar:this.packageInfo.modelInfo.vehicleType,
                     },(data)=>{
-                        if(data.code == 200){
+                        if(data.code == 1){
                             res(data);
                         }else{
                             Toast({

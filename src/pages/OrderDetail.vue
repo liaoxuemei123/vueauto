@@ -100,16 +100,16 @@
             },
             goEvaluate:function(index){
                 this.$router.push({name:'evaluate',query:{
-                    orderId:this.useList[index].orderId,
-                    storeId:this.useList[index].storeId,
+                    orderNo:this.useList[index].orderNo,
+                    storeId:this.useList[index].dmsId,
                     vehicleModel:this.orderInfo.carType,
                     orderDetailId:this.useList[index].id,
                 }});
             },
             goEvaluateDetail:function(index){
                 this.$router.push({name:'evaluatedetail',query:{
-                    orderId:this.useList[index].orderId,
-                    storeId:this.useList[index].storeId,
+                    orderNo:this.useList[index].orderNo,
+                    storeId:this.useList[index].dmsId,
                     vehicleModel:this.orderInfo.carType,
                     id:this.useList[index].id,
                 }})

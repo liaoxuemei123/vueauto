@@ -176,8 +176,7 @@
                 }
                 if(this.setInfo.isUniversal == 2 && !this.packageInfo.storeInfo.id){
                     Toast({
-                        message:'请选择店铺',
-                        position:'bottom',
+                        message:'请选择服务中心',
                         duration:1000,
                     });
                     return false;
