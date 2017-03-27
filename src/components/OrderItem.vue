@@ -12,11 +12,11 @@
             <div class="order-info" flex="dir:top box:mean">
                 <div class="order-name" flex="dir:left cross:center">
                     <span class="package-name">{{item.packageName}}</span>
-                    <span class="package-range">(全国服务中心通用)</span>
+                    <span class="package-range">(全国服务中心)</span>
                 </div>
                 <div class="car-info" flex="dir:left cross:center">
-                    <span class="car-type">{{item.carType}}</span>
-                    <span class="engine-oil">{{item.engineOil}}</span>
+                    <span class="car-type">车型：{{item.carType}}</span>
+                    <span class="engine-oil">机油：{{item.engineOil}}</span>
                 </div>
             </div>
             <div class="price-info" flex="dir:left main:right cross:center">

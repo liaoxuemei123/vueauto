@@ -46,9 +46,9 @@
         filters:{
             universalFilter:function(val){
                 if(val){
-                    return '全国服务中心通用'
+                    return '全国服务中心'
                 }else{
-                    return '指定服务中心使用'
+                    return '指定服务中心'
                 }
             }
         }
