@@ -134,13 +134,19 @@
                 }
             },
             onCityChange:function(picker,values){
-                if(values[0]&&values[1]){
-                    this.cityInfo.province = values[0].name;
+                if(values[1]){
+                    if(!values[0]){
+                        this.cityInfo.province = this.cityData.provinces[0].name;
+                        values[0] = {};
+                        values[0].name = this.cityData.provinces[0].name
+                        values[0].index = 0;
+                    }else{
+                        this.cityInfo.province = values[0].name;
+                    }
                     this.cityInfo.city = values[1].name;
                     this.cityInfo.code = values[1].id;
                     picker.setSlotValues(1,this.cityData.citys[values[0].index]);
                 }
-
             },
             selectCity:function(){
                 if(!this.cityInfo.province){
@@ -207,6 +213,9 @@
             this.cityInfo = {};
             this.selectedCity = '';
             this.defaultLocation = this.geolocation.address.province + ' ' + this.geolocation.address.city;
+        },
+        deactivated:function(){
+            this.cityInfo.code = '';
         },
         computed:{
             ...mapState([

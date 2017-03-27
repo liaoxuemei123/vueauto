@@ -32,7 +32,10 @@ const store = new Vuex.Store({
                 lat:29.579185,
                 lon:106.55419
             },
-            address:{}
+            address:{
+                province:'定位',
+                city:'失败'
+            }
         },
         packageInfo:{
             modelInfo:{},

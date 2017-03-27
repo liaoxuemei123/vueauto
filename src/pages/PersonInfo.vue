@@ -22,7 +22,7 @@
                     </div>
                     <div class="input-control-custom" flex="dir:left cross:center box:justify" v-if="userInfo.tel != userMoblie">
                         <div class="label">验证码</div>
-                        <input type="number" v-model="code">
+                        <input type="text" v-model="code">
                         <div class="button" flex="dir:left cross:center main:right" >
                             <span v-if="getCodeState">{{residueTime}}秒后重发</span>
                             <span v-tap="sendSmsCode" v-else="getCodeState">获取验证码</span>
