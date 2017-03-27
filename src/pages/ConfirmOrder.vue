@@ -188,7 +188,7 @@
         },
         filters:{
             universalFilter:function(val){
-                if(val != 0){
+                if(val == 1){
                     return '全国服务中心'
                 }else{
                     return '指定服务中心'

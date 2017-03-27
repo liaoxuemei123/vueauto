@@ -286,7 +286,7 @@
                     this.getMealList();
                 },0)
             }
-            if(this.setInfo.isUniversal == 0){
+            if(this.setInfo.isUniversal == 2){
                 this.isSelectStore = true;
             }else{
                 this.isSelectStore = false;
@@ -315,7 +315,7 @@
                 return '3年'
             },
             universalFilter:function(val){
-                if(val != 0){
+                if(val == 1){
                     return '全国服务中心'
                 }else{
                     return '指定服务中心'
