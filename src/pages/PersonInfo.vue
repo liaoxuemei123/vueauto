@@ -194,6 +194,13 @@
                 this.userInfo.tel = $(e.target).val();
             },
             sendSmsCode:function(e){
+                if(!(/^1[34578]\d{9}$/.test(this.userInfo.tel))){
+                    Toast({
+                        message:'手机号有误',
+                        duration:1000,
+                    });
+                    return false;
+                }
                 Tool.get('wbSendSmsCode',{
 					mobile:this.userInfo.tel,
 				},(data)=>{
