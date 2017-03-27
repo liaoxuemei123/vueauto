@@ -63,16 +63,17 @@
 						mod:pData.mod,
 						additional:pData.additional,
 					},(data)=>{
-						console.log(data.success);
 						if(data.success){
-							Toast({
-								duration:1000,
-								message:'登录成功'
-							})
+							
 							if(data.data.result != '0'){
 								Toast({
 									duration:1000,
 									message:errorMsg[data.data.result]
+								})
+							}else{
+								Toast({
+									duration:1000,
+									message:'登录成功'
 								})
 							}
 							Tool.localItem("userInfo",data.data);

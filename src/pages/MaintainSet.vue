@@ -50,7 +50,7 @@
                     <div class="search-down-list" v-if="searchShow && matchList.length > 0">
                         <div class="match-list">
                             <div class="match-item" v-for="(item,index) in matchList" @click="selectMacth(item)">
-                                {{item.modelName}}
+                                {{item[2]}}
                             </div>
                         </div>
                     </div>
@@ -144,7 +144,7 @@
                     this.matchList = [];
                     for(var i = 0; i<this.carSelectList.length;i++){
                         if(this.matchList.length > 4) break;
-                        if(this.carSelectList[i].modelName.indexOf(text)>=0){
+                        if(this.carSelectList[i][2].indexOf(text)>=0){
                             this.matchList.push(this.carSelectList[i]);
                         }
                     }
@@ -159,9 +159,9 @@
                 }
             },
             selectMacth:function(item){
-                this.carModel.displacement = item.displacement;
-                this.carModel.vehicleModel = item.seriesName;
-                this.carModel.vehicleType = item.vehicleType;
+                this.carModel.displacement = item[1];
+                this.carModel.vehicleModel = item[0];
+                this.carModel.vehicleType = item[3];
                 this.$store.commit('SET_PACKAGE_MODEL',this.carModel);
                 this.pickerModel = this.carModel.vehicleModel + ' ' + this.carModel.displacement;
                 this.carModel = {};
@@ -216,6 +216,10 @@
             this.$store.commit('SET_RESET_FLAS',true);
             this.$store.commit('SET_PACKAGE_STOREINFO',{});
         },
+        deactivated:function(){
+            this.carShow = false;
+            this.searchShow = false;
+        }
         // beforeRouteEnter:(to,from,next)=>{
         //     Tool.routerEnter(to,from,next)
         // },
