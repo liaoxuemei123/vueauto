@@ -253,6 +253,16 @@
                     mealId:'',
                     mealName:''
                 }
+                setTimeout(()=>{
+                    if(this.$children.length > 0){
+                        for(var i=0;i<this.$children.length;i++){
+                            if(this.$children[i].mySroller && this.$children[i].mySroller.scrollTo){
+                                this.$children[i].scrollerInfo.y = 0;
+                                this.$children[i].mySroller.scrollTo(0,0,300);
+                            }
+                        }
+                    }
+                },0)
             },
             goStore:function(){
                 this.$store.commit('SET_RESET_FLAS',false);
@@ -281,6 +291,15 @@
             }else{
                 this.isSelectStore = false;
             }
+        },
+        deactivated:function(){
+            // if(this.$children.length > 0){
+            //     for(var i=0;i<this.$children.length;i++){
+            //         if(this.$children[i].mySroller && this.$children[i].mySroller.scrollTo){
+            //             this.$children[i].mySroller.scrollTo(0,0);
+            //         }
+            //     }
+            // }
         },
         filters:{
             ageFilter:function(val){
