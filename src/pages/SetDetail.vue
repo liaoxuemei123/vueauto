@@ -62,29 +62,8 @@
                                 套餐信息
                             </div>
                             <div class="info-content">
-                                <div class="info-item">
-                                    <div class="item-name">保养项目：</div>
-                                    <div class="info">
-                                        {{setInfo.packageContent}}
-                                    </div>
-                                </div>
-                                <div class="info-item">
-                                    <div class="item-name">有效期：</div>
-                                    <div class="info">
-                                        {{setInfo.validate|validateFilter}}
-                                    </div>
-                                </div>
-                                <div class="info-item">
-                                    <div class="item-name">适用范围：</div>
-                                    <div class="info">
-                                        {{setInfo.isUniversal|universalFilter}}
-                                    </div>
-                                </div>
-                                <div class="info-item">
-                                    <div class="item-name">使用方法：</div>
-                                    <div class="info">
-                                        到店保养前告知服务顾问已购买套餐即可使用
-                                    </div>
+                                <div class="image-cotainer">
+                                    <img src="http://service.mall.changan.com.cn/static/package/package_contentV0.2_3y.png" alt="">
                                 </div>
                             </div>
                         </div>
@@ -545,11 +524,10 @@
                     }
                     .info-content{
                         padding:0.4rem 0.5rem;
-                        .info-item{
-                            .item-name{
-                                color:#fd3c2d;
-                                font-weight:bold;
-                                line-height:2em;
+                        .image-cotainer{
+                            width:100%;
+                            img{
+                                width:100%;
                             }
                         }
                     }

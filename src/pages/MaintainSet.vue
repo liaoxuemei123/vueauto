@@ -144,7 +144,7 @@
                     this.matchList = [];
                     for(var i = 0; i<this.carSelectList.length;i++){
                         if(this.matchList.length > 4) break;
-                        if(this.carSelectList[i][2].indexOf(text)>=0){
+                        if(this.carSelectList[i][2].toLocaleLowerCase().indexOf(text.toLocaleLowerCase())>=0){
                             this.matchList.push(this.carSelectList[i]);
                         }
                     }

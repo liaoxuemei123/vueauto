@@ -10,6 +10,30 @@
                         <order-item :item="item"></order-item>
                     </div>
                 </scroller>
+                <div class="info-item">
+                <div class="item-name">保养项目：</div>
+                    <div class="info">
+                        {{setInfo.packageContent}}
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="item-name">有效期：</div>
+                    <div class="info">
+                        {{setInfo.validate|validateFilter}}
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="item-name">适用范围：</div>
+                    <div class="info">
+                        {{setInfo.isUniversal|universalFilter}}
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="item-name">使用方法：</div>
+                    <div class="info">
+                        到店保养前告知服务顾问已购买套餐即可使用
+                    </div>
+                </div>
             </div>
         </div>
     </div>
