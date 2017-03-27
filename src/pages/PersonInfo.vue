@@ -162,6 +162,11 @@
                             if(data.code == 200){
                                 this.$store.commit('SET_PACKAGE_USERINFO',this.userInfo);
                                 this.$router.push({name:'confirmorder'});
+                            }else{
+                                Toast({
+                                    message:data.msg,
+                                    duration:1000,
+                                })
                             }
                         })
                     }else{
