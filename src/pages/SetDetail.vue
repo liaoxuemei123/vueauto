@@ -174,7 +174,7 @@
                     Toast('请选择机油');
                     return false;
                 }
-                if(this.setInfo.isUniversal == 0 && !this.packageInfo.storeInfo.id){
+                if(this.setInfo.isUniversal == 2 && !this.packageInfo.storeInfo.id){
                     Toast({
                         message:'请选择店铺',
                         position:'bottom',
