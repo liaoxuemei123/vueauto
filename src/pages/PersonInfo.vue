@@ -24,7 +24,7 @@
                         <div class="label">验证码</div>
                         <input type="text" v-model="code">
                         <div class="button" flex="dir:left cross:center main:right" >
-                            <span v-if="getCodeState">{{residueTime}}秒后重发</span>
+                            <span v-if="getCodeState"><span ref="residueTime">60</span>秒后重发</span>
                             <span v-tap="sendSmsCode" v-else="getCodeState">获取验证码</span>
                         </div>
                     </div>
@@ -200,9 +200,11 @@
 					this.getCodeState = true;
 					var a = setInterval(()=>{
 						this.residueTime -- ;
+                         $(this.$refs.residueTime).text(this.residueTime);
 						while(this.residueTime < 1){
 							this.getCodeState = false;
 							this.residueTime = 60;
+                            $(this.$refs.residueTime).text(60);
 							clearInterval(a);
 						}
 					},1000)
@@ -276,7 +278,7 @@
                         text-align:right;
                         font-size:0.58rem;
                         height:1.9rem;
-                        span{
+                        &>span{
                             color:#ff3b2f;
                             border:1px solid #ff3b2f;
                             padding:0.2rem 0.3rem;

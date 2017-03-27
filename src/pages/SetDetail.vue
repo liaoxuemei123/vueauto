@@ -262,7 +262,7 @@
                             }
                         }
                     }
-                },0)
+                },0)//异步把更新放到updated之后
             },
             goStore:function(){
                 this.$store.commit('SET_RESET_FLAS',false);

@@ -26,6 +26,7 @@
 	import Tool from '../utils/Tool';
 	import En from '../utils/Encryption';
 	import { Toast } from 'mint-ui';
+	import errorMsg from '../utils/error_msg';
  	export default{
 		data (){
 			return{
@@ -62,11 +63,18 @@
 						mod:pData.mod,
 						additional:pData.additional,
 					},(data)=>{
-						if(data.data.result == '0'){
+						console.log(data.success);
+						if(data.success){
 							Toast({
 								duration:1000,
 								message:'登录成功'
 							})
+							if(data.data.result != '0'){
+								Toast({
+									duration:1000,
+									message:errorMsg[data.data.result]
+								})
+							}
 							Tool.localItem("userInfo",data.data);
 							this.$router.push({path:this.$route.params.to});
 						}else{

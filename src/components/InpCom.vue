@@ -4,7 +4,7 @@
             <i class="iconfont" :class="icon"></i><span>{{title}}</span>
         </div>
         <div flex="dir:left box:last cross:center">
-            <input :type="type" :maxlength="maxlength" :placeholder="placeholder" :class="{'arrow':rightArrow}" @blur="onBlur" :value="value" :readonly="readonly">
+            <input :type="type" :maxlength="maxlength" :placeholder="placeholder" :class="{'arrow':rightArrow}" @blur="onBlur" @input="onInput" :value="value" :readonly="readonly">
             <i class="iconfont icon-go arrow" v-if="rightArrow"></i>
         </div>
     </div>
@@ -49,6 +49,12 @@
                 default:false
             },
             onClick:{
+                type:Function,
+                default:function(){
+                    return;
+                }
+            },
+            onInput:{
                 type:Function,
                 default:function(){
                     return;
