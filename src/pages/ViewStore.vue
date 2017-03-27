@@ -172,7 +172,6 @@
             });
             this.cityInfo = {};
             this.selectedCity = '';
-            console.log(this.geolocation.address);
             this.defaultLocation = this.geolocation.address.province + ' ' + this.geolocation.address.city;
         },
         deactivated:function(){
