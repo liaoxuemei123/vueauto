@@ -63,7 +63,7 @@
                             </div>
                             <div class="info-content">
                                 <div class="image-cotainer">
-                                    <img src="http://service.mall.changan.com.cn/static/package/package_contentV0.2_3y.png" alt="">
+                                    <img :src="setInfo.wpUrl" alt="">
                                 </div>
                             </div>
                         </div>
