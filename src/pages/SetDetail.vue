@@ -17,7 +17,7 @@
                                 <div class="line" flex="dir:left cross:center">
                                     <span class="car-type">{{packageInfo.modelInfo.seriesName}}</span>
                                     <span class="des1">{{setInfo.packageName}}</span>
-                                    <span class="des2">({{setInfo.isUniversal|universalFilter}})</span>
+                                    <span class="des2">{{setInfo.isUniversal|universalFilter}}</span>
                                 </div>
                                 <div class="line" flex="dir:left cross:center">
                                     <span class="price-range" v-if="setDetail.price"><span class="doller">￥</span>{{setDetail.price}}</span>
@@ -43,10 +43,10 @@
                         </div>
                         <div class="select-store">
                             <div class="input-control">
-                                <inp-com title="服务中心" :value="packageInfo.storeInfo.storeName" :onClick="goStore" :readonly="true" :placeholder="storeTip" :rightArrow="true" />
+                                <inp-com title="4S店" :value="packageInfo.storeInfo.storeName" :onClick="goStore" :readonly="true" :placeholder="storeTip" :rightArrow="true" />
                             </div>
                         </div>
-                        <div class="tips" v-if="setInfo.isUniversal == 1">提示：请查看可以使用的服务中心</div>
+                        <div class="tips" v-if="setInfo.isUniversal == 1">提示：请查看可以使用的4S店</div>
                         <!--<div class="input-container">
                             <inp-com
                                 title="套餐机油选择"
@@ -135,7 +135,7 @@
                     mealId:'',
                     mealName:''
                 },
-                storeTip:'选择服务中心',
+                storeTip:'选择4S店',
                 isSelectStore:true,
                 scrollerY:0,//记录scroller的位置
             }
@@ -162,9 +162,9 @@
         watch:{
             'isSelectStore':function(val){
                 if(val){
-                    this.storeTip = '选择服务中心';
+                    this.storeTip = '选择4S店';
                 }else{
-                    this.storeTip = '查看服务中心';
+                    this.storeTip = '查看4S店';
                 }
             }
         },
@@ -176,7 +176,7 @@
                 }
                 if(this.setInfo.isUniversal == 2 && !this.packageInfo.storeInfo.id){
                     Toast({
-                        message:'请选择服务中心',
+                        message:'请选择4S店',
                         duration:1000,
                     });
                     return false;
@@ -294,9 +294,9 @@
             },
             universalFilter:function(val){
                 if(val == 1){
-                    return '全国服务中心'
+                    return '全国4S店（暂开通河南）'
                 }else{
-                    return '指定服务中心'
+                    return '指定4S店'
                 }
             }
         },

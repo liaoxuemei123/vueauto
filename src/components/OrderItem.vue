@@ -12,7 +12,7 @@
             <div class="order-info" flex="dir:top box:mean">
                 <div class="order-name" flex="dir:left cross:center">
                     <span class="package-name">{{item.packageName}}</span>
-                    <span class="package-range">({{item.isUniversal | universalFilter}})</span>
+                    <span class="package-range">{{item.isUniversal | universalFilter}}</span>
                 </div>
                 <div class="car-info" flex="dir:left cross:center">
                     <span class="car-type">车型：{{item.carType}}</span>
@@ -71,9 +71,9 @@
             },
             universalFilter:function(val){
                 if(val == 1){
-                    return '全国服务中心'
+                    return '全国4S店（暂开通河南）'
                 }else{
-                    return '指定服务中心'
+                    return '指定4S店'
                 }
             }
         },

@@ -52,9 +52,9 @@
         filters:{
             universalFilter:function(val){
                 if(val == 1){
-                    return '全国服务中心'
+                    return '全国4S店（暂开通河南）'
                 }else{
-                    return '指定服务中心'
+                    return '指定4S店'
                 }
             }
         }
