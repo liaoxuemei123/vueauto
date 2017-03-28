@@ -10,18 +10,18 @@
             />
             <div class="page-content">
                 <div class="up-title title">
-                    <span>全国服务中心</span>
-                </div>
-                <div class="down">
-                    <div class="set-item" v-for="(item, index) in setlist.down">
-                        <set-item :item="item"/>
-                    </div>
-                </div>
-                <div class="down-title title">
                     <span>指定服务中心</span>
                 </div>
                 <div class="up">
                     <div class="set-item" v-for="(item, index) in setlist.up">
+                        <set-item :item="item"/>
+                    </div>
+                </div>
+                <div class="down-title title">
+                    <span>全国服务中心</span>
+                </div>
+                <div class="down">
+                    <div class="set-item" v-for="(item, index) in setlist.down">
                         <set-item :item="item"/>
                     </div>
                 </div>
