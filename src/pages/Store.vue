@@ -226,6 +226,7 @@
         },
         deactivated:function(){
             this.cityInfo.code = '';
+            this.cityShow = false;
         },
         computed:{
             ...mapState([
