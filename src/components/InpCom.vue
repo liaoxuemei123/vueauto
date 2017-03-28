@@ -1,6 +1,6 @@
 <template>
     <div class="inp-com" flex="dir:left box:first cross:center" @click="onClick">
-        <div .input-label>
+        <div class="input-label">
             <i class="iconfont" :class="icon"></i><span>{{title}}</span>
         </div>
         <div flex="dir:left box:last cross:center">

@@ -20,12 +20,12 @@
                     <div class="input-control" >
                         <inp-com title="手机号" :value="userInfo.tel" placeholder="输入手机号" :onBlur="updateTel.bind(this)" />
                     </div>
-                    <div class="input-control-custom" flex="dir:left cross:center box:justify" v-if="userInfo.tel != userMoblie">
+                    <div class="input-control-custom" flex="dir:left cross:center box:justify" v-show="userInfo.tel != userMoblie">
                         <div class="label">验证码</div>
                         <input type="text" v-model="code">
                         <div class="button" flex="dir:left cross:center main:right" >
-                            <span v-if="getCodeState"><span ref="residueTime">60</span>秒后重发</span>
-                            <span v-tap="sendSmsCode" v-else="getCodeState">获取验证码</span>
+                            <span ref="onValiCode"><span ref="residueTime">60</span>秒后重发</span>
+                            <span v-tap="sendSmsCode" ref="getValiCode">获取验证码</span>
                         </div>
                     </div>
                     <div class="input-control">
@@ -64,7 +64,6 @@
                     message:'',
                 },
                 userMoblie:'',
-                getCodeState:false,
                 residueTime:60,
                 code:'',
             }
@@ -77,6 +76,10 @@
             ...mapState([
                 'packageInfo'
             ])
+        },
+        activated:function(){
+            $(this.$refs.onValiCode).hide();
+            $(this.$refs.getValiCode).show();
         },
         methods:{
             nextPage:function(){
@@ -205,6 +208,8 @@
                 Tool.get('wbSendSmsCode',{
 					mobile:this.userInfo.tel,
 				},(data)=>{
+                    $(this.$refs.getValiCode).hide();
+                    $(this.$refs.onValiCode).show();
 					this.getCodeState = true;
 					var a = setInterval(()=>{
 						this.residueTime -- ;
@@ -213,6 +218,8 @@
 							this.getCodeState = false;
 							this.residueTime = 60;
                             $(this.$refs.residueTime).text(60);
+                            $(this.$refs.getValiCode).show();
+                            $(this.$refs.onValiCode).hide();
 							clearInterval(a);
 						}
 					},1000)
@@ -270,7 +277,7 @@
                     height:1.9rem;
                     background-color:#fff;
                     margin-bottom:1px;
-                    padding:0rem 0.5rem;
+                    padding:0rem 1rem 0 0.5rem;
                     font-size:0.68rem;
                     .label{
                         margin-right:1rem;
