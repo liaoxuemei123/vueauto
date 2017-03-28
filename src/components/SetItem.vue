@@ -18,6 +18,7 @@
 </template>
 <script>
     import { Toast } from 'mint-ui';
+    import { mapState } from 'vuex';
     export default {
         data () {
             return {
@@ -30,9 +31,14 @@
                 default:{}
             }
         },
+        computed:{
+            ...mapState([
+                'packageInfo'
+            ])
+        },
         methods:{
             viewDetail:function(item){
-                if(this.$parent.pickerModel){
+                if(this.packageInfo.modelInfo.vehicleModel){
                     this.$router.push({path:'setdetail/'+item.id,query:item});
                 }else{
                     Toast({

@@ -226,7 +226,7 @@ body,html{
 }
 
 .picker-item.picker-selected {
-    color: #000;
+    color:#00bffe;
     transform: translate3d(0, 0, 0) rotateX(0);
 }
 
