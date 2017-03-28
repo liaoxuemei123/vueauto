@@ -1,7 +1,7 @@
 <template>
     <div class="page-container">
         <div class="page unionpay-page" flex="dir:top box:first">
-            <nav-bar
+            <union-nav
                 title="银联支付"
                 :goBack="goBack"
             />
@@ -14,7 +14,7 @@
     </div>
 </template>
 <script>
-    import NavBar from '../components/NavBar';
+    import UnionNav from '../components/UnionNav';
     export default {
         data () {
             return {
@@ -22,7 +22,7 @@
             }
         },
         components:{
-            NavBar
+            UnionNav
         },
         methods:{
             goBack:function(){
@@ -49,10 +49,11 @@
         .page-content{
             background-color: #efefef;
             height:100%;
-            overflow: hidden;
+            overflow: auto;
             position:relative;
             iframe{
                 border:none;
+                height:100%;
             }
         }
     }
