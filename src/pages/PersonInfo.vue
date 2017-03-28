@@ -80,6 +80,11 @@
         activated:function(){
             $(this.$refs.onValiCode).hide();
             $(this.$refs.getValiCode).show();
+            var vehicleInfo = JSON.parse(Tool.localItem('vehicleInfo'));
+            if(vehicleInfo){
+                this.userInfo.vin = vehicleInfo.vin;
+                //this.userInfo.motorId = vehicleInfo.motorId;
+            }
         },
         methods:{
             nextPage:function(){
@@ -177,6 +182,7 @@
                     }else{
                         this.$store.commit('SET_PACKAGE_USERINFO',this.userInfo);
                         this.$router.push({name:'confirmorder'});
+                        Tool.localItem('vehicleInfo',{vin:this.userInfo.vin})
                     }
                 })
             },

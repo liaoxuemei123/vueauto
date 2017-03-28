@@ -215,6 +215,15 @@
         activated:function(){
             this.$store.commit('SET_RESET_FLAS',true);
             this.$store.commit('SET_PACKAGE_STOREINFO',{});
+            var modelInfo = JSON.parse(Tool.localItem('modelInfo'));
+            if(modelInfo){
+                this.carModel.displacement = modelInfo.displacement;
+                this.carModel.vehicleModel = modelInfo.vehicleModel;
+                this.carModel.vehicleType = modelInfo.vehicleType;
+                this.$store.commit('SET_PACKAGE_MODEL',this.carModel);
+                this.carModel = {};
+                this.pickerModel = modelInfo.vehicleModel + ' ' + modelInfo.displacement;
+            }
         },
         deactivated:function(){
             this.carShow = false;

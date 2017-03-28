@@ -19,6 +19,7 @@
 <script>
     import { Toast } from 'mint-ui';
     import { mapState } from 'vuex';
+    import Tool from '../utils/Tool';
     export default {
         data () {
             return {
@@ -40,6 +41,7 @@
             viewDetail:function(item){
                 if(this.packageInfo.modelInfo.vehicleModel){
                     this.$router.push({path:'setdetail/'+item.id,query:item});
+                    Tool.localItem('modelInfo',this.packageInfo.modelInfo);
                 }else{
                     Toast({
                         message:"请选择车型",
