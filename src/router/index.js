@@ -18,7 +18,6 @@ import Register from 'pages/Register';
 import ViewStore from 'pages/ViewStore';
 import TestScroller from 'pages/TestScroller';
 import Refund from 'pages/Refund';
-import UnionPay from 'pages/UnionPay';
 
 Vue.use(Router)
 
@@ -135,10 +134,5 @@ export default new Router({
       name:'refund',
       component:Refund,
     },
-    {
-      path:'/unionpay',
-      name:'unionpay',
-      component:UnionPay,
-    }
   ]
 })
