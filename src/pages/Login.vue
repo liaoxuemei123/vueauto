@@ -17,6 +17,11 @@
 
            <div class="login-btn" @click="login">登录</div>
            <div class="register-btn" @click="register">注册</div>
+		   <transition name="slide-up">
+		   		<p class="tips" v-if="forgetPassword">
+					<a href="http://cloud.mall.changan.com.cn/caecapp/main/index.html#my/forget-password.html">忘记密码可到长安商城个人中心找回密码</a>
+				</p>
+		   </transition>
         </div>
 	</div>
   </div>
@@ -31,7 +36,8 @@
 		data (){
 			return{
 				tel:'',
-				password:''
+				password:'',
+				forgetPassword:false,
 			}
 		},
 		components:{
@@ -83,11 +89,18 @@
 								duration:1000,
 								message:'账号密码错误'
 							})
+							this.forgetPassword = true;
 						}
 					})
 				})
 				
 			}
+		},
+		activated:function(){
+			this.forgetPassword = true;
+		},
+		deactivated:function(){
+			this.forgetPassword = false;
 		},
 		beforeRouteEnter:(to,from,next)=>{
 			next();
@@ -155,6 +168,14 @@
             	background-color:red;
 
             }
+			.tips{
+				color:#03A9F4;
+				margin:1rem 15%;
+				a{
+					color:#03A9F4;
+					text-decoration:none;
+				}
+			}
         }
     }
  </style>
