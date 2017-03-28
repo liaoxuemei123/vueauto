@@ -126,14 +126,14 @@
                 }
                 this.selectedCity = this.cityInfo.province + ' ' + this.cityInfo.city;
                 this.cityShow = false;
-                Tool.getLocation(this.selectedCity,(data)=>{
-                    if(data.result && data.result.location){
-                        this.cityInfo.lat = data.result.location.lat;
-                        this.cityInfo.lng = data.result.location.lng;
-                    }
-                    this.getStoreList();
-                    this.cityInfo.province = '';
-                })
+                // Tool.getLocation(this.selectedCity,(data)=>{
+                //     if(data.result && data.result.location){
+                //         this.cityInfo.lat = data.result.location.lat;
+                //         this.cityInfo.lng = data.result.location.lng;
+                //     }
+                this.getStoreList();
+                this.cityInfo.province = '';
+                // })
             },
             getCityList:function(callback){
                 Tool.get("queryArea",{},(data)=>{
