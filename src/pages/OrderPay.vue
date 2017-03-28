@@ -3,6 +3,7 @@
         <div class="page order-pay-page" flex="dir:top box:justify">
             <nav-bar
                 title="确认购买"
+                :goBack="goBack"
             />
             <div class="page-content">
                 <div class="order-info" flex="dir:top box:mean">
@@ -78,7 +79,8 @@
                 orderInfo:{
                     packageName:'',
                     orderPrice:'',
-                }
+                },
+                isBack:false,
             }
         },
         computed:{
@@ -96,8 +98,14 @@
                 if(this.paymentMode == 1){
                     window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx22b47ca6974f3e71&redirect_uri=http://service.mall.changan.com.cn%2Fubiweb%2F%23%2Forderpay%2F" + this.orderNo + "&response_type=code&scope=snsapi_base&state=" + this.orderNo + ',' + this.orderInfo.packageName + "#wechat_redirect";
                 }else{
-                    window.location.href = "http://service.mall.changan.com.cn/maintenance-plug/unionPay/frontConsume?orderId="+this.orderNo;
+                    let href = "http://service.mall.changan.com.cn/maintenance-plug/unionPay/frontConsume?orderId="+this.orderNo;
+                    this.$router.push({path:'/unionpay',query:{href,orderNo:this.orderNo}})
+                    //window.location.href = "http://service.mall.changan.com.cn/maintenance-plug/unionPay/frontConsume?orderId="+this.orderNo;
                 }
+            },
+            goBack:function(){
+                this.$router.back();
+                this.isBack = true;
             },
             startPay:function(){
                 var self = this;
@@ -231,6 +239,7 @@
         },
         activated:function(){
             var self = this;
+            this.isBack = false;
             if(this.$route.params && this.$route.params.id){
                 this.orderNo = this.$route.params.id;
                 Tool.get('AaPackageOrderDetail',{
@@ -245,8 +254,11 @@
             this.startPay();//支付界面只有在第一次进入的时候才触发支付，否则不做操作
         },
         beforeRouteLeave:function(to,from,next){
-            if(to.name == 'confirmorder' || to.path == '/confirmorder'){
-                next({name:'maintainset'});//防止2次下单
+            console.log(this.isBack);
+            if(this.isBack){
+                if(to.name == 'confirmorder' || to.path == '/confirmorder' || to.name == 'unionpay' || to.path == '/unionpay'){
+                    next({name:'maintainset'});//防止2次下单
+                }
             }
             next();
         },

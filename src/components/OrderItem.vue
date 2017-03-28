@@ -12,7 +12,7 @@
             <div class="order-info" flex="dir:top box:mean">
                 <div class="order-name" flex="dir:left cross:center">
                     <span class="package-name">{{item.packageName}}</span>
-                    <span class="package-range">(全国服务中心)</span>
+                    <span class="package-range">({{item.isUniversal | universalFilter}})</span>
                 </div>
                 <div class="car-info" flex="dir:left cross:center">
                     <span class="car-type">车型：{{item.carType}}</span>
@@ -34,7 +34,7 @@
         <div class="footer">
             <div class="oprater" flex="dir:left cross:center main:right">
                 <div class="pay" v-if="item.status == 1" v-tap="goPay.bind(this,item.orderNo)">去支付</div>
-                <div class="cancel" v-if="item.status == 2" v-tap="refund.bind(this,item.orderNo)">退款</div>
+                <div class="cancel" v-if="item.status == 2 && new Date().getTime() - item.paySuccessDate < 604800000 && !item.isOrderDetail" v-tap="refund.bind(this,item.orderNo)">退款</div>
                 <!--<div class="evaluate" @click="goEvaluate" v-if="item.status == 4">去评价</div>-->
                 <div class="detail" v-tap="viewDetail.bind(this,item.orderNo)" v-if="item.status != 1">查看详情</div>
             </div>
@@ -67,6 +67,13 @@
                     case 3:
                         return "退款中";
                         break;
+                }
+            },
+            universalFilter:function(val){
+                if(val == 1){
+                    return '全国服务中心'
+                }else{
+                    return '指定服务中心'
                 }
             }
         },

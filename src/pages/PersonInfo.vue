@@ -12,7 +12,7 @@
                         <inp-com title="车架号" :value="userInfo.vin" placeholder="输入车架号(不限大小写)" maxlength='17' :onBlur="updateVIN.bind(this)"/>
                     </div>
                     <div class="input-control">
-                        <inp-com title="发动机号后六位" :value="userInfo.motorId" placeholder="输入发动机号后六位" :onBlur="updateMotorId.bind(this)" :maxlength="'10'"/>
+                        <inp-com title="发动机号" :value="userInfo.motorId" placeholder="输入发动机号" :onBlur="updateMotorId.bind(this)" :maxlength="'10'"/>
                     </div>
                     <div class="input-control">
                         <inp-com title="姓名" :value="userInfo.contact" placeholder="输入姓名" :onBlur="updateContact.bind(this)"/>
@@ -135,6 +135,7 @@
                         vin:this.userInfo.vin,
                         engineNo:this.userInfo.motorId,
                         isMiniCar:this.packageInfo.modelInfo.vehicleType,
+                        seriesName:this.packageInfo.modelInfo.vehicleModel,
                     },(data)=>{
                         if(data.code == 1){
                             res(data);
