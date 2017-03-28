@@ -254,7 +254,6 @@
             this.startPay();//支付界面只有在第一次进入的时候才触发支付，否则不做操作
         },
         beforeRouteLeave:function(to,from,next){
-            console.log(this.isBack);
             if(this.isBack){
                 if(to.name == 'confirmorder' || to.path == '/confirmorder' || to.name == 'unionpay' || to.path == '/unionpay'){
                     next({name:'maintainset'});//防止2次下单

@@ -1,6 +1,6 @@
 <template>
-    <div class="inp-com" flex="dir:left box:mean cross:center" @click="onClick">
-        <div>
+    <div class="inp-com" flex="dir:left box:first cross:center" @click="onClick">
+        <div .input-label>
             <i class="iconfont" :class="icon"></i><span>{{title}}</span>
         </div>
         <div flex="dir:left box:last cross:center">
@@ -75,6 +75,9 @@
         line-height: 1.9rem;
         background-color:#fff;
         width: 100%;
+        .input-label{
+            width:40%;
+        }
         input{
             border:none;
             height:100%;
@@ -82,7 +85,7 @@
             background-color:transparent;
             font-size:0.57rem;
             text-align:right;
-            padding:0.2rem 5%;
+            padding:0.2rem 10% 0.2rem 0%;
             outline: none;
         };
         input.arrow{

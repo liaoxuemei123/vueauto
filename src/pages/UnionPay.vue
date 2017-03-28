@@ -1,6 +1,6 @@
 <template>
     <div class="page-container">
-        <div class="page unionpay-page">
+        <div class="page unionpay-page" flex="dir:top box:first">
             <nav-bar
                 title="银联支付"
                 :goBack="goBack"
