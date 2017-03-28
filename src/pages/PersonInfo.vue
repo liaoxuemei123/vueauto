@@ -29,7 +29,7 @@
                         </div>
                     </div>
                     <div class="input-control">
-                        <inp-com title="备注" :readonly="true" />
+                        <!--<inp-com title="备注" :readonly="true" />-->
                         <div class="text-control" flex="dir:top">
                         <textarea rows="5" maxlength='100' placeholder="请输入100字内留言" @input="updateComment"></textarea>
                         <div class="show-length">
