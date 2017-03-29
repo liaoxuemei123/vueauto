@@ -56,6 +56,26 @@ body,html{
 .slide-down-enter{
     transform: translate3d(0,-100%,0);
 }
+/*缓慢的slideUp*/
+.slow-up-enter-active {
+    transition: all .3s ease-out;
+    transform: translate3d(0,0%,0);
+    opacity: 1;
+}
+.slow-up-leave-active {
+    transition: all .3s ease-out;
+    transform: translate3d(0,20%,0);
+    opacity: 0;
+}
+.slow-up-leave{
+    transform: translate3d(0,0%,0);
+    opacity: 1;
+}
+.slow-up-enter{
+    transform: translate3d(0,20%,0);
+    opacity: 0;
+}
+
 /*预设vue上滑动画*/
 .slide-up-enter-active {
     transition: all .2s ease-out;
