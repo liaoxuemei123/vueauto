@@ -91,7 +91,7 @@
             padding:0.2rem 0.5rem;
             background-color:#fff;
             .cut{
-                font-size:0.43rem;
+                font-size:0.51rem;
                 color:#fff;
                 background-color:#fc4c1d;
                 padding:0.05rem 0.1rem;
@@ -99,7 +99,7 @@
                 margin-right:0.2rem;
             }
             .des1{
-                font-size:0.64rem;
+                font-size:0.61rem;
                 color:#333;
             }
             .des2{
