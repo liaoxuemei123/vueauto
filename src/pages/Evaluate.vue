@@ -15,9 +15,13 @@
                     <div class="content">
                         <div class="score-total" flex="dir:left cross:center">
                             <span>总体评分</span>
-                            <div class="score-evaluate" flex="dir:left cross:center" :style="{'background-image':'-webkit-linear-gradient(-180deg, #d9d9d9 ' + totalPercent + ', #ff3b2f 10px)','-webkit-background-clip':'text'}">
-                                <div class="score-evaluate-item" v-for="i in [1,2,3,4,5]">
-                                    <div class="iconfont icon-start dark"></div>
+                            <div class="score-evaluate" flex="dir:left cross:center">
+                                <div class="score-evaluate-item" v-for="i in [0,1,2,3,4]">
+                                    <div class="icon-cotainer">
+                                        <i class="iconfont icon-start" v-if="totalEvaluate - i >= 1"></i>
+                                        <i class="iconfont icon-start" v-if="totalEvaluate - i < 1 && totalEvaluate - i > 0" :style="{'width':(totalEvaluate - i) * 100 + '%'}"></i>
+                                        <i class="iconfont icon-start dark"></i>
+                                    </div>
                                 </div>
                             </div>
                             <div class="score">
@@ -119,11 +123,6 @@
         },
         components:{
             NavBar
-        },
-        computed:{
-            'totalPercent':function(){
-                return ((5-this.totalEvaluate)/5)*100 + '%'
-            }
         },
         methods:{
             publicEvaluate:function(){
@@ -261,20 +260,30 @@
                             width:60%;
                             text-align:center;
                             font-size:0.8rem;
-                            background:-webkit-linear-gradient(-180deg, #d9d8d4 90%, #ff853f 10px);
-                            -webkit-background-clip: text;
-                            -webkit-text-fill-color: transparent;
                             padding: 0 0.1rem;
                             .score-evaluate-item{
                                 margin-left:0.5rem;
-                                .iconfont{
-                                    font-size:1.2rem;
-                                }
-                                .icon-start{
-                                    color:#ff3b2f;
-                                }
-                                .icon-start.dark{
-                                    color:#b6b6b6;
+                                overflow:hidden;
+                                height:2.3rem;
+                                .icon-cotainer{
+                                    height:100%;
+                                    width:1.2rem;
+                                    overflow:hidden;
+                                    position:relative;
+                                    .iconfont{
+                                        font-size:1.2rem;
+                                    }
+                                    .icon-start{
+                                        color:#ff3b2f;
+                                        position:absolute;
+                                        z-index:2;
+                                        left:0;
+                                        overflow: hidden;
+                                    }
+                                    .icon-start.dark{
+                                        color:#b6b6b6;
+                                        z-index:1;
+                                    }
                                 }
                             }
                         }

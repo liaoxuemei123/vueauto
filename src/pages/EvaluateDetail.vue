@@ -6,9 +6,9 @@
             />
             <div class="page-content">
                 <div class="store-info-container" flex="dir:left box:first cross:center">
-                    <div class="image-container">
+                    <!--<div class="image-container">
                         <img v-lazy="storeInfo.photoUrl"/>
-                    </div>
+                    </div>-->
                     <div class="store-info" flex="dir:top cross:top box:mean">
                         <div class="line" flex="dir:left cross:center main:justify">
                             <span class="store-name">{{storeInfo.storeName}}</span>
@@ -25,9 +25,13 @@
                 <div class="evaluate-detail-container">
                     <div class="score-total" flex="dir:left cross:center">
                         <span>总体评分</span>
-                        <div class="score-evaluate" flex="dir:left cross:center" :style="{'background-image':'-webkit-linear-gradient(-180deg, #d9d9d9 ' + totalPercent + ', #ff3b2f 10px)'}" ref="total">
-                            <div class="score-evaluate-item" v-for="i in [1,2,3,4,5]">
-                                <div class="iconfont icon-start dark"></div>
+                        <div class="score-evaluate" flex="dir:left cross:center" ref="total">
+                            <div class="score-evaluate-item" v-for="i in [0,1,2,3,4]">
+                                <div class="iconfont-container">
+                                    <i class="iconfont icon-start" v-if="evaluate.totalEvaluate - i >= 1"></i>
+                                    <i class="iconfont icon-start" v-if="evaluate.totalEvaluate - i < 1 && evaluate.totalEvaluate - i > 0" :style="{'width':(evaluate.totalEvaluate - i) * 100 + '%'}"></i>
+                                    <i class="iconfont icon-start dark"></i>
+                                </div>
                             </div>
                         </div>
                         <div class="score">
@@ -287,10 +291,11 @@
                         }
                         .store-address{
                             white-space: nowrap;
-                            overflow: hidden;
+                            overflow: auto;
                             display: inline-block;
                             font-size:0.51rem;
-                            margin-right:0.3rem
+                            margin-right:0.3rem;
+                            max-width:14.5rem;
                         }
                         .store-phone{
                             font-size:0.51rem;
@@ -354,21 +359,30 @@
                         width:60%;
                         text-align:center;
                         font-size:0.8rem;
-                        background:-webkit-linear-gradient(-180deg, #d9d8d4 90%, #ff853f 10px);
-                        -webkit-background-clip: text;
-                        background-clip: text;
-                        -webkit-text-fill-color: transparent;
                         padding: 0 0.1rem;
                         .score-evaluate-item{
+                            height:2.3rem;
+                            overflow:hidden;
                             margin-left:0.5rem;
-                            .iconfont{
-                                font-size:1.2rem;
-                            }
-                            .icon-start{
-                                color:#ff3b2f;
-                            }
-                            .icon-start.dark{
-                                color:#b6b6b6;
+                            .iconfont-container{
+                                height:100%;
+                                width:1.2rem;
+                                overflow:hidden;
+                                position:relative;
+                                .iconfont{
+                                    font-size:1.2rem;
+                                }
+                                .icon-start{
+                                    color:#ff3b2f;
+                                    position:absolute;
+                                    z-index:2;
+                                    left:0;
+                                    overflow: hidden;
+                                }
+                                .icon-start.dark{
+                                    color:#b6b6b6;
+                                    z-index:1;
+                                }
                             }
                         }
                     }
