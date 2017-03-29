@@ -21,19 +21,19 @@
                         </div>
                     </div>
                     <div class="explain">
-                        <div class="explain-item" flex="dir:left cross:top">
+                        <div class="explain-item" flex="dir:left cross:top box:first">
                             <div class="check title">保养权益：</div>
                             <div>{{packageInfo.setInfo.packageName}}</div>
                         </div>
-                        <div class="explain-item" flex="dir:left cross:top">
+                        <div class="explain-item" flex="dir:left cross:top box:first">
                             <div class="change title">保养项目：</div>
                             <div>{{packageInfo.setInfo.packageContent}}</div>
                         </div>
-                        <div class="explain-item" flex="dir:left cross:top">
+                        <div class="explain-item" flex="dir:left cross:top box:first">
                             <div class="validate title">使用范围：</div>
                             <div>{{packageInfo.setInfo.isUniversal|universalFilter}}</div>
                         </div>
-                        <div class="explain-item" flex="dir:left cross:top">
+                        <div class="explain-item" flex="dir:left cross:top box:first">
                             <div class="VIN title">到期时间：</div>
                             <div>{{packageInfo.setInfo.validate|validateFilter}}</div>
                         </div>
