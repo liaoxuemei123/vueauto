@@ -191,8 +191,15 @@
                     vehicleModel:this.packageInfo.modelInfo.vehicleModel || '',
                     displacement:this.packageInfo.modelInfo.displacement || '',
                 },(data)=>{
-                    this.setMealList = data.data;
-                    callback && callback();
+                    if(data.code == 200){
+                        this.setMealList = data.data;
+                        callback && callback();
+                    }else{
+                        Toast({
+                            duration:1000,
+                            message:data.msg,
+                        })
+                    }
                 })
             },
             selectedMeal:function(index){
@@ -208,7 +215,14 @@
             },
             getPackage:function(id){
                 Tool.get('getPackage',{id},function(data){
-                    this.setInfo = data.data;
+                    if(data.code == 200){
+                        this.setInfo = data.data;
+                    }else{
+                        Toast({
+                            duration:1000,
+                            message:data.msg,
+                        })
+                    }
                 })
             },
             getPackagePriceRange:function(){
@@ -218,7 +232,14 @@
                     discount:this.setInfo.discount,
                     setMealNumber:this.setInfo.setMealNumber,
                 },(data)=>{
-                    this.priceRange = data.data;
+                    if(data.code == 200){
+                        this.priceRange = data.data;
+                    }else{
+                        Toast({
+                            duration:1000,
+                            message:data.msg,
+                        })
+                    }
                 })
             },
             reSetData:function(){

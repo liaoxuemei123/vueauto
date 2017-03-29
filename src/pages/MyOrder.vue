@@ -89,6 +89,7 @@
     import OrderItem  from '../components/OrderItem';
     import Tool from '../utils/Tool';
     import Scroller from '../components/Scroller';
+    import { Toast } from 'mint-ui';
     export default {
         data () {
             return {
@@ -171,8 +172,15 @@
                     page:this.pageAll,
                     pageSize:this.pageSize,
                 },(data)=>{
-                    this.orderList = data.data.data;
-                    this.totalCountAll = data.data.totalCount;
+                    if(data.code == 200){
+                        this.orderList = data.data.data;
+                        this.totalCountAll = data.data.totalCount;
+                    }else{
+                        Toast({
+                            duration:1000,
+                            message:data.msg,
+                        })
+                    }
                 })
             },
             orderQueryUnPaid:function(){
@@ -182,8 +190,15 @@
                     page:this.pageUnpaid,
                     pageSize:this.pageSize,
                 },(data)=>{
-                    this.unpaidList = data.data.data;
-                    this.totalCountUnpaid = data.data.totalCount;
+                    if(data.code == 200){
+                        this.unpaidList = data.data.data;
+                        this.totalCountUnpaid = data.data.totalCount;
+                    }else{
+                        Toast({
+                            duration:1000,
+                            message:data.msg,
+                        })
+                    }
                 })
             },
             orderQueryPaid:function(){
@@ -193,8 +208,15 @@
                     page:this.pagePaid,
                     pageSize:this.pageSize,
                 },(data)=>{
-                    this.paidList = data.data.data;
-                    this.totalCountPaid = data.data.totalCount;
+                    if(data.code == 200){
+                        this.paidList = data.data.data;
+                        this.totalCountPaid = data.data.totalCount;
+                    }else{
+                        Toast({
+                            duration:1000,
+                            message:data.msg,
+                        })  
+                    }
                 })
             },
             orderQueryRefund:function(){
@@ -204,8 +226,15 @@
                     page:this.pageRefund,
                     pageSize:this.pageSize,
                 },(data)=>{
-                    this.refundList = data.data.data;
-                    this.totalCountRefund = data.data.totalCount;
+                    if(data.code == 200){
+                        this.refundList = data.data.data;
+                        this.totalCountRefund = data.data.totalCount;
+                    }else{
+                        Toast({
+                            duration:1000,
+                            message:data.msg,
+                        })  
+                    }
                 })
             },
             loadMoreAll:function(){
@@ -219,9 +248,16 @@
                     page:this.pageAll,
                     pageSize:this.pageSize,
                 },(data)=>{
-                    this.orderList = this.orderList.concat(data.data.data);
-                    this.totalCountAll = data.data.totalCount;
-                    self.allLoad = true;
+                    if(data.code == 200){
+                        this.orderList = this.orderList.concat(data.data.data);
+                        this.totalCountAll = data.data.totalCount;
+                        self.allLoad = true;
+                    }else{
+                        Toast({
+                            duration:1000,
+                            message:data.msg,
+                        })  
+                    }
                 },{mask:false})
             },
             loadMoreUnpaid:function(){
@@ -235,9 +271,16 @@
                     page:this.pageUnpaid,
                     pageSize:this.pageSize,
                 },(data)=>{
-                    this.unpaidList = this.unpaidList.concat(data.data.data);
-                    this.totalCountUnpaid = data.data.totalCount;
-                    self.unpaidLoad = true;
+                    if(data.code == 200){
+                        this.unpaidList = this.unpaidList.concat(data.data.data);
+                        this.totalCountUnpaid = data.data.totalCount;
+                        self.unpaidLoad = true;
+                    }else{
+                        Toast({
+                            duration:1000,
+                            message:data.msg,
+                        })  
+                    }
                 },{mask:false})
             },
             loadMorePaid:function(){
@@ -251,9 +294,16 @@
                     page:this.pagePaid,
                     pageSize:this.pageSize,
                 },(data)=>{
-                    this.paidList = this.paidList.concat(data.data.data);
-                    this.totalCountPaid = data.data.totalCount;
-                    self.paidLoad = true;
+                    if(data.code == 200){
+                        this.paidList = this.paidList.concat(data.data.data);
+                        this.totalCountPaid = data.data.totalCount;
+                        self.paidLoad = true;
+                    }else{
+                        Toast({
+                            duration:1000,
+                            message:data.msg,
+                        })  
+                    }
                 },{mask:false})
             },
             loadMoreRefund:function(){
@@ -267,9 +317,16 @@
                     page:this.pageRefund,
                     pageSize:this.pageSize,
                 },(data)=>{
-                    this.refundList = this.refundList.concat(data.data.data);
-                    this.totalCountRefund = data.data.totalCount;
-                    self.refundLoad = true;
+                    if(data.code == 200){
+                        this.refundList = this.refundList.concat(data.data.data);
+                        this.totalCountRefund = data.data.totalCount;
+                        self.refundLoad = true;
+                    }else{
+                        Toast({
+                            duration:1000,
+                            message:data.msg,
+                        })  
+                    }
                 },{mask:false})
             },
             customBack:function(){

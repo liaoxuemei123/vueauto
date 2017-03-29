@@ -172,6 +172,11 @@
                 },(data)=>{
                     if(data.code == 200){
                         this.$router.push({path:'/orderpay/'+data.data});
+                    }else{
+                        Toast({
+                            duration:1000,
+                            message:data.msg,
+                        })
                     }
                 })
             },
