@@ -20,7 +20,7 @@
                     <div class="input-control" >
                         <inp-com title="手机号" :value="userInfo.tel" placeholder="输入手机号" :onBlur="updateTel.bind(this)" />
                     </div>
-                    <div class="input-control-custom" flex="dir:left cross:center box:justify" v-show="userInfo.tel != userMoblie">
+                    <div class="input-control-custom" flex="dir:left cross:center box:justify" v-show="userInfo.tel != userMoblie || isValidate">
                         <div class="label">验证码</div>
                         <input type="text" v-model="code">
                         <div class="button" flex="dir:left cross:center main:right" >
@@ -66,6 +66,7 @@
                 userMoblie:'',
                 residueTime:60,
                 code:'',
+                isValidate:false,
             }
         },
         components:{
@@ -78,13 +79,23 @@
             ])
         },
         activated:function(){
-            $(this.$refs.onValiCode).hide();
-            $(this.$refs.getValiCode).show();
             var vehicleInfo = JSON.parse(Tool.localItem('vehicleInfo'));
             if(vehicleInfo){
                 this.userInfo.vin = vehicleInfo.vin;
                 //this.userInfo.motorId = vehicleInfo.motorId;
             }
+             $(this.$refs.onValiCode).hide();
+            $(this.$refs.getValiCode).show();
+            var mobile = Tool.getUserInfo('telephone');
+            Tool.get('findLoginTimestamp',{mobile},(data)=>{
+                if(data.code == 200){
+                    if((data.data-0) > 86400000){
+                        this.isValidate = true;
+                    }else{
+                       this.isValidate = false;
+                    }
+                }
+            })
         },
         methods:{
             nextPage:function(){
@@ -153,7 +164,6 @@
                                 message:data.msg,
                                 duration:1000,
                             })
-                            rej();
                         }
                     })
                 }).then((pData)=>{
