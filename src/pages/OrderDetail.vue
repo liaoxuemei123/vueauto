@@ -35,13 +35,21 @@
                 <div class="use-detail" v-if="orderInfo.status == 2">
                     <div class="header">保养使用明细</div>
                     <div class="use-list">
-                        <div class="use-item" v-for="(item, index) in useList" flex="dir:left cross:center main:justify">
-                            <div>
-                                <span class="index">{{index+1}}</span>
-                                <span class="info">{{item.createDate}}</span>
+                        <div class="use-item" v-for="(item, index) in useList">
+                            <div class="line" flex="dir:left cross:center main:justify">
+                                <div>
+                                    <span class="index">{{index+1}}</span>
+                                    <span class="info">{{item.createDate}}</span>
+                                </div>
+                                <span class="evaluate" @click="goEvaluateDetail(index)" v-if="item.isEvaluate == 1">查看评价</span>
+                                <span class="evaluate" @click="goEvaluate(index)" v-else="item.isEvaluate == 1">去评价</span>
                             </div>
-                            <span class="evaluate" @click="goEvaluateDetail(index)" v-if="item.isEvaluate == 1">查看评价</span>
-                            <span class="evaluate" @click="goEvaluate(index)" v-else="item.isEvaluate == 1">去评价</span>
+                            <div class="line" flex="dir:left cross:center main:justify">
+                                <div>
+                                    <span class="label">店铺名称：</span>
+                                    <span class="value">信阳鑫广盛汽车销售服务有限公司</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="no-record" v-if="useList.length == 0">
@@ -183,16 +191,15 @@
                 .use-list{
                     padding:0 3%;
                     .use-item{
-                        height:1.5rem;
                         line-height:1.5rem;
                         .index{
                             background-color:#f3464a;
                             color:#fff;
-                            padding:0rem 0.25rem;
+                            padding:0rem 0.2rem;
                             border-radius:0.5rem;
                             margin-right:0.2rem;
                         }
-                         .evaluate{
+                        .evaluate{
                             border:1px solid #f3464a;
                             color:#f3464a;
                             display:inline-block;
@@ -201,6 +208,9 @@
                             padding:0 0.2rem;
                             border-radius:3px;
                             font-size:0.51rem;
+                        }
+                        .label{
+                            margin-left:1rem;
                         }
                     }
                     .use-item + div{
