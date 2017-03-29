@@ -38,7 +38,7 @@
                         <div class="use-item" v-for="(item, index) in useList" flex="dir:left cross:center main:justify">
                             <div>
                                 <span class="index">{{index+1}}</span>
-                                <span class="info">{{item.createDate}}/{{item.storeId}}</span>
+                                <span class="info">{{item.createDate}}</span>
                             </div>
                             <span class="evaluate" @click="goEvaluateDetail(index)" v-if="item.isEvaluate == 1">查看评价</span>
                             <span class="evaluate" @click="goEvaluate(index)" v-else="item.isEvaluate == 1">去评价</span>
