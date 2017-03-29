@@ -18,7 +18,7 @@
                     </div>
                 </div>
                 <div class="down-title title">
-                    <span>全国4S店（暂开通河南）</span>
+                    <span>全国4S店<strong class="additional">（暂开通河南）</strong></span>
                 </div>
                 <div class="down">
                     <div class="set-item" v-for="(item, index) in setlist.down">
@@ -302,21 +302,30 @@
                 color:#343434;
                 span{
                     position:relative;
+                    .additional{
+                        font-size:0.56rem;
+                        font-weight:normal;
+                    }
                 }
                 span:before,span:after{
                     position:absolute;
                     content:' ';
                     display:block;
-                    width:0.6rem;
+                    width:6.5rem;
                     height:1px;
-                    background-color:#09abec;
+                    background-color:#08aaeb;
                     top:50%;
                 }
                 span:before{
-                    left:-1rem;
+                    left:-7rem;
                 }
                 span:after{
-                    right:-1rem;
+                    right:-7rem;
+                }
+                &:first-child span{
+                    &:before,&:after{
+                        background-color:#f5d25e;
+                    }
                 }
             }
             .view-title{
@@ -327,7 +336,7 @@
                 }
             }
             .set-item{
-                height:7.7rem;
+                height:6.8rem;
                 width:49%;
                 margin-bottom:0.3rem;
                 display:inline-block;

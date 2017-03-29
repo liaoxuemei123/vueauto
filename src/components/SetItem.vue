@@ -10,9 +10,9 @@
                 <span class="cut">{{item.discount}}折</span>
                 <span class="des1">{{item.packageName}}</span>
             </div>
-            <div class="line" flex="dir:left cross:center">
+            <!--<div class="line" flex="dir:left cross:center">
                 <span class="range">{{item.isUniversal|universalFilter}}</span>
-            </div>
+            </div>-->
         </div>
     </div>
 </template>
