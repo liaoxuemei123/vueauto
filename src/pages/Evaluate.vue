@@ -91,10 +91,10 @@
                             >
                             </textarea>
                         </div>
-                        <div class="addon-picture" flex="dir:left cross:center">
+                        <!-- <div class="addon-picture" flex="dir:left cross:center">
                             <div class="picture-container"></div>
                             <div class="upload-picture">上传图片</div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
