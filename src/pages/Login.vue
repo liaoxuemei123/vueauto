@@ -19,7 +19,7 @@
            <div class="register-btn" @click="register">注册</div>
 		   <transition name="slide-up">
 		   		<p class="tips" v-if="forgetPassword">
-					<a href="http://cloud.mall.changan.com.cn/caecapp/main/index.html#my/forget-password.html">忘记密码可到长安商城个人中心找回密码</a>
+					<a href="http://cloud.mall.changan.com.cn/caecapp/main/index.html#my/forget-password.html">找回密码</a>
 				</p>
 		   </transition>
         </div>
@@ -173,7 +173,6 @@
 				margin:1rem 15%;
 				a{
 					color:#03A9F4;
-					text-decoration:none;
 				}
 			}
         }
