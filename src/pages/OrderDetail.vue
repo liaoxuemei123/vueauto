@@ -46,7 +46,7 @@
                             </div>
                             <div class="line" flex="dir:left cross:center main:justify">
                                 <div>
-                                    <span class="label">店铺名称：</span>
+                                    <span class="label">4S店：</span>
                                     <span class="value">信阳鑫广盛汽车销售服务有限公司</span>
                                 </div>
                             </div>
