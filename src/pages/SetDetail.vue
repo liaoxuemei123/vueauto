@@ -22,7 +22,7 @@
                                 <div class="line" flex="dir:left cross:center">
                                     <span class="price-range" v-if="setDetail.price"><span class="doller">￥</span>{{setDetail.price}}</span>
                                     <span class="origin-price" v-if="setDetail.originPrice"><span class="doller">￥</span>{{setDetail.originPrice}}</span>
-                                    <span class="price-range" v-else="setDetail.price"><span class="doller">￥</span>{{priceRange.minprice}}-{{priceRange.maxprice}}</span>
+                                    <span class="price-range" v-else="setDetail.price"><span class="doller">￥</span>{{priceRange.minprice|priceFilter}}-{{priceRange.maxprice|priceFilter}}</span>
                                 </div>
                             </div>
                         </div>
@@ -322,6 +322,9 @@
                 }else{
                     return '指定4S店使用'
                 }
+            },
+            priceFilter:function(val){
+                return Math.ceil(val - 0).toFixed(2);
             }
         },
     }
