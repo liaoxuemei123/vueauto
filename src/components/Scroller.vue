@@ -46,6 +46,7 @@
                 scrollY: true,
                 mouseWheel: true,
                 isPullToRefresh: true,
+                snap:true
             })
             this.mySroller.on('scrollEnd',function(e){
                 self.scrollerInfo.y = this.y;
