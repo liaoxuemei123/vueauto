@@ -177,6 +177,7 @@
                         this.totalCountAll = data.data.totalCount;
                         setTimeout(()=>{
                             this.$children[1].$children[0].mySroller.scrollTo(0,0,300);
+                            this.$children[1].$children[0].mySroller.y = 0;
                         },0)
                     }else{
                         Toast({

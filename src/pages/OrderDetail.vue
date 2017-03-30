@@ -24,7 +24,7 @@
                     </div>
                     <div class="section" v-if="orderInfo.status == 2">
                         <div class="times">使用次数/总次数：{{orderInfo.useNumber}}/{{orderInfo.allNumber}}</div>
-                        <div class="rangs">使用范围：{{orderInfo.storeName || 未知}}</div>
+                        <div class="rangs">使用范围：{{orderInfo.storeName || '未知'}}</div>
                         <div class="deadline">
                             <span>到期时间：{{orderInfo.expirationDate | expirationFilter}}</span>
                         </div>
@@ -48,7 +48,7 @@
                             <div class="line" flex="dir:left cross:center main:justify">
                                 <div>
                                     <span class="label">使用4S店:</span>
-                                    <span class="value">{{item.storeName || 未知}}</span>
+                                    <span class="value">{{item.storeName || '未知'}}</span>
                                 </div>
                             </div>
                         </div>
@@ -86,6 +86,12 @@
                         break;
                     case 3:
                         return "退款中";
+                        break;
+                    case 4:
+                        return "退款失败";
+                        break;
+                    case 5:
+                        return "退款成功";
                         break;
                 }
             },

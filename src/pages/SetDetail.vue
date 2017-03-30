@@ -207,8 +207,8 @@
                 var number = this.setInfo.setMealNumber - 0;
                 var discount = (this.setInfo.discount - 0)/10;
                 var univalent = this.setMealList[this.selectMeal].unitPrice;
-                this.setDetail.price = Math.ceil(( number * discount * univalent )).toFixed(2);
-                this.setDetail.originPrice = Math.ceil(( number * univalent )).toFixed(2);
+                this.setDetail.price = ( number * discount * univalent ).toFixed(2);
+                this.setDetail.originPrice = ( number * univalent ).toFixed(2);
                 this.setDetail.mealId = this.setMealList[this.selectMeal].id;
                 this.setDetail.mealName = this.setMealList[this.selectMeal].engineOil + this.setMealList[this.selectMeal].pieceNumber;
                 this.popupVisible = false;
