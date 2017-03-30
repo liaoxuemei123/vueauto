@@ -67,6 +67,12 @@
                     case 3:
                         return "退款中";
                         break;
+                    case 4:
+                        return "退款失败";
+                        break;
+                    case 5:
+                        return "退款成功";
+                        break;
                 }
             },
             universalFilter:function(val){

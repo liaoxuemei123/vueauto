@@ -239,7 +239,7 @@
             margin-top:4rem;
             height:20rem;
             z-index:3;
-            background-color:rgba(255,255,255,0.9);
+            background-color:rgba(255,255,255,1);
             h5{
                 margin:0;
                 font-size:0.64rem;
