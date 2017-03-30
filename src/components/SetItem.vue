@@ -39,9 +39,17 @@
         },
         methods:{
             viewDetail:function(item){
-                if(this.packageInfo.modelInfo.vehicleModel){
-                    this.$router.push({path:'setdetail/'+item.id,query:item});
-                    Tool.localItem('modelInfo',this.packageInfo.modelInfo);
+                if(this.packageInfo.modelInfo.vehicleModel && !!this.$parent.pickerModel){
+                    if(this.$parent.pickerModel == (this.packageInfo.modelInfo.vehicleModel + ' ' + this.packageInfo.modelInfo.displacement)){
+                        this.$router.push({path:'setdetail/'+item.id,query:item});
+                        Tool.localItem('modelInfo',this.packageInfo.modelInfo);
+                    }else{
+                        Toast({
+                            message:"车型选择错误，请重新选择",
+                            position:'top',
+                        });
+                        $('.select-bar input').focus();
+                    }
                 }else{
                     Toast({
                         message:"请选择车型",

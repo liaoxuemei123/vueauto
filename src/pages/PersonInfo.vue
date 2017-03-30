@@ -129,7 +129,7 @@
                 // }
                 if(!this.userInfo.contact){
                     Toast({
-                        message:'请输入联系人',
+                        message:'请输入姓名',
                         duration:1000,
                     });
                     return false;
