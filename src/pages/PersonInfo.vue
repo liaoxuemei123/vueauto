@@ -97,6 +97,9 @@
                 }
             })
         },
+        deactivated:function(){
+            this.residueTime = 60;
+        },
         methods:{
             nextPage:function(){
                 if(!this.userInfo.vin){
@@ -167,7 +170,7 @@
                         }
                     })
                 }).then((pData)=>{
-                    if(this.userInfo.tel != this.userMoblie){
+                    if(this.userInfo.tel != this.userMoblie || this.isValidate){
                         if(!this.code){
                             Toast({
                                 message:'请输入验证码',

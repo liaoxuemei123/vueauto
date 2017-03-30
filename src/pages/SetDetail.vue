@@ -460,6 +460,7 @@
                         .des2{
                             color:#fd3c2d;
                             font-size:0.57rem;
+                            padding:0.1rem;
                         }
                         .set-content{
                             color:#666;
