@@ -277,7 +277,10 @@
         },
         activated:function(){
             this.setInfo = this.$route.query;
-            this.setInfo.validate = new Date().getTime();
+            var validate = this.setInfo.validityDate - 0;
+            var today = Tool.formatDate(new Date());
+            var end = today.substring(0,4) - 0 + validate + today.substring(4,10);
+            this.setInfo.validate = new Date(end).getTime() + 36000000;
             if(this.packageInfo.reset){
                 this.reSetData();
                 setTimeout(()=>{

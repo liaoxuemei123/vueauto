@@ -99,6 +99,7 @@
         },
         deactivated:function(){
             this.residueTime = 60;
+            this.code = '';
         },
         methods:{
             nextPage:function(){

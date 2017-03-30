@@ -68,7 +68,7 @@
                     </div>
                 </div>
                 <div class="tips">
-                    提示：支付7天内可退单，套餐一旦使用不能退单。
+                    提示：本套餐在购买7日之内未使用可申请退款。
                 </div>
                 <div class="agree" flex="dir:left cross:center" >
                     <div class="sure-circle" :class="{'sure':sure}" @click="sure = !sure">
@@ -103,7 +103,7 @@
                 <div class="container">
                     <span class="attention">重要须知：重庆长安汽车股份有限公司在此特别提醒您仔细阅读本协议中的各个条款，您有权选择同意或者不同意本协议。</span>
                     <ul>
-                        <li>1. 本套餐内容包括：更换机油、机油滤清器、汽油滤清器的零件费用及对应工时费，转向、驻车、制动等系统专项检查工时费。</li>
+                        <li>1.本套餐内容包括：更换机油、机油滤清器、汽油滤清器的零件费用及对应工时费，转向、驻车、制动等系统专项检查工时费。</li>
                         <li>2.本套餐使用时，如需增加其它项目，客户需自行承担增加的零件和工时费用。</li>
                         <li>3.本套餐仅适用于签订协议时所登记的车辆（以VIN码为准），车辆所有权发生转移不影响维保套餐的使用。</li>
                         <li>4.本套餐在购买7日之内未使用可申请退款。套餐金额将在提出申请10个工作日内退回客户当初购买套餐所使用账户中。</li>
@@ -153,13 +153,13 @@
                 this.submitOrder();
             },
             submitOrder:function(){
-                var today = Tool.formatDate(this.packageInfo.setInfo.validate);
-                var end = today.substring(0,4) - 0 + 3 + today.substring(4,10);
-                var endTime = new Date(end).getTime()+36000000;
+                // var today = Tool.formatDate(this.packageInfo.setInfo.validate);
+                // var end = today.substring(0,4) - 0 + 3 + today.substring(4,10);
+                // var endTime = new Date(end).getTime()+36000000;
                 Tool.post('AaPackageOrder',{
                     userId:Tool.getUserInfo('userId'),
                     allNumber:this.packageInfo.setInfo.setMealNumber,
-                    expirationDateTimestamp:endTime,
+                    expirationDateTimestamp:this.packageInfo.setInfo.validate,
                     vin:this.packageInfo.userInfo.vin,
                     packageId:this.packageInfo.setInfo.id,
                     restrictFacilitator:this.packageInfo.storeInfo.id||'',
@@ -207,9 +207,7 @@
                 }
             },
             validateFilter:function(val){
-                var today = Tool.formatDate(val);
-                var endday = today.substring(0,4) - 0 + 3 + today.substring(4,10);
-                return endday + ' 18:00:00';
+                return Tool.formatDate(val) + ' 18:00:00';
             }
         },
         beforeRouteEnter:(to,from,next)=>{
