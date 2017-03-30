@@ -279,7 +279,16 @@
             this.setInfo = this.$route.query;
             var validate = this.setInfo.validityDate - 0;
             var today = Tool.formatDate(new Date());
-            var end = today.substring(0,4) - 0 + validate + today.substring(4,10);
+            var end = '';
+            if(String(validate).indexOf('.') >= 0){
+                var INT = String(validate).split('.')[0] - 0;
+                var FLOAT = validate - (String(validate).split('.')[0] - 0);
+                var additionTime = Math.ceil(FLOAT * 365) * 60 * 60 * 24 * 1000; 
+                var temp = today.substring(0,4) - 0 + INT + today.substring(4,10);
+                end = Tool.formatDate(new Date(temp).getTime() + additionTime);
+            }else{
+                end = today.substring(0,4) - 0 + validate + today.substring(4,10);
+            }
             this.setInfo.validate = new Date(end).getTime() + 36000000;
             if(this.packageInfo.reset){
                 this.reSetData();

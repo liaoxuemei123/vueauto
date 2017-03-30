@@ -97,7 +97,7 @@
         <transition name="fade">
             <div class="user-license-mask" v-if="licenseShow" @click="licenseShow=false"></div>
         </transition>
-        <transition name="slide-up">
+        <transition name="slow-up">
             <div class="user-license" v-if="licenseShow" flex="dir:top box:justify">
                 <h5>长安汽车基础保养套餐服务协议</h5>
                 <div class="container">
