@@ -24,6 +24,7 @@
                     </div>
                     <div class="section" v-if="orderInfo.status == 2">
                         <div class="times">使用次数/总次数：{{orderInfo.useNumber}}/{{orderInfo.allNumber}}</div>
+                        <div class="rangs">使用范围：{{orderInfo.storeName || 未知}}</div>
                         <div class="deadline">
                             <span>到期时间：{{orderInfo.expirationDate | expirationFilter}}</span>
                         </div>
@@ -39,15 +40,15 @@
                             <div class="line" flex="dir:left cross:center main:justify">
                                 <div>
                                     <span class="index">{{index+1}}</span>
-                                    <span class="info">{{item.createDate}}</span>
+                                    <span class="info">使用时间:{{item.createDate}}</span>
                                 </div>
                                 <span class="evaluate" @click="goEvaluateDetail(index)" v-if="item.isEvaluate == 1">查看评价</span>
                                 <span class="evaluate" @click="goEvaluate(index)" v-else="item.isEvaluate == 1">去评价</span>
                             </div>
                             <div class="line" flex="dir:left cross:center main:justify">
                                 <div>
-                                    <span class="label">4S店:</span>
-                                    <span class="value">信阳鑫广盛汽车销售服务有限公司</span>
+                                    <span class="label">使用4S店:</span>
+                                    <span class="value">{{item.storeName || 未知}}</span>
                                 </div>
                             </div>
                         </div>
