@@ -176,7 +176,7 @@
                         this.orderList = data.data.data;
                         this.totalCountAll = data.data.totalCount;
                         setTimeout(()=>{
-                            this.$children[1].$children[0].mySroller.scrollTo(0,0,300);
+                            this.$children[1].$children[0].mySroller.scrollTo(0,0);
                             this.$children[1].$children[0].mySroller.y = 0;
                         },0)
                     }else{
@@ -198,7 +198,8 @@
                         this.unpaidList = data.data.data;
                         this.totalCountUnpaid = data.data.totalCount;
                         setTimeout(()=>{
-                            this.$children[1].$children[1].mySroller.scrollTo(0,0,300);
+                            this.$children[1].$children[1].mySroller.scrollTo(0,0);
+                            this.$children[1].$children[1].mySroller.y = 0;
                         },0)
                     }else{
                         Toast({
@@ -219,7 +220,8 @@
                         this.paidList = data.data.data;
                         this.totalCountPaid = data.data.totalCount;
                         setTimeout(()=>{
-                            this.$children[1].$children[2].mySroller.scrollTo(0,0,300);
+                            this.$children[1].$children[2].mySroller.scrollTo(0,0);
+                            this.$children[1].$children[2].mySroller.y = 0;
                         },0)
                     }else{
                         Toast({
@@ -240,7 +242,8 @@
                         this.refundList = data.data.data;
                         this.totalCountRefund = data.data.totalCount;
                         setTimeout(()=>{
-                            this.$children[1].$children[3].mySroller.scrollTo(0,0,300);
+                            this.$children[1].$children[3].mySroller.scrollTo(0,0);
+                            this.$children[1].$children[3].mySroller.y = 0;
                         },0)
                     }else{
                         Toast({

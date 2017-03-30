@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper" ref='wrapper'><!--仅调试的时候使用touchstart.prevent-->
+    <div class="wrapper" ref='wrapper'><!--仅调试的时候使用@touchstart.prevent=""-->
         <div class="scroller">
             <slot></slot>
         </div>
@@ -37,9 +37,7 @@
         updated:function(){
             var self = this;
             if(!$.isEmptyObject(this.mySroller)){
-                this.mySroller.on('scrollEnd',function(){});
-                this.mySroller.maxScrollY = 0;
-                this.mySroller = {};
+                this.mySroller.destroy();//如果有新的实例，就把老的删除掉
             }
             this.mySroller = new IScroll(this.$el,{
                 probeType: 2,
@@ -53,9 +51,7 @@
             })
         },
         beforeDestroy:function(){
-            this.mySroller = {};//卸载组件
-            this.mySroller.on('scrollEnd',function(){});
-            this.scrollerInfo.y = 0;
+            this.mySroller.destroy();
         }
     }
 </script>
