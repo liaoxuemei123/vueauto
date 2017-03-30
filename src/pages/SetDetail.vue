@@ -558,11 +558,10 @@
                     .title{
                         font-size:0.68rem;
                         line-height:3em;
-                        margin:0 0.5rem;
+                        padding:0 0.5rem;
                         border-bottom:1px solid #ccc;
                     }
                     .info-content{
-                        padding:0.4rem 0.5rem;
                         .image-cotainer{
                             width:100%;
                             img{
