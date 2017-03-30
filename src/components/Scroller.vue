@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper" ref='wrapper'>
+    <div class="wrapper" ref='wrapper' @touchstart.prevent=""><!--仅调试的时候使用touchstart.prevent-->
         <div class="scroller">
             <slot></slot>
         </div>
@@ -38,6 +38,7 @@
             var self = this;
             if(!$.isEmptyObject(this.mySroller)){
                 this.mySroller.on('scrollEnd',function(){});
+                this.mySroller.maxScrollY = 0;
                 this.mySroller = {};
             }
             this.mySroller = new IScroll(this.$el,{
@@ -46,7 +47,6 @@
                 scrollY: true,
                 mouseWheel: true,
                 isPullToRefresh: true,
-                snap:true
             })
             this.mySroller.on('scrollEnd',function(e){
                 self.scrollerInfo.y = this.y;
