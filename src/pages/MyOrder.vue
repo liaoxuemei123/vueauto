@@ -178,6 +178,7 @@
                         this.$nextTick(()=>{
                             this.$children[1].$children[0].mySroller.scrollTo(0,0);
                             this.$children[1].$children[0].mySroller.y = 0;
+                            this.$children[1].$children[0].scrollerInfo.y = 0;
                         })
                     }else{
                         Toast({
@@ -200,6 +201,7 @@
                         this.$nextTick(()=>{
                             this.$children[1].$children[1].mySroller.scrollTo(0,0);
                             this.$children[1].$children[1].mySroller.y = 0;
+                            this.$children[1].$children[1].scrollerInfo.y = 0;
                         })
                     }else{
                         Toast({
@@ -222,6 +224,7 @@
                         this.$nextTick(()=>{
                             this.$children[1].$children[2].mySroller.scrollTo(0,0);
                             this.$children[1].$children[2].mySroller.y = 0;
+                            this.$children[1].$children[2].scrollerInfo.y = 0;
                         })
                     }else{
                         Toast({
@@ -244,6 +247,7 @@
                         this.$nextTick(()=>{
                             this.$children[1].$children[3].mySroller.scrollTo(0,0);
                             this.$children[1].$children[3].mySroller.y = 0;
+                            this.$children[1].$children[3].scrollerInfo.y = 0;
                         })
                     }else{
                         Toast({
