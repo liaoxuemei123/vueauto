@@ -24,7 +24,7 @@
                     </div>
                     <div class="section" v-if="orderInfo.status == 2">
                         <div class="times">使用次数/总次数：{{orderInfo.useNumber}}/{{orderInfo.allNumber}}</div>
-                        <div class="rangs">使用范围：{{orderInfo.storeName || '未知'}}</div>
+                        <div class="rangs">使用范围：{{orderInfo.storeName | storeNameFilter}}</div>
                         <div class="deadline">
                             <span>到期时间：{{orderInfo.expirationDate | expirationFilter}}</span>
                         </div>
@@ -100,6 +100,11 @@
             },
             expirationFilter:function(val){
                 return val.substring(0,10) + ' 18:00:00';
+            },
+            storeNameFilter:function(val){
+                if(val == '全国通用')
+                    return '全国'
+                return val;
             }
         },
         methods:{
