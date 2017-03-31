@@ -96,11 +96,11 @@
         methods:{
             pay:function(){
                 if(this.paymentMode == 1){
-                    window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx22b47ca6974f3e71&redirect_uri=http://service.mall.changan.com.cn%2Fubiweb%2F%23%2Forderpay%2F" + this.orderNo + "&response_type=code&scope=snsapi_base&state=" + this.orderNo + ',' + this.orderInfo.packageName + "#wechat_redirect";
+                    window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx22b47ca6974f3e71&redirect_uri=http://cloud.mall.changan.com.cn%2Fmaintainpackage%2F%23%2Forderpay%2F" + this.orderNo + "&response_type=code&scope=snsapi_base&state=" + this.orderNo + ',' + this.orderInfo.packageName + "#wechat_redirect";
                 }else{
                     //let href = "http://service.mall.changan.com.cn/maintenance-plug/unionPay/frontConsume?orderId="+this.orderNo;
                     //this.$router.push({path:'/unionpay',query:{href,orderNo:this.orderNo}})
-                    window.location.href = "http://service.mall.changan.com.cn/maintenance-plug/unionPay/frontConsume?orderId="+this.orderNo;
+                    window.location.href = "http://cloud.mall.changan.com.cn/maintenance-plug/unionPay/frontConsume?orderId="+this.orderNo;
                 }
             },
             goBack:function(){
