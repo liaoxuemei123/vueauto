@@ -39,8 +39,8 @@
         },
         methods:{
             viewDetail:function(item){
-                if(this.packageInfo.modelInfo.vehicleModel && !!this.$parent.pickerModel){
-                    if(this.$parent.pickerModel == (this.packageInfo.modelInfo.vehicleModel + ' ' + this.packageInfo.modelInfo.displacement)){
+                if(this.packageInfo.modelInfo.vehicleModel && !!this.$parent.$parent.pickerModel){
+                    if(this.$parent.$parent.pickerModel == (this.packageInfo.modelInfo.vehicleModel + ' ' + this.packageInfo.modelInfo.displacement)){
                         this.$router.push({path:'setdetail/'+item.id,query:item});
                         Tool.localItem('modelInfo',this.packageInfo.modelInfo);
                     }else{
