@@ -231,6 +231,7 @@
                     displacement:this.packageInfo.modelInfo.displacement || '',
                     discount:this.setInfo.discount,
                     setMealNumber:this.setInfo.setMealNumber,
+                    isUniversal:this.setInfo.isUniversal,
                 },(data)=>{
                     if(data.code == 200){
                         this.priceRange = data.data;

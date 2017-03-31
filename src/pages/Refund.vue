@@ -22,11 +22,24 @@
                         </div>
                     </div>
                 </div>
-                <div class="button-control" @click="submitRefund">
+                <div class="button-control" @click="noticeShow = true">
                     <div class="refund-button">提交申请</div>
                 </div>
             </div>
         </div>
+        <transition name="fade">
+            <div class="refund-notice-mask" v-if="noticeShow" @click="noticeShow=false"></div>
+        </transition>
+        <transition name="slide-up">
+            <div class="refund-notice" v-if="noticeShow" flex="dir:top box:last">
+                <div class="content">
+                    本套餐在购买7日之内未使用可申请退款。套餐金额将在提出申请10个工作日内退回客户当初购买套餐所使用账户中。
+                </div>
+                <div class="confirm-button" @click="submitRefund">
+                    确定
+                </div>
+            </div>
+        </transition>
     </div>
 </template>
 <script>
@@ -40,11 +53,13 @@
                 orderNo:'',
                 orderInfo:{
                     orderPrice:'0'
-                }
+                },
+                noticeShow:false,
             }
         },
         methods:{
             submitRefund:function(){
+                this.noticeShow = false;
                 Tool.post('refund',{bytId:this.orderInfo.id,bytYy:this.message},(data)=>{
                     if(data.code == 200){
                         Toast(data.msg);
@@ -53,7 +68,7 @@
                         Toast(data.msg);
                     }
                 });
-            }
+            },
         },
         components:{
             NavBar
@@ -65,6 +80,9 @@
                     this.orderInfo = data.data.PackageOrder;
                 }
             })
+        },
+        deactivated:function(){
+            this.noticeShow = false;
         },
         filters:{
             priceFilter:function(val){
@@ -78,6 +96,37 @@
         height:100%;
         position:absolute;
         width:100%;
+        .refund-notice-mask{
+            position:absolute;
+            z-index:2;
+            top:2rem;
+            bottom:0;
+            left:0;
+            right:0;
+            background-color:rgba(0,0,0,0.4);
+        }
+        .refund-notice{
+            height:8rem;
+            margin:0 10%;
+            position:absolute;
+            z-index:3;
+            top:50%;
+            margin-top:-5rem;
+            background-color:#fff;
+            font-size:0.67rem;
+            .content{
+                padding:0.5rem;
+                line-height:1.8em;
+                text-indent:2em;
+            }
+            .confirm-button{
+                background-color:#389cf2;
+                height:1.5rem;
+                line-height:1.5rem;
+                color:#fff;
+                text-align:center;
+            }
+        }
     }
     .page{
         height:100%;
