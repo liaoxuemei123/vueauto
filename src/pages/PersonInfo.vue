@@ -62,6 +62,7 @@
                     contact:'',
                     tel:'',
                     message:'',
+                    engineNo:'',
                 },
                 userMoblie:'',
                 residueTime:60,
@@ -184,6 +185,7 @@
                             mobile:this.userInfo.tel,
                         },(data) => {
                             if(data.code == 200){
+                                this.userInfo.engineNo = pData.data.engineNo;
                                 this.$store.commit('SET_PACKAGE_USERINFO',this.userInfo);
                                 this.$router.push({name:'confirmorder'});
                             }else{
@@ -194,6 +196,7 @@
                             }
                         })
                     }else{
+                        this.userInfo.engineNo = pData.data.engineNo;
                         this.$store.commit('SET_PACKAGE_USERINFO',this.userInfo);
                         this.$router.push({name:'confirmorder'});
                         Tool.localItem('vehicleInfo',{vin:this.userInfo.vin})
