@@ -206,9 +206,27 @@
                 this.selectMeal = index;
                 var number = this.setInfo.setMealNumber - 0;
                 var discount = (this.setInfo.discount - 0)/10;
-                var univalent = this.setMealList[this.selectMeal].unitPrice;
-                this.setDetail.price = Math.ceil(( number * discount * univalent )).toFixed(2);
-                this.setDetail.originPrice = Math.ceil(( number * univalent )).toFixed(2);
+                var fiveUnitPrice = this.setMealList[this.selectMeal].fiveUnitPrice;
+                var eightUnitPrice = this.setMealList[this.selectMeal].eightUnitPrice;
+                this.setDetail.price = 0;
+                this.setDetail.originPrice = 0;
+                if(this.setInfo.isUniversal == 1){//全国通用
+                    if(this.setInfo.setMealNumber == 5){//5次保养
+                        this.setDetail.price = Math.ceil((fiveUnitPrice - 0) * 5 * (0.83 / 0.8)).toFixed(2)
+                        this.setDetail.originPrice = Math.ceil((fiveUnitPrice - 0) * 5 / 0.8).toFixed(2)
+                    }else{//8次保养
+                        this.setDetail.price = Math.ceil((eightUnitPrice - 0) * 8 * (0.78 / 0.75)).toFixed(2);
+                        this.setDetail.originPrice = Math.ceil((eightUnitPrice - 0) * 8 / 0.75).toFixed(2)
+                    }
+                }else{//指定服务商
+                    if(this.setInfo.setMealNumber == 5){//5次保养
+                        this.setDetail.price = Math.ceil((fiveUnitPrice - 0) * 5).toFixed(2);
+                        this.setDetail.originPrice = Math.ceil((fiveUnitPrice - 0) * 5 / 0.8).toFixed(2)
+                    }else{//8次保养
+                        this.setDetail.price = Math.ceil((eightUnitPrice - 0) * 8).toFixed(2);
+                        this.setDetail.originPrice = Math.ceil((eightUnitPrice - 0) * 8 / 0.75).toFixed(2)
+                    }
+                }
                 this.setDetail.mealId = this.setMealList[this.selectMeal].id;
                 this.setDetail.mealName = this.setMealList[this.selectMeal].engineOil + this.setMealList[this.selectMeal].pieceNumber;
                 this.popupVisible = false;
