@@ -16,8 +16,8 @@ import EvaluateDetail from 'pages/EvaluateDetail';
 import Login from 'pages/Login';
 import Register from 'pages/Register';
 import ViewStore from 'pages/ViewStore';
-import TestScroller from 'pages/TestScroller';
 import Refund from 'pages/Refund';
+import TestSwiper from 'pages/TestSwiper';
 
 Vue.use(Router)
 
@@ -125,14 +125,14 @@ export default new Router({
       component:Login,
     },
     {
-      path:'/testscroller',
-      name:'testscroller',
-      component:TestScroller,
-    },
-    {
       path:'/refund/:id',
       name:'refund',
       component:Refund,
     },
+    {
+      path:'/testswiper',
+      name:'testswiper',
+      component:TestSwiper
+    }
   ]
 })
