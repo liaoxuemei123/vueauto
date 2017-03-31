@@ -28,7 +28,7 @@
                                     <set-item :item="item"/>
                                 </div>
                             </div>
-                            <div class="view-title title" @click="goOrder">
+                            <div class="view-title title" v-tap="goOrder">
                                 <span>查看订单</span>
                             </div>
                         </div>
