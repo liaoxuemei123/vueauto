@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper" ref='wrapper' @touchstart.prevent=""><!--仅调试的时候使用@touchstart.prevent=""-->
+    <div class="wrapper" ref='wrapper'><!--仅调试的时候使用@touchstart.prevent=""-->
         <div class="scroller">
             <slot></slot>
         </div>
@@ -60,8 +60,5 @@
         overflow:hidden;
         width:100%;
         height:100%;
-        .scroller{
-            min-height:100.2%;
-        }
     }
 </style>
