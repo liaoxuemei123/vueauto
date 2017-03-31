@@ -90,6 +90,7 @@
     import Tool from '../utils/Tool';
     import Scroller from '../components/Scroller';
     import { Toast } from 'mint-ui';
+    import Vue from 'vue';
     export default {
         data () {
             return {
@@ -175,10 +176,10 @@
                     if(data.code == 200){
                         this.orderList = data.data.data;
                         this.totalCountAll = data.data.totalCount;
-                        setTimeout(()=>{
+                        Vue.nextTick(()=>{
                             this.$children[1].$children[0].mySroller.scrollTo(0,0);
                             this.$children[1].$children[0].mySroller.y = 0;
-                        },0)
+                        })
                     }else{
                         Toast({
                             duration:1000,
@@ -197,10 +198,10 @@
                     if(data.code == 200){
                         this.unpaidList = data.data.data;
                         this.totalCountUnpaid = data.data.totalCount;
-                        setTimeout(()=>{
+                        Vue.nextTick(()=>{
                             this.$children[1].$children[1].mySroller.scrollTo(0,0);
                             this.$children[1].$children[1].mySroller.y = 0;
-                        },0)
+                        })
                     }else{
                         Toast({
                             duration:1000,
@@ -219,10 +220,10 @@
                     if(data.code == 200){
                         this.paidList = data.data.data;
                         this.totalCountPaid = data.data.totalCount;
-                        setTimeout(()=>{
+                        Vue.nextTick(()=>{
                             this.$children[1].$children[2].mySroller.scrollTo(0,0);
                             this.$children[1].$children[2].mySroller.y = 0;
-                        },0)
+                        })
                     }else{
                         Toast({
                             duration:1000,
@@ -241,10 +242,10 @@
                     if(data.code == 200){
                         this.refundList = data.data.data;
                         this.totalCountRefund = data.data.totalCount;
-                        setTimeout(()=>{
+                        Vue.nextTick(()=>{
                             this.$children[1].$children[3].mySroller.scrollTo(0,0);
                             this.$children[1].$children[3].mySroller.y = 0;
-                        },0)
+                        })
                     }else{
                         Toast({
                             duration:1000,
