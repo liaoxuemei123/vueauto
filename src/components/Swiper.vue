@@ -19,6 +19,8 @@
             init:function(options){
                 this.mySwiper = new Swiper('.swiper',{
                     zoom:true,
+                    zoomToggle:true,
+                    ...options
                 })
             }
         },
