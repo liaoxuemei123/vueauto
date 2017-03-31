@@ -9,29 +9,31 @@
                 :goBack="customBack.bind(this)"
             />
             <div class="page-content">
-                <transition name="slow-up">
-                    <div class="show-content" v-if="setlist.up.length > 0 && setlist.down.length > 0">
-                        <div class="up-title title" >
-                            <span>指定4S店使用</span>
-                        </div>
-                        <div class="up">
-                            <div class="set-item" v-for="(item, index) in setlist.up">
-                                <set-item :item="item"/>
+                <scroller>
+                    <transition name="slow-up">
+                        <div class="show-content" v-if="setlist.up.length > 0 && setlist.down.length > 0">
+                            <div class="up-title title" >
+                                <span>指定4S店使用</span>
+                            </div>
+                            <div class="up">
+                                <div class="set-item" v-for="(item, index) in setlist.up">
+                                    <set-item :item="item"/>
+                                </div>
+                            </div>
+                            <div class="down-title title">
+                                <span>全国4S店使用<strong class="additional">&nbsp;(暂开通河南)</strong></span>
+                            </div>
+                            <div class="down">
+                                <div class="set-item" v-for="(item, index) in setlist.down">
+                                    <set-item :item="item"/>
+                                </div>
+                            </div>
+                            <div class="view-title title" @click="goOrder">
+                                <span>查看订单</span>
                             </div>
                         </div>
-                        <div class="down-title title">
-                            <span>全国4S店使用<strong class="additional">&nbsp;(暂开通河南)</strong></span>
-                        </div>
-                        <div class="down">
-                            <div class="set-item" v-for="(item, index) in setlist.down">
-                                <set-item :item="item"/>
-                            </div>
-                        </div>
-                        <div class="view-title title" @click="goOrder">
-                            <span>查看订单</span>
-                        </div>
-                    </div>
-                </transition>
+                    </transition>
+                </scroller>
                 <transition name="fade">
                     <div class="down-list-mask" v-if="carShow" @click="carShow=false"></div>
                 </transition>
