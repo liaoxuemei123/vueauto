@@ -1,5 +1,5 @@
 <template>
-    <div class="page-container">
+    <div class="page-container"><!-- 本页暂时没有使用 -->
         <div class="page unionpay-page" flex="dir:top box:first">
             <union-nav
                 title="银联支付"

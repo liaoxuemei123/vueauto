@@ -1,5 +1,5 @@
 <template>
-    <div class="page-container">
+    <div class="page-container"><!-- 测试vue中封装swiper -->
         <div class="page swiper-page" flex="dir:top box:first">
             <nav-bar
                 title="测试Swiper"

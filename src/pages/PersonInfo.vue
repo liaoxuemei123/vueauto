@@ -92,11 +92,9 @@
             var mobile = Tool.getUserInfo('telephone');
             Tool.get('findLoginTimestamp',{mobile},(data)=>{
                 if(data.code == 200){
-                    if((data.data-0) > 86400000){
-                        this.isValidate = true;
-                    }else{
-                       this.isValidate = false;
-                    }
+                    this.isValidate = false;
+                }else{
+                    this.isValidate = true;
                 }
             })
         },
