@@ -1,16 +1,19 @@
 /**
  * @author flyerjay
+ * 工具类，实现了xhr的get和post方法以及请求的管理（取消，超时，返回码），本地存储，时间格式化，页面路由钩子等方法
  */
 import { Indicator, Toast } from 'mint-ui'
 import router from '../router';
 import store from '../store';
 
 const Tool = {};
-const target = 'http://cloud.mall.changan.com.cn/maintenance-plug/app/';
+const target = 'http://cloud.mall.changan.com.cn/maintenance-plug/app/';//服务器后端目录
+const imagePath = 'http://service.mall.changan.com.cn/static/';//静态文件目录
 const CLOSE_NETWORK = false;//在本地调试时关闭网络，只调整静态页面
 var requestPool = [];//请求池
 
 Tool.target = target;
+Tool.imagePath = imagePath;
 
 Tool.ajax = function(mySetting){
     var setting = {
@@ -223,7 +226,7 @@ Tool.clearRequestPool =function(){
 
 
 /**
- * 时间格式化 支持date、time、onlytime,fulltime三种格式，传入的日期可以是时间戳也可以是时间字符串;
+ * 时间格式化 支持date、time、onlytime,fulltime四种格式，传入的日期可以是时间戳也可以是时间字符串;
  * @param {str} String,Date,timeTemp
  * @param type String 'date,tiem,onlytime,fulltime' 
  */

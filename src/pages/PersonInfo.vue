@@ -63,6 +63,7 @@
                     tel:'',
                     message:'',
                     engineNo:'',
+                    buyCarDate:''
                 },
                 userMoblie:'',
                 residueTime:60,
@@ -186,6 +187,7 @@
                         },(data) => {
                             if(data.code == 200){
                                 this.userInfo.engineNo = pData.data.engineNo;
+                                this.userInfo.buyCarDate = pData.data.buyCarDate;
                                 this.$store.commit('SET_PACKAGE_USERINFO',this.userInfo);
                                 this.$router.push({name:'confirmorder'});
                                 Tool.localItem('vehicleInfo',{vin:this.userInfo.vin,engineNo:this.userInfo.motorId,userName:this.userInfo.contact})

@@ -1,5 +1,6 @@
 /**
  * @author flyerjay
+ * 在vue中简单实现tap事件，因为很多基于touch的库会禁用其中的click事件
  */
 import Vue from 'vue';
 
