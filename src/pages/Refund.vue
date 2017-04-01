@@ -83,6 +83,7 @@
         },
         deactivated:function(){
             this.noticeShow = false;
+            this.message = '';
         },
         filters:{
             priceFilter:function(val){

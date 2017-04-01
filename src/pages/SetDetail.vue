@@ -335,18 +335,18 @@
             // }
         },
         filters:{
-            ageFilter:function(val){
-                if(val){
-                    return '两年以上车龄专享'
-                }else{
-                    return '两年以内车龄专享'
-                }
-            },
-            validateFilter:function(val){
-                // var today = Tool.formatDate(val);
-                // var endDay = (today.substring(0,4) - 0) + 3 + today.substring(4,10);today + '至' + endDay + ' (周末、法定节假日通用)';
-                return '3年'
-            },
+            // ageFilter:function(val){
+            //     if(val){
+            //         return '两年以上车龄专享'
+            //     }else{
+            //         return '两年以内车龄专享'
+            //     }
+            // },
+            // validateFilter:function(val){
+            //     // var today = Tool.formatDate(val);
+            //     // var endDay = (today.substring(0,4) - 0) + 3 + today.substring(4,10);today + '至' + endDay + ' (周末、法定节假日通用)';
+            //     return '3年'
+            // },
             universalFilter:function(val){
                 if(val == 1){
                     return '全国4S店使用（暂开通河南）'
