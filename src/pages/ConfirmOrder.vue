@@ -57,7 +57,7 @@
                         </div>
                         <div class="bottom-item" flex="dir:left cross:center main:left">
                             <div class="title"><i class="iconfont icon-motor"></i>发动机号:</div>
-                            <div class="value">{{packageInfo.userInfo.motorId}}</div>
+                            <div class="value">{{packageInfo.userInfo.engineNo}}</div>
                         </div>
                     </div>
                     <div class="bottom" flex="dir:left box:mean">
@@ -191,6 +191,7 @@
             }
         },
         activated:function(){
+            console.log(this.packageInfo.userInfo);
         },
         filters:{
             universalFilter:function(val){

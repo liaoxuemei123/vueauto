@@ -110,15 +110,16 @@
                     area:this.cityInfo.code || '',
                 },(data)=>{
                     this.storelist = data.data;
-                    setTimeout(()=>{
+                    this.$nextTick(()=>{
                         if(this.$children.length > 0){
                             for(var i=0;i<this.$children.length;i++){
                                 if(this.$children[i].mySroller && this.$children[i].mySroller.scrollTo){
                                     this.$children[i].mySroller.scrollTo(0,0);
+                                    this.$children[i].scrollerInfo.y = 0;
                                 }
                             }
                         }
-                    },0)//使用异步，让updated里面的更新先于这里的更新
+                    })//使用异步，让updated里面的更新先于这里的更新
                     callback && callback();
                 })
             },

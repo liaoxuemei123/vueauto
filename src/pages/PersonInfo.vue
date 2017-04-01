@@ -12,7 +12,7 @@
                         <inp-com title="车架号" :value="userInfo.vin" placeholder="输入车架号(不限大小写)" maxlength='17' :onBlur="updateVIN.bind(this)"/>
                     </div>
                     <div class="input-control">
-                        <inp-com title="发动机号" :value="userInfo.motorId" placeholder="输入发动机号" :onBlur="updateMotorId.bind(this)"/>
+                        <inp-com title="发动机号" :value="userInfo.motorId" placeholder="输入发动机号后6位" :onBlur="updateMotorId.bind(this)" maxlength='6'/>
                     </div>
                     <div class="input-control">
                         <inp-com title="姓名" :value="userInfo.contact" placeholder="输入姓名" :onBlur="updateContact.bind(this)"/>
@@ -83,9 +83,11 @@
             var vehicleInfo = JSON.parse(Tool.localItem('vehicleInfo'));
             if(vehicleInfo){
                 this.userInfo.vin = vehicleInfo.vin;
+                this.userInfo.motorId = vehicleInfo.engineNo;
+                this.userInfo.contact = vehicleInfo.userName;
                 //this.userInfo.motorId = vehicleInfo.motorId;
             }
-             $(this.$refs.onValiCode).hide();
+            $(this.$refs.onValiCode).hide();
             $(this.$refs.getValiCode).show();
             var mobile = Tool.getUserInfo('telephone');
             Tool.get('findLoginTimestamp',{mobile},(data)=>{
@@ -188,6 +190,7 @@
                                 this.userInfo.engineNo = pData.data.engineNo;
                                 this.$store.commit('SET_PACKAGE_USERINFO',this.userInfo);
                                 this.$router.push({name:'confirmorder'});
+                                Tool.localItem('vehicleInfo',{vin:this.userInfo.vin,engineNo:this.userInfo.motorId,userName:this.userInfo.contact})
                             }else{
                                 Toast({
                                     message:data.msg,
@@ -199,7 +202,7 @@
                         this.userInfo.engineNo = pData.data.engineNo;
                         this.$store.commit('SET_PACKAGE_USERINFO',this.userInfo);
                         this.$router.push({name:'confirmorder'});
-                        Tool.localItem('vehicleInfo',{vin:this.userInfo.vin})
+                        Tool.localItem('vehicleInfo',{vin:this.userInfo.vin,engineNo:this.userInfo.motorId,userName:this.userInfo.contact})
                     }
                 })
             },
