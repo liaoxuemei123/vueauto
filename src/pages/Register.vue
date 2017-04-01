@@ -162,7 +162,11 @@
 								duration:1000,
 							});
 							Tool.localItem("userInfo",data.data);
-							this.$router.push({path:this.$route.params.to});
+							if(this.$route.params.to){
+								this.$router.push({path:this.$route.params.to});
+							}else{
+								this.$router.push({name:'maintainset'});
+							}
 						}else{
 							Toast({
 								message:data.message,
