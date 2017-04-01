@@ -17,6 +17,7 @@ import Login from 'pages/Login';
 import Register from 'pages/Register';
 import ViewStore from 'pages/ViewStore';
 import Refund from 'pages/Refund';
+import TestSwiper from 'pages/TestSwiper';
 
 Vue.use(Router)
 
@@ -128,5 +129,10 @@ export default new Router({
       name:'refund',
       component:Refund,
     },
+    {
+      path:'/testswiper',
+      name:'testswiper',
+      component:TestSwiper,
+    }
   ]
 })

@@ -23,7 +23,7 @@
             init:function(options){
                 if(!$.isEmptyObject(this.mySwiper)) return false;
                 this.extrace(options);//加载额外的配置
-                this.mySwiper = new Swiper('.swiper',setting)
+                this.mySwiper = new Swiper('.swiper',this.setting)
             },
             extrace:function(options){
                 for( attr in options){
