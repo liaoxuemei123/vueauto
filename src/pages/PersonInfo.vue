@@ -187,7 +187,7 @@
                         },(data) => {
                             if(data.code == 200){
                                 this.userInfo.engineNo = pData.data.engineNo;
-                                this.userInfo.buyCarDate = pData.data.buyCarDate;
+                                this.userInfo.mileage =Math.ceil((+new Date() - (+new Date(pData.data.buyCarDate)))/(1000*60*60*24))
                                 this.$store.commit('SET_PACKAGE_USERINFO',this.userInfo);
                                 this.$router.push({name:'confirmorder'});
                                 Tool.localItem('vehicleInfo',{vin:this.userInfo.vin,engineNo:this.userInfo.motorId,userName:this.userInfo.contact})
@@ -200,6 +200,7 @@
                         })
                     }else{
                         this.userInfo.engineNo = pData.data.engineNo;
+                        this.userInfo.mileage =Math.ceil((+new Date() - (+new Date(pData.data.buyCarDate)))/(1000*60*60*24))
                         this.$store.commit('SET_PACKAGE_USERINFO',this.userInfo);
                         this.$router.push({name:'confirmorder'});
                         Tool.localItem('vehicleInfo',{vin:this.userInfo.vin,engineNo:this.userInfo.motorId,userName:this.userInfo.contact})

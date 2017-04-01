@@ -170,7 +170,7 @@
                     setMealId:this.packageInfo.setDetail.mealId,
                     storeId:this.packageInfo.storeInfo.id || '',
                     engineNo:this.packageInfo.userInfo.engineNo,
-                    buyCarDate:this.packageInfo.userInfo.buyCarDate,
+                    mileage:this.packageInfo.userInfo.mileage,
                 },(data)=>{
                     if(data.code == 200){
                         this.$router.push({path:'/orderpay/'+data.data});
