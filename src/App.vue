@@ -29,6 +29,9 @@ export default {
         geolocation.getCurrentPosition(function(position){
 			self.$store.commit('SET_LOCATION',position);
         });
+		if(this.$route.query.userToken){
+			console.log(this.$route.query.userToken);
+		}
 	}
 }
 </script>

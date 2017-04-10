@@ -122,12 +122,13 @@
                     });
                     return false;
                 }
-                console.log(self.subscribeInfo.carInfo);
                 Tool.get('getCommodityList',{
                     mileage:target.val() || 0,
                     cartype:self.subscribeInfo.carInfo.seriesName,
                 },function(data){
-                    self.subscribeInfo.fcmc = data.data;
+                    if(data.data && data.data.length > 0 ){
+                        self.subscribeInfo.fcmc = data.data;
+                    }
                 })
             },
             updateContact:function(e){
