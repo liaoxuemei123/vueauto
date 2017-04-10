@@ -105,7 +105,9 @@
             getPickerList:function(){
                 var self = this;
                 Tool.get('getCarList',{},function(data){
-                    self.carList[0].values = data.data;
+                    for(var i=0;i<data.data.length;i++){
+                        self.carList[0].values.push({modelName:data.data[i][2],id:data.data[i][3]});
+                    }
                 })
             },
             onValuesChange:function(picker,values){

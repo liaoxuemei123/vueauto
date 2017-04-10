@@ -157,7 +157,7 @@
                 data.carNumber = this.subscribeInfo.carInfo.plate;
                 data.reservationDateTimestamp = this.subscribeInfo.time;
                 data.userId = 1;
-                data.storeId = this.subscribeInfo.storeInfo.id;
+                data.dealerId = this.subscribeInfo.storeInfo.id;
                 data.mileage = this.subscribeInfo.mile;
                 data.linkman = this.subscribeInfo.contact;
                 data.phone = this.subscribeInfo.phone;
@@ -178,7 +178,7 @@
                     });
                     return false;
                 }
-                if(!data.storeId){
+                if(!data.dealerId){
                     Toast({
                         message:'请选择服务商',
                         position:'bottom',

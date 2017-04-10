@@ -7,7 +7,8 @@ import router from '../router';
 import store from '../store';
 
 const Tool = {};
-const target = 'http://cloud.mall.changan.com.cn/maintenance-plug/app/';//服务器后端目录
+const target = 'http://192.168.191.2:8080/maintenance-plug/app/';//本地测试环境
+//const target = 'http://cloud.mall.changan.com.cn/maintenance-plug/app/';//服务器后端目录
 const imagePath = 'http://service.mall.changan.com.cn/static/';//静态文件目录
 const CLOSE_NETWORK = false;//在本地调试时关闭网络，只调整静态页面
 var requestPool = [];//请求池
@@ -291,6 +292,7 @@ Tool.removeLocalItem = function(key){
  */
 Tool.removeObject = function(obj){
     var self = this;
+    if(!obj) return;
     if(typeof obj === 'object'){
         var arr = Object.keys(obj);
         for(var i = 0; i < arr.length; i++){
