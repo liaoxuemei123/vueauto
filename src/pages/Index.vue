@@ -122,9 +122,10 @@
                     });
                     return false;
                 }
+                console.log(self.subscribeInfo.carInfo);
                 Tool.get('getCommodityList',{
                     mileage:target.val() || 0,
-                    cartype:self.subscribeInfo.carInfo.vehicleTypeId,
+                    cartype:self.subscribeInfo.carInfo.seriesName,
                 },function(data){
                     self.subscribeInfo.fcmc = data.data;
                 })

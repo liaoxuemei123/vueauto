@@ -106,7 +106,7 @@
                 var self = this;
                 Tool.get('getCarList',{},function(data){
                     for(var i=0;i<data.data.length;i++){
-                        self.carList[0].values.push({modelName:data.data[i][2],id:data.data[i][3]});
+                        self.carList[0].values.push({modelName:data.data[i][3],modelId:data.data[i][0],id:data.data[i][0]});
                     }
                 })
             },

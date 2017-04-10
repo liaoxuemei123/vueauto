@@ -8,6 +8,7 @@ const subscribeDefault = {
         plate:'',
         seriesName:'',
         vehicleTypeId:'',
+        modelName:''
     },
     time:'',
     showTime:'',
