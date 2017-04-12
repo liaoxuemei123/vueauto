@@ -24,11 +24,15 @@ export default {
 	},
 	created:function(){
 		var self = this;
-		var geolocation = new BMap.Geolocation();
-        var gc = new BMap.Geocoder();
-        geolocation.getCurrentPosition(function(position){
-			self.$store.commit('SET_LOCATION',position);
-        });
+		try{
+			var geolocation = new BMap.Geolocation();
+			var gc = new BMap.Geocoder();
+			geolocation.getCurrentPosition(function(position){
+				self.$store.commit('SET_LOCATION',position);
+			});
+		}catch(e){
+			console.log(e);
+		}
 		if(this.$route.query.userToken){
 			console.log(this.$route.query.userToken);
 		}
