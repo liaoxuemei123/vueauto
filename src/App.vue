@@ -33,10 +33,7 @@ export default {
 		}catch(e){
 			console.log(e);
 		}
-		if(this.$route.query.userToken){
-			console.log(this.$route.query.userToken);
-		}
-	}
+	},
 }
 </script>
 <style>

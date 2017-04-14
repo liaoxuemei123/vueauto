@@ -10,7 +10,7 @@
                         <div class="own-item" v-for="(item,index) in ownList" flex="dir:left cross:center" @click="active=index">
                             <i class="iconfont icon-select active" v-if="active == index"></i>
                             <i class="iconfont icon-circle" v-else="active == index"></i>
-                            <div class="car-series">{{item.series_name}}</div>
+                            <div class="car-series">{{item.vehicle_type}}</div>
                             <div class="car-plate">{{item.plate_no}}</div>
                         </div>
                         <div class="add-car">
@@ -79,7 +79,9 @@
                     carSeries:'',
                     plate:'',
                 },
-                pickerValue:{}
+                pickerValue:{},
+                mobile:'',
+                userToken:'',
             }
         },
         watch:{
@@ -93,7 +95,8 @@
             getCarList:function(callback){
                 var self = this;
                 Tool.get('getCarNumberList',{
-                    userId:1
+                    userId:this.mobile,
+                    userToken:this.userToken
                 },function(data){
                     self.ownList = data.data;
                     if(data.data.length > 0){
@@ -152,10 +155,12 @@
                     return false;
                 } 
                 var self = this;
+                console.log(self.addInfo);
                 Tool.post('AaUserVehicleAdd',{
-                    user_id:1,
+                    user_id:this.mobile,
                     plate_no:self.addInfo.plate,
                     vehicle_type_id:self.addInfo.carSeries.modelId,
+                    Vehicle_type :self.addInfo.carSeries.modelName
                 },function(data){
                     self.getCarList();
                 })
@@ -163,7 +168,7 @@
             submitCarInfo:function(){
                 var data = {};
                 data.plate = this.ownList[this.active].plate_no;
-                data.seriesName = this.ownList[this.active].series_name;
+                data.seriesName = this.ownList[this.active].vehicle_type;
                 data.vehicleTypeId = this.ownList[this.active].vehicle_type_id;
                 this.$store.commit('SET_SUBCARINFO',data);
                 this.$router.back();
@@ -173,7 +178,9 @@
             NavBar,
             BtnCom
         },
-        created:function(){
+        activated:function(){
+            this.mobile = JSON.parse(Tool.localItem('userCache')).mobile;
+            this.userToken = JSON.parse(Tool.localItem('userCache')).userToken;
             this.getCarList(()=>{
                 for(var i=0;i<this.ownList.length;i++){
                     if(this.$store.getters.subscribeInfo.carInfo.vehicleTypeId == this.ownList[i].vehicle_type_id){

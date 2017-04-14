@@ -383,6 +383,7 @@
             }
         },
         activated:function(){
+            this.resetData();
             if(this.activeTab == 0){
                 this.orderQueryAll();
             }else if(this.activeTab == 1){
@@ -392,7 +393,6 @@
             }else{
                 this.orderQueryRefund();
             }
-            this.resetData();
         },
         beforeRouteEnter:(to,from,next)=>{
             Tool.routerEnter(to,from,next)

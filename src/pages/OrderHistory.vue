@@ -83,7 +83,8 @@
                 totalCount:0,
                 page:1,
                 pageSize:5,
-                reservationState:0
+                reservationState:0,
+                mobile:'',
             }
         },
         components:{
@@ -93,7 +94,7 @@
             getHistory:function(){
                 var self = this;
                 Tool.get('ReservationOrderQuery',{
-                    userId:1,
+                    userId:this.mobile,
                     pageSize:self.pageSize,
                     page:self.page,
                     reservationState:self.reservationState
@@ -117,7 +118,7 @@
                 self.page ++;
                 self.totalCount = 1000000;//保证加载更多在加载完成前一直显示
                 Tool.get('ReservationOrderQuery',{
-                    userId:1,
+                    userId:this.mobile,
                     pageSize:self.pageSize,
                     page:self.page,
                     reservationState:self.reservationState
@@ -127,7 +128,8 @@
                 })
             }
         },
-        created:function(){
+        activated:function(){
+            this.mobile = JSON.parse(Tool.localItem('userCache')).mobile;
             this.getHistory();
         },
         filters:{

@@ -87,6 +87,7 @@
                 fcmcExpand:false,
                 des:'1212',
                 desExpand:false,
+                mobile:'',
             }
         },
         computed:{
@@ -102,6 +103,22 @@
             ])
         },
         mounted:function(){
+            if(this.$route.query.userToken){
+                var userToken = this.$route.query.userToken;
+                Tool.get('queryUserInfo',{
+                    userToken
+                },(data) => {
+                    if(data.result != -1){
+                        data = JSON.parse(JSON.parse(data));
+                        var userInfo = data.data;
+                        userInfo.userToken = userToken;
+                        Tool.localItem('userCache',userInfo);
+                    }
+                });
+            }
+        },
+        activated:function(){
+            this.mobile = JSON.parse(Tool.localItem('userCache')).mobile;	
         },
         methods:{
             goStore:function(){
@@ -158,11 +175,11 @@
                 var data = {}
                 data.carNumber = this.subscribeInfo.carInfo.plate;
                 data.reservationDateTimestamp = this.subscribeInfo.time;
-                data.userId = 1;
+                data.userId = this.mobile;
                 data.dealerId = this.subscribeInfo.storeInfo.id;
                 data.mileage = this.subscribeInfo.mile;
                 data.linkman = this.subscribeInfo.contact;
-                data.phone = this.subscribeInfo.phone;
+                data.mobilePhone = this.subscribeInfo.phone;
                 data.description = this.subscribeInfo.description;
                 if(!data.carNumber){
                     Toast({
@@ -204,7 +221,7 @@
                     });
                     return false;
                 }
-                if(!data.phone){
+                if(!data.mobilePhone){
                     Toast({
                         message:'请输入电话号码',
                         position:'bottom',
@@ -212,7 +229,7 @@
                     });
                     return false;
                 }
-                if(!(/^1[34578]\d{9}$/.test(data.phone))){
+                if(!(/^1[34578]\d{9}$/.test(data.mobilePhone))){
                     Toast({
                         message:'手机号码不正确',
                         position:'bottom',
