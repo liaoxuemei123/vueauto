@@ -30,17 +30,17 @@
                     <inp-com title="4S店选择" type="text" icon="icon-store" :readonly="true" placeholder="请选择服务商" :onClick="goStore" :value="subscribeInfo.storeInfo.storeName"/>
                 </div>
                 <div class="input-control">
-                    <inp-com title="预约里程" type="number" icon="icon-mile" placeholder="请输入里程KM" :onBlur="updateMile.bind(this)" :value="subscribeInfo.mile"/>
+                    <inp-com title="当前里程" type="number" icon="icon-mile" placeholder="请输入里程KM" :onBlur="updateMile.bind(this)" :value="subscribeInfo.mile"/>
                     <transition name="drop-down">
                         <div class="explain" v-if="subscribeInfo.fcmc">
-                            <div class="atention" flex="dir:left">保养项目：<div class="red">以下保养项目按照官方保养守则推荐具体以到店为准</div></div>
+                            <div class="atention" flex="dir:left">保养推荐：<div class="red">以下保养项目按照官方保养守则推荐具体以到店为准</div></div>
                             <div class='fcmc-list'>
-                                <div class="fcmc-item" v-for="(item,index) in subscribeInfo.fcmc" flex="dir:left box:last" v-if="index < 2 || fcmcExpand">
-                                    <div class="info">{{index + 1}}.{{item.fcmcDesc}}</div>
-                                    <div class="expand" v-if="index == 1" @click="fcmcExpand = !fcmcExpand">
-                                        <div v-if="fcmcExpand">收起<i class="iconfont icon-up"></i></div>
-                                        <div v-else="fcmcExpand">展开更多<i class="iconfont icon-down"></i></div>
-                                    </div>
+                                <div class="fcmc-item" v-for="(item,index) in subscribeInfo.fcmc" flex="dir:left box:last" v-if="index < 4 || fcmcExpand">
+                                    <div class="info"><i class="iconfont icon-startstroke"></i>{{item}}</div>
+                                </div>
+                                <div class="expand" @click="fcmcExpand = !fcmcExpand">
+                                    <div v-if="fcmcExpand">收起<i class="iconfont icon-up"></i></div>
+                                    <div v-else="fcmcExpand">展开更多<i class="iconfont icon-down"></i></div>
                                 </div>
                             </div>
                         </div>
@@ -55,7 +55,7 @@
                 <div class="input-control" flex="dir:top">
                     <inp-com title="预约描述" :onClick="expandDes" type="text" icon="icon-comment" :readonly='true'/>
                     <div class="text-control" flex="dir:top"  v-if="desExpand">
-                        <textarea rows="5" maxlength='100' placeholder="请输入预约描述" @input="updateDes" :value="subscribeInfo.description"></textarea>
+                        <textarea rows="5" maxlength='100' placeholder="请描述您的保养或维修需求" @input="updateDes" :value="subscribeInfo.description"></textarea>
                         <div class="show-length">
                             {{subscribeInfo.description.length}}/100
                         </div>
@@ -96,7 +96,7 @@
             },
             'endDate':function(){
                 var year = new Date().getFullYear();
-                return new Date(year+1 + '-12-31');
+                return new Date(new Date().getTime() + (30*24*60*60*1000));
             },
             ...mapState([
                 'subscribeInfo',
@@ -126,7 +126,11 @@
                     cartype:this.subscribeInfo.carInfo.seriesName,
                 },(data) => {
                     if(data.data && data.data.length > 0 ){
-                        this.subscribeInfo.fcmc = data.data;
+                        var arr = [];
+                        for(var i=0;i < data.data.length;i++){
+                            arr.push(...data.data[i].fcmcDesc.split('、'));
+                        }
+                        this.subscribeInfo.fcmc = arr;
                     }else{
                         this.subscribeInfo.fcmc = '';
                     }
@@ -157,7 +161,11 @@
                     cartype:self.subscribeInfo.carInfo.seriesName,
                 },function(data){
                     if(data.data && data.data.length > 0 ){
-                        self.subscribeInfo.fcmc = data.data;
+                        var arr = [];
+                        for(var i=0;i < data.data.length;i++){
+                            arr.push(...data.data[i].fcmcDesc.split('、'));
+                        }
+                        self.subscribeInfo.fcmc = arr;
                     }else{
                         self.subscribeInfo.fcmc = '';
                     }
@@ -254,7 +262,7 @@
                 }
                 Tool.post('ReservationOrderAdd',data,function(res){
                     Toast({
-                        message:res.msg,
+                        message:'您已成功提交预约申请',
                         duration:1000,
                     });
                     self.$store.commit('RESET_SUBSCRIBE');
@@ -294,13 +302,14 @@
                 box-shadow:0px 2px 3px #ccc;
                 .explain{
                     background-color:#f8f8f8;
-                    padding:0.43rem 0.43rem 0.43rem 1.28rem;
+                    padding:0.43rem 0.43rem 0.43rem 0.8rem;
                     font-size:0.51rem;
                     color:#6b6b6b;
                     line-height: 1.5em;
                     .atention{
                         white-space:nowrap;
                         text-overflow:ellipsis;
+                        margin-bottom:0.2rem;
                         .red{
                             color:#fc4c1d;
                             font-size:0.51rem;
@@ -308,18 +317,27 @@
                         }
                     }
                     .fcmc-list{
+                        position:relative;
                         .fcmc-item{
                             white-space:nowrap;
+                            display:inline-block;
+                            width:40%;
                             .info{
                                 text-overflow:ellipsis;
-                            }
-                            .expand{
-                                width:3rem;
-                                text-align:right;
-                                color:#fc4c1d;
                                 .iconfont{
-                                    font-size:0.51rem;
+                                    font-size:0.54rem;
                                 }
+                            }
+                        }
+                        .expand{
+                            width:3rem;
+                            text-align:right;
+                            color:#fc4c1d;
+                            position:absolute;
+                            bottom:0.2rem;
+                            right:0.43rem;
+                            .iconfont{
+                                font-size:0.51rem;
                             }
                         }
                     }

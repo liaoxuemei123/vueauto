@@ -33,10 +33,10 @@
                                 预约4S店：{{item.storeName}}
                             </div>
                             <div class="plate">
-                                预约时间：{{item.reservationDate}}
+                                申请时间：{{item.reservationCreateDate}}
                             </div>
                             <div class="plate">
-                                创建时间：{{item.createDate}}
+                                到店时间：{{item.reservationDate}}
                             </div>
                             <div class="plate">
                                 里程：{{item.mileage}}
