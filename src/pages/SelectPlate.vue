@@ -179,16 +179,18 @@
             BtnCom
         },
         activated:function(){
-            this.mobile = JSON.parse(Tool.localItem('userCache')).mobile;
-            this.userToken = JSON.parse(Tool.localItem('userCache')).userToken;
-            this.getCarList(()=>{
-                for(var i=0;i<this.ownList.length;i++){
-                    if(this.$store.getters.subscribeInfo.carInfo.vehicleTypeId == this.ownList[i].vehicle_type_id){
-                        this.active = i;
-                        break;
+            if(Tool.localItem('userCache')){
+                this.mobile = JSON.parse(Tool.localItem('userCache')).mobile;
+                this.userToken = JSON.parse(Tool.localItem('userCache')).userToken;
+                this.getCarList(()=>{
+                    for(var i=0;i<this.ownList.length;i++){
+                        if(this.$store.getters.subscribeInfo.carInfo.vehicleTypeId == this.ownList[i].vehicle_type_id){
+                            this.active = i;
+                            break;
+                        }
                     }
-                }
-            });
+                });
+            }
         },
         computed:{
             itemHeight:function(){

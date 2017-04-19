@@ -118,7 +118,20 @@
             }
         },
         activated:function(){
-            this.mobile = JSON.parse(Tool.localItem('userCache')).mobile;	
+            if(Tool.localItem('userCache'))
+                this.mobile = JSON.parse(Tool.localItem('userCache')).mobile;	
+            if(this.subscribeInfo.carInfo && this.subscribeInfo.carInfo.plate && this.subscribeInfo.mile){
+                Tool.get('getCommodityList',{
+                    mileage:this.subscribeInfo.mile,
+                    cartype:this.subscribeInfo.carInfo.seriesName,
+                },(data) => {
+                    if(data.data && data.data.length > 0 ){
+                        this.subscribeInfo.fcmc = data.data;
+                    }else{
+                        this.subscribeInfo.fcmc = '';
+                    }
+                })
+            }
         },
         methods:{
             goStore:function(){
@@ -145,6 +158,8 @@
                 },function(data){
                     if(data.data && data.data.length > 0 ){
                         self.subscribeInfo.fcmc = data.data;
+                    }else{
+                        self.subscribeInfo.fcmc = '';
                     }
                 })
             },
@@ -180,7 +195,7 @@
                 data.mileage = this.subscribeInfo.mile;
                 data.linkman = this.subscribeInfo.contact;
                 data.mobilePhone = this.subscribeInfo.phone;
-                data.description = this.subscribeInfo.description;
+                data.Describe = this.subscribeInfo.description;
                 if(!data.carNumber){
                     Toast({
                         message:'请输入车牌号',

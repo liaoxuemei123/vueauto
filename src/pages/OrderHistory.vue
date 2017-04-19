@@ -42,10 +42,10 @@
                                 里程：{{item.mileage}}
                             </div>
                             <div class="plate">
-                                联系人：{{item.linkman}}{{'/' + item.phone}}
+                                联系人：{{item.linkman}}{{'/' + item.mobilePhone}}
                             </div>
                             <div class="plate">
-                                预约描述：{{item.description}}
+                                预约描述：{{item.describe}}
                             </div>
                         </div>
                     </div>
@@ -129,17 +129,25 @@
             }
         },
         activated:function(){
-            this.mobile = JSON.parse(Tool.localItem('userCache')).mobile;
-            this.getHistory();
+            if(Tool.localItem('userCache')){
+                this.mobile = JSON.parse(Tool.localItem('userCache')).mobile;
+                this.getHistory();
+            }
         },
         filters:{
             stateFilter:function(val){
                 switch(val){
                     case 0:
                         return '已提交';
-                    case 1:
+                    case 12541003:
                         return '通过';
-                    case 2:
+                    case 12541004:
+                        return '通过';
+                    case 12541005:
+                        return '通过';
+                    case 12541001:
+                        return '不通过';
+                    case 12541002:
                         return '不通过';
                 }
             }
