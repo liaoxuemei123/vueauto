@@ -109,7 +109,7 @@
                     storename:this.$children[0].$refs.search.value || '',
                     area:this.cityInfo.code || '',
                 },(data)=>{
-                    this.storelist = data.data;
+                    this.storelist = data.data.data;
                     this.$nextTick(()=>{
                         if(this.$children.length > 0){
                             for(var i=0;i<this.$children.length;i++){

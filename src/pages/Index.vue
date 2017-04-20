@@ -32,7 +32,7 @@
                 <div class="input-control">
                     <inp-com title="当前里程" type="number" icon="icon-mile" placeholder="请输入里程KM" :onBlur="updateMile.bind(this)" :value="subscribeInfo.mile"/>
                     <transition name="drop-down">
-                        <div class="explain" v-if="subscribeInfo.fcmc">
+                        <div class="explain" v-if="subscribeInfo.fcmc.length>0">
                             <div class="atention" flex="dir:left">保养推荐：<div class="red">以下保养项目按照官方保养守则推荐具体以到店为准</div></div>
                             <div class='fcmc-list'>
                                 <div class="fcmc-item" v-for="(item,index) in subscribeInfo.fcmc" flex="dir:left box:last" v-if="index < 4 || fcmcExpand">

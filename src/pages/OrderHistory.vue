@@ -47,6 +47,12 @@
                             <div class="plate">
                                 预约描述：{{item.describe}}
                             </div>
+                            <div class="plate">
+                                4S店电话：{{item.storeTel}}
+                            </div>
+                            <div class="plate">
+                                备注：如因特殊原因无法按时到店，请提前告知4S店
+                            </div>
                         </div>
                     </div>
                     <div class="load-more" @click="loadMore" v-if="(page)*pageSize < totalCount">
@@ -146,9 +152,9 @@
                     case 12541005:
                         return '通过';
                     case 12541001:
-                        return '不通过';
+                        return '未通过';
                     case 12541002:
-                        return '不通过';
+                        return '未通过';
                 }
             }
         }

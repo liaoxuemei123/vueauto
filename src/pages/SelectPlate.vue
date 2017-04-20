@@ -21,11 +21,11 @@
                             </div>
                             <div class="drop-down-form" v-if="active == -1" flex="dir:top main:center">
                                 <div class="input-control" @click="pickerShow=true">
-                                    <input type="text" placeholder="请选择车系" readonly :value="addInfo.carSeries.modelName">
+                                    <input type="text" placeholder="请选择车系" readonly :value="addInfo.carSeries">
                                     <i class="iconfont icon-little-arrow"></i>
                                 </div>
                                 <div class="input-control" flex="dir:left cross:center main:justify">
-                                    <input type="text" placeholder="请输入车牌" @blur="updatePlate">
+                                    <input type="text" placeholder="请输入车牌，如:渝A12345" @blur="updatePlate">
                                     <div class="add-button" @click="addCar">
                                         确定添加
                                     </div>
@@ -107,9 +107,9 @@
             },
             getPickerList:function(){
                 var self = this;
-                Tool.get('getCarList',{},function(data){
+                Tool.get('getSeriesList',{},function(data){
                     for(var i=0;i<data.data.length;i++){
-                        self.carList[0].values.push({modelName:data.data[i][3],modelId:data.data[i][0],id:data.data[i][0]});
+                        self.carList[0].values = data.data;
                     }
                 })
             },
@@ -131,7 +131,7 @@
                 this.addInfo.plate = target.val();
             },
             addCar:function(){
-                if(!this.addInfo.carSeries.id){
+                if(!this.addInfo.carSeries){
                     Toast({
                         message:'请选择车型',
                         position:'bottom',
@@ -155,12 +155,10 @@
                     return false;
                 } 
                 var self = this;
-                console.log(self.addInfo);
                 Tool.post('AaUserVehicleAdd',{
                     user_id:this.mobile,
                     plate_no:self.addInfo.plate,
-                    vehicle_type_id:self.addInfo.carSeries.modelId,
-                    Vehicle_type :self.addInfo.carSeries.modelName
+                    Vehicle_type:self.addInfo.carSeries
                 },function(data){
                     self.getCarList();
                 })
@@ -169,7 +167,7 @@
                 var data = {};
                 data.plate = this.ownList[this.active].plate_no;
                 data.seriesName = this.ownList[this.active].vehicle_type;
-                data.vehicleTypeId = this.ownList[this.active].vehicle_type_id;
+                data.vehicleTypeId = this.ownList[this.active].vehicle_type;
                 this.$store.commit('SET_SUBCARINFO',data);
                 this.$router.back();
             }
