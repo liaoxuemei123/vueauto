@@ -168,6 +168,8 @@
                 data.plate = this.ownList[this.active].plate_no;
                 data.seriesName = this.ownList[this.active].vehicle_type;
                 data.vehicleTypeId = this.ownList[this.active].vehicle_type;
+                data.vin = this.ownList[this.active].vin;
+                data.mileage = this.ownList[this.active].mileage;
                 this.$store.commit('SET_SUBCARINFO',data);
                 this.$router.back();
             }

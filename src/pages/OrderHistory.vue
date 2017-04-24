@@ -33,6 +33,9 @@
                                 预约4S店：{{item.storeName}}
                             </div>
                             <div class="plate">
+                                4S店电话：{{item.storeTel}}
+                            </div>
+                            <div class="plate">
                                 申请时间：{{item.reservationCreateDate}}
                             </div>
                             <div class="plate">
@@ -46,9 +49,6 @@
                             </div>
                             <div class="plate">
                                 预约描述：{{item.describe}}
-                            </div>
-                            <div class="plate">
-                                4S店电话：{{item.storeTel}}
                             </div>
                             <div class="plate">
                                 备注：如因特殊原因无法按时到店，请提前告知4S店
