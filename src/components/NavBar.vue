@@ -1,12 +1,12 @@
 <template>
     <div class="nav-bar" flex="main:left cross:center">
-        <div class="left-button button" @click="goBack">
+        <div class="left-button button" @click="goBack" :style="{width:buttonWidth * 100 + '%'}">
             <i class="iconfont icon-back"></i>
         </div>
-        <div class="title">
+        <div class="title" :style="{width:(1 - 2 * buttonWidth) * 100 + '%'}">
             {{title}}
         </div>
-        <div class="right-button button" @click="onRight" :class="{'other':otherClass}">
+        <div class="right-button button" @click="onRight" :class="{'other':otherClass}" :style="{width:buttonWidth * 100 + '%'}">
             <i class="iconfont" v-if="rightIcon" :class="rightIcon"></i>
             {{rightContent}}
         </div>
@@ -45,6 +45,10 @@
                 default:function(){
                     router.go(-1);
                 }
+            },
+            buttonWidth:{
+                type:Number,
+                default:0.2
             }
         },
     }
@@ -66,6 +70,7 @@
             }
         }
         .right-button{
+            text-align:right;
             .iconfont{
                 float:right;
                 margin-right:0.6rem;

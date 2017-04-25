@@ -4,6 +4,8 @@
             <nav-bar 
                 title="添加预约订单"
                 rightIcon="icon-history"
+                rightContent="预约历史"
+                :buttonWidth=0.28
                 :onRight="goHistory"
             />
             <div class="page-content">
@@ -223,6 +225,19 @@
                 this.desExpand = true;
             },
             onDateConfirm:function(val){
+                if(new Date(val).getHours() > 18){
+                    Toast({
+                        message:'预约时间不能大于18:00',
+                        duration:1000
+                    })
+                    return false;
+                }else if(new Date(val).getHours() < 9 && new Date(val).getMinutes() < 30){
+                    Toast({
+                        message:'预约时间不能小于8:30',
+                        duration:1000
+                    })
+                    return false;
+                };
                 this.subscribeInfo.time = new Date(val).getTime();
                 this.subscribeInfo.showTime = Tool.formatDate(val,'time');
             },
@@ -365,7 +380,7 @@
                         .fcmc-item{
                             white-space:nowrap;
                             display:inline-block;
-                            width:40%;
+                            width:45%;
                             .info{
                                 text-overflow:ellipsis;
                                 .iconfont{
