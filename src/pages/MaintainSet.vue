@@ -21,7 +21,7 @@
                                 </div>
                             </div>
                             <div class="down-title title">
-                                <span>全国4S店使用<strong class="additional">&nbsp;(暂开通河南)</strong></span>
+                                <span>全国4S店使用<strong class="additional">&nbsp;(暂开通河南和湖南)</strong></span>
                             </div>
                             <div class="down">
                                 <div class="set-item" v-for="(item, index) in setlist.down">

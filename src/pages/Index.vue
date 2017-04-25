@@ -108,11 +108,16 @@
                 Tool.get('queryUserInfo',{
                     userToken
                 },(data) => {
+                    data = JSON.parse(JSON.parse(data));
                     if(data.result != -1){
-                        data = JSON.parse(JSON.parse(data));
                         var userInfo = data.data;
                         userInfo.userToken = userToken;
                         Tool.localItem('userCache',userInfo);
+                    }else{
+                        Toast({
+                            message:"用户登录过期了",
+                            duration:1000,
+                        })
                     }
                 });
             }
@@ -124,9 +129,9 @@
                     this.subscribeInfo.contact = JSON.parse(Tool.localItem('userCache')).nickName;
                 if(JSON.parse(Tool.localItem('userCache')).mobile)
                     this.subscribeInfo.phone = this.mobile;
-                if(this.subscribeInfo.carInfo.mileage)
-                    this.subscribeInfo.mile = this.subscribeInfo.carInfo.mileage;
             }
+            if(this.subscribeInfo.carInfo.mileage)
+                this.subscribeInfo.mile = this.subscribeInfo.carInfo.mileage;
             if(this.subscribeInfo.carInfo && this.subscribeInfo.carInfo.plate && this.subscribeInfo.mile){
                 Tool.get('getCommodityList',{
                     mileage:this.subscribeInfo.mile,
