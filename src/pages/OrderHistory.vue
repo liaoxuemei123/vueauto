@@ -22,7 +22,7 @@
                                 预约编号：{{item.reservationNo}}
                             </div>
                             <div class="state">
-                                {{item.reservationState | stateFilter}}
+                                {{item.confirm | stateFilter}}
                             </div>
                         </div>
                         <div class="content">
@@ -82,7 +82,7 @@
                         label:'通过',
                     },{
                         value:2,
-                        label:'不通过',
+                        label:'未通过',
                     }
                 ],
                 activeState:3,
@@ -143,18 +143,12 @@
         filters:{
             stateFilter:function(val){
                 switch(val){
-                    case 0:
+                    case 'Y':
+                        return '通过';
+                    case 'N':
+                        return '未通过';
+                    default:
                         return '已提交';
-                    case 12541003:
-                        return '通过';
-                    case 12541004:
-                        return '通过';
-                    case 12541005:
-                        return '通过';
-                    case 12541001:
-                        return '未通过';
-                    case 12541002:
-                        return '未通过';
                 }
             }
         }

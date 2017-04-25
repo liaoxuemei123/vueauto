@@ -16,6 +16,8 @@
                     date-format="{value}日"
                     hour-format="{value}时"
                     minute-format="{value}分"
+                    :startHour='startHour'
+                    :endHour='endHour'
                     :startDate="startDate"
                     :endDate="endDate"
                     >
@@ -30,12 +32,21 @@
                     <inp-com title="4S店选择" type="text" icon="icon-store" :readonly="true" placeholder="请选择服务商" :onClick="goStore" :value="subscribeInfo.storeInfo.storeName"/>
                 </div>
                 <div class="input-control">
-                    <inp-com title="当前里程" type="number" icon="icon-mile" placeholder="请输入里程KM" :onBlur="updateMile.bind(this)" :value="subscribeInfo.mile"/>
+                    <inp-com title="当前里程" type="text" icon="icon-mile" placeholder="请输入里程KM" :onBlur="updateMile.bind(this)" :value="subscribeInfo.mile | mileFilter"/>
                     <transition name="drop-down">
-                        <div class="explain" v-if="subscribeInfo.fcmc.length>0">
+                        <div class="explain" v-if="subscribeInfo.fcmc.exchange.length>0">
                             <div class="atention" flex="dir:left">保养推荐：<div class="red">以下保养项目按照官方保养守则推荐具体以到店为准</div></div>
                             <div class='fcmc-list'>
-                                <div class="fcmc-item" v-for="(item,index) in subscribeInfo.fcmc" flex="dir:left box:last" v-if="index < 4 || fcmcExpand">
+                                <div class="fcmc-title">
+                                    <span><i class="iconfont icon-title" v-if="subscribeInfo.fcmc.exchange.length > 0"></i>更换</span>
+                                </div>
+                                <div class="fcmc-item" v-for="(item,index) in subscribeInfo.fcmc.exchange" flex="dir:left box:last" v-if="index < 4 || fcmcExpand">
+                                    <div class="info"><i class="iconfont icon-startstroke"></i>{{item}}</div>
+                                </div>
+                                <div class="fcmc-title" v-if="fcmcExpand">
+                                    <span><i class="iconfont icon-title"></i>检查、清洗、调整</span>
+                                </div>
+                                <div class="fcmc-item" v-for="(item,index) in subscribeInfo.fcmc.check" flex="dir:left box:last" v-if="fcmcExpand">
                                     <div class="info"><i class="iconfont icon-startstroke"></i>{{item}}</div>
                                 </div>
                                 <div class="expand" @click="fcmcExpand = !fcmcExpand">
@@ -83,7 +94,10 @@
         data () {
             return {
                 pickerValue:Tool.getCurrentDate('time'),
-                fcmc:[],
+                fcmc:{
+                    exchange:[],
+                    check:[],
+                },
                 fcmcExpand:false,
                 des:'1212',
                 desExpand:false,
@@ -98,9 +112,25 @@
                 var year = new Date().getFullYear();
                 return new Date(new Date().getTime() + (30*24*60*60*1000));
             },
+            'startHour':function(){
+                return 8;
+            },
+            'endHour':function(){
+                return 18;
+            },
             ...mapState([
                 'subscribeInfo',
             ])
+        },
+        filters:{
+            mileFilter:function(val){
+                val = (val + '').replace(/[a-zA-Z]/g,'');
+                if(val){
+                    return val + 'KM';
+                }else{
+                    return val;
+                }
+            }
         },
         mounted:function(){
             if(this.$route.query.userToken){
@@ -133,16 +163,13 @@
             if(this.subscribeInfo.carInfo.mileage)
                 this.subscribeInfo.mile = this.subscribeInfo.carInfo.mileage;
             if(this.subscribeInfo.carInfo && this.subscribeInfo.carInfo.plate && this.subscribeInfo.mile){
-                Tool.get('getCommodityList',{
-                    mileage:this.subscribeInfo.mile,
+                Tool.get('getCommoditys',{
+                    mileage:this.subscribeInfo.mile.replace(/[a-zA-Z]/g,''),
                     cartype:this.subscribeInfo.carInfo.seriesName,
                 },(data) => {
-                    if(data.data && data.data.length > 0 ){
-                        var arr = [];
-                        for(var i=0;i < data.data.length;i++){
-                            arr.push(...data.data[i].fcmcDesc.split('、'));
-                        }
-                        this.subscribeInfo.fcmc = arr;
+                    if(data.code == 200){
+                        this.subscribeInfo.fcmc.exchange = data.data['1'];
+                        this.subscribeInfo.fcmc.check = data.data['2'];
                     }else{
                         this.subscribeInfo.fcmc = '';
                     }
@@ -168,16 +195,13 @@
                     });
                     return false;
                 }
-                Tool.get('getCommodityList',{
-                    mileage:target.val() || 0,
+                Tool.get('getCommoditys',{
+                    mileage:this.subscribeInfo.mile.replace(/[a-zA-Z]/g,''),
                     cartype:self.subscribeInfo.carInfo.seriesName,
                 },function(data){
-                    if(data.data && data.data.length > 0 ){
-                        var arr = [];
-                        for(var i=0;i < data.data.length;i++){
-                            arr.push(...data.data[i].fcmcDesc.split('、'));
-                        }
-                        self.subscribeInfo.fcmc = arr;
+                    if(data.code == 200){
+                        self.subscribeInfo.fcmc.exchange = data.data['1'];
+                        self.subscribeInfo.fcmc.check = data.data['2'];
                     }else{
                         self.subscribeInfo.fcmc = '';
                     }
@@ -212,7 +236,7 @@
                 data.reservationDateTimestamp = this.subscribeInfo.time;
                 data.userId = this.mobile;
                 data.dealerId = this.subscribeInfo.storeInfo.id;
-                data.mileage = this.subscribeInfo.mile;
+                data.mileage = this.subscribeInfo.mile.replace(/[a-zA-Z]/g,'');
                 data.linkman = this.subscribeInfo.contact;
                 data.mobilePhone = this.subscribeInfo.phone;
                 data.Describe = this.subscribeInfo.description;
@@ -332,6 +356,12 @@
                     }
                     .fcmc-list{
                         position:relative;
+                        .fcmc-title{
+                            color:#00bffe;
+                            .iconfont{
+                                font-size:0.54rem;
+                            }
+                        }
                         .fcmc-item{
                             white-space:nowrap;
                             display:inline-block;

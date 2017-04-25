@@ -14,7 +14,10 @@ const subscribeDefault = {
     },
     time:'',
     showTime:'',
-    fcmc:'',
+    fcmc:{
+        exchange:[],
+        check:[],
+    },
     storeInfo:{
         id:'',
         storeName:'',
