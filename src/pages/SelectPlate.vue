@@ -131,6 +131,7 @@
                 this.addInfo.plate = target.val();
             },
             addCar:function(){
+                this.addInfo.plate = this.addInfo.plate.trim();
                 if(!this.addInfo.carSeries){
                     Toast({
                         message:'请选择车型',

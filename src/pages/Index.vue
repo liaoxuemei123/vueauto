@@ -225,15 +225,15 @@
                 this.desExpand = true;
             },
             onDateConfirm:function(val){
-                if(new Date(val).getHours() > 18){
+                if((new Date(val).getHours() >= 17 && new Date(val).getMinutes() > 30) || (new Date(val).getHours() >= 18)){
                     Toast({
-                        message:'预约时间不能大于18:00',
+                        message:'预约时间不能大于17:30',
                         duration:1000
                     })
                     return false;
-                }else if(new Date(val).getHours() < 9 && new Date(val).getMinutes() < 30){
+                }else if(new Date(val).getHours() < 9){
                     Toast({
-                        message:'预约时间不能小于8:30',
+                        message:'预约时间不能小于9:00',
                         duration:1000
                     })
                     return false;
