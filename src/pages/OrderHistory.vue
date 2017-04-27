@@ -50,7 +50,7 @@
                             <div class="plate">
                                 预约描述：{{item.describe}}
                             </div>
-                            <div class="plate">
+                            <div class="plate" v-if="item.confirm != 'N'">
                                 备注：如因特殊原因无法按时到店，请提前告知4S店
                             </div>
                         </div>
