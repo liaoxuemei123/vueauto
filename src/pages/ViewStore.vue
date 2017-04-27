@@ -27,7 +27,7 @@
                         <div class="down-list-mask" v-if="cityShow" @click="cityShow=false"></div>
                     </transition>
                     <transition name="slide-down">
-                        <div class="down-list" v-if="cityShow">
+                        <div class="down-list" v-show="cityShow">
                             <mt-picker :slots="citylist" @change="onCityChange" valueKey="name"></mt-picker>
                             <div class="toolbar" flex="dir:left box:mean">
                                 <div class="cancel" @click="cityShow=false" flex="dir:left cross:center main:left">
@@ -98,6 +98,7 @@
                     gpsLatitude:this.cityInfo.lat || self.geolocation.point.lat,
                     storename:this.$children[0].$refs.search.value || '',
                     area:this.cityInfo.code || '',
+                    flag:1,
                 },(data)=>{
                     this.storelist = data.data.data;
                     this.$nextTick(()=>{
@@ -142,11 +143,11 @@
                 //         this.cityInfo.lng = data.result.location.lng;
                 //     }
                 this.getStoreList();
-                this.cityInfo.province = '';
+                //this.cityInfo.province = '';
                 // })
             },
             getCityList:function(callback){
-                Tool.get("queryArea",{},(data)=>{
+                Tool.get("queryArea",{flag:1},(data)=>{
                     var provinceList = [];
                     for(var i=0;i<data.data.length;i++){
                         provinceList.push({name:data.data[i].province,index:i})

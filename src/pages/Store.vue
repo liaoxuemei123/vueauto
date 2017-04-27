@@ -34,7 +34,7 @@
                         <div class="down-list-mask" v-if="cityShow" @click="cityShow=false"></div>
                     </transition>
                     <transition name="slide-down">
-                        <div class="down-list" v-if="cityShow">
+                        <div class="down-list" v-show="cityShow">
                             <mt-picker :slots="citylist" @change="onCityChange" valueKey="name"></mt-picker>
                             <div class="toolbar" flex="dir:left box:mean">
                                 <div class="cancel" @click="cityShow=false" flex="dir:left cross:center main:left">
@@ -103,25 +103,48 @@
             getStoreList:function(callback){
                 var self = this;
                 this.storelist = [];
-                Tool.get('getStoreList',{
-                    gpsLongitude:this.cityInfo.lng ||self.geolocation.point.lon,
-                    gpsLatitude:this.cityInfo.lat || self.geolocation.point.lat,
-                    storename:this.$children[0].$refs.search.value || '',
-                    area:this.cityInfo.code || '',
-                },(data)=>{
-                    this.storelist = data.data.data;
-                    this.$nextTick(()=>{
-                        if(this.$children.length > 0){
-                            for(var i=0;i<this.$children.length;i++){
-                                if(this.$children[i].mySroller && this.$children[i].mySroller.scrollTo){
-                                    this.$children[i].mySroller.scrollTo(0,0);
-                                    this.$children[i].scrollerInfo.y = 0;
+                if(this.$store.getters.prepage.name == 'setdetail'){
+                    Tool.get('getStoreList',{
+                        gpsLongitude:this.cityInfo.lng ||self.geolocation.point.lon,
+                        gpsLatitude:this.cityInfo.lat || self.geolocation.point.lat,
+                        storename:this.$children[0].$refs.search.value || '',
+                        area:this.cityInfo.code || '',
+                        flag:1,
+                    },(data)=>{
+                        this.storelist = data.data.data;
+                        this.$nextTick(()=>{
+                            if(this.$children.length > 0){
+                                for(var i=0;i<this.$children.length;i++){
+                                    if(this.$children[i].mySroller && this.$children[i].mySroller.scrollTo){
+                                        this.$children[i].mySroller.scrollTo(0,0);
+                                        this.$children[i].scrollerInfo.y = 0;
+                                    }
                                 }
                             }
-                        }
-                    })//使用异步，让updated里面的更新先于这里的更新
-                    callback && callback();
-                })
+                        })//使用异步，让updated里面的更新先于这里的更新
+                        callback && callback();
+                    })
+                }else{
+                    Tool.get('getStoreList',{
+                        gpsLongitude:this.cityInfo.lng ||self.geolocation.point.lon,
+                        gpsLatitude:this.cityInfo.lat || self.geolocation.point.lat,
+                        storename:this.$children[0].$refs.search.value || '',
+                        area:this.cityInfo.code || '',
+                    },(data)=>{
+                        this.storelist = data.data.data;
+                        this.$nextTick(()=>{
+                            if(this.$children.length > 0){
+                                for(var i=0;i<this.$children.length;i++){
+                                    if(this.$children[i].mySroller && this.$children[i].mySroller.scrollTo){
+                                        this.$children[i].mySroller.scrollTo(0,0);
+                                        this.$children[i].scrollerInfo.y = 0;
+                                    }
+                                }
+                            }
+                        })//使用异步，让updated里面的更新先于这里的更新
+                        callback && callback();
+                    })
+                }
             },
             submitStore:function(){
                 if(this.$store.getters.prepage.name == 'setdetail'){
@@ -173,29 +196,51 @@
                 //         this.cityInfo.lng = data.result.location.lng;
                 //     }
                 this.getStoreList();
-                this.cityInfo.province = '';
+                //this.cityInfo.province = '';
                 // })
             },
             getCityList:function(callback){
-                Tool.get("queryArea",{},(data)=>{
-                    var provinceList = [];
-                    for(var i=0;i<data.data.length;i++){
-                        provinceList.push({name:data.data[i].province,index:i})
-                    }
-                    var cityList = [];
-                    for(var i=0;i<data.data.length;i++){
-                        cityList[i] = [];
-                        for(var j=0;j<data.data[i].city.length;j++){
-                            cityList[i].push({name:data.data[i].city[j].regionName,id:data.data[i].city[j].id})
+                if(this.$store.getters.prepage.name == 'setdetail'){
+                    Tool.get("queryArea",{flag:1},(data)=>{
+                        var provinceList = [];
+                        for(var i=0;i<data.data.length;i++){
+                            provinceList.push({name:data.data[i].province,index:i})
                         }
-                    }
-                    var param = {
-                        provinces:provinceList,
-                        citys:cityList
-                    }
-                    this.cityData = param;
-                    callback && callback();
-                })
+                        var cityList = [];
+                        for(var i=0;i<data.data.length;i++){
+                            cityList[i] = [];
+                            for(var j=0;j<data.data[i].city.length;j++){
+                                cityList[i].push({name:data.data[i].city[j].regionName,id:data.data[i].city[j].id})
+                            }
+                        }
+                        var param = {
+                            provinces:provinceList,
+                            citys:cityList
+                        }
+                        this.cityData = param;
+                        callback && callback();
+                    })
+                }else{
+                    Tool.get("queryArea",{},(data)=>{
+                        var provinceList = [];
+                        for(var i=0;i<data.data.length;i++){
+                            provinceList.push({name:data.data[i].province,index:i})
+                        }
+                        var cityList = [];
+                        for(var i=0;i<data.data.length;i++){
+                            cityList[i] = [];
+                            for(var j=0;j<data.data[i].city.length;j++){
+                                cityList[i].push({name:data.data[i].city[j].regionName,id:data.data[i].city[j].id})
+                            }
+                        }
+                        var param = {
+                            provinces:provinceList,
+                            citys:cityList
+                        }
+                        this.cityData = param;
+                        callback && callback();
+                    })
+                }
             }
         },
         updated:function(){
@@ -208,16 +253,35 @@
             }
         },
         activated:function(){
-            this.getStoreList(() => {
-                var storeInfo = this.$store.getters.subscribeInfo.storeInfo;
-                for(var i=0;i<this.storelist.length;i++){
-                    if(storeInfo.id == this.storelist[i].id){
-                        this.select = i;
-                        return;
+            new Promise((res,rej)=>{
+                Tool.get('getRegionCode',{city:this.geolocation.address.city},(data)=>{
+                    if(data.data.length > 0){
+                        this.cityInfo.code = data.data[0]
                     }
-                }
-            });
+                    res();
+                })  
+            }).then(()=>{
+                this.getStoreList(() => {
+                    var storeInfo = this.$store.getters.subscribeInfo.storeInfo;
+                    for(var i=0;i<this.storelist.length;i++){
+                        if(storeInfo.id == this.storelist[i].id){
+                            this.select = i;
+                            return;
+                        }
+                    }
+                });
+            })
             this.getCityList(()=>{
+                // var self = this;
+                // var index = (function(){
+                //     var index = 0;
+                //     for(var i = 0;i < self.cityData.provinces.length;i++){
+                //         if(self.cityData.provinces[i].name == self.geolocation.address.province){
+                //             index = i;
+                //             return index;
+                //         }
+                //     }
+                // })()
                 this.citylist[0].values = this.cityData.provinces;
                 this.citylist[2].values = this.cityData.citys[0];
             });
