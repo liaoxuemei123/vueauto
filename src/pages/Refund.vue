@@ -60,6 +60,13 @@
         methods:{
             submitRefund:function(){
                 this.noticeShow = false;
+                if(!this.message) {
+                    Toast({
+                        message:'请填写退款原因',
+                        duration:1000,
+                    })
+                    return false;
+                }
                 Tool.post('refund',{bytId:this.orderInfo.id,bytYy:this.message},(data)=>{
                     if(data.code == 200){
                         Toast(data.msg);

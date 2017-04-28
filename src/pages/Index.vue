@@ -95,7 +95,6 @@
     export default{
         data () {
             return {
-                pickerValue:Tool.getCurrentDate('time'),
                 fcmc:{
                     exchange:[],
                     check:[],
@@ -108,7 +107,20 @@
         },
         computed:{
             'startDate':function(){
-                return new Date();
+                var now = new Date();
+                if((now.getHours() >= 17 && now.getMinutes()) > 30 || now.getHours() > 17){
+                    var tomorrow = new Date(new Date(Tool.formatDate(now)).getTime() + 25 * 1000 * 60 * 60);
+                    return tomorrow;
+                }
+                return new Date(now.getTime() + 1000 * 60 * 60 * 2);
+            },
+            'pickerValue':function(){
+                var now = new Date();
+                if((now.getHours() >= 17 && now.getMinutes()) > 30 || now.getHours() > 17){
+                    var tomorrow = new Date(new Date(Tool.formatDate(now)).getTime() + 25 * 1000 * 60 * 60);
+                    return Tool.formatDate(tomorrow,'time');
+                }
+                return Tool.getCurrentDate('time');
             },
             'endDate':function(){
                 var year = new Date().getFullYear();
@@ -355,10 +367,11 @@
                 box-shadow:0px 2px 3px #ccc;
                 .explain{
                     background-color:#f8f8f8;
-                    padding:0.43rem 0.43rem 0.43rem 0.8rem;
+                    padding:0.43rem 0.43rem 1rem 0.8rem;
                     font-size:0.51rem;
                     color:#6b6b6b;
                     line-height: 1.5em;
+                    position:relative;
                     .atention{
                         white-space:nowrap;
                         text-overflow:ellipsis;
@@ -370,7 +383,6 @@
                         }
                     }
                     .fcmc-list{
-                        position:relative;
                         .fcmc-title{
                             color:#00bffe;
                             .iconfont{

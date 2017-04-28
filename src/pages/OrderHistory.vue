@@ -33,7 +33,7 @@
                                 预约4S店：{{item.storeName}}
                             </div>
                             <div class="plate">
-                                4S店电话：{{item.storeTel}}
+                                4S店电话：<a :href="'tel:'+item.storeTel">{{item.storeTel}}</a> 
                             </div>
                             <div class="plate">
                                 申请时间：{{item.reservationCreateDate}}

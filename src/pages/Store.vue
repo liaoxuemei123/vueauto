@@ -20,6 +20,10 @@
                                 <div class="store-item" v-for="(item, index) in storelist">
                                     <store-item :item="item" :onClick="selectItem.bind(this, index)" :active="index == select"/>
                                 </div>
+                                <div class="load-more" flex="dir:top cross:center main:center" v-if="pagenation.page*pagenation.pageSize < pagenation.totalCount">
+                                    <div class="start-load" v-tap="getMore" v-if="loadMore">加载更多</div>
+                                    <div flex="dir:left cross:center" v-else="loadMore">加载中<mt-spinner type="fading-circle" :size="12" color="#6b6b6b"></mt-spinner></div>
+                                </div>
                             </scroller>
                         </div>
                         <div class="button-control">
@@ -83,7 +87,13 @@
                 cityData:{},
                 cityInfo:{},
                 selectedCity:'',
-                defaultLocation:''
+                defaultLocation:'',
+                pagenation:{
+                    page:1,
+                    pageSize:100,
+                    totalCount:0,
+                },
+                loadMore:true,
             }
         },
         components:{
@@ -99,6 +109,32 @@
             search:function(e){
                 var target = $(e.target).find('input');
                 this.getStoreList();
+            },
+            getMore:function(){
+                this.loadMore = false;
+                this.pagenation.page++;
+                Tool.get('getStoreList',{
+                    gpsLongitude:this.cityInfo.lng ||this.geolocation.point.lon,
+                    gpsLatitude:this.cityInfo.lat || this.geolocation.point.lat,
+                    storename:this.$children[0].$refs.search.value || '',
+                    area:this.cityInfo.code || '',
+                    page:this.pagenation.page,
+                    pageSize:this.pagenation.pageSize
+                },(data)=>{
+                    this.storelist = this.storelist.concat(data.data.data);
+                    this.pagenation.totalCount = data.data.totalCount;
+                    // this.$nextTick(()=>{
+                    //     if(this.$children.length > 0){
+                    //         for(var i=0;i<this.$children.length;i++){
+                    //             if(this.$children[i].mySroller && this.$children[i].mySroller.scrollTo){
+                    //                 this.$children[i].mySroller.scrollTo(0,0);
+                    //                 this.$children[i].scrollerInfo.y = 0;
+                    //             }
+                    //         }
+                    //     }
+                    // })//使用异步，让updated里面的更新先于这里的更新
+                    this.loadMore = true;
+                },{mask:false})
             },
             getStoreList:function(callback){
                 var self = this;
@@ -130,8 +166,11 @@
                         gpsLatitude:this.cityInfo.lat || self.geolocation.point.lat,
                         storename:this.$children[0].$refs.search.value || '',
                         area:this.cityInfo.code || '',
+                        page:this.pagenation.page,
+                        pageSize:this.pagenation.pageSize
                     },(data)=>{
                         this.storelist = data.data.data;
+                        this.pagenation.totalCount = data.data.totalCount;
                         this.$nextTick(()=>{
                             if(this.$children.length > 0){
                                 for(var i=0;i<this.$children.length;i++){
@@ -253,14 +292,7 @@
             }
         },
         activated:function(){
-            new Promise((res,rej)=>{
-                Tool.get('getRegionCode',{city:this.geolocation.address.city},(data)=>{
-                    if(data.data.length > 0){
-                        this.cityInfo.code = data.data[0]
-                    }
-                    res();
-                })  
-            }).then(()=>{
+            if(this.$store.getters.prepage.name == 'setdetail'){
                 this.getStoreList(() => {
                     var storeInfo = this.$store.getters.subscribeInfo.storeInfo;
                     for(var i=0;i<this.storelist.length;i++){
@@ -270,24 +302,48 @@
                         }
                     }
                 });
-            })
-            this.getCityList(()=>{
-                // var self = this;
-                // var index = (function(){
-                //     var index = 0;
-                //     for(var i = 0;i < self.cityData.provinces.length;i++){
-                //         if(self.cityData.provinces[i].name == self.geolocation.address.province){
-                //             index = i;
-                //             return index;
-                //         }
-                //     }
-                // })()
-                this.citylist[0].values = this.cityData.provinces;
-                this.citylist[2].values = this.cityData.citys[0];
-            });
-            this.cityInfo = {};
-            this.selectedCity = '';
-            this.defaultLocation = this.geolocation.address.province + ' ' + this.geolocation.address.city;
+                this.getCityList(()=>{
+                    this.citylist[0].values = this.cityData.provinces;
+                    this.citylist[2].values = this.cityData.citys[0];
+                });
+                this.cityInfo = {};
+                this.selectedCity = '';
+                this.defaultLocation = this.geolocation.address.province + ' ' + this.geolocation.address.city;
+            }else{
+                new Promise((res,rej)=>{
+                    this.getCityList(()=>{
+                        this.citylist[0].values = this.cityData.provinces;
+                        this.citylist[2].values = this.cityData.citys[0];
+                        res();
+                    });
+                    this.cityInfo = {};
+                    this.selectedCity = '';
+                    this.defaultLocation = this.geolocation.address.province + ' ' + this.geolocation.address.city;
+                }).then(()=>{
+                    return new Promise((res,rej)=>{
+                        if(!this.geolocation.address.city || this.geolocation.address.city == '失败') {
+                            this.cityInfo.code = '';
+                            res();
+                        }
+                        Tool.get('getRegionCode',{city:this.geolocation.address.city},(data)=>{
+                            if(data.data.length > 0){
+                                this.cityInfo.code = data.data[0]
+                            }
+                            res();
+                        })  
+                    })
+                }).then(()=>{
+                    this.getStoreList(() => {
+                        var storeInfo = this.$store.getters.subscribeInfo.storeInfo;
+                        for(var i=0;i<this.storelist.length;i++){
+                            if(storeInfo.id == this.storelist[i].id){
+                                this.select = i;
+                                return;
+                            }
+                        }
+                    });
+                })
+            }
         },
         deactivated:function(){
             this.cityInfo.code = '';
@@ -342,6 +398,15 @@
                     flex-basis: 0;
                     .overflow-container{
                         overflow:hidden;
+                        .load-more{
+                            height:1.5rem;
+                            background-color:#fff;
+                            line-height:1.5rem;
+                            .start-load{
+                                width:100%;
+                                text-align:center
+                            }
+                        }
                     }
                 }
                 .down-list-mask{
