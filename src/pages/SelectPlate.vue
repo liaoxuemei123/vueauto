@@ -12,6 +12,7 @@
                             <i class="iconfont icon-circle" v-else="active == index"></i>
                             <div class="car-series">{{item.vehicle_type}}</div>
                             <div class="car-plate">{{item.plate_no}}</div>
+                            <div class="car-vin">{{item.vin}}</div>
                         </div>
                         <div class="add-car">
                             <div class="default-show" flex="dir:left cross:center" @click="active = -1">
@@ -55,6 +56,18 @@
                 <mt-picker :slots="carList" defaultIndex=0 valueKey="modelName" :itemHeight="itemHeight" @change="onValuesChange"></mt-picker>
             </div>
         </transition>
+        <transition name="fade">
+            <div class="addcar-mask" v-if="dailogShow" @click="dailogShow=false"></div>
+        </transition>
+        <transition name="slide-up">
+            <div class="addcar-dailog" v-if="dailogShow" flex="dir:top">
+                <input type="text" placeholder="请输入车牌号" ref="dialogCarPlate">
+                <div class="button-group">
+                    <div class="button sure-button" @click="addCarNumber">确定</div>
+                    <div class="button cancel-button" @click="dailogShow=false">取消</div>
+                </div>
+            </div>
+        </transition>
     </div>
 </template>
 <script>
@@ -82,6 +95,7 @@
                 pickerValue:{},
                 mobile:'',
                 userToken:'',
+                dailogShow:false,
             }
         },
         watch:{
@@ -130,6 +144,38 @@
                 var target = $(e.target);
                 this.addInfo.plate = target.val();
             },
+            addCarNumber:function(e){
+                const {vin,mileage,seriesCode,modelCode,confCode,vehicle_type} = this.ownList[this.active]
+                var plate_no = this.$refs.dialogCarPlate.value;
+                if(!plate_no){
+                    Toast({
+                        message:'请输入车牌',
+                        position:'bottom',
+                        duration:1000,
+                    });
+                    return false;
+                }else if (!(/^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-Z0-9]{4}[A-Z0-9挂学警港澳]{0,1}$/.test(plate_no))){
+                    Toast({
+                        message:'车牌号有误',
+                        position:'bottom',
+                        duration:1000,
+                    });
+                    return false;
+                } 
+                Tool.post("AaUserVehicleAdd",{
+                    user_id:this.mobile,
+                    vin,
+                    mileage,
+                    seriesCode,
+                    modelCode,
+                    confCode,
+                    plate_no,
+                    vehicle_type
+                },(data)=>{
+                    this.getCarList();
+                    this.dailogShow = false;
+                })
+            },
             addCar:function(){
                 this.addInfo.plate = this.addInfo.plate.trim();
                 if(!this.addInfo.carSeries){
@@ -165,11 +211,16 @@
                 })
             },
             submitCarInfo:function(){
+                if(!this.ownList[this.active] || !this.ownList[this.active].plate_no) {
+                    this.dailogShow = true;
+                    return false
+                }
                 var data = {};
                 data.plate = this.ownList[this.active].plate_no;
                 data.seriesName = this.ownList[this.active].vehicle_type;
                 data.vehicleTypeId = this.ownList[this.active].vehicle_type;
                 data.vin = this.ownList[this.active].vin;
+                data.lqsq = this.ownList[this.active].lqsq;
                 data.mileage = this.ownList[this.active].mileage;
                 this.$store.commit('SET_SUBCARINFO',data);
                 this.$router.back();
@@ -227,6 +278,52 @@
                 color:#389cf2;
             }
         }
+        .addcar-mask{
+            position:absolute;
+            top:0;
+            bottom:0;
+            left:0;
+            right:0;
+            background-color:rgba(0,0,0,0.5);
+            z-index:1;
+        }
+        .addcar-dailog{
+            position:absolute;
+            background-color:#fff;
+            width:60%;
+            margin:0 20%;
+            z-index:2;
+            height:3rem;
+            top:50%;
+            transform:translate3d(0,-50%,0);
+            padding:0.5rem 0;
+            input{
+                border:none;
+                font-size:0.56rem;
+                line-height:2em;
+                text-align:center;
+                outline:none;
+            }
+            .button-group{
+                position:absolute;
+                bottom:0;
+                height:1rem;
+                width:100%;
+                .button{
+                    width:49.8%;
+                    float:left;
+                    background-color:rgb(0, 191, 254);
+                    color:#fff;
+                    font-size:0.56rem;
+                    height:100%;
+                    text-align:center;
+                    line-height:1rem;
+                    &+div{
+                        margin-left:0.4%;
+                    }
+                }
+            }
+        }
     }
     .page{
         height:100%;
@@ -256,6 +353,11 @@
                             margin-right:0.3rem;
                         }
                         .car-plate{
+                            font-size:0.57rem;
+                            color:#888;
+                            margin-right:0.3rem;
+                        }
+                        .car-vin{
                             font-size:0.57rem;
                             color:#888;
                         }

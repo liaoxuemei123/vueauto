@@ -166,7 +166,7 @@
                         gpsLatitude:this.cityInfo.lat || self.geolocation.point.lat,
                         storename:this.$children[0].$refs.search.value || '',
                         area:this.cityInfo.code || '',
-                        page:this.pagenation.page,
+                        page:1,
                         pageSize:this.pagenation.pageSize
                     },(data)=>{
                         this.storelist = data.data.data;

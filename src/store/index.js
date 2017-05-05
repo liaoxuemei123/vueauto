@@ -11,6 +11,7 @@ const subscribeDefault = {
         modelName:'',
         mileage:'',
         vin:'',
+        lqsq:'',
     },
     time:'',
     showTime:'',
@@ -82,6 +83,7 @@ const store = new Vuex.Store({
             state.subscribeInfo.carInfo.vehicleTypeId = params.vehicleTypeId;
             state.subscribeInfo.carInfo.vin = params.vin;
             state.subscribeInfo.carInfo.mileage = params.mileage;
+            state.subscribeInfo.carInfo.lqsq = params.lqsq;
         },
         SET_SUBSTOREINFO:function(state,params){
             state.subscribeInfo.storeInfo.id = params.id;

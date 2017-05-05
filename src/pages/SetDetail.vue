@@ -324,6 +324,7 @@
             }else{
                 this.isSelectStore = false;
             }
+            Tool.post('packagecount',{packageId:this.setInfo.id,packageName:this.setInfo.packageName,isUniversal:this.setInfo.isUniversal},(data)=>{})
         },
         deactivated:function(){
             // if(this.$children.length > 0){

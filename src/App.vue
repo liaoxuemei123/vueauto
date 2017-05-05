@@ -24,12 +24,17 @@ export default {
 	},
 	created:function(){
 		var self = this;
+		if(self.$route.name != 'index'){
+			Tool.post("linkcount",{},(data)=>{});
+		}
 		try{
 			var geolocation = new BMap.Geolocation();
-			var gc = new BMap.Geocoder();
 			geolocation.getCurrentPosition(function(position){
 				self.$store.commit('SET_LOCATION',position);
-			});
+				if(self.$route.name != 'index' && position.address.city) {
+					Tool.post("citycount",{city:position.address.city,province:position.address.province},(data)=>{})
+				}
+			}); 
 		}catch(e){
 			console.log(e);
 		}

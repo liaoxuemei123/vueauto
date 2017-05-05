@@ -180,6 +180,7 @@
                 Tool.get('getCommoditys',{
                     mileage:this.subscribeInfo.mile.replace(/[a-zA-Z]/g,''),
                     cartype:this.subscribeInfo.carInfo.seriesName,
+                    LQSQ:this.subscribeInfo.carInfo.lqsq
                 },(data) => {
                     if(data.code == 200){
                         this.subscribeInfo.fcmc.exchange = data.data['1'];
@@ -209,9 +210,11 @@
                     });
                     return false;
                 }
+                if(!this.subscribeInfo.mile.replace(/[a-zA-Z]/g,'')) return false;
                 Tool.get('getCommoditys',{
                     mileage:this.subscribeInfo.mile.replace(/[a-zA-Z]/g,''),
                     cartype:self.subscribeInfo.carInfo.seriesName,
+                    LQSQ:self.subscribeInfo.carInfo.lqsq
                 },function(data){
                     if(data.code == 200){
                         self.subscribeInfo.fcmc.exchange = data.data['1'];

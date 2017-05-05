@@ -234,10 +234,9 @@
         deactivated:function(){
             this.carShow = false;
             this.searchShow = false;
-        }
-        // beforeRouteEnter:(to,from,next)=>{
-        //     Tool.routerEnter(to,from,next)
-        // },
+        },
+        // beforeRouteLeave: (to, from, next) => {
+        // }
     }
 </script>
 <style lang="less" scoped>
