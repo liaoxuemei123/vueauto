@@ -83,6 +83,24 @@
                 />
             </div>
         </div>
+        <transition name="fade">
+            <div class="order-notice-mask" v-if="confirmShow" @click="confirmShow=false"></div>
+        </transition>
+        <transition name="slide-up">
+            <div class="order-notice" v-if="confirmShow" flex="dir:top box:last">
+                <div class="content">
+                    确定提交订单
+                </div>
+                <div class="toolbar" flex="dir:left box:mean cross:center">
+                    <div class="confirm-button button" @click="cancelOrder">
+                        取消
+                    </div>
+                    <div class="cancel-button button" @click="submitOrder">
+                        确定
+                    </div>
+                </div>
+            </div>
+        </transition>
     </div>
 </template>
 <script>
@@ -103,6 +121,8 @@
                 des:'1212',
                 desExpand:false,
                 mobile:'',
+                confirmShow:false,
+                submitData:''
             }
         },
         computed:{
@@ -259,7 +279,22 @@
             selectPlate:function(val){
                 this.$router.push({name:'selectplate'})
             },
-            addOrder:function(e){
+            cancelOrder:function(){
+                this.confirmShow = false;
+                this.submitData = '';
+            },
+            submitOrder:function(data){
+                this.confirmShow = false;
+                Tool.post('ReservationOrderAdd',this.submitData,(res)=>{
+                    Toast({
+                        message:'您已成功提交预约申请',
+                        duration:1000,
+                    });
+                    this.$store.commit('RESET_SUBSCRIBE');
+                    this.submitData = '';
+                })
+            },
+            addOrder:function(data){
                 var self = this;
                 var data = {}
                 data.carNumber = this.subscribeInfo.carInfo.plate;
@@ -328,13 +363,8 @@
                     });
                     return false;
                 }
-                Tool.post('ReservationOrderAdd',data,function(res){
-                    Toast({
-                        message:'您已成功提交预约申请',
-                        duration:1000,
-                    });
-                    self.$store.commit('RESET_SUBSCRIBE');
-                })
+                this.submitData = data;
+                this.confirmShow = true;
             },
             goHistory:function(){
                 this.$router.push({name:'orderhistory'});
@@ -355,6 +385,40 @@
         height:100%;
         position:absolute;
         width:100%;
+        .order-notice-mask{
+            position:absolute;
+            z-index:2;
+            top:2rem;
+            bottom:0;
+            left:0;
+            right:0;
+            background-color:rgba(0,0,0,0.4);
+        }
+        .order-notice{
+            height:5rem;
+            width:60%;
+            margin:0 20%;
+            position:absolute;
+            z-index:3;
+            top:50%;
+            margin-top:-5rem;
+            background-color:#fff;
+            font-size:0.67rem;
+            .content{
+                padding:0.5rem;
+                line-height:3rem;
+                text-align:center;
+            }
+            .toolbar{
+                height:1rem;
+                .button{
+                    background-color:rgb(0, 191, 254);
+                    color:#fff;
+                    line-height:1rem;
+                    text-align:center;
+                }
+            }
+        }
     }
     .page{
         height:100%;
