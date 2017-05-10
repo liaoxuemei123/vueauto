@@ -31,7 +31,7 @@ export default {
 			var geolocation = new BMap.Geolocation();
 			geolocation.getCurrentPosition(function(position){
 				self.$store.commit('SET_LOCATION',position);
-				if(self.$route.name != 'index' && position.address.city) {
+				if(self.$route.name != 'index' && self.$route.name !='selectplate' && position.address.city) {
 					Tool.post("citycount",{city:position.address.city,province:position.address.province},(data)=>{})
 				}
 			}); 
