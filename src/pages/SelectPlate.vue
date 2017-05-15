@@ -63,8 +63,8 @@
             <div class="addcar-dailog" v-if="dailogShow" flex="dir:top">
                 <input type="text" placeholder="请输入车牌号" ref="dialogCarPlate">
                 <div class="button-group">
-                    <div class="button sure-button" @click="addCarNumber">确定</div>
                     <div class="button cancel-button" @click="dailogShow=false">取消</div>
+                    <div class="button sure-button" @click="addCarNumber">确定</div>
                 </div>
             </div>
         </transition>

@@ -89,7 +89,7 @@
         <transition name="slide-up">
             <div class="order-notice" v-if="confirmShow" flex="dir:top box:last">
                 <div class="content">
-                    确定提交订单
+                    亲爱的车主，请再次核对您的预约需求信息，点击确认后4S店将尽快为您安排预约并短信反馈结果
                 </div>
                 <div class="toolbar" flex="dir:left box:mean cross:center">
                     <div class="confirm-button button" @click="cancelOrder">
@@ -395,7 +395,7 @@
             background-color:rgba(0,0,0,0.4);
         }
         .order-notice{
-            height:5rem;
+            height:6rem;
             width:60%;
             margin:0 20%;
             position:absolute;
@@ -406,8 +406,8 @@
             font-size:0.67rem;
             .content{
                 padding:0.5rem;
-                line-height:3rem;
-                text-align:center;
+                text-align:left;
+                line-height:1.5em;
             }
             .toolbar{
                 height:1rem;
