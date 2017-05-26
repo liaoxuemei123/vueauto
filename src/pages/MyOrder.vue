@@ -463,7 +463,7 @@
                     }
                     .order-item{
                         background-color:#fff;
-                        padding:0.4rem 5%;
+                        padding:0.4rem 3%;
                         margin-bottom:0.5rem;
                         box-shadow:0px 1px 2px #ccc;
                     }

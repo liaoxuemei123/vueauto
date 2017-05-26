@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper" ref='wrapper'><!--仅调试的时候使用@touchstart.prevent=""-->
+    <div class="wrapper" ref='wrapper' @touchstart.prevent=""><!--仅调试的时候使用@touchstart.prevent=""-->
         <div class="scroller">
             <slot></slot>
         </div>
@@ -16,6 +16,7 @@
                 },
             }
         },
+        componentName:'scroller',
         props:{
             refMark:{
                 type:String,

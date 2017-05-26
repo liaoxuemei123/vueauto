@@ -19,6 +19,8 @@ import ViewStore from 'pages/ViewStore';
 import Refund from 'pages/Refund';
 import TestSwiper from 'pages/TestSwiper';
 import Home from 'pages/Home';
+import MinniSet from 'pages/home/MiniSet';
+import CommercialSet from 'pages/home/CommercialSet';
 
 Vue.use(Router)
 
@@ -139,6 +141,18 @@ export default new Router({
       path:'/home',
       name:'home',
       component:Home,
+      children:[
+        {
+          path:'miniset',
+          name:'miniset',
+          component:MinniSet
+        },
+        {
+          path:'commercialset',
+          name:'commercialset',
+          component:CommercialSet
+        }
+      ]
     }
   ]
 })

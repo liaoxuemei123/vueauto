@@ -417,6 +417,9 @@
                     line-height:1rem;
                     text-align:center;
                 }
+                .confirm-button{
+                    margin-right:1px;
+                }
             }
         }
     }

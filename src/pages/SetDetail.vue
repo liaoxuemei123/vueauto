@@ -43,7 +43,7 @@
                         </div>
                         <div class="select-store">
                             <div class="input-control">
-                                <inp-com title="4S店" :value="packageInfo.storeInfo.storeName" :onClick="goStore" :readonly="true" :placeholder="storeTip" :rightArrow="true" />
+                                <inp-com title="使用4S店" :value="packageInfo.storeInfo.storeName" :onClick="goStore" :readonly="true" :placeholder="storeTip" :rightArrow="true" />
                             </div>
                         </div>
                         <div class="tips" v-if="setInfo.isUniversal == 1">提示：请查看可以使用的4S店</div>
@@ -350,7 +350,7 @@
             // },
             universalFilter:function(val){
                 if(val == 1){
-                    return '全国4S店使用（暂开通河南、湖南）'
+                    return '全国4S店使用(暂开通河南、湖南、重庆)'
                 }else{
                     return '指定4S店使用'
                 }
@@ -484,7 +484,7 @@
                         padding:0.4rem 0.5rem;
                         font-size:0.51rem;
                         .car-type,.des1{
-                            font-size:0.67rem;
+                            font-size:0.51rem;
                             color:#333333;
                             font-weight:bold;
                             margin-right:0.2rem;

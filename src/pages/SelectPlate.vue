@@ -14,7 +14,7 @@
                             <div class="car-plate">{{item.plate_no}}</div>
                             <div class="car-vin">{{item.vin}}</div>
                         </div>
-                        <div class="add-car">
+                        <!--<div class="add-car">
                             <div class="default-show" flex="dir:left cross:center" @click="active = -1">
                                 <i class="iconfont icon-select active" v-if="active == -1"></i>
                                 <i class="iconfont icon-circle" v-else="active == -1"></i>
@@ -32,7 +32,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>-->
                     </div>
                 </div>
                 <div class="button-control">
@@ -61,7 +61,9 @@
         </transition>
         <transition name="slide-up">
             <div class="addcar-dailog" v-if="dailogShow" flex="dir:top">
-                <input type="text" placeholder="请输入车牌号" ref="dialogCarPlate">
+                <div class="input-control" flex="dir:left">
+                    <input type="text" id="plateNo" placeholder="请输入车牌号" ref="dialogCarPlate">
+                </div>
                 <div class="button-group">
                     <div class="button cancel-button" @click="dailogShow=false">取消</div>
                     <div class="button sure-button" @click="addCarNumber">确定</div>
@@ -293,21 +295,27 @@
             width:60%;
             margin:0 20%;
             z-index:2;
-            height:3rem;
+            height:2.6rem;
             top:50%;
             transform:translate3d(0,-50%,0);
             padding:0.5rem 0;
-            input{
-                border:none;
-                font-size:0.56rem;
-                line-height:2em;
-                text-align:center;
-                outline:none;
+            .input-control{
+                input{
+                    border:none;
+                    font-size:0.56rem;
+                    line-height:2em;
+                    text-align:center;
+                    outline:none;
+                    width:94%;
+                    border:1px solid #aaa;
+                    margin: 0 3%;
+                }
             }
+            
             .button-group{
                 position:absolute;
                 bottom:0;
-                height:1rem;
+                height:1.2rem;
                 width:100%;
                 .button{
                     width:49.8%;

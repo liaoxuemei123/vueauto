@@ -1,5 +1,5 @@
 <template>
-    <div class="set-container" v-tap="viewDetail.bind(this,item)" flex="dir:top box:first">
+    <div class="set-container" v-tap="viewDetail.bind(this,item)" flex="dir:left box:first">
         <div class="set-image">
             <div class="image-container">
                 <img v-lazy="item.packageImage">
@@ -7,12 +7,20 @@
         </div>
         <div class="set-info" flex="dir:top cross:top box:mean">
             <div class="line" flex="dir:left cross:center">
-                <span class="cut">{{item.discount}}折</span>
-                <span class="des1">{{item.packageName}}</span>
+                <span class="package-name">{{item.packageName}}</span>
+                <span class="sall">{{item.discount}}折</span>
             </div>
-            <!--<div class="line" flex="dir:left cross:center">
-                <span class="range">{{item.isUniversal|universalFilter}}</span>
-            </div>-->
+            <div class="line" flex="dir:left cross:center">
+                <span class="price-title">价格：</span>
+                <span class="package-price">{{255|priceFilter}}</span>
+                <div class="price-delete">300</div>
+            </div>
+            <div class="line" flex="dir:left cross:center">
+                <span class="description">描述：{{item.isUniversal|universalFilter}}</span>
+            </div>
+            <div class="line" flex="dir:left cross:center main:right">
+                <span class="buy-it">马上购买</span>
+            </div>
         </div>
     </div>
 </template>
@@ -46,14 +54,14 @@
                     }else{
                         Toast({
                             message:"车型选择错误，请重新选择",
-                            position:'top',
+                            duration:1000,
                         });
                         $('.select-bar input').focus();
                     }
                 }else{
                     Toast({
                         message:"请选择车型",
-                        position:'top',
+                        duration:1000,
                     });
                     $('.select-bar input').focus();
                 }
@@ -62,23 +70,28 @@
         filters:{
             universalFilter:function(val){
                 if(val == 1){
-                    return '全国4S店使用（暂开通河南、湖南、重庆）'
+                    return '全国4S店使用'
                 }else{
                     return '指定4S店使用'
                 }
+            },
+            priceFilter:function(val) {
+                return '￥' + val;
             }
         }
     }
 </script>
 <style scoped lang="less">
     .set-container{
-        height:100%;
-        width:100%;
+        width:94%;
         position:relative;
+        background-color:#fff;
+        padding:0.5rem 3%;
         .set-image{
             background-color:#ccc;
+            width:6rem;
             .image-container{
-                height:5.1rem;
+                height:5rem;
                 width:100%;
                 position:relative;
                 img{
@@ -95,28 +108,48 @@
             }
         }
         .set-info{
-            height:1.2rem;
-            padding:0.2rem 0.5rem;
+            margin-left:0.5rem;
             background-color:#fff;
-            .cut{
-                font-size:0.51rem;
-                color:#fff;
-                background-color:#fc4c1d;
-                padding:0.05rem 0.1rem;
-                border-radius:0.1rem;
-                margin-right:0.2rem;
-            }
-            .des1{
-                font-size:0.61rem;
-                color:#333;
-            }
-            .des2{
-                font-size:0.51rem;
-                color:#333;
-            }
-            .range{
-                color:#fc4c1d;
+            .line{
                 width:100%;
+                .sall{
+                    font-size:0.51rem;
+                    color:#fff;
+                    background-color:#fc4c1d;
+                    padding:0.1rem 0.2rem;
+                    border-radius:0.1rem;
+                }
+                .package-name{
+                    font-size:0.7rem;
+                    color:#333;
+                    margin-right:0.2rem;
+                }
+                .price-title{
+                    font-size:0.7rem;
+                    color:#333;
+                }
+                .package-price{
+                    font-size:0.7rem;
+                    color:#ff4343;
+                    margin-right:0.3rem;
+                    text-decoration:none;
+                }
+                .price-delete{
+                    font-size:0.61rem;
+                    color:#ddd;
+                    text-decoration:line-through;
+                }
+                .description{
+                    font-size:0.64rem;
+                    color:#888;
+                    margin-right:0.2rem;
+                }
+                .buy-it{
+                    background-color:#00bffe;
+                    color:#fff;
+                    padding:0.2rem 0.5rem;
+                    border-radius:0.2rem;
+                }
             }
         }
     }
