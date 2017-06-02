@@ -317,7 +317,7 @@
                 },0)
             }
             if(!this.packageInfo.reset && !this.priceRange.minprice){
-                this.$router.push({name:'maintainset'});
+                this.$router.push({name:'home'});
             }
             if(this.setInfo.isUniversal == 2){
                 this.isSelectStore = true;

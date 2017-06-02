@@ -45,7 +45,7 @@
             border-bottom:1px solid #d5d5d5;
         }
         .show-content{
-            margin-top:1.5rem;
+            padding-top:1.5rem;
             .title{
                 height:1.2rem;
                 line-height:1.2rem;

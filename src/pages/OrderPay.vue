@@ -193,14 +193,14 @@
                                                                 message:'支付被取消',
                                                                 duration:1000,
                                                             })
-                                                            self.$router.push({name:'maintainset'});
+                                                            self.$router.push({name:'home'});
                                                         }else{
                                                             rej();
                                                             Toast({
                                                                 message:'支付出错',
                                                                 duration:1000,
                                                             })
-                                                            self.$router.push({name:'maintainset'});
+                                                            self.$router.push({name:'home'});
                                                         }
                                                     }
                                                 );
@@ -256,7 +256,7 @@
         beforeRouteLeave:function(to,from,next){
             if(this.isBack){
                 if(to.name == 'confirmorder' || to.path == '/confirmorder'){
-                    next({name:'maintainset'});//防止2次下单
+                    next({name:'home'});//防止2次下单
                 }
             }
             next();

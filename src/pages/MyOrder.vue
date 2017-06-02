@@ -351,9 +351,9 @@
             },
             customBack:function(){
                 var prepage = this.$store.getters.prepage;
-                if(!prepage || prepage.name != 'maintainset'){//这里的逻辑智能保证按正常的后退键管用。
-                    this.$store.commit('INSERT_PAGE',{path:'/maintainset',index:0,name:'maintainset'});
-                    this.$router.push({name:'maintainset'})
+                if(!prepage || prepage.name != 'home'){//这里的逻辑智能保证按正常的后退键管用。
+                    this.$store.commit('INSERT_PAGE',{path:'/home',index:0,name:'home'});
+                    this.$router.push({name:'home'})
                 }else{
                     this.$router.back();
                 }

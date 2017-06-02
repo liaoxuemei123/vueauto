@@ -86,7 +86,7 @@
 							if(this.$route.params.to){
 								this.$router.push({path:this.$route.params.to});
 							}else{
-								this.$router.push({name:'maintainset'});
+								this.$router.push({name:'home'});
 							}
 						}else{
 							Toast({

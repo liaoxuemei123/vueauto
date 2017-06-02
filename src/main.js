@@ -63,7 +63,7 @@ function goFoward(to,from,next){
 }
 
 function getIndex (list,path){
-  if(path == '/' || path == '/maintainset' || !path){
+  if(path == '/' || path == '/home' || !path){
     return -2;
   }
   for(var i = 0; i < list.length; i++){
