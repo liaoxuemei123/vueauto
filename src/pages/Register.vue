@@ -99,10 +99,11 @@
 						},1000)
 					}else{
 						Toast({
-                        message:errorMsg[data.result],
-                        duration:1000,
-                    });
+							message:errorMsg[data.result],
+							duration:1000,
+						});
 					}
+					this.picCodeUrl = Tool.target + 'picCode?phone='+this.tel + '&theImg=' + Math.random();
 				})
 			},
 			inputPhone:function(){

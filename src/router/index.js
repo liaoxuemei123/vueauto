@@ -21,6 +21,7 @@ import TestSwiper from 'pages/TestSwiper';
 import Home from 'pages/Home';
 import MinniSet from 'pages/home/MiniSet';
 import CommercialSet from 'pages/home/CommercialSet';
+import UserCenter from 'pages/UserCenter';
 
 Vue.use(Router)
 
@@ -136,6 +137,11 @@ export default new Router({
       path:'/testswiper',
       name:'testswiper',
       component:TestSwiper,
+    },
+    {
+      path:'/usercenter',
+      name:'usercenter',
+      component:UserCenter
     },
     {
       path:'/home',

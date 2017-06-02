@@ -1,5 +1,8 @@
 <template>
     <div class="sub-page" key="miniset">
+        <div class="select-car">
+            选择车型
+        </div>
         <scroller>
             <transition name="fade">
                 <div class="show-content" v-if="setlist.up.length > 0 && setlist.down.length > 0">
@@ -29,7 +32,20 @@
         position: absolute;
         width:100%;
         height:100%;
+        .select-car{
+            position:absolute;
+            top:0;
+            left:0;
+            right:0;
+            background-color:rgba(255,255,255,0.6);
+            height:1.5rem;
+            line-height:1.5rem;
+            text-align:center;
+            z-index:10;
+            border-bottom:1px solid #d5d5d5;
+        }
         .show-content{
+            margin-top:1.5rem;
             .title{
                 height:1.2rem;
                 line-height:1.2rem;

@@ -53,6 +53,7 @@
                     hScrollbar:false,
                     vScrollbar:false,
                     vScroll:false,
+                    snap:true
                 })
                 var self = this;
                 this.mySroller.on('scrollEnd',function(e){

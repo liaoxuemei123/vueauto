@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import Tool from '../utils/Tool'
+import Tool from '../utils/Tool';
 Vue.use(Vuex)
 
 const subscribeDefault = {

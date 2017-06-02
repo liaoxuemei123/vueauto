@@ -56,7 +56,7 @@
 <style scoped lang="less">
     .nav-bar{
         height:2.1rem;
-        background-color:#fff;
+        background-color:#fff;  
         border-bottom:1px solid #cfcfcf;
         .button{
             height: 2.1rem;

@@ -4,15 +4,27 @@
             <nav-bar
                 title="个人中心"
             />
-            <div class="page-content">
-                <div class="tbbar" flex="dir:left cross:center">
-                    <div class="bisiness-list">
-                        <xscroller>
-                            <div class="bisiness-item x-item" @click="activeBusiness = index" :class="{'active':activeBusiness == index}" v-for="(item,index) in bisinessItems" flex="dir:left cross:center main:center">
-                                <i class="icon-image" v-if="item.icon" :style="{'background-image':'url('+item.icon+')'}"></i>{{item.name}}
-                            </div>
-                        </xscroller>
+            <div class="page-content" flex="dir:top box:last">
+                <div class="user-info">
+                    <div class="info-control" flex="dir:left box:first">
+                        <div class="label"><span>我的订单</span></div>
+                        <div class="value">查看全部订单<i class="iconfont icon-go"></i></div>
                     </div>
+                    <div class="info-control" flex="dir:left box:first">
+                        <div class="label"><span>昵称</span></div>
+                        <div class="value">雪依旧</div>
+                    </div>
+                    <div class="info-control" flex="dir:left box:first">
+                        <div class="label"><span>性别</span></div>
+                        <div class="value">男</div>
+                    </div>
+                    <div class="info-control" flex="dir:left box:first">
+                        <div class="label"><span>手机号</span></div>
+                        <div class="value">{{15178831138|phoneFilter}}</div>
+                    </div>
+                </div>
+                <div class="logout-button" @click="logout">
+                    退出
                 </div>
             </div>
         </div>
@@ -21,33 +33,31 @@
 <script>
     import NavBar from '../components/NavBar';
     import Xscroller from '../components/Xscroller';
-    import emmiter from '../mixins/emmiter';
+    import Tool from '../utils/Tool';
     export default{
         data () {
             return {
-                bisinessItems:[{
-                    name:"保养套餐",
-                    icon:require('../assets/changan_wc.png'),
-                    type:1,
-                },{
-                    name:"保养套餐",
-                    icon:require('../assets/changan_sy.png'),
-                    type:2,
-                },{
-                    name:"预约保养",
-                    icon:'',
-                    type:3,
-                }],
-                activeBusiness:0,
             }
         },
-        mixins: [emmiter],
         components:{
             NavBar,
             Xscroller
         },
         mounted:function(){
-            this.broadcast('xscroller','init');
+        },
+        methods:{
+            logout:function(){
+                Tool.removeLocalItem('userInfo');
+                Tool.removeLocalItem('modelInfo');
+                this.$router.push({name:'login'});
+            }
+        },
+        filters: {
+            phoneFilter:function(val) {
+                var arr = (val+'').split('');
+                arr.splice(3,4,'****');
+                return arr.join('');
+            }
         }
     }
 </script>
@@ -65,24 +75,30 @@
             background-color: #efefef;
             height:100%;
             overflow: auto;
-            .bisiness-list{
-                width:100%;
-                height:1.5rem;
-                line-height:1.5rem;
+            .info-control{
+                height:1.8rem;
+                line-height:1.8rem;
                 background-color:#fff;
-                .bisiness-item{
-                    width:5.4rem;
-                    float:left;
-                    color:#333;
-                    &.active{
-                        color:#00bffe;
-                    }
-                    .icon-image{
-                        width:1.1rem;
-                        height:1.2rem;
-                        background-size:cover;
+                padding:0 3%;
+                margin-bottom:1px;
+                .label{
+                    width:3rem;
+                }
+                .value{
+                    text-align:right;
+                    .iconfont{
+                        font-size: 0.57rem;
+                        margin-left:0.1rem;
                     }
                 }
+            }
+            .logout-button{
+                text-align:center;
+                background-color:#ff3300;
+                font-size:0.64rem;
+                color:#fff;
+                height:1.8rem;
+                line-height:1.8rem;
             }
         }
     }

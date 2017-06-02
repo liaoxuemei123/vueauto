@@ -1,10 +1,6 @@
 <template>
     <div class="page-container">
-        <div class="page home-page" flex="dir:top box:first">
-            <nav-bar
-                title="保养"
-                rightIcon="icon-index-order"
-            />
+        <div class="page home-page" flex="dir:top">
             <div class="page-content" flex="dir:top box:justify">
                 <div class="tbbar" flex="dir:left cross:center">
                     <div class="bisiness-list">
@@ -23,7 +19,14 @@
                     </transition>
                 </div>
                 <div class="bottom-banner" flex="dir:left box:first cross:center">
-                    <div class="user-center"><i class="iconfont icon-usercenter"></i></div>
+                    <div class="user-center" @click="userCenter"><i class="iconfont icon-usercenter"></i></div>
+                    <div class="banner">
+                        <swiper>
+                            <div class="swiper-slide" flex="dir:left cross:center main:left"><a href="">更多精彩活动等你来！</a></div>
+                            <div class="swiper-slide" flex="dir:left cross:center main:left"><a href="">十三亿人看了都沉默了</a></div>
+                            <div class="swiper-slide" flex="dir:left cross:center main:left"><a href="">长安商城福利</a></div>
+                        </swiper>
+                    </div>
                 </div>
             </div>
         </div>
@@ -32,6 +35,7 @@
 <script>
     import NavBar from '../components/NavBar';
     import Xscroller from '../components/Xscroller';
+    import Swiper from '../components/Swiper';
     import emmiter from '../mixins/emmiter';
     export default{
         data () {
@@ -62,7 +66,8 @@
         mixins: [emmiter],
         components:{
             NavBar,
-            Xscroller
+            Xscroller,
+            Swiper
         },
         methods:{
             changeActive:function(index) {
@@ -78,10 +83,16 @@
                     this.$router.push(this.bisinessItems[index].route);
                 }
                 this.broadcast('xscroller','page',{oldVal:oldVal,newVal:index});
+            },
+            userCenter:function() {
+                this.$router.push({name:'usercenter'});
             }
         },
         activated:function(){
             this.broadcast('xscroller','init');
+            this.broadcast('swiper','init',{
+                direction : 'vertical',
+            })
         },
         mounted:function(){
             this.bisinessItems.map((v,i)=>{
@@ -150,6 +161,15 @@
                             position:relative;
                             top:0.15rem;
                         }
+                    }
+                }
+                .banner{
+                    height:100%;
+                    margin-left:0.3rem;
+                    .swiper-slide{
+                        height:0.634rem;
+                        text-align:left;
+                        font-size:0.67rem;
                     }
                 }
             }
