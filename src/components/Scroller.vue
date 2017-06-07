@@ -6,7 +6,6 @@
     </div>
 </template>
 <script>
-    import '../js/iscroll';
     export default{
         data () {
             return {

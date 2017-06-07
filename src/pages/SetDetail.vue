@@ -151,13 +151,15 @@
             ])
         },
         updated:function(){//IScroll滚动回之前的位置
-            if(this.$children.length > 0){
-                for(var i=0;i<this.$children.length;i++){
-                    if(this.$children[i].mySroller && this.$children[i].mySroller.scrollTo){
-                        this.$children[i].mySroller.scrollTo(0,this.$children[i].scrollerInfo.y);
+            this.$nextTick(()=>{
+                if(this.$children.length > 0){
+                    for(var i=0;i<this.$children.length;i++){
+                        if(this.$children[i].mySroller && this.$children[i].mySroller.scrollTo){
+                            this.$children[i].mySroller.scrollTo(0,this.$children[i].scrollerInfo.y);
+                        }
                     }
                 }
-            }
+            })
         },
         watch:{
             'isSelectStore':function(val){
@@ -271,7 +273,7 @@
                     mealId:'',
                     mealName:''
                 }
-                setTimeout(()=>{
+                this.$nextTick(()=>{
                     if(this.$children.length > 0){
                         for(var i=0;i<this.$children.length;i++){
                             if(this.$children[i].mySroller && this.$children[i].mySroller.scrollTo){
@@ -280,7 +282,7 @@
                             }
                         }
                     }
-                },0)//异步把更新放到updated之后
+                })
             },
             goStore:function(){
                 this.$store.commit('SET_RESET_FLAS',false);
