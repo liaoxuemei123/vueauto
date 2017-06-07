@@ -44,6 +44,7 @@ const store = new Vuex.Store({
                 city:'失败'
             }
         },
+        pickerModel:'',
         packageInfo:{
             modelInfo:{},
             setInfo:{},
@@ -53,6 +54,7 @@ const store = new Vuex.Store({
         },
         reset:true,
         load:false,
+        carCasCade:{},
     },
     mutations:{
         SET_MODE:function(state,mode){
@@ -115,6 +117,12 @@ const store = new Vuex.Store({
         },
         LOADING:function(state){
             state.load = true;
+        },
+        UPDATE_CAR_CASECADE(state,param){
+            state.carCasCade = param
+        },
+        UPDATE_PICKERMODEL(state,param){
+            state.pickerModel = param;
         }
     },
     getters:{
@@ -126,6 +134,9 @@ const store = new Vuex.Store({
         },
         prepage:function(state,getters){
             return state.pageStack[state.pageStack.length - 2];
+        },
+        packageInfo:function(state,getters){
+            return state.packageInfo;
         }
     },
     actions:{

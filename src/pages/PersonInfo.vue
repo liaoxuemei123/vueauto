@@ -7,20 +7,20 @@
                 :onRight="goHome"
             />
             <div class="page-content">
-                <div class="input-container">
-                    <div class="input-control">
+                <div class="input-container" v-show="pageConfig.fileds.length > 0" v-for="(item,index) in pageConfig.fileds">
+                    <div class="input-control" v-if="item == 'vin'">
                         <inp-com title="车架号" :value="userInfo.vin" placeholder="输入车架号(不限大小写)" maxlength='17' :onBlur="updateVIN.bind(this)"/>
                     </div>
-                    <div class="input-control">
+                    <div class="input-control" v-if="item == 'motorId'">
                         <inp-com title="发动机号" :value="userInfo.motorId" placeholder="输入发动机号后6位" :onBlur="updateMotorId.bind(this)" maxlength='6'/>
                     </div>
-                    <div class="input-control">
+                    <div class="input-control" v-if="item == 'contact'">
                         <inp-com title="姓名" :value="userInfo.contact" placeholder="输入姓名" :onBlur="updateContact.bind(this)"/>
                     </div>
-                    <div class="input-control" >
+                    <div class="input-control" v-if="item == 'tel'">
                         <inp-com title="手机号" :value="userInfo.tel" placeholder="输入手机号" :onBlur="updateTel.bind(this)" />
                     </div>
-                    <div class="input-control-custom" flex="dir:left cross:center box:justify" v-show="userInfo.tel != userMoblie || isValidate">
+                    <div class="input-control-custom" v-if="item == 'tel'" flex="dir:left cross:center box:justify" v-show="userInfo.tel != userMoblie || isValidate">
                         <div class="label">验证码</div>
                         <input type="text" v-model="code">
                         <div class="button" flex="dir:left cross:center main:right" >
@@ -28,14 +28,13 @@
                             <span v-tap="sendSmsCode" ref="getValiCode">获取验证码</span>
                         </div>
                     </div>
-                    <div class="input-control">
-                        <!--<inp-com title="备注" :readonly="true" />-->
+                    <div class="input-control" v-if="item == 'message'">
                         <div class="text-control" flex="dir:top">
-                        <textarea rows="5" maxlength='100' placeholder="请输入100字内留言" @input="updateComment"></textarea>
-                        <div class="show-length">
-                            {{userInfo.message.length}}/100
+                            <textarea rows="5" maxlength='100' placeholder="请输入100字内留言" @input="updateComment"></textarea>
+                            <div class="show-length">
+                                {{userInfo.message.length}}/100
+                            </div>
                         </div>
-                    </div>
                     </div>
                 </div>
             </div>
@@ -69,6 +68,10 @@
                 residueTime:60,
                 code:'',
                 isValidate:false,
+                pageConfig:{
+                    tags:[],
+                    fileds:[],
+                }
             }
         },
         components:{
@@ -91,6 +94,7 @@
             $(this.$refs.onValiCode).hide();
             $(this.$refs.getValiCode).show();
             var mobile = Tool.getUserInfo('telephone');
+            this.getPageConfig();
             Tool.get('findLoginTimestamp',{mobile},(data)=>{
                 if(data.code == 200){
                     this.isValidate = false;
@@ -225,6 +229,16 @@
             updateTel:function(e){
                 this.userInfo.tel = $(e.target).val();
             },
+            getPageConfig:function(e){
+                Tool.get('pageloading/getPageDetail',{wbpdPid:'GM_PAGE'},(data)=>{
+                    this.pageConfig.tags = data.data.wbpdFtag.split(',');
+                    this.pageConfig.fileds = data.data.wbpdName.split(',');
+                    this.$nextTick(() => {
+                        $(this.$refs.onValiCode).hide();
+                        $(this.$refs.getValiCode).show();
+                    })
+                })
+            },
             sendSmsCode:function(e){
                 if(!(/^1[34578]\d{9}$/.test(this.userInfo.tel))){
                     Toast({
@@ -278,7 +292,6 @@
             height:100%;
             overflow: auto;
             .input-container{
-                box-shadow:0px 2px 5px #ccc;
                 .input-control{
                     margin-bottom:1px;
                     .text-control{

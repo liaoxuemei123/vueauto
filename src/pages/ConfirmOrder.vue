@@ -128,6 +128,7 @@
     import { mapMutations, mapState } from 'vuex';
     import Tool from '../utils/Tool';
     import { Toast } from 'mint-ui';
+    import store from '../store'
     export default {
         data () {
             return {
@@ -192,7 +193,6 @@
             }
         },
         activated:function(){
-            console.log(this.packageInfo.userInfo);
         },
         filters:{
             universalFilter:function(val){
@@ -214,7 +214,11 @@
             }
         },
         beforeRouteEnter:(to,from,next)=>{
-            Tool.routerEnter(to,from,next)
+            if($.isEmptyObject(store.getters.packageInfo.userInfo)){
+                next({name:'home'});
+            }else{
+                Tool.routerEnter(to,from,next)
+            }
         },
     }
 </script>

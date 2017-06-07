@@ -5,7 +5,7 @@
                 <div class="tbbar" flex="dir:left cross:center">
                     <div class="bisiness-list">
                         <xscroller>
-                            <div class="bisiness-item x-item" @click="changeActive(index)" :class="{'active':activeBusiness == index}" v-for="(item,index) in bisinessItems" flex="dir:left cross:center main:center">
+                            <div class="bisiness-item x-item" v-tap="changeActive.bind(this,index)" :class="{'active':activeBusiness == index}" v-for="(item,index) in bisinessItems" flex="dir:left cross:center main:center">
                                 <i class="icon-image" v-if="item.icon" :style="{'background-image':'url('+item.icon+')'}"></i>{{item.name}}
                             </div>
                         </xscroller>

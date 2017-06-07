@@ -351,7 +351,8 @@
             },
             customBack:function(){
                 var prepage = this.$store.getters.prepage;
-                if(!prepage || prepage.name != 'home'){//这里的逻辑智能保证按正常的后退键管用。
+                console.log(prepage.name);
+                if(!prepage || prepage.name != 'home' || prepage.name != 'usercenter'){//这里的逻辑智能保证按正常的后退键管用。
                     this.$store.commit('INSERT_PAGE',{path:'/home',index:0,name:'home'});
                     this.$router.push({name:'home'})
                 }else{
