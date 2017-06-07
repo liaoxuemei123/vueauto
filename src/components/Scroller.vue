@@ -6,6 +6,7 @@
     </div>
 </template>
 <script>
+    import '../js/iscroll';
     export default{
         data () {
             return {
@@ -32,6 +33,28 @@
                     }
                 }
                 return true;
+            }
+        },
+        created:function(){
+            this.$on('init',this.init);
+        },
+        methods:{
+            init:function(){
+                var self = this;
+                console.log('init');
+                if(!$.isEmptyObject(this.mySroller)){
+                    this.mySroller.destroy();//如果有新的实例，就把老的删除掉
+                }
+                this.mySroller = new IScroll(this.$el,{
+                    probeType: 2,
+                    scrollX: true,
+                    scrollY: true,
+                    mouseWheel: true,
+                    isPullToRefresh: true,
+                })
+                this.mySroller.on('scrollEnd',function(e){
+                    self.scrollerInfo.y = this.y;
+                })
             }
         },
         updated:function(){

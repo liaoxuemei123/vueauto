@@ -5,7 +5,7 @@
                 title="套餐详情"
             />
             <div class="page-content" flex="dir:top box:last">
-                <scroller>
+                <scroller ref="scroller">
                     <div class="detail-container">
                         <div class="set-container">
                             <div class="set-image">
@@ -295,6 +295,18 @@
             toggleMeal:function(){
                 this.mealListShow = !this.mealListShow
             }
+        },
+        mounted:function(){
+            $('.info-content img')[0].onload = ()=>{
+                this.$nextTick(()=>{
+                    this.$refs.scroller.mySroller.refresh();
+                    console.log('refresh');
+                })
+            }
+            this.$nextTick(()=>{
+                this.$refs.scroller.mySroller.refresh();
+                console.log('auto');
+            })
         },
         activated:function(){
             this.setInfo = this.$route.query;
@@ -586,6 +598,8 @@
                     .info-content{
                         .image-cotainer{
                             width:100%;
+                            min-height:10rem;
+                            height:auto;
                             img{
                                 width:100%;
                             }

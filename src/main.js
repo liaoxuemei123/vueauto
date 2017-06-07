@@ -5,7 +5,6 @@ import store from './store';
 import MintUI from 'mint-ui';
 import 'mint-ui/lib/style.css';
 import './js/jquery.js';
-import './js/iscroll';
 import 'flex.css';//主要使用flex.css布局，避免各种滚动条的计算
 import 'normalize.css';
 import './style/base.css';
