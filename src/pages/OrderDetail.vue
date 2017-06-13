@@ -19,7 +19,7 @@
                         <div class="car">车型：{{orderInfo.carType}}</div>
                         <div class="oil">机油：{{orderInfo.engineOil}}</div>
                         <div class="VIN">VIN：{{orderInfo.vin}}</div>
-                        <div class="pay-time" v-if='orderInfo.status == 2'>支付时间：{{orderInfo.paySuccessDate | timeFilter}}</div>
+                        <div class="pay-time" v-if='orderInfo.status == 2'>支付时间：{{orderInfo.payDate | timeFilter}}</div>
                         <div class="price">总额：{{orderInfo.orderPrice}}</div>
                     </div>
                     <div class="section" v-if="orderInfo.status == 2">

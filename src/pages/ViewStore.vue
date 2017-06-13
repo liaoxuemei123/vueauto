@@ -93,12 +93,14 @@
             getStoreList:function(name='',callback){
                 var self = this;
                 this.storelist = [];
-                Tool.get('getStoreList',{
+                var wbpId = this.$route.params.wbpId;
+                Tool.get('getStore',{
                     gpsLongitude:this.cityInfo.lng ||self.geolocation.point.lon,
                     gpsLatitude:this.cityInfo.lat || self.geolocation.point.lat,
                     storename:this.$children[0].$refs.search.value || '',
                     area:this.cityInfo.code || '',
                     flag:1,
+                    wbProduct:wbpId,
                 },(data)=>{
                     this.storelist = data.data.data;
                     this.$nextTick(()=>{
@@ -147,7 +149,8 @@
                 // })
             },
             getCityList:function(callback){
-                Tool.get("queryArea",{flag:1},(data)=>{
+                var id = this.$route.params.wbpId;
+                Tool.get("queryCity",{wbProduct:id},(data)=>{
                     var provinceList = [];
                     for(var i=0;i<data.data.length;i++){
                         provinceList.push({name:data.data[i].province,index:i})
@@ -156,7 +159,7 @@
                     for(var i=0;i<data.data.length;i++){
                         cityList[i] = [];
                         for(var j=0;j<data.data[i].city.length;j++){
-                            cityList[i].push({name:data.data[i].city[j].regionName,id:data.data[i].city[j].id})
+                            cityList[i].push({name:data.data[i].city[j][1],id:data.data[i].city[j][0]})
                         }
                     }
                     var param = {

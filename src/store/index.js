@@ -55,6 +55,9 @@ const store = new Vuex.Store({
         reset:true,
         load:false,
         carCasCade:{},
+        bisinessType:'',
+        bisinessConfig:{},
+        pageSetting:[],
     },
     mutations:{
         SET_MODE:function(state,mode){
@@ -95,22 +98,32 @@ const store = new Vuex.Store({
             Tool.removeObject(state.subscribeInfo);
         },
         SET_PACKAGE_MODEL:function(state,param){
-            state.packageInfo.modelInfo = param;
+            for(var props in param){
+                state.packageInfo.modelInfo[props] = param[props];
+            }
         },
         SET_PACKAGE_SETINFO:function(state,param){
-            state.packageInfo.setInfo = param;
+            for(var props in param){
+                state.packageInfo.setInfo[props] = param[props];
+            }
         },
         SET_PACKAGE_SETDETAIL:function(state,param){
-            state.packageInfo.setDetail = param;
+            for(var props in param){
+                state.packageInfo.setDetail[props] = param[props];
+            }
         },
         SET_RESET_FLAS:function(state,bool){
             state.packageInfo.reset = bool;
         },
         SET_PACKAGE_STOREINFO:function(state,param){
-            state.packageInfo.storeInfo = param;
+            for(var props in param){
+                state.packageInfo.storeInfo[props] = param[props];
+            }
         },
         SET_PACKAGE_USERINFO:function(state,param){
-            state.packageInfo.userInfo = param;
+            for(var props in param){
+                state.packageInfo.userInfo[props] = param[props];
+            }
         },
         LOAD_DOWN:function(state){
             state.load = false;
@@ -123,6 +136,19 @@ const store = new Vuex.Store({
         },
         UPDATE_PICKERMODEL(state,param){
             state.pickerModel = param;
+        },
+        SET_BISINESS_TYPE(state,param){
+            state.bisinessType = param;
+        },
+        SET_BISINESS_CONFIG(state,param){
+            for(var props in param){
+                state.bisinessConfig[props] = param[props];
+            }
+        },
+        SET_PAGE_CONFIG(state,param){
+            for(var props in param){
+                state.pageSetting[props] = param[props];
+            }
         }
     },
     getters:{

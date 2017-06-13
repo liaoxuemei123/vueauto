@@ -8,34 +8,34 @@
                 <div class="set-info">
                     <div class="top" flex="dir:left box:first">
                         <div class="store-url" flex="dir:left cross:center">
-                            <img :src="packageInfo.setInfo.packageImage">
+                            <img :src="packageInfo.setInfo.coverUrl">
                         </div>
                         <div class="set-detail" flex="dir:top box:mean">
                             <div class="line" flex="dir:left cross:center main:justify">
-                                <span class="set-name">{{packageInfo.modelInfo.seriesName}} {{packageInfo.setInfo.packageName}}</span>
+                                <span class="set-name">{{packageInfo.modelInfo.seriesName}} {{packageInfo.setInfo.wbpName}}</span>
                                 <span class="price">￥{{packageInfo.setDetail.price}}</span>
                             </div>
                             <div class="line" flex="dir:left cross:center main:justify">
-                                <span class="set-des1">{{packageInfo.setInfo.packageContent}}</span>
+                                <span class="set-des1">{{packageInfo.setInfo.wbpPdesc}}</span>
                             </div>
                         </div>
                     </div>
                     <div class="explain">
                         <div class="explain-item" flex="dir:left cross:top box:first">
                             <div class="check title">保养权益：</div>
-                            <div>{{packageInfo.setInfo.packageName}}</div>
+                            <div>{{packageInfo.setInfo.wbpName}}</div>
                         </div>
                         <div class="explain-item" flex="dir:left cross:top box:first">
                             <div class="change title">保养项目：</div>
-                            <div>{{packageInfo.setInfo.packageContent}}</div>
+                            <div>{{packageInfo.setInfo.wbpPdesc}}</div>
                         </div>
                         <div class="explain-item" flex="dir:left cross:top box:first">
                             <div class="validate title">使用范围：</div>
-                            <div>{{packageInfo.setInfo.isUniversal|universalFilter}}</div>
+                            <div>{{packageInfo.setInfo.wbpSfqgty|universalFilter}}</div>
                         </div>
                         <div class="explain-item" flex="dir:left cross:top box:first">
                             <div class="VIN title">到期时间：</div>
-                            <div>{{packageInfo.setInfo.validate|validateFilter}}</div>
+                            <div>{{packageInfo.setDetail.validate|validateFilter}}</div>
                         </div>
                     </div>
                     <div class="bottom" flex="dir:left box:mean">
@@ -154,16 +154,14 @@
                 this.submitOrder();
             },
             submitOrder:function(){
-                // var today = Tool.formatDate(this.packageInfo.setInfo.validate);
-                // var end = today.substring(0,4) - 0 + 3 + today.substring(4,10);
-                // var endTime = new Date(end).getTime()+36000000;
+                const expiredTime = new Date(this.packageInfo.setDetail.validate).getTime();
                 Tool.post('AaPackageOrder',{
                     userId:Tool.getUserInfo('userId'),
-                    allNumber:this.packageInfo.setInfo.setMealNumber,
-                    expirationDateTimestamp:this.packageInfo.setInfo.validate,
+                    allNumber:this.packageInfo.setDetail.number,
+                    expirationDateTimestamp:expiredTime,
                     vin:this.packageInfo.userInfo.vin,
-                    packageId:this.packageInfo.setInfo.id,
-                    restrictFacilitator:this.packageInfo.storeInfo.id||'',
+                    packageId:this.packageInfo.setInfo.wbpId,
+                    restrictFacilitator:this.packageInfo.storeInfo.id || '',
                     phone:this.packageInfo.userInfo.tel,
                     linkman:this.packageInfo.userInfo.contact,
                     orderPrice:this.packageInfo.setDetail.price,
@@ -172,6 +170,9 @@
                     storeId:this.packageInfo.storeInfo.id || '',
                     engineNo:this.packageInfo.userInfo.engineNo,
                     mileage:this.packageInfo.userInfo.mileage,
+                    orderType:this.packageInfo.modelInfo.vehicleType - 0,
+                    referee:this.packageInfo.userInfo.referee,
+                    refereeType:this.packageInfo.userInfo.refereeType,
                 },(data)=>{
                     if(data.code == 200){
                         this.$router.push({path:'/orderpay/'+data.data});
@@ -193,11 +194,12 @@
             }
         },
         activated:function(){
+            console.log(this.packageInfo);
         },
         filters:{
             universalFilter:function(val){
                 if(val == 1){
-                    return '全国4S店使用（暂开通河南、湖南、重庆）'
+                    return '全国4S店使用'
                 }else{
                     return '指定4S店使用'
                 }

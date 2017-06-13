@@ -3,6 +3,7 @@
         <div class="swiper-wrapper">
             <slot></slot>
         </div>
+        <div class="mini-pagination"></div>
         <div class="swiper-pagination"></div>
     </div>
 </template>
@@ -15,7 +16,8 @@
                 mySwiper:{},
                 setting:{
                     autoplay:5000,
-                    pagination:'.swiper-pagination',
+                    pagination:'.mini-pagination',
+                    active:0,
                 }
             }
         },
@@ -43,8 +45,7 @@
 <style lang="less">
     .swiper{
         position:relative;
-        padding-right:0.5rem;
-        .swiper-pagination{
+        .mini-pagination{
             position:absolute;
             right:0rem!important;
             bottom:-2.4rem;

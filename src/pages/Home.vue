@@ -14,7 +14,7 @@
                 <div class="tab-content">
                     <transition :name="mode">
                         <keep-alive>
-                            <router-view></router-view>
+                            <component :is="currentView"></component>
                         </keep-alive>
                     </transition>
                 </div>
@@ -37,37 +37,51 @@
     import Xscroller from '../components/Xscroller';
     import Swiper from '../components/Swiper';
     import emmiter from '../mixins/emmiter';
+    import Tool from '../utils/Tool';
+    import MinniSet from './home/MiniSet';
+    import CommercialSet from './home/CommercialSet';
+    import Subscribe from './home/Subscribe';
+    const BISINESS_CONST = [
+        {
+            wbyId:'',
+            name:"保养套餐",
+            wbyName:"微车保养",
+            icon:require('../assets/changan_wc.png'),
+            view:"MinniSet",
+            type:1,
+        },{
+            wbyId:'',
+            name:"保养套餐",
+            wbyName:"商车保养",
+            icon:require('../assets/changan_sy.png'),
+            view:"CommercialSet",
+            type:2,
+        },{
+            wbyId:'',
+            name:"预约保养",
+            wbyName:"预约保养",
+            icon:'',
+            view:"Subscribe",
+            type:3,
+        }
+    ];
     export default{
         data () {
             return {
-                bisinessItems:[{
-                    name:"保养套餐",
-                    icon:require('../assets/changan_wc.png'),
-                    route:"/home/miniset",
-                    type:1,
-                },{
-                    name:"保养套餐",
-                    icon:require('../assets/changan_sy.png'),
-                    route:"/home/commercialset",
-                    type:2,
-                },{
-                    name:"预约保养",
-                    icon:'',
-                    type:3,
-                },{
-                    name:"万友合作",
-                    icon:'',
-                    type:3,
-                }],
+                bisinessItems:[],
                 activeBusiness:0,
                 mode:'push',
+                currentView:'',
             }
         },
         mixins: [emmiter],
         components:{
             NavBar,
             Xscroller,
-            Swiper
+            Swiper,
+            CommercialSet,
+            MinniSet,
+            Subscribe
         },
         methods:{
             changeActive:function(index) {
@@ -79,20 +93,41 @@
                 if(oldVal > index) {
                     this.mode = 'right'
                 }
-                if(this.bisinessItems[index].route){
-                    this.$router.push(this.bisinessItems[index].route);
+                if(this.bisinessItems[index].view){
+                    this.currentView = this.bisinessItems[index].view;
                 }
                 this.broadcast('xscroller','page',{oldVal:oldVal,newVal:index});
             },
             userCenter:function() {
                 this.$router.push({name:'usercenter'});
+            },
+            getBisinessList:function() {
+                Tool.get('wbinterface/getWbYwpzList',{flg:1},data => {
+                    data.data.map( (v,i) => {
+                        BISINESS_CONST.map((sv) => {
+                            if(v.wbyName === sv.wbyName) {
+                                sv = Object.assign(sv,v);
+                                this.bisinessItems.push(sv);
+                            }
+                            this.$nextTick(()=>{
+                                this.broadcast('xscroller','init');
+                                this.broadcast('swiper','init',{
+                                    direction : 'vertical',
+                                })
+                                this.currentView = this.bisinessItems[0].view;
+                            })
+                        })
+                    })
+                    this.$store.commit("SET_BISINESS_CONFIG",data.data);
+                })
             }
         },
+        created:function(){
+            this.getBisinessList();
+        },
         activated:function(){
-            this.broadcast('xscroller','init');
-            this.broadcast('swiper','init',{
-                direction : 'vertical',
-            })
+            this.$store.commit('SET_RESET_FLAS',true);
+            this.$store.commit('SET_PACKAGE_STOREINFO',{});
         },
         mounted:function(){
             this.bisinessItems.map((v,i)=>{

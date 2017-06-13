@@ -77,7 +77,7 @@
             },
             universalFilter:function(val){
                 if(val == 1){
-                    return '全国4S店使用(暂开通河南、湖南、重庆)'
+                    return '全国4S店使用'
                 }else{
                     return '指定4S店使用'
                 }

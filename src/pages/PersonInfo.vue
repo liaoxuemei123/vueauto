@@ -8,19 +8,19 @@
             />
             <div class="page-content">
                 <div class="input-container" v-show="pageConfig.fileds.length > 0" v-for="(item,index) in pageConfig.fileds">
-                    <div class="input-control" v-if="item == 'vin'">
+                    <div class="input-control" v-if="item == 'vin' && pageConfig.tags[index] == '1'">
                         <inp-com title="车架号" :value="userInfo.vin" placeholder="输入车架号(不限大小写)" maxlength='17' :onBlur="updateVIN.bind(this)"/>
                     </div>
-                    <div class="input-control" v-if="item == 'motorId'">
+                    <div class="input-control" v-if="item == 'motorId' && pageConfig.tags[index] == '1'">
                         <inp-com title="发动机号" :value="userInfo.motorId" placeholder="输入发动机号后6位" :onBlur="updateMotorId.bind(this)" maxlength='6'/>
                     </div>
-                    <div class="input-control" v-if="item == 'contact'">
+                    <div class="input-control" v-if="item == 'contact' && pageConfig.tags[index] == '1'">
                         <inp-com title="姓名" :value="userInfo.contact" placeholder="输入姓名" :onBlur="updateContact.bind(this)"/>
                     </div>
-                    <div class="input-control" v-if="item == 'tel'">
+                    <div class="input-control" v-if="item == 'tel' && pageConfig.tags[index] == '1'">
                         <inp-com title="手机号" :value="userInfo.tel" placeholder="输入手机号" :onBlur="updateTel.bind(this)" />
                     </div>
-                    <div class="input-control-custom" v-if="item == 'tel'" flex="dir:left cross:center box:justify" v-show="userInfo.tel != userMoblie || isValidate">
+                    <div class="input-control-custom" v-if="item == 'tel' && pageConfig.tags[index] == '1'" flex="dir:left cross:center box:justify" v-show="userInfo.tel != userMoblie || isValidate">
                         <div class="label">验证码</div>
                         <input type="text" v-model="code">
                         <div class="button" flex="dir:left cross:center main:right" >
@@ -28,7 +28,17 @@
                             <span v-tap="sendSmsCode" ref="getValiCode">获取验证码</span>
                         </div>
                     </div>
-                    <div class="input-control" v-if="item == 'message'">
+                    <div class="input-control" v-if="item == 'referee' && pageConfig.tags[index] == '1'">
+                        <mt-radio
+                            title="推荐类型"
+                            v-model="userInfo.refereeType"
+                            :options="refereeArry">
+                        </mt-radio>
+                    </div>
+                    <div class="input-control" v-if="item == 'referee' && pageConfig.tags[index] == '1'">
+                        <inp-com title="推荐人" :value="userInfo.referee" :placeholder="refereeTip" :onBlur="updateReferee.bind(this)" />
+                    </div>
+                    <div class="input-control" v-if="item == 'message' && pageConfig.tags[index] == '1'">
                         <div class="text-control" flex="dir:top">
                             <textarea rows="5" maxlength='100' placeholder="请输入100字内留言" @input="updateComment"></textarea>
                             <div class="show-length">
@@ -62,8 +72,19 @@
                     tel:'',
                     message:'',
                     engineNo:'',
-                    buyCarDate:''
+                    buyCarDate:'',
+                    referee:'',
+                    refereeType: '1',
                 },
+                refereeArry:[
+                    {
+                        label: '个人',
+                        value: '0'
+                    },{
+                        label: '4S店',
+                        value: '1'
+                    }
+                ],
                 userMoblie:'',
                 residueTime:60,
                 code:'',
@@ -79,8 +100,12 @@
             InpCom
         },
         computed:{
+            'refereeTip':function(){
+                const tips = this.userInfo.refereeType == 0 ? '填写推荐人手机号' : '填写经销商号';
+                return tips;
+            },
             ...mapState([
-                'packageInfo'
+                'packageInfo','bisinessType','pageSetting'
             ])
         },
         activated:function(){
@@ -89,7 +114,6 @@
                 this.userInfo.vin = vehicleInfo.vin;
                 this.userInfo.motorId = vehicleInfo.engineNo;
                 this.userInfo.contact = vehicleInfo.userName;
-                //this.userInfo.motorId = vehicleInfo.motorId;
             }
             $(this.$refs.onValiCode).hide();
             $(this.$refs.getValiCode).show();
@@ -130,13 +154,6 @@
                     });
                     return false;
                 }
-                // if(this.userInfo.motorId.length != 6){
-                //     Toast({
-                //         message:'请输入发动机号后6位',
-                //         duration:1000,
-                //     });
-                //     return false;
-                // }
                 if(!this.userInfo.contact){
                     Toast({
                         message:'请输入姓名',
@@ -229,14 +246,15 @@
             updateTel:function(e){
                 this.userInfo.tel = $(e.target).val();
             },
+            updateReferee:function(e){
+                this.userInfo.referee = $(e.target).val();
+            },
             getPageConfig:function(e){
-                Tool.get('pageloading/getPageDetail',{wbpdPid:'GM_PAGE'},(data)=>{
-                    this.pageConfig.tags = data.data.wbpdFtag.split(',');
-                    this.pageConfig.fileds = data.data.wbpdName.split(',');
-                    this.$nextTick(() => {
-                        $(this.$refs.onValiCode).hide();
-                        $(this.$refs.getValiCode).show();
-                    })
+                this.pageConfig.tags = this.pageSetting['GM_PAGE'].wbpdFtag.split(',');
+                this.pageConfig.fileds = this.pageSetting['GM_PAGE'].wbpdName.split(',');
+                this.$nextTick(() => {
+                    $(this.$refs.onValiCode).hide();
+                    $(this.$refs.getValiCode).show();
                 })
             },
             sendSmsCode:function(e){

@@ -37,7 +37,11 @@
     export default{
         data () {
             return {
-                userInfo:{},
+                userInfo:{
+                    nickName:'',
+                    sex:'',
+                    mobile:'',
+                },
             }
         },
         components:{
@@ -50,7 +54,9 @@
             const userData = JSON.parse(Tool.localItem('userInfo'));
             Tool.get('queryUserInfo',{userToken:userData.token},data => {
                 const userCenter = JSON.parse(JSON.parse(data));
-                this.userInfo = userCenter.data;
+                if(userCenter.data){
+                    this.userInfo = userCenter.data;
+                }
             });
         },
         methods:{

@@ -139,13 +139,15 @@
             getStoreList:function(callback){
                 var self = this;
                 this.storelist = [];
+                var wbpId = this.$route.params.wbpId;
                 if(this.$store.getters.prepage.name == 'setdetail'){
-                    Tool.get('getStoreList',{
+                    Tool.get('getStore',{
                         gpsLongitude:this.cityInfo.lng ||self.geolocation.point.lon,
                         gpsLatitude:this.cityInfo.lat || self.geolocation.point.lat,
                         storename:this.$children[0].$refs.search.value || '',
                         area:this.cityInfo.code || '',
                         flag:1,
+                        wbProduct:wbpId,
                     },(data)=>{
                         this.storelist = data.data.data;
                         this.$nextTick(()=>{
@@ -161,13 +163,14 @@
                         callback && callback();
                     })
                 }else{
-                    Tool.get('getStoreList',{
+                    Tool.get('getStore',{
                         gpsLongitude:this.cityInfo.lng ||self.geolocation.point.lon,
                         gpsLatitude:this.cityInfo.lat || self.geolocation.point.lat,
                         storename:this.$children[0].$refs.search.value || '',
                         area:this.cityInfo.code || '',
                         page:1,
-                        pageSize:this.pagenation.pageSize
+                        pageSize:this.pagenation.pageSize,
+                        wbProduct:wbpId,
                     },(data)=>{
                         this.storelist = data.data.data;
                         this.pagenation.totalCount = data.data.totalCount;
@@ -239,47 +242,26 @@
                 // })
             },
             getCityList:function(callback){
-                if(this.$store.getters.prepage.name == 'setdetail'){
-                    Tool.get("queryArea",{flag:1},(data)=>{
-                        var provinceList = [];
-                        for(var i=0;i<data.data.length;i++){
-                            provinceList.push({name:data.data[i].province,index:i})
+                var id = this.$route.params.wbpId;
+                Tool.get("queryCity",{wbProduct:id},(data)=>{
+                    var provinceList = [];
+                    for(var i=0;i<data.data.length;i++){
+                        provinceList.push({name:data.data[i].province,index:i})
+                    }
+                    var cityList = [];
+                    for(var i=0;i<data.data.length;i++){
+                        cityList[i] = [];
+                        for(var j=0;j<data.data[i].city.length;j++){
+                            cityList[i].push({name:data.data[i].city[j][1],id:data.data[i].city[j][0]})
                         }
-                        var cityList = [];
-                        for(var i=0;i<data.data.length;i++){
-                            cityList[i] = [];
-                            for(var j=0;j<data.data[i].city.length;j++){
-                                cityList[i].push({name:data.data[i].city[j].regionName,id:data.data[i].city[j].id})
-                            }
-                        }
-                        var param = {
-                            provinces:provinceList,
-                            citys:cityList
-                        }
-                        this.cityData = param;
-                        callback && callback();
-                    })
-                }else{
-                    Tool.get("queryArea",{},(data)=>{
-                        var provinceList = [];
-                        for(var i=0;i<data.data.length;i++){
-                            provinceList.push({name:data.data[i].province,index:i})
-                        }
-                        var cityList = [];
-                        for(var i=0;i<data.data.length;i++){
-                            cityList[i] = [];
-                            for(var j=0;j<data.data[i].city.length;j++){
-                                cityList[i].push({name:data.data[i].city[j].regionName,id:data.data[i].city[j].id})
-                            }
-                        }
-                        var param = {
-                            provinces:provinceList,
-                            citys:cityList
-                        }
-                        this.cityData = param;
-                        callback && callback();
-                    })
-                }
+                    }
+                    var param = {
+                        provinces:provinceList,
+                        citys:cityList
+                    }
+                    this.cityData = param;
+                    callback && callback();
+                })
             }
         },
         updated:function(){

@@ -23,21 +23,15 @@
         </transition>
         <scroller>
             <transition name="fade">
-                <div class="show-content" v-if="setlist.up.length > 0 && setlist.down.length > 0">
-                    <div class="up-title title" >
-                        <span>指定4S店使用</span>
-                    </div>
-                    <div class="up">
-                        <div class="set-item" v-for="(item, index) in setlist.up">
-                            <package-item :item="item"/>
+                <div class="show-content">
+                    <div class="product-class" v-for="( item , index ) in products" v-if="item.wbpkName">
+                        <div class="up-title title">
+                            <span>{{item.wbpkName}}</span>
                         </div>
-                    </div>
-                    <div class="down-title title">
-                        <span>全国4S店使用<strong class="additional">&nbsp;(暂开通河南、湖南、重庆)</strong></span>
-                    </div>
-                    <div class="down">
-                        <div class="set-item" v-for="(item, index) in setlist.down">
-                            <package-item :item="item"/>
+                        <div class="up">
+                            <div class="set-item" v-for="(sitem, sindex) in item.wbProducts">
+                                <package-item :item="sitem"/>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -112,10 +106,18 @@
     export default {
         data () {
             return {
-                setlist:{
-                    up:[],
-                    down:[]
-                },
+                products:[
+                    {
+                        wbpkName:'',
+                        wbpkMemo:'',
+                        wbpkId:'',
+                        wbProducts:[
+                            {
+                                wbResource:{},
+                            }
+                        ],
+                    }
+                ],
                 carModel:{},
                 carShow: false,
                 carData:{},
@@ -152,52 +154,59 @@
             closeDialog:function(){
                 this.carShow = false;
             },
-            getPackageList:function(){
-                Tool.get('getPackageList',{},(data)=>{
-                    this.setlist.up = data.data.twoup;
-                    this.setlist.down = data.data.twodown;
+            getPackageList:function(wbplCx){
+                const id = this.$parent.bisinessItems[this.$parent.activeBusiness].wbyId;
+                Tool.get('wbinterface/getWbpkindList',{id,wbplCx:wbplCx?wbplCx:''},(data)=>{
+                    if(data.code == 200){
+                        this.products = [];
+                        data.data.map( v => {
+                            if(v.wbProducts.length > 0 && v.wbpkName){
+                                this.products.push(v);
+                            }
+                        })
+                    }
                 })
             },
             getCarList:function(){
-                // Tool.get('queryCar',{},(data)=>{
-                //     Tool.localItem('carList',data);
-                // })
-                const data = JSON.parse(Tool.localItem('carList')).data;
-                var type = [];
-                var serise = [];
-                var module = [];
-                data.map((v,i) => {
-                    type.push({
-                        name:v.typename,
-                        index:i
-                    })
-                    serise[i] = [];
-                    module[i] = [];
-                    v.data.map((vs,j) => {
-                        serise[i].push({
-                            name: vs.seriesName,
-                            type: vs.vehicleType,
-                            index: {
-                                i,j
-                            }
+                Tool.get('queryCar',{},pData => {
+                    const data = pData.data;
+                    var type = [];
+                    var serise = [];
+                    var module = [];
+                    data.map((v,i) => {
+                        type.push({
+                            name:v.typename,
+                            index:i
                         })
-                        module[i][j] = [];
-                        vs.modelName.map((vss,k) => {
-                            module[i][j].push({
-                                name:vss[1]
+                        serise[i] = [];
+                        module[i] = [];
+                        v.data.map((vs,j) => {
+                            serise[i].push({
+                                name: vs.seriesName,
+                                type: vs.vehicleType,
+                                index: {
+                                    i,j
+                                }
+                            })
+                            module[i][j] = [];
+                            vs.modelName.map((vss,k) => {
+                                module[i][j].push({
+                                    name:vss[2],
+                                    id:vss[0],
+                                })
                             })
                         })
                     })
+                    var param = {
+                        type,
+                        serise,
+                        module
+                    }
+                    this.$store.commit('UPDATE_CAR_CASECADE',param);
+                    this.carlist[0].values = param.type;
+                    this.carlist[2].values = param.serise[0];
+                    this.carlist[4].values = param.module[0][0];
                 })
-                var param = {
-                    type,
-                    serise,
-                    module
-                }
-                this.$store.commit('UPDATE_CAR_CASECADE',param);
-                this.carlist[0].values = param.type;
-                this.carlist[2].values = param.serise[0];
-                this.carlist[4].values = param.module[0][0];
             },
             onCarChange:function(picker,values){
                 if(values[0] && values[1] && values[2]){
@@ -206,14 +215,15 @@
                     this.carModel.displacement = values[2].name;
                     this.carModel.vehicleModel = values[1].name;
                     this.carModel.vehicleType = values[1].type;
+                    this.carModel.id = values[2].id;
                     this.carModel.pickerModel = this.carModel.vehicleModel + ' ' + this.carModel.displacement;
-                    
                 }else if(values[1] && values[2]){
                     picker.setSlotValues(1,this.carCasCade.serise[0]);
                     picker.setSlotValues(2,this.carCasCade.module[values[1].index.i][values[1].index.j]);
                     this.carModel.displacement = values[2].name;
                     this.carModel.vehicleModel = values[1].name;
                     this.carModel.vehicleType = values[1].type;
+                    this.carModel.id = values[2].id;
                     this.carModel.pickerModel = this.carModel.vehicleModel + ' ' + this.carModel.displacement;
                 }
             },
@@ -222,15 +232,16 @@
                     this.$store.commit('SET_PACKAGE_MODEL',this.carModel);
                     this.$store.commit('UPDATE_PICKERMODEL',this.carModel.pickerModel);
                 }else{
-                    this.carModel.displacement = this.carCasCade.module[0][0].name;
-                    this.carModel.vehicleModel = this.carCasCade.serise[0].name;
-                    this.carModel.vehicleType = this.carCasCade.serise[0].type;
+                    this.carModel.displacement = this.carCasCade.module[0][0][0].name;
+                    this.carModel.id = this.carCasCade.module[0][0][0].id;
+                    this.carModel.vehicleModel = this.carCasCade.serise[0][0].name;
+                    this.carModel.vehicleType = this.carCasCade.serise[0][0].type;
                     this.carModel.pickerModel = this.carModel.vehicleModel + ' ' + this.carModel.displacement;
                     this.$store.commit('SET_PACKAGE_MODEL',this.carModel);
                     this.$store.commit('UPDATE_PICKERMODEL',this.carModel.pickerModel);
                 }
-                this.carModel = {};
                 this.carShow = false;
+                this.getPackageList(this.carModel.id);
             },
             toggleShow:function(){
                 this.carShow = !this.carShow;
@@ -242,9 +253,12 @@
                 return val;
             }
         },
-        activated:function(){
-            this.getPackageList();
+        created:function(){
+            const id = this.carModel?this.carModel.id:'';
+            this.getPackageList(id);
             this.getCarList();
+        },
+        activated:function(){
             this.$store.commit('SET_RESET_FLAS',true);
             this.$store.commit('SET_PACKAGE_STOREINFO',{});
         },

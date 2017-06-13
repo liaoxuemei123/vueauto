@@ -246,7 +246,7 @@
                     orderNo:this.orderNo
                 },(data)=>{
                     this.orderInfo = data.data.PackageOrder;
-                    this.orderInfo.packageName = data.data.Package.packageName;
+                    this.orderInfo.packageName = data.data.Package.wbPkindName;
                 })
             }
         },

@@ -5,65 +5,59 @@
                 title="套餐详情"
             />
             <div class="page-content" flex="dir:top box:last">
-                <scroller>
+                <scroller ref="scroller">
                     <div class="detail-container">
                         <div class="set-container">
                             <div class="set-image">
-                                <div class="image-container">
-                                    <img :src="setInfo.packageImage" >
-                                </div>
+                                <swiper>
+                                    <div class="swiper-slide" v-for="(item,index) in setResource.indexImgs">
+                                        <img :src="item" >
+                                    </div>
+                                </swiper>
                             </div>
                             <div class="set-detail" flex="dir:top box:mean">
                                 <div class="line" flex="dir:left cross:center">
                                     <span class="car-type">{{packageInfo.modelInfo.seriesName}}</span>
-                                    <span class="des1">{{setInfo.packageName}}</span>
-                                    <span class="des2">{{setInfo.isUniversal|universalFilter}}</span>
+                                    <span class="des1">{{setInfo.wbpName}}</span>
+                                    <span class="des2">{{setInfo.wbpSfqgty|universalFilter}}</span>
                                 </div>
                                 <div class="line" flex="dir:left cross:center">
-                                    <span class="price-range" v-if="setDetail.price"><span class="doller">￥</span>{{setDetail.price}}</span>
-                                    <span class="origin-price" v-if="setDetail.originPrice"><span class="doller">￥</span>{{setDetail.originPrice}}</span>
-                                    <span class="price-range" v-else="setDetail.price"><span class="doller">￥</span>{{priceRange.minprice|priceFilter}}-{{priceRange.maxprice|priceFilter}}</span>
+                                    <span class="price-range"><span class="doller">￥</span>{{showPrice | priceFilter}}</span>
+                                    <span class="price-range" v-if="rangePrice > 0">&nbsp;-&nbsp;<span class="doller">￥</span>{{rangePrice | priceFilter}}</span>
+                                    <span class="origin-price"><span class="doller">￥</span>{{deletePrice | priceFilter}}</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="meal-list-container">
-                            <div class="title"  v-tap.prevent="toggleMeal">
-                                <span>套餐机油选择</span>
-                                <span class="selected-oil" v-if="setMealList[selectMeal]">{{setMealList[selectMeal].engineOil + ' ' + setMealList[selectMeal].pieceNumber}}</span>
-                                <i class="iconfont" :class="mealListShow?'icon-up':'icon-down'"></i>
-                            </div>
-                            <div class="meal-list" v-if="mealListShow">
-                                <div class="meal-item" v-tap.prevent="selectedMeal.bind(this,index)" v-for="(item,index) in setMealList" flex="dir:left cross:center">
-                                    <i class="iconfont icon-select" v-if="selectMeal == index"></i>
-                                    <i class="iconfont icon-circle active" v-else="selectMeal == index"></i>
-                                    <div class="oil-brand">{{item.engineOil}}</div>
-                                    <div class="oil-piece">{{item.pieceNumber}}</div>
+                        <div v-for="(item,index) in pageConfig.fileds" v-show="pageConfig.fileds.length > 0">
+                            <div class="meal-list-container" v-if="item == 'meal' && pageConfig.tags[index] == 1">
+                                <div class="title"  v-tap.prevent="toggleMeal">
+                                    <span>套餐机油选择</span>
+                                    <span class="selected-oil" v-if="setMealList[selectMeal]">{{setMealList[selectMeal].wbplJyName + ' ' + setMealList[selectMeal].wbplJyXh}}</span>
+                                    <i class="iconfont" :class="mealListShow?'icon-up':'icon-down'"></i>
+                                </div>
+                                <div class="meal-list" v-if="mealListShow">
+                                    <div class="meal-item" v-tap.prevent="selectedMeal.bind(this,index)" v-for="(item,index) in setMealList" flex="dir:left cross:center">
+                                        <i class="iconfont icon-select" v-if="selectMeal == index"></i>
+                                        <i class="iconfont icon-circle active" v-else="selectMeal == index"></i>
+                                        <div class="oil-brand">{{item.wbplJyName}}</div>
+                                        <div class="oil-piece">{{item.wbplJyXh}}</div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="select-store">
-                            <div class="input-control">
-                                <inp-com title="使用4S店" :value="packageInfo.storeInfo.storeName" :onClick="goStore" :readonly="true" :placeholder="storeTip" :rightArrow="true" />
+                            <div class="select-store" v-if="item == 'meal' && pageConfig.tags[index] == 1">
+                                <div class="input-control">
+                                    <inp-com title="使用4S店" :value="packageInfo.storeInfo.storeName" :onClick="goStore" :readonly="true" :placeholder="storeTip" :rightArrow="true" />
+                                </div>
                             </div>
-                        </div>
-                        <div class="tips" v-if="setInfo.isUniversal == 1">提示：请查看可以使用的4S店</div>
-                        <!--<div class="input-container">
-                            <inp-com
-                                title="套餐机油选择"
-                                :readonly="true"
-                                :rightArrow="true"
-                                placeholder="请选择机油"
-                                :onClick="popOilSelect"
-                                :value="setDetail.mealName"
-                            />
-                        </div>-->
-                        <div class="info-container">
-                            <div class="title">
-                                套餐信息
-                            </div>
-                            <div class="info-content">
-                                <div class="image-cotainer">
-                                    <img :src="setInfo.wpUrl" alt="">
+                            <div class="tips" v-if="setInfo.isUniversal == 1 && item == 'meal' && pageConfig.tags[index] == 1">提示：请查看可以使用的4S店</div>
+                            <div class="info-container" v-if="item == 'info' && pageConfig.tags[index] == 1">
+                                <div class="title">
+                                    套餐信息
+                                </div>
+                                <div class="info-content">
+                                    <div class="image-cotainer" v-for="(item,index) in setResource.detailImgs">
+                                        <img :src="item" alt="">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -76,39 +70,6 @@
                 </div>
             </div>
         </div>
-        <mt-popup
-            v-model="popupVisible"
-            position='bottom'>
-            <div class="oil-select-modal">
-                <div class="title">
-                    <div class="store-url">
-                        <div class="image-container">
-                            <img :src="setInfo.packageImage">
-                        </div>
-                    </div>
-                    <div class="right" flex="dir:top box:mean">
-                        <div class="price" flex="dir:left cross:center" v-if='setMealList[selectMeal]'>￥{{setMealList[selectMeal].unitPrice}}</div>
-                        <div class="name" flex="dir:left cross:center" v-if='setMealList[selectMeal]'>已选“{{setMealList[selectMeal].engineOil+setMealList[selectMeal].pieceNumber}}”</div>
-                    </div>
-                    <div class="close-button" @click="popupVisible=false">
-                        <i class="iconfont icon-close"></i>
-                    </div>
-                </div>
-                <div class="oil-list-container" flex="dir:top box:last">
-                    <div class="oil-list">
-                        <div class="oil-class">机油种类</div>
-                        <div class="oil-item" @click='selectMeal = index' :class="{'active':index==selectMeal}" flex="dir:left cross:center" v-for="(item,index) in setMealList">
-                            {{item.engineOil+item.pieceNumber}}
-                        </div>
-                    </div>
-                    <div class="button-control" @click="selectedMeal">
-                        <div class="ok-button">
-                            确认
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </mt-popup>
     </div>
 </template>
 <script>
@@ -118,16 +79,21 @@
     import { mapState } from 'vuex';
     import { Toast } from 'mint-ui';
     import Scroller from '../components/Scroller';
+    import Swiper from '../components/Swiper';
+    import emmiter from '../mixins/emmiter';
     export default {
         data () {
             return {
                 setInfo:{},
-                popupVisible:false,
-                mealListShow:false,
-                priceRange:{
-                    minprice:0,
-                    maxprice:0,
+                setResource:{
+                    ad:'',//广告语
+                    indexImgs:[],//展示图片
+                    detailImgs:[],//详情图片
                 },
+                mealListShow:false,
+                showPrice:0,//实际价格
+                rangePrice:0,//价格区间最大价格
+                deletePrice:0,//原价
                 selectMeal:-1,
                 setMealList:[],
                 setDetail:{
@@ -138,26 +104,34 @@
                 storeTip:'选择4S店',
                 isSelectStore:true,
                 scrollerY:0,//记录scroller的位置
+                pageConfig:{
+                    tags:[],
+                    fileds:[],
+                }
             }
         },
         components:{
             NavBar,
             InpCom,
-            Scroller
+            Scroller,
+            Swiper
         },
+        mixins: [emmiter],
         computed:{
             ...mapState([
-                'packageInfo'
+                'packageInfo','bisinessType','pageSetting'
             ])
         },
-        updated:function(){//IScroll滚动回之前的位置
-            if(this.$children.length > 0){
-                for(var i=0;i<this.$children.length;i++){
-                    if(this.$children[i].mySroller && this.$children[i].mySroller.scrollTo){
-                        this.$children[i].mySroller.scrollTo(0,this.$children[i].scrollerInfo.y);
+        updated:function(){
+            this.$nextTick(() => {//IScroll滚动回之前的位置
+                if(this.$children.length > 0){
+                    for(var i=0;i<this.$children.length;i++){
+                        if(this.$children[i].mySroller && this.$children[i].mySroller.scrollTo){
+                            this.$children[i].mySroller.scrollTo(0,this.$children[i].scrollerInfo.y);
+                        }
                     }
                 }
-            }
+            })
         },
         watch:{
             'isSelectStore':function(val){
@@ -186,14 +160,29 @@
                 this.$store.commit('SET_RESET_FLAS',false);
                 this.$router.push({name:'personinfo'});
             },
-            getMealList:function(callback){
-                Tool.get('getSetMealList',{
+            getMealList:function(id){
+                Tool.get('getSetMeal',{
                     vehicleModel:this.packageInfo.modelInfo.vehicleModel || '',
                     displacement:this.packageInfo.modelInfo.displacement || '',
+                    wbplDid:id,
                 },(data)=>{
                     if(data.code == 200){
-                        this.setMealList = data.data;
-                        callback && callback();
+                        this.setMealList = data.data.jiyou;
+                        var price = data.data.jiage;
+                        if(price.indexOf('-')) {
+                            var priceRange = price.split('-');
+                            this.showPrice = priceRange[0];
+                            this.rangePrice = priceRange[1];
+                            this.deletePrice = priceRange[1];
+                        }else{
+                            this.showPrice = data.data.jiage;
+                            this.deletePrice = data.data.jiage;
+                            this.rangePrice = 0;
+                        }
+                        if(this.setMealList.length < 2){//如果只有一条机油数据，那就不支持修改
+                            //this.selectMeal = 0;
+                            this.selectedMeal(0);
+                        }
                     }else{
                         Toast({
                             duration:1000,
@@ -204,74 +193,80 @@
             },
             selectedMeal:function(index){
                 this.selectMeal = index;
-                var number = this.setInfo.setMealNumber - 0;
-                var discount = (this.setInfo.discount - 0)/10;
-                var fiveUnitPrice = this.setMealList[this.selectMeal].fiveUnitPrice;
-                var eightUnitPrice = this.setMealList[this.selectMeal].eightUnitPrice;
-                this.setDetail.price = 0;
-                this.setDetail.originPrice = 0;
-                if(this.setInfo.isUniversal == 1){//全国通用
-                    if(this.setInfo.setMealNumber == 5){//5次保养
-                        this.setDetail.price = Math.ceil((fiveUnitPrice - 0) * 5 * (0.83 / 0.8)).toFixed(2)
-                        this.setDetail.originPrice = Math.ceil((fiveUnitPrice - 0) * 5 / 0.8).toFixed(2)
-                    }else{//8次保养
-                        this.setDetail.price = Math.ceil((eightUnitPrice - 0) * 8 * (0.78 / 0.75)).toFixed(2);
-                        this.setDetail.originPrice = Math.ceil((eightUnitPrice - 0) * 8 / 0.75).toFixed(2)
-                    }
-                }else{//指定服务商
-                    if(this.setInfo.setMealNumber == 5){//5次保养
-                        this.setDetail.price = Math.ceil((fiveUnitPrice - 0) * 5).toFixed(2);
-                        this.setDetail.originPrice = Math.ceil((fiveUnitPrice - 0) * 5 / 0.8).toFixed(2)
-                    }else{//8次保养
-                        this.setDetail.price = Math.ceil((eightUnitPrice - 0) * 8).toFixed(2);
-                        this.setDetail.originPrice = Math.ceil((eightUnitPrice - 0) * 8 / 0.75).toFixed(2)
-                    }
+                this.showPrice = this.setMealList[this.selectMeal].wbplXSPrice;
+                this.rangePrice = 0;
+                this.deletePrice = this.setMealList[this.selectMeal].wbplPrice;
+                this.setDetail.price = this.showPrice;
+                this.setDetail.mealId = this.setMealList[this.selectMeal].wbplId;
+                this.setDetail.number = this.setMealList[this.selectMeal].wbplCs;
+                var validate = this.setMealList[this.selectMeal].wbplYxq - 0;
+                var today = Tool.formatDate(new Date());
+                var end = '';
+                if(String(validate).indexOf('.') >= 0){
+                    var INT = String(validate).split('.')[0] - 0;
+                    var FLOAT = validate - (String(validate).split('.')[0] - 0);
+                    var additionTime = Math.ceil(FLOAT * 365) * 60 * 60 * 24 * 1000; 
+                    var temp = today.substring(0,4) - 0 + INT + today.substring(4,10);
+                    end = Tool.formatDate(new Date(temp).getTime() + additionTime);
+                }else{
+                    end = today.substring(0,4) - 0 + validate + today.substring(4,10);
                 }
-                this.setDetail.mealId = this.setMealList[this.selectMeal].id;
-                this.setDetail.mealName = this.setMealList[this.selectMeal].engineOil + this.setMealList[this.selectMeal].pieceNumber;
-                this.popupVisible = false;
+                this.setDetail.validate = end;
+                this.setDetail.mealName = this.setMealList[this.selectMeal].wbplJyName + this.setMealList[this.selectMeal].wbplJyXh;
             },
-            getPackage:function(id){
-                Tool.get('getPackage',{id},function(data){
+            getPackageDetail:function(id=1){
+                Tool.get('wbinterface/getWbProduct',{id},data => {
                     if(data.code == 200){
-                        this.setInfo = data.data;
-                    }else{
-                        Toast({
-                            duration:1000,
-                            message:data.msg,
+                        const ret = data.data[0];
+                        const res = ret.wbResource;
+                        this.setResource.ad = res.wbrGgy;
+                        var i = 1;
+                        this.setResource.indexImgs = [];
+                        this.setResource.detailImgs = [];
+                        while(i < 6){
+                            res[`wbrIndeximg${i}`] ? this.setResource.indexImgs.push(res[`wbrIndeximg${i}`]) : '';
+                            i++;
+                        }
+                        i = 1;
+                        while(i < 11){
+                            res[`wbrXqt${i}`] ? this.setResource.detailImgs.push(res[`wbrXqt${i}`]) : '';
+                            i++;
+                        }
+                        this.$nextTick(() => {
+                            $('.info-content img')[0].onload = ()=>{
+                                this.$nextTick(()=>{
+                                    this.$refs.scroller.mySroller.refresh();
+                                })
+                            }
+                            this.broadcast('swiper','init',{
+                                autoplay:0,
+                                pagination:'.swiper-pagination',
+                            });
                         })
-                    }
-                })
-            },
-            getPackagePriceRange:function(){
-                Tool.get('getPackagePriceRange',{
-                    vehicleModel:this.packageInfo.modelInfo.vehicleModel || '',
-                    displacement:this.packageInfo.modelInfo.displacement || '',
-                    discount:this.setInfo.discount,
-                    setMealNumber:this.setInfo.setMealNumber,
-                    isUniversal:this.setInfo.isUniversal,
-                },(data)=>{
-                    if(data.code == 200){
-                        this.priceRange = data.data;
-                    }else{
-                        Toast({
-                            duration:1000,
-                            message:data.msg,
-                        })
+                        this.setInfo.wbpSfqgty = ret.wbpSfqgty;
+                        this.setInfo.wbpName = ret.wbpName;
+                        this.setInfo.wbpId = ret.wbpId;
+                        this.setInfo.wbpPdesc = ret.wbpPdesc;
+                        this.setInfo.coverUrl = res.wbrIndeximg1;
+                        if(this.setInfo.wbpSfqgty == 2){//判断是否是全国
+                            this.isSelectStore = true;
+                        }else{
+                            this.isSelectStore = false;
+                        }
                     }
                 })
             },
             reSetData:function(){
                 this.setMealList = [];
                 this.selectMeal = -1;
-                this.priceRange = {};
+                this.showPrice = 0;
                 this.mealListShow = false;
                 this.setDetail = {
                     price:'',
                     mealId:'',
                     mealName:''
                 }
-                setTimeout(()=>{
+                this.$nextTick(() => {
                     if(this.$children.length > 0){
                         for(var i=0;i<this.$children.length;i++){
                             if(this.$children[i].mySroller && this.$children[i].mySroller.scrollTo){
@@ -280,83 +275,56 @@
                             }
                         }
                     }
-                },0)//异步把更新放到updated之后
+                })
+            },
+            getPageConfig:function(e){
+                var wbpId = this.bisinessType;
+                this.pageConfig.tags = this.pageSetting['TCXQ_PAGE'].wbpdFtag.split(',');
+                this.pageConfig.fileds = this.pageSetting['TCXQ_PAGE'].wbpdName.split(',');
+                this.$nextTick(() => {
+                    $(this.$refs.onValiCode).hide();
+                    $(this.$refs.getValiCode).show();
+                    this.getMealList(this.params.id);
+                    this.getPackageDetail(this.params.id);
+                })
             },
             goStore:function(){
                 this.$store.commit('SET_RESET_FLAS',false);
                 if(this.isSelectStore){
-                    this.$router.push({name:'store'});
+                    this.$router.push({name:'store',params:{wbpId:this.setInfo.wbpId}});
                 }else{
-                    this.$router.push({name:'viewstore'});
+                    this.$router.push({name:'viewstore',params:{wbpId:this.setInfo.wbpId}});
                 }
             },
             toggleMeal:function(){
                 this.mealListShow = !this.mealListShow
-            }
+            },
+        },
+        mounted:function(){
+            // this.$nextTick(()=>{
+            //     this.$refs.scroller.mySroller.refresh();
+            // })
         },
         activated:function(){
-            this.setInfo = this.$route.query;
-            var validate = this.setInfo.validityDate - 0;
-            var today = Tool.formatDate(new Date());
-            var end = '';
-            if(String(validate).indexOf('.') >= 0){
-                var INT = String(validate).split('.')[0] - 0;
-                var FLOAT = validate - (String(validate).split('.')[0] - 0);
-                var additionTime = Math.ceil(FLOAT * 365) * 60 * 60 * 24 * 1000; 
-                var temp = today.substring(0,4) - 0 + INT + today.substring(4,10);
-                end = Tool.formatDate(new Date(temp).getTime() + additionTime);
-            }else{
-                end = today.substring(0,4) - 0 + validate + today.substring(4,10);
-            }
-            this.setInfo.validate = new Date(end).getTime() + 36000000;
+            this.params = this.$route.params;
             if(this.packageInfo.reset){
                 this.reSetData();
-                setTimeout(()=>{
-                    this.getPackagePriceRange();
-                    this.getMealList();
-                },0)
+                this.$nextTick(()=>{
+                    this.getPageConfig();
+                })
             }
-            if(!this.packageInfo.reset && !this.priceRange.minprice){
-                this.$router.push({name:'home'});
-            }
-            if(this.setInfo.isUniversal == 2){
-                this.isSelectStore = true;
-            }else{
-                this.isSelectStore = false;
-            }
-            Tool.post('packagecount',{packageId:this.setInfo.id,packageName:this.setInfo.packageName,isUniversal:this.setInfo.isUniversal},(data)=>{})
-        },
-        deactivated:function(){
-            // if(this.$children.length > 0){
-            //     for(var i=0;i<this.$children.length;i++){
-            //         if(this.$children[i].mySroller && this.$children[i].mySroller.scrollTo){
-            //             this.$children[i].mySroller.scrollTo(0,0);
-            //         }
-            //     }
-            // }
         },
         filters:{
-            // ageFilter:function(val){
-            //     if(val){
-            //         return '两年以上车龄专享'
-            //     }else{
-            //         return '两年以内车龄专享'
-            //     }
-            // },
-            // validateFilter:function(val){
-            //     // var today = Tool.formatDate(val);
-            //     // var endDay = (today.substring(0,4) - 0) + 3 + today.substring(4,10);today + '至' + endDay + ' (周末、法定节假日通用)';
-            //     return '3年'
-            // },
-            universalFilter:function(val){
+            universalFilter:function(val){//使用范围展示过滤器
                 if(val == 1){
-                    return '全国4S店使用(暂开通河南、湖南、重庆)'
+                    return '全国4S店使用'
                 }else{
                     return '指定4S店使用'
                 }
             },
-            priceFilter:function(val){
-                return Math.ceil(val - 0).toFixed(2);
+            priceFilter:function(val){//价格展示过滤器
+                if(!val) return '0.00';
+                return (val - 0).toFixed(2);
             }
         },
     }
@@ -462,7 +430,8 @@
                     background-color:#fff;
                     box-shadow:0px 1px 3px #aaa;
                     .set-image{
-                        .image-container{
+                        min-height:10rem;
+                        .swiper-slide{
                             height:10rem;
                             background-color:#ccc;
                             position:relative;
@@ -484,7 +453,7 @@
                         padding:0.4rem 0.5rem;
                         font-size:0.51rem;
                         .car-type,.des1{
-                            font-size:0.51rem;
+                            font-size:0.57rem;
                             color:#333333;
                             font-weight:bold;
                             margin-right:0.2rem;
@@ -584,6 +553,7 @@
                     .info-content{
                         .image-cotainer{
                             width:100%;
+                            min-height:15rem;
                             img{
                                 width:100%;
                             }

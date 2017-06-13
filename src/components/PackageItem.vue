@@ -2,21 +2,16 @@
     <div class="set-container" v-tap="viewDetail.bind(this,item)" flex="dir:left box:first">
         <div class="set-image">
             <div class="image-container">
-                <img v-lazy="item.packageImage">
+                <img v-lazy="item.wbResource.wbrIndeximg1" v-if="item.wbResource">
             </div>
         </div>
         <div class="set-info" flex="dir:top cross:top box:mean">
             <div class="line" flex="dir:left cross:center">
-                <span class="package-name">{{item.packageName}}</span>
-                <span class="sall">{{item.discount}}折</span>
+                <span class="package-name">{{item.wbpName}}</span>
+                <span class="sall" v-if="item.wbpYhzk">{{item.wbpYhzk}}折</span>
             </div>
             <div class="line" flex="dir:left cross:center">
-                <span class="price-title">价格：</span>
-                <span class="package-price">{{255|priceFilter}}</span>
-                <div class="price-delete">300</div>
-            </div>
-            <div class="line" flex="dir:left cross:center">
-                <span class="description">描述：{{item.isUniversal|universalFilter}}</span>
+                <span class="description">描述：{{item.wbpSfqgty|universalFilter}}</span>
             </div>
             <div class="line" flex="dir:left cross:center main:right">
                 <span class="buy-it">马上购买</span>
@@ -37,20 +32,27 @@
         props:{
             item:{
                 type:Object,
-                default:{}
+                default:{
+                }
             }
         },
         computed:{
             ...mapState([
-                'packageInfo'
+                'packageInfo','bisinessConfig'
             ])
         },
         methods:{
             viewDetail:function(item){
+                const bisiness = this.$parent.$parent.$parent.bisinessItems[this.$parent.$parent.$parent.activeBusiness].wbyId;
+                for(var props in this.bisinessConfig){
+                    this.bisinessConfig[props].wbyId === bisiness ? this.$store.commit("SET_PAGE_CONFIG",this.bisinessConfig[props].wbPageDetail) : '';
+                }          
                 if(this.packageInfo.modelInfo.vehicleModel && !!this.$parent.$parent.pickerModel){
                     if(this.$parent.$parent.pickerModel == (this.packageInfo.modelInfo.vehicleModel + ' ' + this.packageInfo.modelInfo.displacement)){
-                        this.$router.push({path:'../setdetail/'+item.id,query:item});
+                        this.$router.push({path:'../setdetail/'+item.wbpId});
+                        this.$store.commit("SET_BISINESS_TYPE",item.wbpId);
                         Tool.localItem('modelInfo',this.packageInfo.modelInfo);
+                        Tool.post('packagecount',{packageId:item.wbpId,packageName:item.wbpName,isUniversal:item.wbpSfqgty},(data)=>{})
                     }else{
                         Toast({
                             message:"车型选择错误，请重新选择",
