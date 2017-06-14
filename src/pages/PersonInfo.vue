@@ -133,7 +133,7 @@
         },
         methods:{
             nextPage:function(){
-                if(!this.userInfo.vin){
+                if(!this.userInfo.vin && this.pageConfig.tags[this.pageConfig.fileds.indexOf('vin')] == '1'){
                     Toast({
                         message:'请输入车架号',
                         duration:1000,
@@ -147,21 +147,21 @@
                     });
                     return false;
                 }
-                if(!this.userInfo.motorId){
+                if(!this.userInfo.motorId && this.pageConfig.tags[this.pageConfig.fileds.indexOf('motorId')] == '1'){
                     Toast({
                         message:'请输入发动机号',
                         duration:1000,
                     });
                     return false;
                 }
-                if(!this.userInfo.contact){
+                if(!this.userInfo.contact && this.pageConfig.tags[this.pageConfig.fileds.indexOf('contact')] == '1'){
                     Toast({
                         message:'请输入姓名',
                         duration:1000,
                     });
                     return false;
                 }
-                if(!this.userInfo.tel){
+                if(!this.userInfo.tel && this.pageConfig.tags[this.pageConfig.fileds.indexOf('tel')] == '1'){
                     Toast({
                         message:'请输入手机号',
                         duration:1000,
@@ -208,9 +208,10 @@
                         },(data) => {
                             if(data.code == 200){
                                 this.userInfo.engineNo = pData.data.engineNo;
-                                this.userInfo.mileage = Math.ceil((+new Date() - (pData.data.buyCarDate?+new Date(pData.data.buyCarDate):new Date()))/(1000*60*60*24))
+                                this.userInfo.mileage = Math.ceil((+new Date() - (pData.data.buyCarDate?+new Date(pData.data.buyCarDate):new Date()))/(1000*60*60*24));
+                                this.userInfo.buyCarDate = pData.data.buyCarDate;
                                 this.$store.commit('SET_PACKAGE_USERINFO',this.userInfo);
-                                this.$router.push({name:'confirmorder'});
+                                this.$router.push({name:'confirmorder',params:this.$route.params});
                                 Tool.localItem('vehicleInfo',{vin:this.userInfo.vin,engineNo:this.userInfo.motorId,userName:this.userInfo.contact})
                             }else{
                                 Toast({
@@ -221,9 +222,10 @@
                         })
                     }else{
                         this.userInfo.engineNo = pData.data.engineNo;
-                        this.userInfo.mileage = Math.ceil((+new Date() - (pData.data.buyCarDate?+new Date(pData.data.buyCarDate):new Date()))/(1000*60*60*24))
+                        this.userInfo.mileage = Math.ceil((+new Date() - (pData.data.buyCarDate?+new Date(pData.data.buyCarDate):new Date()))/(1000*60*60*24));
+                        this.userInfo.buyCarDate = pData.data.buyCarDate;
                         this.$store.commit('SET_PACKAGE_USERINFO',this.userInfo);
-                        this.$router.push({name:'confirmorder'});
+                        this.$router.push({name:'confirmorder',params:this.$route.params});
                         Tool.localItem('vehicleInfo',{vin:this.userInfo.vin,engineNo:this.userInfo.motorId,userName:this.userInfo.contact})
                     }
                 })
@@ -250,8 +252,8 @@
                 this.userInfo.referee = $(e.target).val();
             },
             getPageConfig:function(e){
-                this.pageConfig.tags = this.pageSetting['GM_PAGE'].wbpdFtag.split(',');
-                this.pageConfig.fileds = this.pageSetting['GM_PAGE'].wbpdName.split(',');
+                this.pageConfig.tags = this.pageSetting.wbPageDetail['GM_PAGE'].wbpdFtag.split(',');
+                this.pageConfig.fileds = this.pageSetting.wbPageDetail['GM_PAGE'].wbpdName.split(',');
                 this.$nextTick(() => {
                     $(this.$refs.onValiCode).hide();
                     $(this.$refs.getValiCode).show();

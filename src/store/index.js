@@ -116,8 +116,12 @@ const store = new Vuex.Store({
             state.packageInfo.reset = bool;
         },
         SET_PACKAGE_STOREINFO:function(state,param){
-            for(var props in param){
-                state.packageInfo.storeInfo[props] = param[props];
+            if($.isEmptyObject(param)){
+                state.packageInfo.storeInfo = {};
+            }else{
+                for(var props in param){
+                    state.packageInfo.storeInfo[props] = param[props];
+                }
             }
         },
         SET_PACKAGE_USERINFO:function(state,param){

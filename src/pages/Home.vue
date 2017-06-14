@@ -56,13 +56,6 @@
             icon:require('../assets/changan_sy.png'),
             view:"CommercialSet",
             type:2,
-        },{
-            wbyId:'',
-            name:"预约保养",
-            wbyName:"预约保养",
-            icon:'',
-            view:"Subscribe",
-            type:3,
         }
     ];
     export default{
@@ -96,6 +89,7 @@
                 if(this.bisinessItems[index].view){
                     this.currentView = this.bisinessItems[index].view;
                 }
+                if(this.bisinessItems.length < 3) return;
                 this.broadcast('xscroller','page',{oldVal:oldVal,newVal:index});
             },
             userCenter:function() {

@@ -44,12 +44,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="select-store" v-if="item == 'meal' && pageConfig.tags[index] == 1">
+                            <div class="select-store" v-if="item == 'store' && pageConfig.tags[index] == 1">
                                 <div class="input-control">
-                                    <inp-com title="使用4S店" :value="packageInfo.storeInfo.storeName" :onClick="goStore" :readonly="true" :placeholder="storeTip" :rightArrow="true" />
+                                    <inp-com title="使用4S店" :value="storeName" :onClick="goStore" :readonly="true" :placeholder="storeTip" :rightArrow="true" />
                                 </div>
                             </div>
-                            <div class="tips" v-if="setInfo.isUniversal == 1 && item == 'meal' && pageConfig.tags[index] == 1">提示：请查看可以使用的4S店</div>
+                            <div class="tips" v-if="setInfo.isUniversal == 1 && item == 'info' && pageConfig.tags[index] == 1">提示：请查看可以使用的4S店</div>
                             <div class="info-container" v-if="item == 'info' && pageConfig.tags[index] == 1">
                                 <div class="title">
                                     套餐信息
@@ -107,7 +107,8 @@
                 pageConfig:{
                     tags:[],
                     fileds:[],
-                }
+                },
+                storeName:'',
             }
         },
         components:{
@@ -144,11 +145,12 @@
         },
         methods:{
             nextPage:function(){
-                if(!this.setDetail.price){
+                
+                if(!this.setDetail.price && this.pageConfig.tags[this.pageConfig.fileds.indexOf('meal')] == '1'){
                     Toast('请选择机油');
                     return false;
                 }
-                if(this.setInfo.isUniversal == 2 && !this.packageInfo.storeInfo.id){
+                if(this.setInfo.wbpSfqgty == 2 && !this.packageInfo.storeInfo.id && this.pageConfig.tags[this.pageConfig.fileds.indexOf('store')] == '1'){
                     Toast({
                         message:'请选择4S店',
                         duration:1000,
@@ -158,7 +160,7 @@
                 this.$store.commit('SET_PACKAGE_SETINFO',this.setInfo);
                 this.$store.commit('SET_PACKAGE_SETDETAIL',this.setDetail);
                 this.$store.commit('SET_RESET_FLAS',false);
-                this.$router.push({name:'personinfo'});
+                this.$router.push({name:'personinfo',params:this.params});
             },
             getMealList:function(id){
                 Tool.get('getSetMeal',{
@@ -279,11 +281,9 @@
             },
             getPageConfig:function(e){
                 var wbpId = this.bisinessType;
-                this.pageConfig.tags = this.pageSetting['TCXQ_PAGE'].wbpdFtag.split(',');
-                this.pageConfig.fileds = this.pageSetting['TCXQ_PAGE'].wbpdName.split(',');
+                this.pageConfig.tags = this.pageSetting.wbPageDetail['TCXQ_PAGE'].wbpdFtag.split(',');
+                this.pageConfig.fileds = this.pageSetting.wbPageDetail['TCXQ_PAGE'].wbpdName.split(',');
                 this.$nextTick(() => {
-                    $(this.$refs.onValiCode).hide();
-                    $(this.$refs.getValiCode).show();
                     this.getMealList(this.params.id);
                     this.getPackageDetail(this.params.id);
                 })
@@ -307,6 +307,7 @@
         },
         activated:function(){
             this.params = this.$route.params;
+            this.storeName = this.packageInfo.storeInfo.storeName ? this.packageInfo.storeInfo.storeName : '';
             if(this.packageInfo.reset){
                 this.reSetData();
                 this.$nextTick(()=>{

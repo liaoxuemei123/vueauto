@@ -45,7 +45,7 @@
             viewDetail:function(item){
                 const bisiness = this.$parent.$parent.$parent.bisinessItems[this.$parent.$parent.$parent.activeBusiness].wbyId;
                 for(var props in this.bisinessConfig){
-                    this.bisinessConfig[props].wbyId === bisiness ? this.$store.commit("SET_PAGE_CONFIG",this.bisinessConfig[props].wbPageDetail) : '';
+                    this.bisinessConfig[props].wbyId === bisiness ? this.$store.commit("SET_PAGE_CONFIG",this.bisinessConfig[props]) : '';
                 }          
                 if(this.packageInfo.modelInfo.vehicleModel && !!this.$parent.$parent.pickerModel){
                     if(this.$parent.$parent.pickerModel == (this.packageInfo.modelInfo.vehicleModel + ' ' + this.packageInfo.modelInfo.displacement)){

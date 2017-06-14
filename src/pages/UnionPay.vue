@@ -26,7 +26,6 @@
         },
         methods:{
             goBack:function(){
-                console.log(this.orderNo);
                 this.$router.push({path:'/orderpay/'+this.orderNo});
             }
         },

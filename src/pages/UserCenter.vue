@@ -50,14 +50,16 @@
         },
         mounted:function(){
         },
-        created:function(){
+        activated:function(){
             const userData = JSON.parse(Tool.localItem('userInfo'));
-            Tool.get('queryUserInfo',{userToken:userData.token},data => {
-                const userCenter = JSON.parse(JSON.parse(data));
-                if(userCenter.data){
-                    this.userInfo = userCenter.data;
-                }
-            });
+            if(userData){
+                Tool.get('queryUserInfo',{userToken:userData.token},data => {
+                    const userCenter = JSON.parse(JSON.parse(data));
+                    if(userCenter.data){
+                        this.userInfo = userCenter.data;
+                    }
+                });
+            }
         },
         methods:{
             logout:function(){
@@ -88,6 +90,9 @@
                 if(!val) return '用户' + Math.ceil( Math.random() * 10000 );
                 return val;
             }
+        },
+        beforeRouteEnter: (to, from, next) => {
+            Tool.routerEnter(to,from,next);
         }
     }
 </script>

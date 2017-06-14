@@ -102,13 +102,22 @@
                 <h5>长安汽车基础保养套餐服务协议</h5>
                 <div class="container">
                     <span class="attention">重要须知：重庆长安汽车股份有限公司在此特别提醒您仔细阅读本协议中的各个条款，您有权选择同意或者不同意本协议。</span>
-                    <ul>
-                        <li>1.本套餐内容包括：更换机油、机油滤清器、汽油滤清器的零件费用及对应工时费，转向、驻车、制动等系统专项检查工时费。</li>
-                        <li>2.本套餐使用时，如需增加其它项目，客户需自行承担增加的零件和工时费用。</li>
-                        <li>3.本套餐仅适用于签订协议时所登记的车辆（以VIN码为准），车辆所有权发生转移不影响维保套餐的使用。</li>
-                        <li>4.本套餐在购买7日之内未使用可申请退款。套餐金额将在提出申请10个工作日内退回客户当初购买套餐所使用账户中。</li>
-                        <li>5.本套餐规定的保养次数使用完毕或协议有效期满时，本协议终止。</li>
-                    </ul>
+                    <div class="license-choose" v-show="pageConfig.fileds.length" v-for="(item,index) in pageConfig.fileds">
+                        <ul v-if="item == 'wcxy' && pageConfig.tags[index] == 1">
+                            <li>1.本套餐内容包括：更换机油、机油滤清器、汽油滤清器的零件费用及对应工时费，转向、驻车、制动等系统专项检查工时费。</li>
+                            <li>2.本套餐使用时，如需增加其它项目，客户需自行承担增加的零件和工时费用。</li>
+                            <li>3.本套餐仅适用于签订协议时所登记的车辆（以VIN码为准），车辆所有权发生转移不影响维保套餐的使用。</li>
+                            <li>4.本套餐在购买7日之内未使用可申请退款。套餐金额将在提出申请10个工作日内退回客户当初购买套餐所使用账户中。</li>
+                            <li>5.本套餐规定的保养次数使用完毕或协议有效期满时，本协议终止。</li>
+                        </ul>
+                        <ul v-if="item == 'scxy' && pageConfig.tags[index] == 1">
+                            <li>1.本套餐内容包括：更换机油、机油滤清器、汽油滤清器的零件费用及对应工时费，转向、驻车、制动等系统专项检查工时费。</li>
+                            <li>2.本套餐使用时，如需增加其它项目，客户需自行承担增加的零件和工时费用。</li>
+                            <li>3.本套餐仅适用于签订协议时所登记的车辆（以VIN码为准），车辆所有权发生转移不影响维保套餐的使用。</li>
+                            <li>4.本套餐在购买7日之内未使用可申请退款。套餐金额将在提出申请10个工作日内退回客户当初购买套餐所使用账户中。</li>
+                            <li>5.本套餐规定的保养次数使用完毕或协议有效期满时，本协议商车。</li>
+                        </ul>
+                    </div>
                     <footer>
                         <div>重庆长安汽车股份有限公司</div>
                         <div>2017年4月1日</div>
@@ -134,11 +143,16 @@
             return {
                 sure:true,
                 licenseShow:false,
+                wbpId:'',
+                pageConfig:{
+                    fileds:[],
+                    tags:[]
+                }
             }
         },
         computed:{
             ...mapState([
-                'packageInfo'
+                'packageInfo','pageSetting'
             ])
         },
         components:{
@@ -191,10 +205,14 @@
             licenseAgree:function(){
                 this.sure = true;
                 this.licenseShow = false;
-            }
+            },
+            getPageConfig:function(e){
+                this.pageConfig.tags = this.pageSetting.wbPageDetail['XY_PAGE'].wbpdFtag.split(',');
+                this.pageConfig.fileds = this.pageSetting.wbPageDetail['XY_PAGE'].wbpdName.split(',');
+            },
         },
         activated:function(){
-            console.log(this.packageInfo);
+            this.getPageConfig();
         },
         filters:{
             universalFilter:function(val){
@@ -219,7 +237,26 @@
             if($.isEmptyObject(store.getters.packageInfo.userInfo)){
                 next({name:'home'});
             }else{
-                Tool.routerEnter(to,from,next)
+                if(Tool.localItem('userInfo') && Tool.getUserInfo('userId')){
+                    next(vm => {
+                        var wbProduct = vm.$route.params.id;
+                        wbProduct ? vm.wbpId = wbProduct : wbProduct = vm.wbpId;
+                        const wbtrPhonno = vm.packageInfo.userInfo.tel;
+                        const buyCarDate = vm.packageInfo.userInfo.buyCarDate;
+                        Tool.get('productRange/determineUser',{wbtrPhonno,wbProduct,buyCarDate},data =>{
+                            if(data.msg === '0'){
+                                Toast({
+                                    message:"你不能购买该套餐",
+                                    duration:3000
+                                })
+                                vm.$router.back();
+                            }
+                        })
+                    });
+                }else{
+                    store.commit('POP_PAGE',1);//在进入login之前把已进栈但是没有被访问的页面清理出栈
+                    next({name:'login',params:{to:to.path}});
+                }
             }
         },
     }
