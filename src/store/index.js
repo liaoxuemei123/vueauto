@@ -26,7 +26,7 @@ const subscribeDefault = {
     mile:'',
     contact:'',
     phone:'',
-    description:''
+    description:'',
 }
 
 const store = new Vuex.Store({
@@ -58,6 +58,7 @@ const store = new Vuex.Store({
         bisinessType:'',
         bisinessConfig:{},
         pageSetting:[],
+        carId:''
     },
     mutations:{
         SET_MODE:function(state,mode){
@@ -140,6 +141,9 @@ const store = new Vuex.Store({
         },
         UPDATE_PICKERMODEL(state,param){
             state.pickerModel = param;
+        },
+        UPDATE_CARID(state,param){
+            state.carId = param;
         },
         SET_BISINESS_TYPE(state,param){
             state.bisinessType = param;

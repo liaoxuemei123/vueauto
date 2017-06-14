@@ -103,6 +103,7 @@
     import PackageItem from '../../components/PackageItem';
     import Tool from '../../utils/Tool';
     import { mapState } from 'vuex';
+    import { Toast } from 'mint-ui';
     export default {
         data () {
             return {
@@ -144,7 +145,7 @@
             }
         },
         computed:{
-            ...mapState(['carCasCade','pickerModel']),
+            ...mapState(['carCasCade','pickerModel','carId']),
         },
         components:{
             Scroller,
@@ -215,6 +216,7 @@
                     this.carModel.displacement = values[2].name;
                     this.carModel.vehicleModel = values[1].name;
                     this.carModel.vehicleType = values[1].type;
+                    this.carModel.typeName = values[0].name;
                     this.carModel.id = values[2].id;
                     this.carModel.pickerModel = this.carModel.vehicleModel + ' ' + this.carModel.displacement;
                 }else if(values[1] && values[2]){
@@ -223,6 +225,7 @@
                     this.carModel.displacement = values[2].name;
                     this.carModel.vehicleModel = values[1].name;
                     this.carModel.vehicleType = values[1].type;
+                    this.carModel.typeName = values[0].name;
                     this.carModel.id = values[2].id;
                     this.carModel.pickerModel = this.carModel.vehicleModel + ' ' + this.carModel.displacement;
                 }
@@ -231,6 +234,7 @@
                 if(this.carModel.displacement){
                     this.$store.commit('SET_PACKAGE_MODEL',this.carModel);
                     this.$store.commit('UPDATE_PICKERMODEL',this.carModel.pickerModel);
+                    this.$store.commit('UPDATE_CARID',this.carModel.id);
                 }else{
                     this.carModel.displacement = this.carCasCade.module[0][0][0].name;
                     this.carModel.id = this.carCasCade.module[0][0][0].id;
@@ -239,9 +243,13 @@
                     this.carModel.pickerModel = this.carModel.vehicleModel + ' ' + this.carModel.displacement;
                     this.$store.commit('SET_PACKAGE_MODEL',this.carModel);
                     this.$store.commit('UPDATE_PICKERMODEL',this.carModel.pickerModel);
+                    this.$store.commit('UPDATE_CARID',this.carModel.id);
                 }
                 this.carShow = false;
                 this.getPackageList(this.carModel.id);
+                if(this.carModel.typeName === '轿车'){
+                    this.$parent.changeActive(0);
+                }
             },
             toggleShow:function(){
                 this.carShow = !this.carShow;
@@ -254,11 +262,10 @@
             }
         },
         created:function(){
-            const id = this.carModel?this.carModel.id:'';
-            this.getPackageList(id);
             this.getCarList();
         },
         activated:function(){
+            this.getPackageList(this.carId);
             this.$store.commit('SET_RESET_FLAS',true);
             this.$store.commit('SET_PACKAGE_STOREINFO',{});
         },
