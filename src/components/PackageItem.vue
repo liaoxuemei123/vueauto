@@ -1,5 +1,5 @@
 <template>
-    <div class="set-container" v-tap="viewDetail.bind(this,item)" flex="dir:left box:first">
+    <div class="set-container" v-tap="viewDetail.bind(this)" flex="dir:left box:first">
         <div class="set-image">
             <div class="image-container">
                 <img v-lazy="item.wbResource.wbrIndeximg1" v-if="item.wbResource">
@@ -42,7 +42,8 @@
             ])
         },
         methods:{
-            viewDetail:function(item){
+            viewDetail:function(){
+                var item = this.item;
                 const bisiness = this.$parent.$parent.$parent.bisinessItems[this.$parent.$parent.$parent.activeBusiness].wbyId;
                 for(var props in this.bisinessConfig){
                     this.bisinessConfig[props].wbyId === bisiness ? this.$store.commit("SET_PAGE_CONFIG",this.bisinessConfig[props]) : '';
