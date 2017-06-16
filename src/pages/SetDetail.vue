@@ -159,7 +159,7 @@
                 }
                 this.$store.commit('SET_PACKAGE_SETINFO',this.setInfo);
                 this.$store.commit('SET_PACKAGE_SETDETAIL',this.setDetail);
-                this.$store.commit('SET_RESET_FLAS',false);
+                this.$store.commit('UPDATE_RESET',false);
                 this.$router.push({name:'personinfo',params:this.params});
             },
             getMealList:function(id){
@@ -298,7 +298,7 @@
                 })
             },
             goStore:function(){
-                this.$store.commit('SET_RESET_FLAS',false);
+                this.$store.commit('UPDATE_RESET',false);
                 if(this.isSelectStore){
                     this.$router.push({name:'store',params:{wbpId:this.setInfo.wbpId}});
                 }else{

@@ -40,22 +40,27 @@
             }
         },
         computed:{
-            ...mapState([
-                'packageInfo','bisinessConfig'
-            ])
+            ...mapState({
+                modelInfo:({
+                    packageinfo
+                }) => packageinfo.modelInfo,
+                bisiConfig:({
+                    pageconfig
+                }) => pageconfig.config
+            })
         },
         methods:{
             viewDetail:function(){
                 var item = this.item;
                 const bisiness = this.$parent.$parent.$parent.bisinessItems[this.$parent.$parent.$parent.activeBusiness].wbyId;
-                for(var props in this.bisinessConfig){
-                    this.bisinessConfig[props].wbyId === bisiness ? this.$store.commit("SET_PAGE_CONFIG",this.bisinessConfig[props]) : '';
+                for(var props in this.bisiConfig){
+                    this.bisiConfig[props].wbyId === bisiness ? this.$store.commit("SET_PAGE_CONFIG",this.bisiConfig[props]) : '';
                 }          
-                if(this.packageInfo.modelInfo.vehicleModel && !!this.$parent.$parent.pickerModel){
-                    if(this.$parent.$parent.pickerModel == (this.packageInfo.modelInfo.vehicleModel + ' ' + this.packageInfo.modelInfo.displacement)){
+                if(this.modelInfo.vehicleModel && !!this.$parent.$parent.pickerModel){
+                    if(this.$parent.$parent.pickerModel == (this.modelInfo.vehicleModel + ' ' + this.modelInfo.displacement)){
                         this.$router.push({path:'../setdetail/'+item.wbpId});
                         this.$store.commit("SET_BISINESS_TYPE",item.wbpId);
-                        Tool.localItem('modelInfo',this.packageInfo.modelInfo);
+                        Tool.localItem('modelInfo',this.modelInfo);
                         Tool.post('packagecount',{packageId:item.wbpId,packageName:item.wbpName,isUniversal:item.wbpSfqgty},(data)=>{})
                     }else{
                         Toast({

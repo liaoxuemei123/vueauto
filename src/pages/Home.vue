@@ -41,6 +41,7 @@
     import MinniSet from './home/MiniSet';
     import CommercialSet from './home/CommercialSet';
     import Subscribe from './home/Subscribe';
+    import { mapMutations } from 'vuex';
     const BISINESS_CONST = [
         {
             wbyId:'wcby',
@@ -112,17 +113,23 @@
                             })
                         })
                     })
-                    this.$store.commit("SET_BISINESS_CONFIG",data.data);
+                    this.setBisinessConfig(data.data);
                 })
-            }
+            },
+            ...mapMutations({
+                setBisinessConfig: 'SET_CONFIG',
+                reset: 'UPDATE_RESET',
+                setStoreInfo: 'SET_STORE_INFO',
+                updateUserInfo: 'UPDATE_USER_INFO'
+            })
         },
         created:function(){
             this.getBisinessList();
         },
         activated:function(){
-            this.$store.commit('SET_RESET_FLAS',true);
-            this.$store.commit('SET_PACKAGE_STOREINFO',{});
-            this.$store.commit("SET_PACKAGE_USERINFO",{refereeType:'',referee:''})
+            this.reset(true);
+            this.setStoreInfo({});
+            this.updateUserInfo({refereeType:'',referee:''})
         },
         mounted:function(){
             this.bisinessItems.map((v,i)=>{

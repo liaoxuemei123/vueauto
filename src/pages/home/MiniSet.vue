@@ -1,7 +1,7 @@
 <template>
     <div class="sub-page" key="miniset">
         <div class="select-car" v-tap="toggleShow">
-            <div class="label">{{pickerModel | modelFilter}}</div>
+            <div class="label">{{modelInfo.pickerModel | modelFilter}}</div>
         </div>
         <transition name="fade">
             <div class="down-list-mask" v-show="carShow" @click="carShow=false"></div>
@@ -9,7 +9,7 @@
         <transition name="slide-down">
             <div class="down-list" v-show="carShow">
                 <div class="down-container">
-                    <mt-picker :slots="carlist" @change="onCarChange" valueKey="name"></mt-picker>
+                    <mt-picker :slots="carSelectList" @change="onCarChange" valueKey="name"></mt-picker>
                 </div>
                 <div class="toolbar" flex="dir:left box:mean">
                     <div class="cancel" v-tap="closeDialog" flex="dir:left cross:center main:left">
@@ -111,7 +111,7 @@
     import Scroller from '../../components/Scroller';
     import PackageItem from '../../components/PackageItem';
     import Tool from '../../utils/Tool';
-    import { mapState } from 'vuex';
+    import { mapState, mapMutations } from 'vuex';
     import { Toast } from 'mint-ui';
     export default {
         data () {
@@ -131,7 +131,7 @@
                 carModel:{},
                 carShow: false,
                 carData:{},
-                carlist: [{
+                carSelectList: [{
                     flex:1,
                     defaultIndex:0,
                     values:[],
@@ -154,7 +154,14 @@
             }
         },
         computed:{
-            ...mapState(['carCasCade','pickerModel','carId']),
+            ...mapState({
+                carList:({ 
+                    packageinfo 
+                }) => packageinfo.carList,
+                modelInfo:({
+                    packageinfo
+                }) => packageinfo.modelInfo,
+            })
         },
         components:{
             Scroller,
@@ -213,16 +220,16 @@
                         serise,
                         module
                     }
-                    this.$store.commit('UPDATE_CAR_CASECADE',param);
-                    this.carlist[0].values = param.type;
-                    this.carlist[2].values = param.serise[0];
-                    this.carlist[4].values = param.module[0][0];
+                    this.setCarList(param);
+                    this.carSelectList[0].values = param.type;
+                    this.carSelectList[2].values = param.serise[0];
+                    this.carSelectList[4].values = param.module[0][0];
                 })
             },
             onCarChange:function(picker,values){
                 if(values[0] && values[1] && values[2]){
-                    picker.setSlotValues(1,this.carCasCade.serise[values[0].index]);
-                    picker.setSlotValues(2,this.carCasCade.module[values[1].index.i][values[1].index.j]);
+                    picker.setSlotValues(1,this.carList.serise[values[0].index]);
+                    picker.setSlotValues(2,this.carList.module[values[1].index.i][values[1].index.j]);
                     this.carModel.displacement = values[2].name;
                     this.carModel.vehicleModel = values[1].name;
                     this.carModel.vehicleType = values[1].type;
@@ -230,8 +237,8 @@
                     this.carModel.id = values[2].id;
                     this.carModel.pickerModel = this.carModel.vehicleModel + ' ' + this.carModel.displacement;
                 }else if(values[1] && values[2]){
-                    picker.setSlotValues(1,this.carCasCade.serise[0]);
-                    picker.setSlotValues(2,this.carCasCade.module[values[1].index.i][values[1].index.j]);
+                    picker.setSlotValues(1,this.carList.serise[0]);
+                    picker.setSlotValues(2,this.carList.module[values[1].index.i][values[1].index.j]);
                     this.carModel.displacement = values[2].name;
                     this.carModel.vehicleModel = values[1].name;
                     this.carModel.vehicleType = values[1].type;
@@ -242,18 +249,14 @@
             },
             submitModelInfo:function(){
                 if(this.carModel.displacement){
-                    this.$store.commit('SET_PACKAGE_MODEL',this.carModel);
-                    this.$store.commit('UPDATE_PICKERMODEL',this.carModel.pickerModel);
-                    this.$store.commit('UPDATE_CARID',this.carModel.id);
+                     this.setModuleInfo(this.carModel);
                 }else{
-                    this.carModel.displacement = this.carCasCade.module[0][0][0].name;
-                    this.carModel.id = this.carCasCade.module[0][0][0].id;
-                    this.carModel.vehicleModel = this.carCasCade.serise[0][0].name;
-                    this.carModel.vehicleType = this.carCasCade.serise[0][0].type;
+                    this.carModel.displacement = this.carList.module[0][0][0].name;
+                    this.carModel.id = this.carList.module[0][0][0].id;
+                    this.carModel.vehicleModel = this.carList.serise[0][0].name;
+                    this.carModel.vehicleType = this.carList.serise[0][0].type;
                     this.carModel.pickerModel = this.carModel.vehicleModel + ' ' + this.carModel.displacement;
-                    this.$store.commit('SET_PACKAGE_MODEL',this.carModel);
-                    this.$store.commit('UPDATE_PICKERMODEL',this.carModel.pickerModel);
-                    this.$store.commit('UPDATE_CARID',this.carModel.id);
+                    this.setModuleInfo(this.carModel);
                 }
                 this.carShow = false;
                 this.getPackageList(this.carModel.id);
@@ -264,6 +267,13 @@
             toggleShow:function(){
                 this.carShow = !this.carShow;
             },
+            ...mapMutations({
+                reset: 'UPDATE_RESET',
+                setStoreInfo: 'SET_STORE_INFO',
+                updateUserInfo: 'UPDATE_USER_INFO',
+                setModuleInfo: 'SET_MODULE_INFO',
+                setCarList: 'SET_CARLIST',
+            })
         },
         filters:{
             modelFilter:function(val){
@@ -275,10 +285,10 @@
             this.getCarList();
         },
         activated:function(){
-            this.getPackageList(this.carId);
-            this.$store.commit('SET_RESET_FLAS',true);
-            this.$store.commit('SET_PACKAGE_STOREINFO',{});
-            this.$store.commit("SET_PACKAGE_USERINFO",{refereeType:'',referee:''})
+            this.getPackageList(this.modelInfo.id);
+            this.reset(true);
+            this.setStoreInfo({});
+            this.updateUserInfo({refereeType:'',referee:''})
         },
         deactivated:function(){
             this.carShow = false;

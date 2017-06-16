@@ -219,7 +219,7 @@
             this.initSelector();
         },
         activated:function(){
-            this.$store.commit('SET_RESET_FLAS',true);
+            this.$store.commit('UPDATE_RESET',true);
             this.$store.commit('SET_PACKAGE_STOREINFO',{});
             var modelInfo = JSON.parse(Tool.localItem('modelInfo'));
             if(modelInfo){
