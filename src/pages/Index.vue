@@ -31,7 +31,7 @@
                     <inp-com title="预约时间" :readonly="true" type="text" icon="icon-time" placeholder="请选择到店时间" :onClick="selectTime" :value="subscribeInfo.showTime"/>
                 </div>
                 <div class="input-control">
-                    <inp-com title="4S店选择" type="text" icon="icon-store" :readonly="true" placeholder="请选择服务商" :onClick="goStore" :value="subscribeInfo.storeInfo.storeName"/>
+                    <inp-com title="服务门店选择" type="text" icon="icon-store" :readonly="true" placeholder="请选择服务商" :onClick="goStore" :value="subscribeInfo.storeInfo.storeName"/>
                 </div>
                 <div class="input-control">
                     <inp-com title="当前里程" type="text" icon="icon-mile" placeholder="请输入里程KM" :onBlur="updateMile.bind(this)" :value="subscribeInfo.mile | mileFilter"/>
@@ -89,7 +89,7 @@
         <transition name="slide-up">
             <div class="order-notice" v-if="confirmShow" flex="dir:top box:last">
                 <div class="content">
-                    亲爱的车主，请再次核对您的预约需求信息，点击确认后4S店将尽快为您安排预约并短信反馈结果
+                    亲爱的车主，请再次核对您的预约需求信息，点击确认后服务门店将尽快为您安排预约并短信反馈结果
                 </div>
                 <div class="toolbar" flex="dir:left box:mean cross:center">
                     <div class="confirm-button button" @click="cancelOrder">

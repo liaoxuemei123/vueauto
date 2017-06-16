@@ -13,7 +13,7 @@
                     <transition name="slow-up">
                         <div class="show-content" v-if="setlist.up.length > 0 && setlist.down.length > 0">
                             <div class="up-title title" >
-                                <span>指定4S店使用</span>
+                                <span>指定服务门店使用</span>
                             </div>
                             <div class="up">
                                 <div class="set-item" v-for="(item, index) in setlist.up">
@@ -21,7 +21,7 @@
                                 </div>
                             </div>
                             <div class="down-title title">
-                                <span>全国4S店使用<strong class="additional">&nbsp;(暂开通河南、湖南、重庆)</strong></span>
+                                <span>全国服务门店使用<strong class="additional">&nbsp;(暂开通河南、湖南、重庆)</strong></span>
                             </div>
                             <div class="down">
                                 <div class="set-item" v-for="(item, index) in setlist.down">

@@ -27,7 +27,7 @@
                         </div>
                         <div class="explain-item" flex="dir:left cross:top box:first">
                             <div class="change title">保养项目：</div>
-                            <div>{{packageInfo.setInfo.wbpPdesc}}</div>
+                            <div>{{packageInfo.setInfo.wbpByxm}}</div>
                         </div>
                         <div class="explain-item" flex="dir:left cross:top box:first">
                             <div class="validate title">使用范围：</div>
@@ -217,9 +217,9 @@
         filters:{
             universalFilter:function(val){
                 if(val == 1){
-                    return '全国4S店使用'
+                    return '全国服务门店使用'
                 }else{
-                    return '指定4S店使用'
+                    return '指定服务门店使用'
                 }
             },
             ageFilter:function(val){

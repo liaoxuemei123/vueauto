@@ -1,7 +1,7 @@
 <template>
     <div class="sub-page" key="miniset">
         <div class="select-car" v-tap="toggleShow">
-            {{pickerModel | modelFilter}}
+            <div class="label">{{pickerModel | modelFilter}}</div>
         </div>
         <transition name="fade">
             <div class="down-list-mask" v-show="carShow" @click="carShow=false"></div>
@@ -50,11 +50,20 @@
             left:0;
             right:0;
             background-color:rgba(255,255,255,0.6);
-            height:1.5rem;
-            line-height:1.5rem;
+            height:1.6rem;
+            line-height:1.6rem;
             text-align:center;
             z-index:1000;
             border-bottom:1px solid #d5d5d5;
+            .label{
+                background-color:rgba(235,235,235,0.6);
+                height:1.2rem;
+                margin:0.2rem 0.3rem;
+                border-radius:0.15rem;
+                border:1px solid #dfdfdf;
+                line-height:1.2rem;
+                color:#444;
+            }
         }
         .down-list-mask{
             position:absolute;
@@ -160,6 +169,7 @@
                 Tool.get('wbinterface/getWbpkindList',{id,wbplCx:wbplCx?wbplCx:''},(data)=>{
                     if(data.code == 200){
                         this.products = [];
+                        if(!data.data) return;
                         data.data.map( v => {
                             if(v.wbProducts.length > 0 && v.wbpkName){
                                 this.products.push(v);
@@ -268,6 +278,7 @@
             this.getPackageList(this.carId);
             this.$store.commit('SET_RESET_FLAS',true);
             this.$store.commit('SET_PACKAGE_STOREINFO',{});
+            this.$store.commit("SET_PACKAGE_USERINFO",{refereeType:'',referee:''})
         },
         deactivated:function(){
             this.carShow = false;

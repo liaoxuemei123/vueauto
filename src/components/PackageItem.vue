@@ -2,7 +2,7 @@
     <div class="set-container" v-tap="viewDetail.bind(this)" flex="dir:left box:first">
         <div class="set-image">
             <div class="image-container">
-                <img v-lazy="item.wbResource.wbrIndeximg1" v-if="item.wbResource">
+                <img v-lazy="item.wbResource.wbrIndeximg1?item.wbResource.wbrIndeximg1:''" v-if="item.wbResource">
             </div>
         </div>
         <div class="set-info" flex="dir:top cross:top box:mean">
@@ -11,7 +11,7 @@
                 <span class="sall" v-if="item.wbpYhzk">{{item.wbpYhzk}}折</span>
             </div>
             <div class="line" flex="dir:left cross:center">
-                <span class="description">描述：{{item.wbpSfqgty|universalFilter}}</span>
+                <span class="description">描述：{{item.wbpPdesc | descFilter}}</span>
             </div>
             <div class="line" flex="dir:left cross:center main:right">
                 <span class="buy-it">马上购买</span>
@@ -71,12 +71,9 @@
             },
         },
         filters:{
-            universalFilter:function(val){
-                if(val == 1){
-                    return '全国4S店使用'
-                }else{
-                    return '指定4S店使用'
-                }
+            descFilter:function(val){
+                if(!val) return '暂无描述';
+                return val;
             },
             priceFilter:function(val) {
                 return '￥' + val;
@@ -107,6 +104,15 @@
                     left:37.5%;
                     width:25%;
                     height:25%;
+                }
+                img[lazy=error] {
+                    position:absolute;
+                    width:100%;
+                    height:100%;
+                    background-image:url("../assets/error.png");
+                    background-size:50%;
+                    background-position:center;
+                    background-repeat:no-repeat;
                 }
             }
         }

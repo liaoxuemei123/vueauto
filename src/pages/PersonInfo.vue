@@ -29,14 +29,7 @@
                         </div>
                     </div>
                     <div class="input-control" v-if="item == 'referee' && pageConfig.tags[index] == '1'">
-                        <mt-radio
-                            title="推荐类型"
-                            v-model="userInfo.refereeType"
-                            :options="refereeArry">
-                        </mt-radio>
-                    </div>
-                    <div class="input-control" v-if="item == 'referee' && pageConfig.tags[index] == '1'">
-                        <inp-com title="推荐人" :value="userInfo.referee" :placeholder="refereeTip" :onBlur="updateReferee.bind(this)" />
+                        <inp-com title="推荐人" :onClick="goReferee.bind(this)" :value="packageInfo.userInfo.referee" placeholder="可选填" :rightArrow="true" :readonly="true"/>
                     </div>
                     <div class="input-control" v-if="item == 'message' && pageConfig.tags[index] == '1'">
                         <div class="text-control" flex="dir:top">
@@ -73,15 +66,13 @@
                     message:'',
                     engineNo:'',
                     buyCarDate:'',
-                    referee:'',
-                    refereeType: '1',
                 },
                 refereeArry:[
                     {
                         label: '个人',
                         value: '0'
                     },{
-                        label: '4S店',
+                        label: '服务门店',
                         value: '1'
                     }
                 ],
@@ -109,6 +100,7 @@
             ])
         },
         activated:function(){
+            console.log(this.packageInfo.userInfo)
             var vehicleInfo = JSON.parse(Tool.localItem('vehicleInfo'));
             if(vehicleInfo){
                 this.userInfo.vin = vehicleInfo.vin;
@@ -177,23 +169,60 @@
                 }
                 this.userInfo.vin = this.userInfo.vin.toLocaleUpperCase();
                 this.userInfo.motorId = this.userInfo.motorId.toLocaleUpperCase();
-                new Promise((res,rej)=>{
-                    Tool.get('queryVehicleInfo',{
-                        vin:this.userInfo.vin,
-                        engineNo:this.userInfo.motorId,
-                        isMiniCar:this.packageInfo.modelInfo.vehicleType,
-                        carSeriesName:this.packageInfo.modelInfo.vehicleModel,
-                    },(data)=>{
-                        if(data.code == 1){
-                            res(data);
-                        }else{
-                            Toast({
-                                message:data.msg,
-                                duration:1000,
+                if(this.pageConfig.tags[this.pageConfig.fileds.indexOf('motorId')] == '1'){
+                    new Promise((res,rej)=>{
+                        Tool.get('queryVehicleInfo',{
+                            vin:this.userInfo.vin,
+                            engineNo:this.userInfo.motorId,
+                            isMiniCar:this.packageInfo.modelInfo.vehicleType,
+                            carSeriesName:this.packageInfo.modelInfo.vehicleModel,
+                        },(data)=>{
+                            if(data.code == 1){
+                                res(data);
+                            }else{
+                                Toast({
+                                    message:data.msg,
+                                    duration:1000,
+                                })
+                            }
+                        })
+                    }).then((pData)=>{
+                        if(this.userInfo.tel != this.userMoblie || this.isValidate){
+                            if(!this.code){
+                                Toast({
+                                    message:'请输入验证码',
+                                    duration:1000,
+                                })
+                                return false;
+                            }
+                            Tool.get('verifyCode',{
+                                code:this.code,
+                                mobile:this.userInfo.tel,
+                            },(data) => {
+                                if(data.code == 200){
+                                    this.userInfo.engineNo = pData.data.engineNo;
+                                    this.userInfo.mileage = Math.ceil((+new Date() - (pData.data.buyCarDate?+new Date(pData.data.buyCarDate):new Date()))/(1000*60*60*24));
+                                    this.userInfo.buyCarDate = pData.data.buyCarDate;
+                                    this.$store.commit('SET_PACKAGE_USERINFO',this.userInfo);
+                                    this.$router.push({name:'confirmorder',params:this.$route.params});
+                                    Tool.localItem('vehicleInfo',{vin:this.userInfo.vin,engineNo:this.userInfo.motorId,userName:this.userInfo.contact})
+                                }else{
+                                    Toast({
+                                        message:data.msg,
+                                        duration:1000,
+                                    })
+                                }
                             })
+                        }else{
+                            this.userInfo.engineNo = pData.data.engineNo;
+                            this.userInfo.mileage = Math.ceil((+new Date() - (pData.data.buyCarDate?+new Date(pData.data.buyCarDate):new Date()))/(1000*60*60*24));
+                            this.userInfo.buyCarDate = pData.data.buyCarDate;
+                            this.$store.commit('SET_PACKAGE_USERINFO',this.userInfo);
+                            this.$router.push({name:'confirmorder',params:this.$route.params});
+                            Tool.localItem('vehicleInfo',{vin:this.userInfo.vin,engineNo:this.userInfo.motorId,userName:this.userInfo.contact})
                         }
                     })
-                }).then((pData)=>{
+                }else{
                     if(this.userInfo.tel != this.userMoblie || this.isValidate){
                         if(!this.code){
                             Toast({
@@ -207,9 +236,9 @@
                             mobile:this.userInfo.tel,
                         },(data) => {
                             if(data.code == 200){
-                                this.userInfo.engineNo = pData.data.engineNo;
-                                this.userInfo.mileage = Math.ceil((+new Date() - (pData.data.buyCarDate?+new Date(pData.data.buyCarDate):new Date()))/(1000*60*60*24));
-                                this.userInfo.buyCarDate = pData.data.buyCarDate;
+                                this.userInfo.engineNo = '';
+                                this.userInfo.mileage = 0;
+                                this.userInfo.buyCarDate = '';
                                 this.$store.commit('SET_PACKAGE_USERINFO',this.userInfo);
                                 this.$router.push({name:'confirmorder',params:this.$route.params});
                                 Tool.localItem('vehicleInfo',{vin:this.userInfo.vin,engineNo:this.userInfo.motorId,userName:this.userInfo.contact})
@@ -221,14 +250,14 @@
                             }
                         })
                     }else{
-                        this.userInfo.engineNo = pData.data.engineNo;
-                        this.userInfo.mileage = Math.ceil((+new Date() - (pData.data.buyCarDate?+new Date(pData.data.buyCarDate):new Date()))/(1000*60*60*24));
-                        this.userInfo.buyCarDate = pData.data.buyCarDate;
+                        this.userInfo.engineNo = '';
+                        this.userInfo.mileage = 0;
+                        this.userInfo.buyCarDate = '';
                         this.$store.commit('SET_PACKAGE_USERINFO',this.userInfo);
                         this.$router.push({name:'confirmorder',params:this.$route.params});
                         Tool.localItem('vehicleInfo',{vin:this.userInfo.vin,engineNo:this.userInfo.motorId,userName:this.userInfo.contact})
                     }
-                })
+                }
             },
             goHome:function(){
                 this.$router.go(-2)
@@ -248,8 +277,8 @@
             updateTel:function(e){
                 this.userInfo.tel = $(e.target).val();
             },
-            updateReferee:function(e){
-                this.userInfo.referee = $(e.target).val();
+            goReferee:function(e){
+                this.$router.push({name:'referee'});
             },
             getPageConfig:function(e){
                 this.pageConfig.tags = this.pageSetting.wbPageDetail['GM_PAGE'].wbpdFtag.split(',');

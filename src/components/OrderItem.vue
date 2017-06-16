@@ -77,9 +77,9 @@
             },
             universalFilter:function(val){
                 if(val == 1){
-                    return '全国4S店使用'
+                    return '全国服务门店使用'
                 }else{
-                    return '指定4S店使用'
+                    return '指定服务门店使用'
                 }
             }
         },

@@ -43,14 +43,14 @@
     import Subscribe from './home/Subscribe';
     const BISINESS_CONST = [
         {
-            wbyId:'',
+            wbyId:'wcby',
             name:"保养套餐",
             wbyName:"微车保养",
             icon:require('../assets/changan_wc.png'),
             view:"MinniSet",
             type:1,
         },{
-            wbyId:'',
+            wbyId:'scby',
             name:"保养套餐",
             wbyName:"商车保养",
             icon:require('../assets/changan_sy.png'),
@@ -99,7 +99,7 @@
                 Tool.get('wbinterface/getWbYwpzList',{flg:1},data => {
                     data.data.map( (v,i) => {
                         BISINESS_CONST.map((sv) => {
-                            if(v.wbyName === sv.wbyName) {
+                            if(v.wbyId === sv.wbyId) {
                                 sv = Object.assign(sv,v);
                                 this.bisinessItems.push(sv);
                             }
@@ -122,6 +122,7 @@
         activated:function(){
             this.$store.commit('SET_RESET_FLAS',true);
             this.$store.commit('SET_PACKAGE_STOREINFO',{});
+            this.$store.commit("SET_PACKAGE_USERINFO",{refereeType:'',referee:''})
         },
         mounted:function(){
             this.bisinessItems.map((v,i)=>{
@@ -145,7 +146,7 @@
             height:100%;
             overflow: auto;
             .tbbar{
-                z-index: 10;
+                z-index: 10000;
                 border-bottom: 1px solid #ccc;
             }
             .bisiness-list{
@@ -178,6 +179,7 @@
                 border-top:1px solid #ccc;
                 width:94%;
                 padding:0 3%;
+                overflow:hidden;
                 .user-center{
                     height:1.6rem;
                     border-radius:0.8rem;

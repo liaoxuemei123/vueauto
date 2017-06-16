@@ -19,7 +19,7 @@
                                 <div class="line" flex="dir:left cross:center">
                                     <span class="car-type">{{packageInfo.modelInfo.seriesName}}</span>
                                     <span class="des1">{{setInfo.wbpName}}</span>
-                                    <span class="des2">{{setInfo.wbpSfqgty|universalFilter}}</span>
+                                    <span class="des2">{{setResource.ad}}</span>
                                 </div>
                                 <div class="line" flex="dir:left cross:center">
                                     <span class="price-range"><span class="doller">￥</span>{{showPrice | priceFilter}}</span>
@@ -46,10 +46,10 @@
                             </div>
                             <div class="select-store" v-if="item == 'store' && pageConfig.tags[index] == 1">
                                 <div class="input-control">
-                                    <inp-com title="使用4S店" :value="storeName" :onClick="goStore" :readonly="true" :placeholder="storeTip" :rightArrow="true" />
+                                    <inp-com title="使用服务门店" :value="storeName" :onClick="goStore" :readonly="true" :placeholder="storeTip" :rightArrow="true" />
                                 </div>
                             </div>
-                            <div class="tips" v-if="setInfo.isUniversal == 1 && item == 'info' && pageConfig.tags[index] == 1">提示：请查看可以使用的4S店</div>
+                            <div class="tips" v-if="setInfo.isUniversal == 1 && item == 'info' && pageConfig.tags[index] == 1">提示：请查看可以使用的服务门店</div>
                             <div class="info-container" v-if="item == 'info' && pageConfig.tags[index] == 1">
                                 <div class="title">
                                     套餐信息
@@ -101,7 +101,7 @@
                     mealId:'',
                     mealName:''
                 },
-                storeTip:'选择4S店',
+                storeTip:'选择服务门店',
                 isSelectStore:true,
                 scrollerY:0,//记录scroller的位置
                 pageConfig:{
@@ -137,9 +137,9 @@
         watch:{
             'isSelectStore':function(val){
                 if(val){
-                    this.storeTip = '选择4S店';
+                    this.storeTip = '选择服务门店';
                 }else{
-                    this.storeTip = '查看4S店';
+                    this.storeTip = '查看服务门店';
                 }
             }
         },
@@ -152,7 +152,7 @@
                 }
                 if(this.setInfo.wbpSfqgty == 2 && !this.packageInfo.storeInfo.id && this.pageConfig.tags[this.pageConfig.fileds.indexOf('store')] == '1'){
                     Toast({
-                        message:'请选择4S店',
+                        message:'请选择服务门店',
                         duration:1000,
                     });
                     return false;
@@ -235,16 +235,20 @@
                             i++;
                         }
                         this.$nextTick(() => {
-                            $('.info-content img')[0].onload = ()=>{
-                                this.$nextTick(()=>{
-                                    this.$refs.scroller.mySroller.refresh();
+                            if($('.info-content img').length > 0){
+                                $('.info-content img').each((i,v) => {
+                                    v.onload = ()=>{
+                                        this.$nextTick(()=>{
+                                            this.$refs.scroller.mySroller.refresh();
+                                        })
+                                    }
+                                    this.broadcast('swiper','init',{
+                                        autoplay:0,
+                                        pagination:'.swiper-pagination'
+                                    });
                                 })
                             }
-                            this.broadcast('swiper','init',{
-                                autoplay:0,
-                                pagination:'.swiper-pagination',
-                            });
-                        })
+                        });
                         this.setInfo.wbpSfqgty = ret.wbpSfqgty;
                         this.setInfo.wbpName = ret.wbpName;
                         this.setInfo.wbpId = ret.wbpId;
@@ -267,6 +271,11 @@
                     price:'',
                     mealId:'',
                     mealName:''
+                }
+                this.setResource = {
+                    ad:'',//广告语
+                    indexImgs:[],//展示图片
+                    detailImgs:[],//详情图片
                 }
                 this.$nextTick(() => {
                     if(this.$children.length > 0){
@@ -318,9 +327,9 @@
         filters:{
             universalFilter:function(val){//使用范围展示过滤器
                 if(val == 1){
-                    return '全国4S店使用'
+                    return '全国服务门店使用'
                 }else{
-                    return '指定4S店使用'
+                    return '指定服务门店使用'
                 }
             },
             priceFilter:function(val){//价格展示过滤器
@@ -432,6 +441,11 @@
                     box-shadow:0px 1px 3px #aaa;
                     .set-image{
                         min-height:10rem;
+                        background-color:#ccc;
+                        background-image:url("../assets/error.png");
+                        background-size:30%;
+                        background-position:center;
+                        background-repeat:no-repeat;
                         .swiper-slide{
                             height:10rem;
                             background-color:#ccc;
@@ -446,6 +460,15 @@
                                 left:37.5%;
                                 width:25%;
                                 height:25%;
+                            }
+                            img[lazy=error] {
+                                position:absolute;
+                                width:100%;
+                                height:100%;
+                                background-image:url("../assets/error.png");
+                                background-size:50%;
+                                background-position:center;
+                                background-repeat:no-repeat;
                             }
                         }
                     }
@@ -554,7 +577,6 @@
                     .info-content{
                         .image-cotainer{
                             width:100%;
-                            min-height:15rem;
                             img{
                                 width:100%;
                             }

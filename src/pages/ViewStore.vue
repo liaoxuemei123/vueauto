@@ -2,7 +2,7 @@
     <div class="page-container">
         <div class="store-page page" flex="dir:top box:first">
             <search 
-                placeholder="搜索4S店"
+                placeholder="搜索服务门店"
                 :search="search.bind(this)"
             />
             <div class="page-content" flex="dir:top box:first">

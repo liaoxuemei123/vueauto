@@ -90,7 +90,7 @@
                         <div class="evaluate-description">
                             <textarea
                                 rows='5 '
-                                placeholder="请描述一下你在4S店的服务经历帮助一下其他小伙伴        写够15字才是好同志"
+                                placeholder="请描述一下你在服务门店的服务经历帮助一下其他小伙伴        写够15字才是好同志"
                                 v-model="explain"
                             >
                             </textarea>

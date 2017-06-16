@@ -20,6 +20,7 @@ import Refund from 'pages/Refund';
 import TestSwiper from 'pages/TestSwiper';
 import Home from 'pages/Home';
 import UserCenter from 'pages/UserCenter';
+import Referee from 'pages/Referee';
 
 Vue.use(Router)
 
@@ -145,6 +146,11 @@ export default new Router({
       path:'/home',
       name:'home',
       component:Home
+    },
+    {
+      path:'/referee',
+      name:'referee',
+      component:Referee
     }
   ]
 })

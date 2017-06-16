@@ -47,7 +47,7 @@
                             </div>
                             <div class="line" flex="dir:left cross:center main:justify">
                                 <div>
-                                    <span class="label">使用4S店:</span>
+                                    <span class="label">使用服务门店:</span>
                                     <span class="value">{{item.storeName || '未知'}}</span>
                                 </div>
                             </div>

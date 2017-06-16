@@ -58,7 +58,11 @@ const store = new Vuex.Store({
         bisinessType:'',
         bisinessConfig:{},
         pageSetting:[],
-        carId:''
+        carId:'',
+        refereeStore:{
+            storeName:'',
+            storeId:''
+        }
     },
     mutations:{
         SET_MODE:function(state,mode){
@@ -156,6 +160,11 @@ const store = new Vuex.Store({
         SET_PAGE_CONFIG(state,param){
             for(var props in param){
                 state.pageSetting[props] = param[props];
+            }
+        },
+        SET_REFEREE_STORE(state,param){
+            for(var props in param){
+                state.refereeStore[props] = param[props];
             }
         }
     },

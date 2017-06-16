@@ -2,7 +2,7 @@
     <div class="page-container">
         <div class="store-page page" flex="dir:top box:first">
             <search 
-                placeholder="搜索4S店"
+                placeholder="搜索服务门店"
                 :search="search.bind(this)"
             />
             <div class="page-content" flex="dir:top box:first">
@@ -140,7 +140,7 @@
                 var self = this;
                 this.storelist = [];
                 var wbpId = this.$route.params.wbpId;
-                if(this.$store.getters.prepage.name == 'setdetail'){
+                if(this.$store.getters.prepage.name == 'setdetail' || this.$store.getters.prepage.name == 'referee'){
                     Tool.get('getStore',{
                         gpsLongitude:this.cityInfo.lng ||self.geolocation.point.lon,
                         gpsLatitude:this.cityInfo.lat || self.geolocation.point.lat,
@@ -196,6 +196,14 @@
                         data.storeName = this.storelist[this.select].storeName;
                         data.photoUrl = this.storelist[this.select].photoUrl;
                         this.$store.commit('SET_PACKAGE_STOREINFO',data);
+                        this.$router.back();
+                    })
+                }else if(this.$store.getters.prepage.name == 'referee'){
+                    this.$nextTick(()=>{
+                        var data = {};
+                        data.storeId = this.storelist[this.select].id;
+                        data.storeName = this.storelist[this.select].storeName;
+                        this.$store.commit('SET_REFEREE_STORE',data);
                         this.$router.back();
                     })
                 }else{
@@ -274,7 +282,7 @@
             }
         },
         activated:function(){
-            if(this.$store.getters.prepage.name == 'setdetail'){
+            if(this.$store.getters.prepage.name == 'setdetail' || this.$store.getters.prepage.name == 'referee'){
                 this.getStoreList(() => {
                     var storeInfo = this.$store.getters.subscribeInfo.storeInfo;
                     for(var i=0;i<this.storelist.length;i++){

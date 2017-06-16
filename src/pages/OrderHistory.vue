@@ -30,10 +30,10 @@
                                 车牌号：{{item.carNumber}}
                             </div>
                             <div class="plate">
-                                预约4S店：{{item.storeName}}
+                                预约服务门店：{{item.storeName}}
                             </div>
                             <div class="plate">
-                                4S店电话：<a :href="'tel:'+item.storeTel">{{item.storeTel}}</a> 
+                                服务门店电话：<a :href="'tel:'+item.storeTel">{{item.storeTel}}</a> 
                             </div>
                             <div class="plate">
                                 申请时间：{{item.reservationCreateDate}}
@@ -51,7 +51,7 @@
                                 预约描述：{{item.describe}}
                             </div>
                             <div class="plate" v-if="item.confirm != 'N'">
-                                备注：如因特殊原因无法按时到店，请提前告知4S店
+                                备注：如因特殊原因无法按时到店，请提前告知服务门店
                             </div>
                         </div>
                     </div>
