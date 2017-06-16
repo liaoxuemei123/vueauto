@@ -11,10 +11,13 @@
                 <span class="sall" v-if="item.wbpYhzk">{{item.wbpYhzk}}折</span>
             </div>
             <div class="line" flex="dir:left cross:center">
-                <span class="description">描述：{{item.wbpPdesc | descFilter}}</span>
+                <span class="description">{{item.wbpPdesc | descFilter}}</span>
+            </div>
+            <div class="line" flex="dir:left cross:center">
+                <span class="price">{{item.wbpPrice | priceFilter}}</span>
             </div>
             <div class="line" flex="dir:left cross:center main:right">
-                <span class="buy-it">马上购买</span>
+                <span class="buy-it">产品详情</span>
             </div>
         </div>
     </div>
@@ -76,6 +79,7 @@
                 return val;
             },
             priceFilter:function(val) {
+                if(!val) return '';
                 return '￥' + val;
             }
         }
@@ -137,16 +141,8 @@
                     font-size:0.7rem;
                     color:#333;
                 }
-                .package-price{
-                    font-size:0.7rem;
-                    color:#ff4343;
-                    margin-right:0.3rem;
-                    text-decoration:none;
-                }
-                .price-delete{
-                    font-size:0.61rem;
-                    color:#ddd;
-                    text-decoration:line-through;
+                .price{
+                    color:#fc4c1d;
                 }
                 .description{
                     font-size:0.64rem;

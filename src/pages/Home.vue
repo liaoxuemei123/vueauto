@@ -155,7 +155,7 @@
                 line-height:1.5rem;
                 background-color:#fff;
                 .bisiness-item{
-                    width:5.4rem;
+                    width:8rem;
                     float:left;
                     color:#333;
                     &.active{
