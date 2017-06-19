@@ -10,6 +10,7 @@
 <script>
     import 'swiper';
     import '../style/swiper.css';
+    import Tool from '../utils/Tool';
     export default {
         data () {
             return {
@@ -27,9 +28,11 @@
         },
         methods:{
             init:function(options){
-                if(!$.isEmptyObject(this.mySwiper)) return false;
+                if(!$.isEmptyObject(this.mySwiper)) {
+                    return false;
+                };
                 this.extrace(options);//加载额外的配置
-                this.mySwiper = new Swiper('.swiper',this.setting);
+                this.mySwiper = new Swiper(this.$el,this.setting);
             },
             extrace:function(options){
                 for(var attr in options){

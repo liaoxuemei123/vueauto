@@ -49,7 +49,7 @@
         filters:{
             distanceFilter:function(val){
                 return (val/1000).toFixed(1) + 'km';
-            }
+            },
         }
     }
 </script>

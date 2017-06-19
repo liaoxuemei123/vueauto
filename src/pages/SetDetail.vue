@@ -205,13 +205,16 @@
             },
             selectedMeal:function(index){
                 this.selectMeal = index;
-                this.showPrice = this.setMealList[this.selectMeal].wbplXSPrice;
+                this.showPrice = this.setMealList.length > 0 ? this.setMealList[this.selectMeal].wbplXSPrice : 0;
                 this.rangePrice = 0;
-                this.deletePrice = this.setMealList[this.selectMeal].wbplPrice;
+                this.deletePrice = this.setMealList.length > 0 ? this.setMealList[this.selectMeal].wbplPrice : 0;
                 this.setDetail.price = this.showPrice;
-                this.setDetail.mealId = this.setMealList[this.selectMeal].wbplId;
-                this.setDetail.number = this.setMealList[this.selectMeal].wbplCs;
-                var validate = this.setMealList[this.selectMeal].wbplYxq - 0;
+                if( this.setMealList.length > 0 ) {
+                    this.setDetail.mealId = this.setMealList[this.selectMeal].wbplId;
+                    this.setDetail.number = this.setMealList[this.selectMeal].wbplCs;
+                    var validate = this.setMealList[this.selectMeal].wbplYxq - 0;
+                    this.setDetail.mealName = this.setMealList[this.selectMeal].wbplJyName + this.setMealList[this.selectMeal].wbplJyXh;
+                } 
                 var today = Tool.formatDate(new Date());
                 var end = '';
                 if(String(validate).indexOf('.') >= 0){
@@ -224,7 +227,6 @@
                     end = today.substring(0,4) - 0 + validate + today.substring(4,10);
                 }
                 this.setDetail.validate = end;
-                this.setDetail.mealName = this.setMealList[this.selectMeal].wbplJyName + this.setMealList[this.selectMeal].wbplJyXh;
             },
             getPackageDetail:function(id=1){
                 Tool.get('wbinterface/getWbProduct',{id},data => {
@@ -324,7 +326,9 @@
             })
         },
         created:function(){
-            if($.isEmptyObject(this.modelInfo)) this.$router.push({name:'home'});
+            if($.isEmptyObject(this.modelInfo)) {
+                this.$router.push({name:'home'});
+            }
         },
         activated:function(){
             this.params = this.$route.params;

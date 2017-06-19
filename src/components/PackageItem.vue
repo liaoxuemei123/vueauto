@@ -8,15 +8,13 @@
         <div class="set-info" flex="dir:top cross:top box:mean">
             <div class="line" flex="dir:left cross:center">
                 <span class="package-name">{{item.wbpName}}</span>
-                <span class="sall" v-if="item.wbpYhzk">{{item.wbpYhzk}}折</span>
             </div>
             <div class="line" flex="dir:left cross:center">
                 <span class="description">{{item.wbpPdesc | descFilter}}</span>
             </div>
-            <div class="line" flex="dir:left cross:center">
-                <span class="price">{{item.wbpPrice | priceFilter}}</span>
-            </div>
-            <div class="line" flex="dir:left cross:center main:right">
+            <div class="line" flex="dir:left cross:center main:left">
+                <span class="sall" v-if="item.wbpYhzk">{{item.wbpYhzk}}折</span>
+                <span class="price">{{item.wbpPrice}}</span>
                 <span class="buy-it">产品详情</span>
             </div>
         </div>
@@ -95,7 +93,7 @@
                 return val;
             },
             priceFilter:function(val) {
-                if(!val) return '';
+                if(!val) return '0';
                 return '￥' + val;
             }
         }
@@ -141,12 +139,14 @@
             background-color:#fff;
             .line{
                 width:100%;
+                position:relative;
                 .sall{
                     font-size:0.51rem;
                     color:#fff;
                     background-color:#fc4c1d;
                     padding:0.1rem 0.2rem;
                     border-radius:0.1rem;
+                    margin-right:0.5rem;
                 }
                 .package-name{
                     font-size:0.7rem;
@@ -170,6 +170,8 @@
                     color:#fff;
                     padding:0.2rem 0.5rem;
                     border-radius:0.2rem;
+                    position:absolute;
+                    right:0;
                 }
             }
         }
