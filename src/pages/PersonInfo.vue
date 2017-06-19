@@ -211,8 +211,20 @@
                                     this.userInfo.mileage = Math.ceil((+new Date() - (pData.data.buyCarDate?+new Date(pData.data.buyCarDate):new Date()))/(1000*60*60*24));
                                     this.userInfo.buyCarDate = pData.data.buyCarDate;
                                     this.updateUserInfon(this.userInfo);
-                                    this.$router.push({name:'confirmorder',params:this.$route.params});
-                                    Tool.localItem('vehicleInfo',{vin:this.userInfo.vin,engineNo:this.userInfo.motorId,userName:this.userInfo.contact})
+                                    const wbProduct = this.$route.params.id;
+                                    const wbtrPhonno = this.userInfo.tel;
+                                    const buyCarDate = this.userInfo.buyCarDate;
+                                    Tool.get('productRange/determineUser',{wbtrPhonno,wbProduct,buyCarDate},data =>{
+                                        if(data.msg === '0'){
+                                            Toast({
+                                                message:data.data,
+                                                duration:3000
+                                            })
+                                        }else{
+                                            this.$router.push({name:'confirmorder',params:this.$route.params});
+                                            Tool.localItem('vehicleInfo',{vin:this.userInfo.vin,engineNo:this.userInfo.motorId,userName:this.userInfo.contact})
+                                        }
+                                    })
                                 }else{
                                     Toast({
                                         message:data.msg,
@@ -225,8 +237,20 @@
                             this.userInfo.mileage = Math.ceil((+new Date() - (pData.data.buyCarDate?+new Date(pData.data.buyCarDate):new Date()))/(1000*60*60*24));
                             this.userInfo.buyCarDate = pData.data.buyCarDate;
                             this.updateUserInfon(this.userInfo);
-                            this.$router.push({name:'confirmorder',params:this.$route.params});
-                            Tool.localItem('vehicleInfo',{vin:this.userInfo.vin,engineNo:this.userInfo.motorId,userName:this.userInfo.contact})
+                            const wbProduct = this.$route.params.id;
+                            const wbtrPhonno = this.userInfo.tel;
+                            const buyCarDate = this.userInfo.buyCarDate;
+                            Tool.get('productRange/determineUser',{wbtrPhonno,wbProduct,buyCarDate},data =>{
+                                if(data.msg === '0'){
+                                    Toast({
+                                        message:data.data,
+                                        duration:3000
+                                    })
+                                }else{
+                                    this.$router.push({name:'confirmorder',params:this.$route.params});
+                                    Tool.localItem('vehicleInfo',{vin:this.userInfo.vin,engineNo:this.userInfo.motorId,userName:this.userInfo.contact})
+                                }
+                            })
                         }
                     })
                 }else{
@@ -247,8 +271,20 @@
                                 this.userInfo.mileage = 0;
                                 this.userInfo.buyCarDate = '';
                                 this.updateUserInfon(this.userInfo);
-                                this.$router.push({name:'confirmorder',params:this.$route.params});
-                                Tool.localItem('vehicleInfo',{vin:this.userInfo.vin,engineNo:this.userInfo.motorId,userName:this.userInfo.contact})
+                                const wbProduct = this.$route.params.id;
+                                const wbtrPhonno = this.userInfo.tel;
+                                const buyCarDate = this.userInfo.buyCarDate;
+                                Tool.get('productRange/determineUser',{wbtrPhonno,wbProduct,buyCarDate},data =>{
+                                    if(data.msg === '0'){
+                                        Toast({
+                                            message:data.data,
+                                            duration:3000
+                                        })
+                                    }else{
+                                        this.$router.push({name:'confirmorder',params:this.$route.params});
+                                        Tool.localItem('vehicleInfo',{vin:this.userInfo.vin,engineNo:this.userInfo.motorId,userName:this.userInfo.contact})
+                                    }
+                                })
                             }else{
                                 Toast({
                                     message:data.msg,
@@ -261,8 +297,20 @@
                         this.userInfo.mileage = 0;
                         this.userInfo.buyCarDate = '';
                         this.updateUserInfon(this.userInfo);
-                        this.$router.push({name:'confirmorder',params:this.$route.params});
-                        Tool.localItem('vehicleInfo',{vin:this.userInfo.vin,engineNo:this.userInfo.motorId,userName:this.userInfo.contact})
+                        const wbProduct = this.$route.params.id;
+                        const wbtrPhonno = this.userInfo.tel;
+                        const buyCarDate = this.userInfo.buyCarDate;
+                        Tool.get('productRange/determineUser',{wbtrPhonno,wbProduct,buyCarDate},data =>{
+                            if(data.msg === '0'){
+                                Toast({
+                                    message:data.data,
+                                    duration:3000
+                                })
+                            }else{
+                                this.$router.push({name:'confirmorder',params:this.$route.params});
+                                Tool.localItem('vehicleInfo',{vin:this.userInfo.vin,engineNo:this.userInfo.motorId,userName:this.userInfo.contact})
+                            }
+                        })
                     }
                 }
             },

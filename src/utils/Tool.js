@@ -311,6 +311,24 @@ Tool.removeObject = function(obj){
     return ;
 }
 
+Tool.extends = function(src,des){
+    if(!src || !des) return;
+    if(typeof src === 'object'){
+        var arr = Object.keys(src);
+        for(var i = 0; i< arr.length; i++){
+            if(typeof src[arr[i]] == 'object' && !([src[arr[i]]] instanceof Array)){
+                this.extends(src[arr[i]],des[arr[i]])
+            }else if(src[arr[i]] instanceof Array){
+                src[arr[i]].map(v => {
+                    des[arr[i]].push(v);
+                });
+            }else{
+                des[arr[i]] = src[arr[i]];
+            }
+        }
+    }
+}
+
 /**
  * 获取用户信息
  */

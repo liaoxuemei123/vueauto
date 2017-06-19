@@ -8,7 +8,9 @@
                 <div class="set-info">
                     <div class="top" flex="dir:left box:first">
                         <div class="store-url" flex="dir:left cross:center">
-                            <img :src="setInfo.coverUrl">
+                            <div class="image-container">
+                                <img v-lazy="setInfo.coverUrl">
+                            </div>
                         </div>
                         <div class="set-detail" flex="dir:top box:mean">
                             <div class="line" flex="dir:left cross:center main:justify">
@@ -39,11 +41,11 @@
                         </div>
                     </div>
                     <div class="bottom" flex="dir:left box:mean">
-                        <div class="bottom-item" flex="dir:left cross:center main:left">
+                        <div class="bottom-item" flex="dir:left cross:center main:left" v-if="gmJudge('contact')">
                             <div class="title"><i class="iconfont icon-contact"></i>姓名:</div>
                             <div class="value">{{userInfo.contact}}</div>
                         </div>
-                        <div class="bottom-item" flex="dir:left cross:center main:left">
+                        <div class="bottom-item" flex="dir:left cross:center main:left" v-if="gmJudge('tel')">
                             <div class="title"><i class="iconfont icon-phone"></i>电话:</div>
                             <div class="value">{{userInfo.tel}}</div>
                         </div>
@@ -54,13 +56,13 @@
                             <div class="value">{{modelInfo.vehicleModel}}&nbsp;</div>
                             <div class="value">{{modelInfo.displacement}}</div>
                         </div>
-                        <div class="bottom-item" flex="dir:left cross:center main:left">
+                        <div class="bottom-item" flex="dir:left cross:center main:left" v-if="gmJudge('motorId')">
                             <div class="title"><i class="iconfont icon-motor"></i>发动机号:</div>
                             <div class="value">{{userInfo.engineNo}}</div>
                         </div>
                     </div>
                     <div class="bottom" flex="dir:left box:mean">
-                        <div class="bottom-item" flex="dir:left cross:center main:left">
+                        <div class="bottom-item" flex="dir:left cross:center main:left" v-if="gmJudge('vin')">
                             <div class="title"><i class="iconfont icon-vin custom"></i>限用车架号:</div>
                             <div class="value">{{userInfo.vin}}</div>
                         </div>
@@ -195,13 +197,13 @@
                     expirationDateTimestamp:expiredTime,
                     vin:this.userInfo.vin,
                     packageId:this.setInfo.wbpId,
-                    restrictFacilitator:this.storeInfo.id || '',
+                    restrictFacilitator:this.storeInfo.id ? ( this.storeInfo.id == '111111' ? '' : this.storeInfo.id ) : '',
                     phone:this.userInfo.tel,
                     linkman:this.userInfo.contact,
                     orderPrice:this.setDetail.price,
                     carType:this.modelInfo.vehicleModel + ' ' + this.modelInfo.displacement,
                     setMealId:this.setDetail.mealId,
-                    storeId:this.storeInfo.id || '',
+                    storeId:this.storeInfo.id ? ( this.storeInfo.id == '111111' ? '' : this.storeInfo.id ) : '',
                     engineNo:this.userInfo.engineNo,
                     mileage:this.userInfo.mileage,
                     orderType:this.modelInfo.vehicleType - 0,
@@ -232,8 +234,14 @@
                 this.GmConfig.tags = this.pageSetting.wbPageDetail['GM_PAGE'].wbpdFtag.split(',');
                 this.GmConfig.fileds = this.pageSetting.wbPageDetail['GM_PAGE'].wbpdName.split(',');
             },
+            gmJudge:function(filed){
+                const index = this.GmConfig.fileds.indexOf(filed);
+                return !!this.GmConfig.tags[index]
+            }
         },
         activated:function(){
+            var wbProduct = this.$route.params.id;
+            wbProduct ? this.wbpId = wbProduct : wbProduct = this.wbpId;
             this.getPageConfig();
         },
         filters:{
@@ -257,21 +265,7 @@
         },
         beforeRouteEnter:(to,from,next)=>{
             if(Tool.localItem('userInfo') && Tool.getUserInfo('userId')){
-                next(vm => {
-                    var wbProduct = vm.$route.params.id;
-                    wbProduct ? vm.wbpId = wbProduct : wbProduct = vm.wbpId;
-                    const wbtrPhonno = vm.userInfo.tel;
-                    const buyCarDate = vm.userInfo.buyCarDate;
-                    Tool.get('productRange/determineUser',{wbtrPhonno,wbProduct,buyCarDate},data =>{
-                        if(data.msg === '0'){
-                            Toast({
-                                message:"你不能购买该套餐",
-                                duration:3000
-                            })
-                            vm.$router.back();
-                        }
-                    })
-                });
+                next();
             }else{
                 store.commit('POP_PAGE',1);//在进入login之前把已进栈但是没有被访问的页面清理出栈
                 next({name:'login',params:{to:to.path}});
@@ -366,10 +360,33 @@
                     padding-bottom: 0.6rem;
                     border-bottom:1px solid #ccc;
                     .store-url{
-                        img{
+                        .image-container{
+                            background-color:#ccc;
                             width:2.3rem;
                             height:2.3rem;
                             border-radius:3px;
+                            overflow:hidden;
+                            position:relative;
+                            img{
+                                width:100%;
+                                height:100%;
+                            }
+                            img[lazy=loading] {
+                                position:absolute;
+                                top:37.5%;
+                                left:37.5%;
+                                width:25%;
+                                height:25%;
+                            }
+                            img[lazy=error] {
+                                position:absolute;
+                                width:100%;
+                                height:100%;
+                                background-image:url("../assets/error.png");
+                                background-size:50%;
+                                background-position:center;
+                                background-repeat:no-repeat;
+                            }
                         }
                     }
                     .set-detail{

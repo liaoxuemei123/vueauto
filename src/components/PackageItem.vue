@@ -57,7 +57,20 @@
                 var item = this.item;
                 const bisiness = this.$parent.$parent.$parent.bisinessItems[this.$parent.$parent.$parent.activeBusiness].wbyId;
                 for(var props in this.allConfig){
-                    this.allConfig[props].wbyId === bisiness ? this.setCurrentBis(this.allConfig[props]) : '';
+                    if(this.allConfig[props].wbyId === bisiness){
+                        var wbPageDetail = {};
+                        for(var subprop in this.allConfig[props].wbPageDetail){
+                            this.allConfig[props].wbPageDetail[subprop].map(v =>{
+                                if( v.wbProduct == item.wbpId ){
+                                    wbPageDetail[subprop] = v;
+                                }
+                            })
+                        }
+                        var all = {};
+                        Tool.extends(this.allConfig[props],all);
+                        const config = Object.assign(all,{wbPageDetail});
+                        this.setCurrentBis(config);
+                    }
                 }   
                 if(this.modelInfo.vehicleModel && this.modelInfo.pickerModel){
                     this.$router.push({path:'../setdetail/'+item.wbpId});

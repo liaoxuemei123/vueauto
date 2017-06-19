@@ -323,6 +323,9 @@
                 setSetDetail: 'SET_SETDETAIL'
             })
         },
+        created:function(){
+            if($.isEmptyObject(this.modelInfo)) this.$router.push({name:'home'});
+        },
         activated:function(){
             this.params = this.$route.params;
             this.storeName = this.storeInfo.storeName ? this.storeInfo.storeName : '';
