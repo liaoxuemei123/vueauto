@@ -29,7 +29,7 @@
                         </div>
                     </div>
                     <div class="input-control" v-if="item == 'referee' && pageConfig.tags[index] == '1'">
-                        <inp-com title="推荐人" :onClick="goReferee.bind(this)" :value="packageInfo.userInfo.referee" placeholder="可选填" :rightArrow="true" :readonly="true"/>
+                        <inp-com title="推荐人" :onClick="goReferee.bind(this)" :value="pUserInfo.referee" placeholder="可选填" :rightArrow="true" :readonly="true"/>
                     </div>
                     <div class="input-control" v-if="item == 'message' && pageConfig.tags[index] == '1'">
                         <div class="text-control" flex="dir:top">
@@ -52,7 +52,7 @@
 <script>
     import NavBar from '../components/NavBar';
     import InpCom from '../components/InpCom';
-    import { mapState } from 'vuex';
+    import { mapState, mapMutations } from 'vuex';
     import { Toast } from 'mint-ui';
     import Tool from '../utils/Tool'
     export default {
@@ -95,12 +95,19 @@
                 const tips = this.userInfo.refereeType == 0 ? '填写推荐人手机号' : '填写经销商号';
                 return tips;
             },
-            ...mapState([
-                'packageInfo','bisinessType','pageSetting'
-            ])
+            ...mapState({
+                modelInfo: ({
+                    packageinfo
+                }) => packageinfo.modelInfo,
+                pUserInfo: ({
+                    packageinfo
+                }) => packageinfo.userInfo,
+                pageSetting: ({
+                    pageconfig
+                }) => pageconfig.currentBis,
+            })
         },
         activated:function(){
-            console.log(this.packageInfo.userInfo)
             var vehicleInfo = JSON.parse(Tool.localItem('vehicleInfo'));
             if(vehicleInfo){
                 this.userInfo.vin = vehicleInfo.vin;
@@ -174,8 +181,8 @@
                         Tool.get('queryVehicleInfo',{
                             vin:this.userInfo.vin,
                             engineNo:this.userInfo.motorId,
-                            isMiniCar:this.packageInfo.modelInfo.vehicleType,
-                            carSeriesName:this.packageInfo.modelInfo.vehicleModel,
+                            isMiniCar:this.modelInfo.vehicleType,
+                            carSeriesName:this.modelInfo.vehicleModel,
                         },(data)=>{
                             if(data.code == 1){
                                 res(data);
@@ -203,7 +210,7 @@
                                     this.userInfo.engineNo = pData.data.engineNo;
                                     this.userInfo.mileage = Math.ceil((+new Date() - (pData.data.buyCarDate?+new Date(pData.data.buyCarDate):new Date()))/(1000*60*60*24));
                                     this.userInfo.buyCarDate = pData.data.buyCarDate;
-                                    this.$store.commit('SET_PACKAGE_USERINFO',this.userInfo);
+                                    this.updateUserInfon(this.userInfo);
                                     this.$router.push({name:'confirmorder',params:this.$route.params});
                                     Tool.localItem('vehicleInfo',{vin:this.userInfo.vin,engineNo:this.userInfo.motorId,userName:this.userInfo.contact})
                                 }else{
@@ -217,7 +224,7 @@
                             this.userInfo.engineNo = pData.data.engineNo;
                             this.userInfo.mileage = Math.ceil((+new Date() - (pData.data.buyCarDate?+new Date(pData.data.buyCarDate):new Date()))/(1000*60*60*24));
                             this.userInfo.buyCarDate = pData.data.buyCarDate;
-                            this.$store.commit('SET_PACKAGE_USERINFO',this.userInfo);
+                            this.updateUserInfon(this.userInfo);
                             this.$router.push({name:'confirmorder',params:this.$route.params});
                             Tool.localItem('vehicleInfo',{vin:this.userInfo.vin,engineNo:this.userInfo.motorId,userName:this.userInfo.contact})
                         }
@@ -239,7 +246,7 @@
                                 this.userInfo.engineNo = '';
                                 this.userInfo.mileage = 0;
                                 this.userInfo.buyCarDate = '';
-                                this.$store.commit('SET_PACKAGE_USERINFO',this.userInfo);
+                                this.updateUserInfon(this.userInfo);
                                 this.$router.push({name:'confirmorder',params:this.$route.params});
                                 Tool.localItem('vehicleInfo',{vin:this.userInfo.vin,engineNo:this.userInfo.motorId,userName:this.userInfo.contact})
                             }else{
@@ -253,7 +260,7 @@
                         this.userInfo.engineNo = '';
                         this.userInfo.mileage = 0;
                         this.userInfo.buyCarDate = '';
-                        this.$store.commit('SET_PACKAGE_USERINFO',this.userInfo);
+                        this.updateUserInfon(this.userInfo);
                         this.$router.push({name:'confirmorder',params:this.$route.params});
                         Tool.localItem('vehicleInfo',{vin:this.userInfo.vin,engineNo:this.userInfo.motorId,userName:this.userInfo.contact})
                     }
@@ -315,7 +322,10 @@
 						}
 					},1000)
 				})
-            }
+            },
+            ...mapMutations({
+                updateUserInfon: 'UPDATE_USER_INFO'
+            })
         },
         beforeRouteEnter:(to,from,next)=>{
             Tool.routerEnter(to,from,next)

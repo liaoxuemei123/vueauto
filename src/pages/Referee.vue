@@ -40,7 +40,7 @@
     import NavBar from '../components/NavBar';
     import Tool from '../utils/Tool';
     import InpCom from '../components/InpCom';
-    import { mapState } from 'vuex';
+    import { mapState, mapMutations } from 'vuex';
     export default{
         data () {
             return {
@@ -64,16 +64,27 @@
             InpCom
         },
         computed:{
-            ...mapState(['packageInfo','refereeStore'])
-        },
-        mounted:function(){
+            ...mapState({
+                userInfo: ({
+                    packageinfo
+                }) => packageinfo.userInfo,
+                setInfo: ({
+                    packageinfo
+                }) => packageinfo.setInfo,
+                refereeStore: ({
+                    packageinfo
+                }) => packageinfo.refereeStore,
+                storeInfo: ({
+                    packageinfo
+                }) => packageinfo.storeInfo
+            })
         },
         activated:function(){
             if(this.refereeStore.storeName){
                 this.storeName = this.refereeStore.storeName;
             }else{
-                if(this.packageInfo.storeInfo.storeName){
-                    this.storeName = this.packageInfo.storeInfo.storeName;
+                if(this.storeInfo.storeName){
+                    this.storeName = this.storeInfo.storeName;
                 }else{
                     this.storeName = '';
                 }
@@ -81,20 +92,23 @@
         },
         methods:{
             goStore:function(){
-                const wbpId = this.packageInfo.setInfo.wbpId;
+                const wbpId = this.setInfo.wbpId;
                 this.$router.push({name:'store',params:{wbpId}});
             },
             submitReferee:function(){
                 if(this.refereeType == 0){
-                    this.$store.commit("SET_PACKAGE_USERINFO",{refereeType:this.refereeType,referee:this.storeName})
+                    this.setUserInfo({refereeType:this.refereeType,referee:this.storeName})
                 }else{
-                    this.$store.commit("SET_PACKAGE_USERINFO",{refereeType:this.refereeType,referee:this.refereePhone})
+                    this.setUserInfo({refereeType:this.refereeType,referee:this.refereePhone})
                 }
                 this.$router.back();
             },
             updatePhone:function(e){
                 this.refereePhone = $(e.target).val();
             },
+            ...mapMutations({
+                setUserInfo:'UPDATE_USER_INFO',
+            })
         },
         filters: {
         },

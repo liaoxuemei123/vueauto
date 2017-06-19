@@ -8,62 +8,61 @@
                 <div class="set-info">
                     <div class="top" flex="dir:left box:first">
                         <div class="store-url" flex="dir:left cross:center">
-                            <img :src="packageInfo.setInfo.coverUrl">
+                            <img :src="setInfo.coverUrl">
                         </div>
                         <div class="set-detail" flex="dir:top box:mean">
                             <div class="line" flex="dir:left cross:center main:justify">
-                                <span class="set-name">{{packageInfo.modelInfo.seriesName}} {{packageInfo.setInfo.wbpName}}</span>
-                                <span class="price">￥{{packageInfo.setDetail.price}}</span>
+                                <span class="set-name">{{modelInfo.seriesName}} {{setInfo.wbpName}}</span>
+                                <span class="price">￥{{setDetail.price}}</span>
                             </div>
                             <div class="line" flex="dir:left cross:center main:justify">
-                                <span class="set-des1">{{packageInfo.setInfo.wbpPdesc}}</span>
+                                <span class="set-des1">{{setInfo.wbpPdesc}}</span>
                             </div>
                         </div>
                     </div>
                     <div class="explain">
                         <div class="explain-item" flex="dir:left cross:top box:first">
                             <div class="check title">保养权益：</div>
-                            <div>{{packageInfo.setInfo.wbpName}}</div>
+                            <div>{{setInfo.wbpName}}</div>
                         </div>
                         <div class="explain-item" flex="dir:left cross:top box:first">
                             <div class="change title">保养项目：</div>
-                            <div>{{packageInfo.setInfo.wbpByxm}}</div>
+                            <div>{{setInfo.wbpByxm}}</div>
                         </div>
                         <div class="explain-item" flex="dir:left cross:top box:first">
                             <div class="validate title">使用范围：</div>
-                            <div>{{packageInfo.setInfo.wbpSfqgty|universalFilter}}</div>
+                            <div>{{setInfo.wbpSfqgty|universalFilter}}</div>
                         </div>
                         <div class="explain-item" flex="dir:left cross:top box:first">
                             <div class="VIN title">到期时间：</div>
-                            <div>{{packageInfo.setDetail.validate|validateFilter}}</div>
+                            <div>{{setDetail.validate|validateFilter}}</div>
                         </div>
                     </div>
                     <div class="bottom" flex="dir:left box:mean">
                         <div class="bottom-item" flex="dir:left cross:center main:left">
                             <div class="title"><i class="iconfont icon-contact"></i>姓名:</div>
-                            <div class="value">{{packageInfo.userInfo.contact}}</div>
+                            <div class="value">{{userInfo.contact}}</div>
                         </div>
                         <div class="bottom-item" flex="dir:left cross:center main:left">
                             <div class="title"><i class="iconfont icon-phone"></i>电话:</div>
-                            <div class="value">{{packageInfo.userInfo.tel}}</div>
+                            <div class="value">{{userInfo.tel}}</div>
                         </div>
-                        
                     </div>
                     <div class="bottom" flex="dir:left box:mean">
                         <div class="bottom-item" flex="dir:left cross:center main:left">
                             <div class="title"><i class="iconfont icon-car"></i>车型:</div>
-                            <div class="value">{{this.packageInfo.modelInfo.vehicleModel}}&nbsp;</div>
-                            <div class="value">{{this.packageInfo.modelInfo.displacement}}</div>
+                            <div class="value">{{modelInfo.vehicleModel}}&nbsp;</div>
+                            <div class="value">{{modelInfo.displacement}}</div>
                         </div>
                         <div class="bottom-item" flex="dir:left cross:center main:left">
                             <div class="title"><i class="iconfont icon-motor"></i>发动机号:</div>
-                            <div class="value">{{packageInfo.userInfo.engineNo}}</div>
+                            <div class="value">{{userInfo.engineNo}}</div>
                         </div>
                     </div>
                     <div class="bottom" flex="dir:left box:mean">
                         <div class="bottom-item" flex="dir:left cross:center main:left">
                             <div class="title"><i class="iconfont icon-vin custom"></i>限用车架号:</div>
-                            <div class="value">{{packageInfo.userInfo.vin}}</div>
+                            <div class="value">{{userInfo.vin}}</div>
                         </div>
                     </div>
                 </div>
@@ -82,10 +81,10 @@
                 <div class="pay-info" flex="dir:top box:mean">
                     <div class="pay-price" flex="dir:left main:left cross:center">
                         <span>实付:</span>
-                        <span class="price">￥{{packageInfo.setDetail.price}}</span>
+                        <span class="price">￥{{setDetail.price}}</span>
                     </div>
                     <div class="benifit-info" flex="dir:left main:left cross:center">
-                        <span class="origin-fee">(保养费:￥{{packageInfo.setDetail.price}} </span>
+                        <span class="origin-fee">(保养费:￥{{setDetail.price}} </span>
                         <span class="benifit-fee">优惠金额:￥0.00)</span>
                     </div>
                 </div>
@@ -147,13 +146,34 @@
                 pageConfig:{
                     fileds:[],
                     tags:[]
+                },
+                GmConfig:{
+                    fileds:[],
+                    tags:[]
                 }
             }
         },
         computed:{
-            ...mapState([
-                'packageInfo','pageSetting'
-            ])
+            ...mapState({
+                userInfo: ({
+                    packageinfo
+                }) => packageinfo.userInfo,
+                modelInfo: ({
+                    packageinfo
+                }) => packageinfo.modelInfo,
+                setInfo: ({
+                    packageinfo
+                }) => packageinfo.setInfo,
+                setDetail: ({
+                    packageinfo
+                }) => packageinfo.setDetail,
+                storeInfo: ({
+                    packageinfo
+                }) => packageinfo.storeInfo,
+                pageSetting: ({
+                    pageconfig
+                }) => pageconfig.currentBis,
+            })
         },
         components:{
             NavBar,
@@ -168,25 +188,25 @@
                 this.submitOrder();
             },
             submitOrder:function(){
-                const expiredTime = new Date(this.packageInfo.setDetail.validate).getTime();
+                const expiredTime = new Date(this.setDetail.validate).getTime();
                 Tool.post('AaPackageOrder',{
                     userId:Tool.getUserInfo('userId'),
-                    allNumber:this.packageInfo.setDetail.number,
+                    allNumber:this.setDetail.number,
                     expirationDateTimestamp:expiredTime,
-                    vin:this.packageInfo.userInfo.vin,
-                    packageId:this.packageInfo.setInfo.wbpId,
-                    restrictFacilitator:this.packageInfo.storeInfo.id || '',
-                    phone:this.packageInfo.userInfo.tel,
-                    linkman:this.packageInfo.userInfo.contact,
-                    orderPrice:this.packageInfo.setDetail.price,
-                    carType:this.packageInfo.modelInfo.vehicleModel + ' ' + this.packageInfo.modelInfo.displacement,
-                    setMealId:this.packageInfo.setDetail.mealId,
-                    storeId:this.packageInfo.storeInfo.id || '',
-                    engineNo:this.packageInfo.userInfo.engineNo,
-                    mileage:this.packageInfo.userInfo.mileage,
-                    orderType:this.packageInfo.modelInfo.vehicleType - 0,
-                    referee:this.packageInfo.userInfo.referee,
-                    refereeType:this.packageInfo.userInfo.refereeType,
+                    vin:this.userInfo.vin,
+                    packageId:this.setInfo.wbpId,
+                    restrictFacilitator:this.storeInfo.id || '',
+                    phone:this.userInfo.tel,
+                    linkman:this.userInfo.contact,
+                    orderPrice:this.setDetail.price,
+                    carType:this.modelInfo.vehicleModel + ' ' + this.modelInfo.displacement,
+                    setMealId:this.setDetail.mealId,
+                    storeId:this.storeInfo.id || '',
+                    engineNo:this.userInfo.engineNo,
+                    mileage:this.userInfo.mileage,
+                    orderType:this.modelInfo.vehicleType - 0,
+                    referee:this.userInfo.referee,
+                    refereeType:this.userInfo.refereeType,
                 },(data)=>{
                     if(data.code == 200){
                         this.$router.push({path:'/orderpay/'+data.data});
@@ -209,6 +229,8 @@
             getPageConfig:function(e){
                 this.pageConfig.tags = this.pageSetting.wbPageDetail['XY_PAGE'].wbpdFtag.split(',');
                 this.pageConfig.fileds = this.pageSetting.wbPageDetail['XY_PAGE'].wbpdName.split(',');
+                this.GmConfig.tags = this.pageSetting.wbPageDetail['GM_PAGE'].wbpdFtag.split(',');
+                this.GmConfig.fileds = this.pageSetting.wbPageDetail['GM_PAGE'].wbpdName.split(',');
             },
         },
         activated:function(){
@@ -234,29 +256,25 @@
             }
         },
         beforeRouteEnter:(to,from,next)=>{
-            if($.isEmptyObject(store.getters.packageInfo.userInfo)){
-                next({name:'home'});
+            if(Tool.localItem('userInfo') && Tool.getUserInfo('userId')){
+                next(vm => {
+                    var wbProduct = vm.$route.params.id;
+                    wbProduct ? vm.wbpId = wbProduct : wbProduct = vm.wbpId;
+                    const wbtrPhonno = vm.userInfo.tel;
+                    const buyCarDate = vm.userInfo.buyCarDate;
+                    Tool.get('productRange/determineUser',{wbtrPhonno,wbProduct,buyCarDate},data =>{
+                        if(data.msg === '0'){
+                            Toast({
+                                message:"你不能购买该套餐",
+                                duration:3000
+                            })
+                            vm.$router.back();
+                        }
+                    })
+                });
             }else{
-                if(Tool.localItem('userInfo') && Tool.getUserInfo('userId')){
-                    next(vm => {
-                        var wbProduct = vm.$route.params.id;
-                        wbProduct ? vm.wbpId = wbProduct : wbProduct = vm.wbpId;
-                        const wbtrPhonno = vm.packageInfo.userInfo.tel;
-                        const buyCarDate = vm.packageInfo.userInfo.buyCarDate;
-                        Tool.get('productRange/determineUser',{wbtrPhonno,wbProduct,buyCarDate},data =>{
-                            if(data.msg === '0'){
-                                Toast({
-                                    message:"你不能购买该套餐",
-                                    duration:3000
-                                })
-                                vm.$router.back();
-                            }
-                        })
-                    });
-                }else{
-                    store.commit('POP_PAGE',1);//在进入login之前把已进栈但是没有被访问的页面清理出栈
-                    next({name:'login',params:{to:to.path}});
-                }
+                store.commit('POP_PAGE',1);//在进入login之前把已进栈但是没有被访问的页面清理出栈
+                next({name:'login',params:{to:to.path}});
             }
         },
     }

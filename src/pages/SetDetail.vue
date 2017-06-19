@@ -17,7 +17,7 @@
                             </div>
                             <div class="set-detail" flex="dir:top box:mean">
                                 <div class="line" flex="dir:left cross:center">
-                                    <span class="car-type">{{packageInfo.modelInfo.seriesName}}</span>
+                                    <span class="car-type">{{modelInfo.seriesName}}</span>
                                     <span class="des1">{{setInfo.wbpName}}</span>
                                     <span class="des2">{{setResource.ad}}</span>
                                 </div>
@@ -76,7 +76,7 @@
     import NavBar from '../components/NavBar';
     import InpCom from '../components/InpCom';
     import Tool from '../utils/Tool';
-    import { mapState } from 'vuex';
+    import { mapState, mapMutations } from 'vuex';
     import { Toast } from 'mint-ui';
     import Scroller from '../components/Scroller';
     import Swiper from '../components/Swiper';
@@ -119,9 +119,20 @@
         },
         mixins: [emmiter],
         computed:{
-            ...mapState([
-                'packageInfo','bisinessType','pageSetting'
-            ])
+            ...mapState({
+                modelInfo: ({//选择的车型信息
+                    packageinfo
+                }) => packageinfo.modelInfo,
+                storeInfo: ({//选择的店铺信息
+                    packageinfo
+                }) => packageinfo.storeInfo,
+                reset: ({//页面信息重置标志
+                    mixin
+                }) => mixin.reset,
+                pageSetting: ({//当前业务配置
+                    pageconfig
+                }) => pageconfig.currentBis
+            })
         },
         updated:function(){
             this.$nextTick(() => {//IScroll滚动回之前的位置
@@ -145,27 +156,26 @@
         },
         methods:{
             nextPage:function(){
-                
                 if(!this.setDetail.price && this.pageConfig.tags[this.pageConfig.fileds.indexOf('meal')] == '1'){
                     Toast('请选择机油');
                     return false;
                 }
-                if(this.setInfo.wbpSfqgty == 2 && !this.packageInfo.storeInfo.id && this.pageConfig.tags[this.pageConfig.fileds.indexOf('store')] == '1'){
+                if(this.setInfo.wbpSfqgty == 2 && !this.storeInfo.id && this.pageConfig.tags[this.pageConfig.fileds.indexOf('store')] == '1'){
                     Toast({
                         message:'请选择服务门店',
                         duration:1000,
                     });
                     return false;
                 }
-                this.$store.commit('SET_PACKAGE_SETINFO',this.setInfo);
-                this.$store.commit('SET_PACKAGE_SETDETAIL',this.setDetail);
-                this.$store.commit('UPDATE_RESET',false);
+                this.setSetInfo(this.setInfo);
+                this.setSetDetail(this.setDetail);
+                this.setReset(false);
                 this.$router.push({name:'personinfo',params:this.params});
             },
             getMealList:function(id){
                 Tool.get('getSetMeal',{
-                    vehicleModel:this.packageInfo.modelInfo.vehicleModel || '',
-                    displacement:this.packageInfo.modelInfo.displacement || '',
+                    vehicleModel:this.modelInfo.vehicleModel || '',
+                    displacement:this.modelInfo.displacement || '',
                     wbplDid:id,
                 },(data)=>{
                     if(data.code == 200){
@@ -289,7 +299,6 @@
                 })
             },
             getPageConfig:function(e){
-                var wbpId = this.bisinessType;
                 this.pageConfig.tags = this.pageSetting.wbPageDetail['TCXQ_PAGE'].wbpdFtag.split(',');
                 this.pageConfig.fileds = this.pageSetting.wbPageDetail['TCXQ_PAGE'].wbpdName.split(',');
                 this.$nextTick(() => {
@@ -298,7 +307,7 @@
                 })
             },
             goStore:function(){
-                this.$store.commit('UPDATE_RESET',false);
+                this.setReset(false);
                 if(this.isSelectStore){
                     this.$router.push({name:'store',params:{wbpId:this.setInfo.wbpId}});
                 }else{
@@ -308,16 +317,16 @@
             toggleMeal:function(){
                 this.mealListShow = !this.mealListShow
             },
-        },
-        mounted:function(){
-            // this.$nextTick(()=>{
-            //     this.$refs.scroller.mySroller.refresh();
-            // })
+            ...mapMutations({
+                setReset: 'UPDATE_RESET',
+                setSetInfo: 'SET_SETINFO',
+                setSetDetail: 'SET_SETDETAIL'
+            })
         },
         activated:function(){
             this.params = this.$route.params;
-            this.storeName = this.packageInfo.storeInfo.storeName ? this.packageInfo.storeInfo.storeName : '';
-            if(this.packageInfo.reset){
+            this.storeName = this.storeInfo.storeName ? this.storeInfo.storeName : '';
+            if(this.reset){
                 this.reSetData();
                 this.$nextTick(()=>{
                     this.getPageConfig();

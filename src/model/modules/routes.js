@@ -26,7 +26,17 @@ const mutations = {
     },
 }
 
+const getters = {
+    pageStack:function(state) {
+        return state.pageStack;
+    },
+    prepage:function(state,getters){
+        return state.pageStack[state.pageStack.length - 2];
+    }
+}
+
 export default {
     state,
-    mutations
+    mutations,
+    getters
 }

@@ -18,27 +18,33 @@ export default {
 		}
 	},
 	computed:{
-		...mapState([
-			"mode"
-		])
+		...mapState({
+			mode:({
+				routes
+			}) => routes.mode
+		})
 	},
 	created:function(){
-		var self = this;
-		if(self.$route.name != 'index'){
+		if(this.$route.name != 'index'){
 			Tool.post("linkcount",{},(data)=>{});
 		}
 		try{
 			var geolocation = new BMap.Geolocation();
-			geolocation.getCurrentPosition(function(position){
-				self.$store.commit('SET_LOCATION',position);
-				if(self.$route.name != 'index' && self.$route.name !='selectplate' && position.address.city) {
+			geolocation.getCurrentPosition((position) => {
+				this.setLocation(position);
+				if(this.$route.name != 'index' && this.$route.name !='selectplate' && position.address.city) {
 					Tool.post("citycount",{city:position.address.city,province:position.address.province},(data)=>{})
 				}
 			}); 
 		}catch(e){
-			console.log(e);
+			console.warn(e);
 		}
 	},
+	methods:{
+		...mapMutations({
+			setLocation: 'SET_LOCATION'
+		})
+	}
 }
 </script>
 <style>

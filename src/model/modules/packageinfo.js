@@ -8,6 +8,7 @@ const state = {
     storeInfo: {},              //店铺信息
     userInfo: {},               //用户信息
     carList: {},                //车辆列表
+    refereeStore: {},           //推荐店铺信息
 }
 
 const mutations = {
@@ -38,6 +39,33 @@ const mutations = {
         }else{
             for(var props in params){
                 state.modelInfo[props] = params[props];
+            }
+        }
+    },
+    SET_SETINFO:function( state, params ){//设置套餐信息
+        if($.isEmptyObject( params )){
+            state.setInfo = {};
+        }else{
+            for(var props in params){
+                state.setInfo[props] = params[props];
+            }
+        }
+    },
+    SET_SETDETAIL:function( state, params ){//设置套餐详情
+        if($.isEmptyObject( params )){
+            state.setDetail = {};
+        }else{
+            for(var props in params){
+                state.setDetail[props] = params[props];
+            }
+        }
+    },
+    SET_REFEREE_STOREINFO:function( state, params ) {
+        if($.isEmptyObject( params )){
+            state.refereeStore = {};
+        }else{
+            for(var props in params){
+                state.refereeStore[props] = params[props];
             }
         }
     }

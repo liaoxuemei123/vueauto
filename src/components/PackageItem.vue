@@ -24,7 +24,7 @@
 </template>
 <script>
     import { Toast } from 'mint-ui';
-    import { mapState } from 'vuex';
+    import { mapState, mapMutations } from 'vuex';
     import Tool from '../utils/Tool';
     export default {
         data () {
@@ -44,31 +44,26 @@
                 modelInfo:({
                     packageinfo
                 }) => packageinfo.modelInfo,
-                bisiConfig:({
+                allConfig:({
                     pageconfig
-                }) => pageconfig.config
+                }) => pageconfig.config,
+                currentBis:({
+                    pageconfig
+                }) => pageconfig.currentBis,
             })
         },
         methods:{
             viewDetail:function(){
                 var item = this.item;
                 const bisiness = this.$parent.$parent.$parent.bisinessItems[this.$parent.$parent.$parent.activeBusiness].wbyId;
-                for(var props in this.bisiConfig){
-                    this.bisiConfig[props].wbyId === bisiness ? this.$store.commit("SET_PAGE_CONFIG",this.bisiConfig[props]) : '';
-                }          
-                if(this.modelInfo.vehicleModel && !!this.$parent.$parent.pickerModel){
-                    if(this.$parent.$parent.pickerModel == (this.modelInfo.vehicleModel + ' ' + this.modelInfo.displacement)){
-                        this.$router.push({path:'../setdetail/'+item.wbpId});
-                        this.$store.commit("SET_BISINESS_TYPE",item.wbpId);
-                        Tool.localItem('modelInfo',this.modelInfo);
-                        Tool.post('packagecount',{packageId:item.wbpId,packageName:item.wbpName,isUniversal:item.wbpSfqgty},(data)=>{})
-                    }else{
-                        Toast({
-                            message:"车型选择错误，请重新选择",
-                            duration:1000,
-                        });
-                        $('.select-bar input').focus();
-                    }
+                for(var props in this.allConfig){
+                    this.allConfig[props].wbyId === bisiness ? this.setCurrentBis(this.allConfig[props]) : '';
+                }   
+                if(this.modelInfo.vehicleModel && this.modelInfo.pickerModel){
+                    this.$router.push({path:'../setdetail/'+item.wbpId});
+                    this.setCurrentBis({ wbpId: item.wbpId });
+                    Tool.localItem('modelInfo',this.modelInfo);
+                    Tool.post('packagecount',{packageId:item.wbpId,packageName:item.wbpName,isUniversal:item.wbpSfqgty},(data)=>{})
                 }else{
                     Toast({
                         message:"请选择车型",
@@ -77,6 +72,9 @@
                     $('.select-bar input').focus();
                 }
             },
+            ...mapMutations({
+                setCurrentBis:"SET_CURRENT_BIS",
+            })
         },
         filters:{
             descFilter:function(val){

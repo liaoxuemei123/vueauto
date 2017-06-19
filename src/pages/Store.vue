@@ -60,7 +60,7 @@
     import BtnCom from '../components/BtnCom';
     import StoreItem from '../components/StoreItem';
     import Tool from '../utils/Tool';
-    import { mapState } from 'vuex';
+    import { mapState, mapMutations } from 'vuex';
     import { Indicator, Toast } from 'mint-ui';
     import Scroller from '../components/Scroller';
     export default {
@@ -123,16 +123,6 @@
                 },(data)=>{
                     this.storelist = this.storelist.concat(data.data.data);
                     this.pagenation.totalCount = data.data.totalCount;
-                    // this.$nextTick(()=>{
-                    //     if(this.$children.length > 0){
-                    //         for(var i=0;i<this.$children.length;i++){
-                    //             if(this.$children[i].mySroller && this.$children[i].mySroller.scrollTo){
-                    //                 this.$children[i].mySroller.scrollTo(0,0);
-                    //                 this.$children[i].scrollerInfo.y = 0;
-                    //             }
-                    //         }
-                    //     }
-                    // })//使用异步，让updated里面的更新先于这里的更新
                     this.loadMore = true;
                 },{mask:false})
             },
@@ -195,7 +185,7 @@
                         data.id = this.storelist[this.select].id;
                         data.storeName = this.storelist[this.select].storeName;
                         data.photoUrl = this.storelist[this.select].photoUrl;
-                        this.$store.commit('SET_PACKAGE_STOREINFO',data);
+                        this.setPackageStoreInfo(data);
                         this.$router.back();
                     })
                 }else if(this.$store.getters.prepage.name == 'referee'){
@@ -203,7 +193,7 @@
                         var data = {};
                         data.storeId = this.storelist[this.select].id;
                         data.storeName = this.storelist[this.select].storeName;
-                        this.$store.commit('SET_REFEREE_STORE',data);
+                        this.setRefereeStoreInfo(data);
                         this.$router.back();
                     })
                 }else{
@@ -212,7 +202,7 @@
                         data.id = this.storelist[this.select].id;
                         data.storeName = this.storelist[this.select].storeName;
                         data.photoUrl = this.storelist[this.select].photoUrl;
-                        this.$store.commit('SET_SUBSTOREINFO',data);
+                        this.setSubscribeStoreInfo(data);
                         this.$router.back();
                     })
                 }
@@ -240,14 +230,7 @@
                 }
                 this.selectedCity = this.cityInfo.province + ' ' + this.cityInfo.city;
                 this.cityShow = false;
-                // Tool.getLocation(this.selectedCity,(data)=>{
-                //     if(data.result && data.result.location){
-                //         this.cityInfo.lat = data.result.location.lat;
-                //         this.cityInfo.lng = data.result.location.lng;
-                //     }
                 this.getStoreList();
-                //this.cityInfo.province = '';
-                // })
             },
             getCityList:function(callback){
                 var id = this.$route.params.wbpId;
@@ -270,7 +253,12 @@
                     this.cityData = param;
                     callback && callback();
                 })
-            }
+            },
+            ...mapMutations({
+                setPackageStoreInfo: 'SET_STORE_INFO',
+                setRefereeStoreInfo: 'SET_REFEREE_STOREINFO',
+                setSubscribeStoreInfo: 'SET_STOREINFO',
+            })
         },
         updated:function(){
             if(this.$children.length > 0){
@@ -283,15 +271,7 @@
         },
         activated:function(){
             if(this.$store.getters.prepage.name == 'setdetail' || this.$store.getters.prepage.name == 'referee'){
-                this.getStoreList(() => {
-                    var storeInfo = this.$store.getters.subscribeInfo.storeInfo;
-                    for(var i=0;i<this.storelist.length;i++){
-                        if(storeInfo.id == this.storelist[i].id){
-                            this.select = i;
-                            return;
-                        }
-                    }
-                });
+                this.getStoreList();
                 this.getCityList(()=>{
                     this.citylist[0].values = this.cityData.provinces;
                     this.citylist[2].values = this.cityData.citys[0];
@@ -323,15 +303,7 @@
                         })  
                     })
                 }).then(()=>{
-                    this.getStoreList(() => {
-                        var storeInfo = this.$store.getters.subscribeInfo.storeInfo;
-                        for(var i=0;i<this.storelist.length;i++){
-                            if(storeInfo.id == this.storelist[i].id){
-                                this.select = i;
-                                return;
-                            }
-                        }
-                    });
+                    this.getStoreList();
                 })
             }
         },
@@ -340,9 +312,11 @@
             this.cityShow = false;
         },
         computed:{
-            ...mapState([
-                'geolocation'
-            ])
+            ...mapState({
+                geolocation: ({
+                    geolocation
+                }) => geolocation
+            })
         }
     }
 </script>
