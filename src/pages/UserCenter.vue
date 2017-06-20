@@ -48,17 +48,21 @@
             NavBar,
             Xscroller
         },
-        mounted:function(){
-        },
         activated:function(){
-            const userData = JSON.parse(Tool.localItem('userInfo'));
+            const userData = JSON.parse(Tool.localItem('userData'));
             if(userData){
-                Tool.get('queryUserInfo',{userToken:userData.token},data => {
-                    const userCenter = JSON.parse(JSON.parse(data));
-                    if(userCenter.data){
-                        this.userInfo = userCenter.data;
-                    }
-                });
+                this.userInfo = userData;
+            }else{
+                const userInfo = JSON.parse(Tool.localItem('userInfo'));
+                if(userInfo){
+                    Tool.get('queryUserInfo',{userToken:userInfo.token},data => {
+                        const userCenter = JSON.parse(JSON.parse(data));
+                        if(userCenter.data){
+                            this.userInfo = userCenter.data;
+                            Tool.localItem('userData',userCenter.data);
+                        }
+                    });
+                }
             }
         },
         methods:{
@@ -73,7 +77,6 @@
         },
         filters: {
             phoneFilter:function(val) {
-                
                 var arr = (val+'').split('');
                 arr.splice(3,4,'****');
                 return arr.join('');

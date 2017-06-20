@@ -117,21 +117,23 @@
                 setBisinessConfig: 'SET_CONFIG',
                 reset: 'UPDATE_RESET',
                 setStoreInfo: 'SET_STORE_INFO',
-                updateUserInfo: 'UPDATE_USER_INFO'
+                updateUserInfo: 'UPDATE_USER_INFO',
+                setRefereeStoreInfo: 'SET_REFEREE_STOREINFO'
             })
         },
         created:function(){
             this.getBisinessList();
-        },
-        activated:function(){
-            this.reset(true);
-            this.setStoreInfo({});
-            this.updateUserInfo({refereeType:'',referee:''})
             this.$nextTick(()=>{
                 this.broadcast('swiper','init',{
                     direction : 'vertical',
                 })
             })
+        },
+        activated:function(){
+            this.reset(true);
+            this.setStoreInfo({});
+            this.updateUserInfo({refereeType:'',referee:''});
+            this.setRefereeStoreInfo({});
         },
         mounted:function(){
             this.bisinessItems.map((v,i)=>{
