@@ -4,7 +4,7 @@
  */
 import { Indicator, Toast } from 'mint-ui'
 import router from '../router';
-import store from '../store';
+import store from '../model';
 
 const Tool = {};
 const target = 'http://47.92.32.44:8091/maintenance-plug/app/';//本地测试环境
@@ -45,7 +45,6 @@ Tool.ajax = function(mySetting){
         return false;
     }
     var xhr = new XMLHttpRequest();
-    store.dispatch('loading');
     if(setting.mask){//是否启用遮罩层
         Indicator.open({
             spinnerType:'fading-circle',
@@ -138,7 +137,6 @@ Tool.ajax = function(mySetting){
         }
         if(requestPool.length < 1){//当所有发出的请求都完成的时候才取消遮罩层
             Indicator.close();
-            store.dispatch('loadDown');
         }
     }
 

@@ -138,7 +138,6 @@
     import { mapMutations, mapState } from 'vuex';
     import Tool from '../utils/Tool';
     import { Toast } from 'mint-ui';
-    import store from '../store'
     export default {
         data () {
             return {

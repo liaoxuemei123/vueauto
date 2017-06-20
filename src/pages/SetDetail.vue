@@ -24,7 +24,7 @@
                                 <div class="line" flex="dir:left cross:center">
                                     <span class="price-range"><span class="doller">￥</span>{{showPrice | priceFilter}}</span>
                                     <span class="price-range" v-if="rangePrice > 0">&nbsp;-&nbsp;<span class="doller">￥</span>{{rangePrice | priceFilter}}</span>
-                                    <span class="origin-price"><span class="doller">￥</span>{{deletePrice | priceFilter}}</span>
+                                    <span class="origin-price"><span class="doller"></span>{{deletePrice | priceFilter}}</span>
                                 </div>
                             </div>
                         </div>
@@ -185,10 +185,10 @@
                             var priceRange = price.split('-');
                             this.showPrice = priceRange[0];
                             this.rangePrice = priceRange[1];
-                            this.deletePrice = priceRange[1];
+                            this.deletePrice = '';
                         }else{
                             this.showPrice = data.data.jiage;
-                            this.deletePrice = data.data.jiage;
+                            this.deletePrice = '';
                             this.rangePrice = 0;
                         }
                         if(this.setMealList.length < 2){//如果只有一条机油数据，那就不支持修改
@@ -350,8 +350,8 @@
                 }
             },
             priceFilter:function(val){//价格展示过滤器
-                if(!val) return '0.00';
-                return (val - 0).toFixed(2);
+                if(!val) return '';
+                return '￥' + (val - 0).toFixed(2);
             }
         },
     }

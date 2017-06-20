@@ -22,9 +22,9 @@
                     <div class="user-center" @click="userCenter"><i class="iconfont icon-usercenter"></i></div>
                     <div class="banner">
                         <swiper>
-                            <div class="swiper-slide" flex="dir:left cross:center main:left"><a href="">更多精彩活动等你来！</a></div>
+                            <!--<div class="swiper-slide" flex="dir:left cross:center main:left"><a href="">更多精彩活动等你来！</a></div>
                             <div class="swiper-slide" flex="dir:left cross:center main:left"><a href="">十三亿人看了都沉默了</a></div>
-                            <div class="swiper-slide" flex="dir:left cross:center main:left"><a href="">长安商城福利</a></div>
+                            <div class="swiper-slide" flex="dir:left cross:center main:left"><a href="">长安商城福利</a></div>-->
                         </swiper>
                     </div>
                 </div>

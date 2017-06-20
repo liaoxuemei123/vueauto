@@ -13,7 +13,7 @@ const mutations = {
     PUSH_PAGE:function(state,page){ //往页面栈中放一个页面
         state.pageStack.push(page);
     },
-    INSERT_PAGE:function(state,page,index){//在制定位置插入一个页面
+    INSERT_PAGE:function(state,page,index){//在指定位置插入一个页面
         state.pageStack.splice(index,0,page);
     },
     POP_PAGE:function(state,number = 0){//弹出一个页面
