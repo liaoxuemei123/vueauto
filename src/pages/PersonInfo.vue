@@ -83,7 +83,8 @@
                 pageConfig:{
                     tags:[],
                     fileds:[],
-                }
+                },
+                interval:'',//计时器
             }
         },
         components:{
@@ -128,7 +129,7 @@
         },
         deactivated:function(){
             this.residueTime = 60;
-            this.code = '';
+            clearInterval(this.interval);
         },
         methods:{
             nextPage:function(){
@@ -357,9 +358,9 @@
                     $(this.$refs.getValiCode).hide();
                     $(this.$refs.onValiCode).show();
 					this.getCodeState = true;
-					var a = setInterval(()=>{
+					this.interval = setInterval(()=>{
 						this.residueTime -- ;
-                         $(this.$refs.residueTime).text(this.residueTime);
+                        $(this.$refs.residueTime).text(this.residueTime);
 						while(this.residueTime < 1){
 							this.getCodeState = false;
 							this.residueTime = 60;
@@ -379,6 +380,9 @@
             Tool.routerEnter(to,from,next)
         },
         created:function(){
+            if($.isEmptyObject(this.modelInfo)) {
+                this.$router.push({name:'home'});
+            }
             this.userInfo.tel = Tool.getUserInfo('telephone');
             this.userMoblie = Tool.getUserInfo('telephone');
         }

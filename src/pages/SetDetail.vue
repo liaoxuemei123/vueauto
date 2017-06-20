@@ -262,6 +262,7 @@
                             }
                         });
                         this.setInfo.wbpSfqgty = ret.wbpSfqgty;
+                        this.setInfo.wbpByxm =  ret.wbpByxm;
                         this.setInfo.wbpName = ret.wbpName;
                         this.setInfo.wbpId = ret.wbpId;
                         this.setInfo.wbpPdesc = ret.wbpPdesc;

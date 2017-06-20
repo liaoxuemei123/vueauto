@@ -244,6 +244,11 @@
             wbProduct ? this.wbpId = wbProduct : wbProduct = this.wbpId;
             this.getPageConfig();
         },
+        created:function(){
+            if($.isEmptyObject(this.modelInfo)) {
+                this.$router.push({name:'home'});
+            }
+        },
         filters:{
             universalFilter:function(val){
                 if(val == 1){
