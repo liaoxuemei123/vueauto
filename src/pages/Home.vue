@@ -106,9 +106,6 @@
                             }
                             this.$nextTick(()=>{
                                 this.broadcast('xscroller','init');
-                                this.broadcast('swiper','init',{
-                                    direction : 'vertical',
-                                })
                                 this.currentView = this.bisinessItems[0].view;
                             })
                         })
@@ -130,6 +127,11 @@
             this.reset(true);
             this.setStoreInfo({});
             this.updateUserInfo({refereeType:'',referee:''})
+            this.$nextTick(()=>{
+                this.broadcast('swiper','init',{
+                    direction : 'vertical',
+                })
+            })
         },
         mounted:function(){
             this.bisinessItems.map((v,i)=>{

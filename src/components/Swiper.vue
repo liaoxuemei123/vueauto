@@ -29,7 +29,7 @@
         methods:{
             init:function(options){
                 if(!$.isEmptyObject(this.mySwiper)) {
-                    return false;
+                    this.mySwiper.destroy && this.mySwiper.destroy();
                 };
                 this.extrace(options);//加载额外的配置
                 this.mySwiper = new Swiper(this.$el,this.setting);
