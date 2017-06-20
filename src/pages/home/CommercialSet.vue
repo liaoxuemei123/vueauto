@@ -96,10 +96,30 @@
         .show-content{
             padding-top:1.5rem;
             .title{
-                height:1.2rem;
-                line-height:1.2rem;
+                height:1.5rem;
+                line-height:1.5rem;
                 width:94%;
                 padding:0 3%;
+                text-align: center;
+                font-weight: bold;
+                span{
+                    position:relative;
+                }
+                span::before,span::after{
+                    content:" ";
+                    display:block;
+                    width:1rem;
+                    height:2px;
+                    background-color:#444;
+                    position:absolute;
+                    top:50%;
+                }
+                span::before{
+                    left:-1.1rem;
+                }
+                span::after{
+                    right:-1.1rem;
+                }
             }
             .set-item{
                 border-bottom:1px solid #efefef;
