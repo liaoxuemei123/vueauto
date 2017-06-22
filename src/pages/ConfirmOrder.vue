@@ -112,16 +112,18 @@
                             <li>5.本套餐规定的保养次数使用完毕或协议有效期满时，本协议终止。</li>
                         </ul>
                         <ul v-if="item == 'scxy' && pageConfig.tags[index] == 1">
-                            <li>1.本套餐内容包括：更换机油、机油滤清器、汽油滤清器的零件费用及对应工时费，转向、驻车、制动等系统专项检查工时费。</li>
-                            <li>2.本套餐使用时，如需增加其它项目，客户需自行承担增加的零件和工时费用。</li>
+                            <li>1.本套餐内容包括：更换机油、机油滤清器的零件费用及对应工时费。</li>
+                            <li>2.本套餐使用时，如需增加保养项目或使用更高级别机油，客户需自行承担增加的零件和工时费用。</li>
                             <li>3.本套餐仅适用于签订协议时所登记的车辆（以VIN码为准），车辆所有权发生转移不影响维保套餐的使用。</li>
                             <li>4.本套餐在购买7日之内未使用可申请退款。套餐金额将在提出申请10个工作日内退回客户当初购买套餐所使用账户中。</li>
-                            <li>5.本套餐规定的保养次数使用完毕或协议有效期满时，本协议商车。</li>
+                            <li>5.本套餐服务门店选项中“任意服务门店”仅指提供保养套餐服务的门店，即服务商门店中可查询到的店。</li>
+                            <li>6.本套餐规定的保养次数使用完毕或协议有效期满时，本协议终止。</li>
                         </ul>
                     </div>
-                    <footer>
+                    <footer v-show="pageConfig.fileds.length" v-for="(item,index) in pageConfig.fileds">
                         <div>重庆长安汽车股份有限公司</div>
-                        <div>2017年4月1日</div>
+                        <div v-if="item == 'scxy' && pageConfig.tags[index] == 1">2017年7月1日</div>
+                        <div v-if="item == 'wcxy' && pageConfig.tags[index] == 1">2017年4月1日</div>
                     </footer>
                 </div>
                 <div class="toolbar" flex="dir:left box:mean">
@@ -232,6 +234,7 @@
                 this.pageConfig.fileds = this.pageSetting.wbPageDetail['XY_PAGE'].wbpdName.split(',');
                 this.GmConfig.tags = this.pageSetting.wbPageDetail['GM_PAGE'].wbpdFtag.split(',');
                 this.GmConfig.fileds = this.pageSetting.wbPageDetail['GM_PAGE'].wbpdName.split(',');
+                
             },
             gmJudge:function(filed){
                 const index = this.GmConfig.fileds.indexOf(filed);

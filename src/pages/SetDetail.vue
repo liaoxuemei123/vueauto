@@ -24,7 +24,7 @@
                                 <div class="line" flex="dir:left cross:center">
                                     <span class="price-range"><span class="doller">￥</span>{{showPrice | priceFilter}}</span>
                                     <span class="price-range" v-if="rangePrice > 0">&nbsp;-&nbsp;<span class="doller">￥</span>{{rangePrice | priceFilter}}</span>
-                                    <span class="origin-price"><span class="doller"></span>{{deletePrice | priceFilter}}</span>
+                                    <span class="origin-price"><span class="doller" v-if="deletePrice">￥</span>{{deletePrice | priceFilter}}</span>
                                 </div>
                             </div>
                         </div>
@@ -170,7 +170,7 @@
                 this.setSetInfo(this.setInfo);
                 this.setSetDetail(this.setDetail);
                 this.setReset(false);
-                this.$router.push({name:'personinfo',params:this.params});
+                this.$router.push({name:'personinfo',params:{code:true}});
             },
             getMealList:function(id){
                 Tool.get('getSetMeal',{
@@ -351,7 +351,7 @@
             },
             priceFilter:function(val){//价格展示过滤器
                 if(!val) return '';
-                return '￥' + (val - 0).toFixed(2);
+                return (val - 0).toFixed(2);
             }
         },
     }

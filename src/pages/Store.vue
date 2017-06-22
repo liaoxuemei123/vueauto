@@ -94,6 +94,7 @@
                     totalCount:0,
                 },
                 loadMore:true,
+                isSelect:false
             }
         },
         components:{
@@ -135,7 +136,7 @@
                         gpsLongitude:this.cityInfo.lng ||self.geolocation.point.lon,
                         gpsLatitude:this.cityInfo.lat || self.geolocation.point.lat,
                         storename:this.$children[0].$refs.search.value || '',
-                        area:this.cityInfo.code || '',
+                        area:this.isSelect ? this.cityInfo.code : '',
                         flag:1,
                         wbProduct:wbpId,
                     },(data)=>{
@@ -157,7 +158,7 @@
                         gpsLongitude:this.cityInfo.lng ||self.geolocation.point.lon,
                         gpsLatitude:this.cityInfo.lat || self.geolocation.point.lat,
                         storename:this.$children[0].$refs.search.value || '',
-                        area:this.cityInfo.code || '',
+                        area:this.isSelect ? this.cityInfo.code : '',
                         page:1,
                         pageSize:this.pagenation.pageSize,
                         wbProduct:wbpId,
@@ -223,6 +224,7 @@
                 }
             },
             selectCity:function(){
+                this.isSelect = true;
                 if(!this.cityInfo.province){
                     this.cityInfo.province = this.cityData.provinces[0].name;
                     this.cityInfo.city = this.cityData.citys[0][0].name;
@@ -271,7 +273,12 @@
         },
         activated:function(){
             if(this.$store.getters.prepage.name == 'setdetail' || this.$store.getters.prepage.name == 'referee'){
-                this.getStoreList();
+                this.getStoreList(() => {
+                    if(this.select == 0){
+                        if(this.storelist[0].id == '111111')
+                            this.select = 1;
+                    }
+                });
                 this.getCityList(()=>{
                     this.citylist[0].values = this.cityData.provinces;
                     this.citylist[2].values = this.cityData.citys[0];
@@ -310,6 +317,7 @@
         deactivated:function(){
             this.cityInfo.code = '';
             this.cityShow = false;
+            this.isSelect = false;
         },
         computed:{
             ...mapState({
@@ -335,9 +343,11 @@
                 line-height:1.8rem;
                 background-color:#fff;
                 margin-bottom:1px;
+                z-index: 1000;
                 .input-control{
                     width:100%;
                     height:1.8rem;
+                    border-bottom:1px solid #ccc;
                     input{
                         outline:none;
                         border:none;

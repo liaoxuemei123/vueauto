@@ -281,7 +281,7 @@
                 this.carShow = false;
                 this.getPackageList(this.carModel.id);
                 if(this.carModel.typeName === '长安欧尚'){
-                    this.$parent.changeActive(1);
+                    this.$parent.changeActive(1,false);
                 }
             },
             toggleShow:function(){

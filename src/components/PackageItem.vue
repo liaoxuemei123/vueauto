@@ -109,7 +109,7 @@
             background-color:#ccc;
             width:6rem;
             .image-container{
-                height:5rem;
+                height:4rem;
                 width:100%;
                 position:relative;
                 img{

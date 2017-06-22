@@ -109,6 +109,7 @@
             })
         },
         activated:function(){
+            if(this.$route.params.code) this.code = '';
             var vehicleInfo = JSON.parse(Tool.localItem('vehicleInfo'));
             if(vehicleInfo){
                 this.userInfo.vin = vehicleInfo.vin;
@@ -212,7 +213,7 @@
                                     this.userInfo.mileage = Math.ceil((+new Date() - (pData.data.buyCarDate?+new Date(pData.data.buyCarDate):new Date()))/(1000*60*60*24));
                                     this.userInfo.buyCarDate = pData.data.buyCarDate;
                                     this.updateUserInfon(this.userInfo);
-                                    const wbProduct = this.$route.params.id;
+                                    const wbProduct = this.pageSetting.wbpId;
                                     const wbtrPhonno = this.userInfo.tel;
                                     const buyCarDate = this.userInfo.buyCarDate;
                                     Tool.get('productRange/determineUser',{wbtrPhonno,wbProduct,buyCarDate},data =>{
@@ -238,7 +239,7 @@
                             this.userInfo.mileage = Math.ceil((+new Date() - (pData.data.buyCarDate?+new Date(pData.data.buyCarDate):new Date()))/(1000*60*60*24));
                             this.userInfo.buyCarDate = pData.data.buyCarDate;
                             this.updateUserInfon(this.userInfo);
-                            const wbProduct = this.$route.params.id;
+                            const wbProduct = this.pageSetting.wbpId;
                             const wbtrPhonno = this.userInfo.tel;
                             const buyCarDate = this.userInfo.buyCarDate;
                             Tool.get('productRange/determineUser',{wbtrPhonno,wbProduct,buyCarDate},data =>{
@@ -272,7 +273,7 @@
                                 this.userInfo.mileage = 0;
                                 this.userInfo.buyCarDate = '';
                                 this.updateUserInfon(this.userInfo);
-                                const wbProduct = this.$route.params.id;
+                                const wbProduct = this.pageSetting.wbpId;
                                 const wbtrPhonno = this.userInfo.tel;
                                 const buyCarDate = this.userInfo.buyCarDate;
                                 Tool.get('productRange/determineUser',{wbtrPhonno,wbProduct,buyCarDate},data =>{
@@ -298,7 +299,7 @@
                         this.userInfo.mileage = 0;
                         this.userInfo.buyCarDate = '';
                         this.updateUserInfon(this.userInfo);
-                        const wbProduct = this.$route.params.id;
+                        const wbProduct = this.pageSetting.wbpId;
                         const wbtrPhonno = this.userInfo.tel;
                         const buyCarDate = this.userInfo.buyCarDate;
                         Tool.get('productRange/determineUser',{wbtrPhonno,wbProduct,buyCarDate},data =>{

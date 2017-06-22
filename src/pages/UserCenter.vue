@@ -10,14 +10,14 @@
                         <div class="label"><span>我的订单</span></div>
                         <div class="value">查看全部订单<i class="iconfont icon-go"></i></div>
                     </div>
-                    <div class="info-control" flex="dir:left box:first">
+                    <!--<div class="info-control" flex="dir:left box:first">
                         <div class="label"><span>昵称</span></div>
                         <div class="value">{{userInfo.nickName | nameFilter}}</div>
                     </div>
                     <div class="info-control" flex="dir:left box:first">
                         <div class="label"><span>性别</span></div>
                         <div class="value">{{userInfo.sex | sexFilter}}</div>
-                    </div>
+                    </div>-->
                     <div class="info-control" flex="dir:left box:first">
                         <div class="label"><span>手机号</span></div>
                         <div class="value">{{userInfo.mobile | phoneFilter}}</div>

@@ -218,6 +218,7 @@
                 .input-control{
                     width:100%;
                     height:1.8rem;
+                    border-bottom:1px solid #ccc;
                     input{
                         outline:none;
                         border:none;

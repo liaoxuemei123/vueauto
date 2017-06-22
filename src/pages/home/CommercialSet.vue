@@ -281,7 +281,7 @@
                 this.carShow = false;
                 this.getPackageList(this.carModel.id);
                 if(this.carModel.typeName === '长安汽车'){
-                    this.$parent.changeActive(0);
+                    this.$parent.changeActive(0,false);
                 }
             },
             toggleShow:function(){
