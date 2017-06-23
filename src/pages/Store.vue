@@ -13,26 +13,24 @@
                     <i class="iconfont icon-up" v-if="cityShow"></i>
                     <i class="iconfont icon-down" v-else="cityShow"></i>
                 </div>
-                <div class="store-list-container" flex="dir:top">
-                    <div class="container-content" flex="dir:top box:last">
-                        <div class="overflow-container" flex="dir:top box:mean">
-                            <scroller>
-                                <div class="store-item" v-for="(item, index) in storelist">
-                                    <store-item :item="item" :onClick="selectItem.bind(this, index)" :active="index == select"/>
-                                </div>
-                                <div class="load-more" flex="dir:top cross:center main:center" v-if="pagenation.page*pagenation.pageSize < pagenation.totalCount">
-                                    <div class="start-load" v-tap="getMore" v-if="loadMore">加载更多</div>
-                                    <div flex="dir:left cross:center" v-else="loadMore">加载中<mt-spinner type="fading-circle" :size="12" color="#6b6b6b"></mt-spinner></div>
-                                </div>
-                            </scroller>
-                        </div>
-                        <div class="button-control">
-                            <btn-com
-                                title="确定"
-                                background="#00bffe"
-                                :onClick="submitStore"
-                            />
-                        </div>
+                <div class="store-list-container">
+                    <div class="store-list" ref="$storeList">
+                        <scroller>
+                            <div class="store-item" v-for="(item, index) in storelist">
+                                <store-item :item="item" :onClick="selectItem.bind(this, index)" :active="index == select"/>
+                            </div>
+                            <div class="load-more" flex="dir:top cross:center main:center" v-if="pagenation.page*pagenation.pageSize < pagenation.totalCount">
+                                <div class="start-load" v-tap="getMore" v-if="loadMore">加载更多</div>
+                                <div flex="dir:left cross:center" v-else="loadMore">加载中<mt-spinner type="fading-circle" :size="12" color="#6b6b6b"></mt-spinner></div>
+                            </div>
+                        </scroller>
+                    </div>
+                    <div class="button-control">
+                        <btn-com
+                            title="确定"
+                            background="#00bffe"
+                            :onClick="submitStore"
+                        />
                     </div>
                     <transition name="fade">
                         <div class="down-list-mask" v-if="cityShow" @click="cityShow=false"></div>
@@ -94,6 +92,7 @@
                     totalCount:0,
                 },
                 loadMore:true,
+                isSelect:false,
             }
         },
         components:{
@@ -144,7 +143,7 @@
                         gpsLongitude:this.cityInfo.lng ||self.geolocation.point.lon,
                         gpsLatitude:this.cityInfo.lat || self.geolocation.point.lat,
                         storename:this.$children[0].$refs.search.value || '',
-                        area:this.cityInfo.code || '',
+                        area:this.isSelect ? this.cityInfo.code : '',
                         flag:1,
                     },(data)=>{
                         this.storelist = data.data.data;
@@ -165,7 +164,7 @@
                         gpsLongitude:this.cityInfo.lng ||self.geolocation.point.lon,
                         gpsLatitude:this.cityInfo.lat || self.geolocation.point.lat,
                         storename:this.$children[0].$refs.search.value || '',
-                        area:this.cityInfo.code || '',
+                        area:this.isSelect ? this.cityInfo.code : '',
                         page:1,
                         pageSize:this.pagenation.pageSize
                     },(data)=>{
@@ -222,6 +221,7 @@
                 }
             },
             selectCity:function(){
+                this.isSelect = true;
                 if(!this.cityInfo.province){
                     this.cityInfo.province = this.cityData.provinces[0].name;
                     this.cityInfo.city = this.cityData.citys[0][0].name;
@@ -292,6 +292,10 @@
             }
         },
         activated:function(){
+            var $container = $(this.$refs.$storeList).parent();
+            var $button = $container.find('.btn-com');
+            var height = Number($container.css("height").replace('px','')) - Number($button.css("height").replace('px',''));
+            $(this.$refs.$storeList).css('height',height);
             if(this.$store.getters.prepage.name == 'setdetail'){
                 this.getStoreList(() => {
                     var storeInfo = this.$store.getters.subscribeInfo.storeInfo;
@@ -348,6 +352,7 @@
         deactivated:function(){
             this.cityInfo.code = '';
             this.cityShow = false;
+            this.isSelect = false;
         },
         computed:{
             ...mapState([
@@ -390,22 +395,16 @@
             .store-list-container{
                 position:relative;
                 background:transparent;
-                .container-content{
-                    height:100%;
-                    -webkit-box-flex: 1;
-                    flex-grow: 1;
-                    flex-shrink: 1;
-                    flex-basis: 0;
-                    .overflow-container{
-                        overflow:hidden;
-                        .load-more{
-                            height:1.5rem;
-                            background-color:#fff;
-                            line-height:1.5rem;
-                            .start-load{
-                                width:100%;
-                                text-align:center
-                            }
+                .store-list{
+                    overflow:hidden;
+                    height:15rem;
+                    .load-more{
+                        height:1.5rem;
+                        background-color:#fff;
+                        line-height:1.5rem;
+                        .start-load{
+                            width:100%;
+                            text-align:center
                         }
                     }
                 }
