@@ -19,17 +19,17 @@
                     </transition>
                 </div>
                 <div class="bottom">
-                    <div class="consult-tel">工作时间：9:00-22:00&nbsp;&nbsp;&nbsp;&nbsp;咨询电话：<a href="tel:023-67595966">023-67595966</a> </div>
-                    <div class="bottom-banner" flex="dir:left box:first cross:center">
-                        <div class="user-center" @click="userCenter"><i class="iconfont icon-usercenter"></i></div>
+                    <div class="bottom-banner" flex="dir:left box:last cross:center">
                         <div class="banner">
                             <swiper>
-                                <!--<div class="swiper-slide" flex="dir:left cross:center main:left"><a href="">更多精彩活动等你来！</a></div>
+                                <div class="swiper-slide" flex="dir:left cross:center main:left"><a href="">更多精彩活动等你来！</a></div>
                                 <div class="swiper-slide" flex="dir:left cross:center main:left"><a href="">十三亿人看了都沉默了</a></div>
-                                <div class="swiper-slide" flex="dir:left cross:center main:left"><a href="">长安商城福利</a></div>-->
+                                <div class="swiper-slide" flex="dir:left cross:center main:left"><a href="">长安商城福利</a></div>
                             </swiper>
                         </div>
+                        <div class="user-center" @click="userCenter"><i class="iconfont icon-usercenter"></i></div>
                     </div>
+                    <div class="consult-tel">工作时间：9:00-22:00&nbsp;&nbsp;&nbsp;&nbsp;咨询电话：<a href="tel:023-67595966">023-67595966</a> </div>
                 </div>
             </div>
         </div>
@@ -116,6 +116,7 @@
                         })
                     })
                     this.setBisinessConfig(data.data);
+                    console.log(this.bisinessItems[0]);
                 })
             },
             ...mapMutations({
@@ -140,6 +141,7 @@
             this.setStoreInfo({});
             this.updateUserInfo({refereeType:'',referee:''});
             this.setRefereeStoreInfo({});
+            console.log(this.bisinessItems);
         },
         mounted:function(){
             this.bisinessItems.map((v,i)=>{
@@ -193,20 +195,21 @@
                 height:1rem;
                 line-height:1rem;
                 padding:0rem 3%;
-                margin-top:1px;
-                border-top:1px solid #ccc;
+                border-top:1px solid #efefef;
                 text-align:right;
             }
             .bottom-banner{
                 height:1.9rem;
                 background-color:#fff;
+                margin-top:1px;
+                border-top:1px solid #ccc;
                 z-index:10;
                 width:94%;
                 padding:0 3%;
-                border-top:1px solid #efefef;
                 overflow:hidden;
                 .user-center{
                     height:1.6rem;
+                    width:1.6rem;
                     border-radius:0.8rem;
                     background-color:#54d2fc;
                     i.iconfont{
@@ -221,10 +224,10 @@
                 }
                 .banner{
                     height:100%;
-                    margin-left:0.3rem;
                     .swiper-slide{
                         height:0.634rem;
                         text-align:left;
+                        padding-left:0.5rem;
                         font-size:0.67rem;
                     }
                 }

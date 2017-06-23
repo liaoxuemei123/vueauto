@@ -50,7 +50,7 @@
         position:relative;
         .mini-pagination{
             position:absolute;
-            right:0rem!important;
+            left:0rem!important;
             bottom:-2.4rem;
             transform:translate3d(0,-50%,0);
             .swiper-pagination-bullet{
