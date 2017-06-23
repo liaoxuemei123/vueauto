@@ -13,26 +13,24 @@
                     <i class="iconfont icon-up" v-if="cityShow"></i>
                     <i class="iconfont icon-down" v-else="cityShow"></i>
                 </div>
-                <div class="store-list-container" flex="dir:top">
-                    <div class="container-content" flex="dir:top box:last">
-                        <div class="overflow-container" flex="dir:top box:mean">
-                            <scroller>
-                                <div class="store-item" v-for="(item, index) in storelist">
-                                    <store-item :item="item" :onClick="selectItem.bind(this, index)" :active="index == select"/>
-                                </div>
-                                <div class="load-more" flex="dir:top cross:center main:center" v-if="pagenation.page*pagenation.pageSize < pagenation.totalCount">
-                                    <div class="start-load" v-tap="getMore" v-if="loadMore">加载更多</div>
-                                    <div flex="dir:left cross:center" v-else="loadMore">加载中<mt-spinner type="fading-circle" :size="12" color="#6b6b6b"></mt-spinner></div>
-                                </div>
-                            </scroller>
-                        </div>
-                        <div class="button-control">
-                            <btn-com
-                                title="确定"
-                                background="#00bffe"
-                                :onClick="submitStore"
-                            />
-                        </div>
+                <div class="store-list-container">
+                    <div class="store-list" ref="$storeList">
+                        <scroller>
+                            <div class="store-item" v-for="(item, index) in storelist">
+                                <store-item :item="item" :onClick="selectItem.bind(this, index)" :active="index == select"/>
+                            </div>
+                            <div class="load-more" flex="dir:top cross:center main:center" v-if="pagenation.page*pagenation.pageSize < pagenation.totalCount">
+                                <div class="start-load" v-tap="getMore" v-if="loadMore">加载更多</div>
+                                <div flex="dir:left cross:center" v-else="loadMore">加载中<mt-spinner type="fading-circle" :size="12" color="#6b6b6b"></mt-spinner></div>
+                            </div>
+                        </scroller>
+                    </div>
+                    <div class="button-control">
+                        <btn-com
+                            title="确定"
+                            background="#00bffe"
+                            :onClick="submitStore"
+                        />
                     </div>
                     <transition name="fade">
                         <div class="down-list-mask" v-if="cityShow" @click="cityShow=false"></div>
@@ -272,6 +270,10 @@
             }
         },
         activated:function(){
+            var $container = $(this.$refs.$storeList).parent();
+            var $button = $container.find(".btn-com");
+            var height = Number($container.css("height").replace('px','')) - Number($button.css("height").replace('px',''));
+            $(this.$refs.$storeList).css('height',height);
             if(this.$store.getters.prepage.name == 'setdetail' || this.$store.getters.prepage.name == 'referee'){
                 this.getStoreList(() => {
                     if(this.select == 0){
@@ -364,22 +366,16 @@
             .store-list-container{
                 position:relative;
                 background:transparent;
-                .container-content{
-                    height:100%;
-                    -webkit-box-flex: 1;
-                    flex-grow: 1;
-                    flex-shrink: 1;
-                    flex-basis: 0;
-                    .overflow-container{
-                        overflow:hidden;
-                        .load-more{
-                            height:1.5rem;
-                            background-color:#fff;
-                            line-height:1.5rem;
-                            .start-load{
-                                width:100%;
-                                text-align:center
-                            }
+                .store-list{
+                    overflow:hidden;
+                    height:20rem;
+                    .load-more{
+                        height:1.5rem;
+                        background-color:#fff;
+                        line-height:1.5rem;
+                        .start-load{
+                            width:100%;
+                            text-align:center
                         }
                     }
                 }
