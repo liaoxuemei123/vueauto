@@ -77,6 +77,7 @@
                 cityInfo:{},
                 selectedCity:'',
                 defaultLocation:'',
+                isSelect:false,
             }
         },
         components:{
@@ -98,7 +99,7 @@
                     gpsLongitude:this.cityInfo.lng ||self.geolocation.point.lon,
                     gpsLatitude:this.cityInfo.lat || self.geolocation.point.lat,
                     storename:this.$children[0].$refs.search.value || '',
-                    area:this.cityInfo.code || '',
+                    area:this.isSelect ? this.cityInfo.code : '',
                     flag:1,
                     wbProduct:wbpId,
                 },(data)=>{
@@ -132,6 +133,7 @@
                 }
             },
             selectCity:function(){
+                this.isSelect = true;
                 if(!this.cityInfo.province){
                     this.cityInfo.province = this.cityData.provinces[0].name;
                     this.cityInfo.city = this.cityData.citys[0][0].name;
@@ -192,6 +194,7 @@
         deactivated:function(){
             this.cityInfo.code = '';
             this.cityShow = false;
+            this.isSelect = false;
         },
         computed:{
             ...mapState([
