@@ -22,14 +22,14 @@
                     <div class="bottom-banner" flex="dir:left box:last cross:center">
                         <div class="banner">
                             <swiper>
-                                <div class="swiper-slide" flex="dir:left cross:center main:left"><a href="">更多精彩活动等你来！</a></div>
+                                <!--<div class="swiper-slide" flex="dir:left cross:center main:left"><a href="">更多精彩活动等你来！</a></div>
                                 <div class="swiper-slide" flex="dir:left cross:center main:left"><a href="">十三亿人看了都沉默了</a></div>
-                                <div class="swiper-slide" flex="dir:left cross:center main:left"><a href="">长安商城福利</a></div>
+                                <div class="swiper-slide" flex="dir:left cross:center main:left"><a href="">长安商城福利</a></div>-->
                             </swiper>
                         </div>
                         <div class="user-center" @click="userCenter"><i class="iconfont icon-usercenter"></i></div>
                     </div>
-                    <div class="consult-tel">工作时间：9:00-22:00&nbsp;&nbsp;&nbsp;&nbsp;咨询电话：<a href="tel:023-67595966">023-67595966</a> </div>
+                    <div class="consult-tel">咨询时间：9:00-22:00&nbsp;&nbsp;&nbsp;&nbsp;电话：<a href="tel:023-67595966">023-67595966</a> </div>
                 </div>
             </div>
         </div>
@@ -196,7 +196,7 @@
                 line-height:1rem;
                 padding:0rem 3%;
                 border-top:1px solid #efefef;
-                text-align:right;
+                text-align:left;
             }
             .bottom-banner{
                 height:1.9rem;

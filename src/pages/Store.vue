@@ -321,11 +321,19 @@
             this.cityShow = false;
             this.isSelect = false;
         },
+        created:function(){
+            if($.isEmptyObject(this.modelInfo)) {
+                this.$router.push({name:'home'});
+            }
+        },
         computed:{
             ...mapState({
                 geolocation: ({
                     geolocation
-                }) => geolocation
+                }) => geolocation,
+                modelInfo: ({
+                    packageinfo
+                }) => packageinfo.modelInfo
             })
         }
     }

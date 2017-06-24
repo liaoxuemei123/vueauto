@@ -12,7 +12,6 @@
             <div class="order-info" flex="dir:top box:mean">
                 <div class="order-name" flex="dir:left cross:center">
                     <span class="package-name">{{item.packageName}}</span>
-                    <span class="package-range">{{item.isUniversal | universalFilter}}</span>
                 </div>
                 <div class="car-info" flex="dir:left cross:center">
                     <span class="car-type">车型：{{item.carType}}</span>

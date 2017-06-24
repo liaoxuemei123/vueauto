@@ -102,6 +102,7 @@
 							message:errorMsg[data.result],
 							duration:1000,
 						});
+						this.picCode = '';
 					}
 					this.picCodeUrl = Tool.target + 'picCode?phone='+this.tel + '&theImg=' + Math.random();
 				})
