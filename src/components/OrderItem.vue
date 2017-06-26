@@ -57,6 +57,9 @@
         filters:{
             stateFilter:function(val){
                 switch(val){
+                    case 0:
+                        return "已关闭";
+                        break;
                     case 1:
                         return "未支付";
                         break;

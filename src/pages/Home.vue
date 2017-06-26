@@ -22,8 +22,9 @@
                     <div class="bottom-banner" flex="dir:left box:last cross:center">
                         <div class="banner">
                             <swiper>
-                                <!--<div class="swiper-slide" flex="dir:left cross:center main:left"><a href="">更多精彩活动等你来！</a></div>
-                                <div class="swiper-slide" flex="dir:left cross:center main:left"><a href="">十三亿人看了都沉默了</a></div>
+                                <div class="swiper-slide" flex="dir:left cross:center main:left"><a href="">最低100元现金免费领，车险专供！
+</a></div>
+                                <!--<div class="swiper-slide" flex="dir:left cross:center main:left"><a href="">十三亿人看了都沉默了</a></div>
                                 <div class="swiper-slide" flex="dir:left cross:center main:left"><a href="">长安商城福利</a></div>-->
                             </swiper>
                         </div>
@@ -116,7 +117,6 @@
                         })
                     })
                     this.setBisinessConfig(data.data);
-                    console.log(this.bisinessItems[0]);
                 })
             },
             ...mapMutations({
@@ -141,7 +141,6 @@
             this.setStoreInfo({});
             this.updateUserInfo({refereeType:'',referee:''});
             this.setRefereeStoreInfo({});
-            console.log(this.bisinessItems);
         },
         mounted:function(){
             this.bisinessItems.map((v,i)=>{
