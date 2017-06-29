@@ -2,7 +2,6 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Index from 'pages/Index';
 import Store from 'pages/Store';
-import MaintainSet from 'pages/MaintainSet';
 import SetDetail from 'pages/SetDetail';
 import PersonInfo from 'pages/PersonInfo';
 import ConfirmOrder from "pages/ConfirmOrder";
@@ -61,11 +60,6 @@ export default new Router({
       path:'/viewstore',
       name:'viewstore',
       component:ViewStore,
-    },
-    {
-      path:'/maintainset',
-      name:'maintainset',
-      component:MaintainSet,
     },
     {
       path:'/setdetail/:id',
@@ -143,8 +137,8 @@ export default new Router({
       component:UserCenter
     },
     {
-      path:'/home',
-      name:'home',
+      path:'/maintainset',
+      name:'maintainset',
       component:Home
     },
     {

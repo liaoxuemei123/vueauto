@@ -22,10 +22,9 @@
                     <div class="bottom-banner" flex="dir:left box:last cross:center">
                         <div class="banner">
                             <swiper>
-                                <div class="swiper-slide" flex="dir:left cross:center main:left"><a href="">最低100元现金免费领，车险专供！
-</a></div>
-                                <!--<div class="swiper-slide" flex="dir:left cross:center main:left"><a href="">十三亿人看了都沉默了</a></div>
-                                <div class="swiper-slide" flex="dir:left cross:center main:left"><a href="">长安商城福利</a></div>-->
+                                <div class="swiper-slide" flex="dir:left cross:center main:left"><a href="http://mp.weixin.qq.com/s/KkjnWh9CEmtkgqn5Plp1zQ">爱车保养 | 立夏保养的正确方式是...</a></div>
+                                <div class="swiper-slide" flex="dir:left cross:center main:left"><a href="http://mp.weixin.qq.com/s/GRSRXtl4w9T4Ky13uelWtQ">你的油耗总比别人高，问题出在这儿！</a></div>
+                                <div class="swiper-slide" flex="dir:left cross:center main:left"><a href="http://mp.weixin.qq.com/s/okvpE8rTOLhfLwIO-rNMmw">学会这几招，雨天行车心不慌！</a></div>
                             </swiper>
                         </div>
                         <div class="user-center" @click="userCenter"><i class="iconfont icon-usercenter"></i></div>
@@ -228,6 +227,12 @@
                         text-align:left;
                         padding-left:0.5rem;
                         font-size:0.67rem;
+                        a{
+                            color:#ff9900;
+                        }
+                        a:visited{
+                            color:#19be6b;
+                        }
                     }
                 }
             }

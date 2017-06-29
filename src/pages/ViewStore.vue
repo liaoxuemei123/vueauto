@@ -20,6 +20,10 @@
                                 <div class="store-item" v-for="(item, index) in storelist">
                                     <view-store-item :item="item"/>
                                 </div>
+                                <div class="load-more" flex="dir:top cross:center main:center" v-if="(pagenation.page + 1) * pagenation.pageSize < pagenation.totalCount">
+                                    <div class="start-load" v-tap="getMore" v-if="loadMore">加载更多</div>
+                                    <div flex="dir:left cross:center" v-else="loadMore">加载中<mt-spinner type="fading-circle" :size="12" color="#6b6b6b"></mt-spinner></div>
+                                </div>
                             </scroller>
                         </div>
                     </div>
@@ -78,6 +82,12 @@
                 selectedCity:'',
                 defaultLocation:'',
                 isSelect:false,
+                pagenation:{
+                    page:1,
+                    pageSize:100,
+                    totalCount:0,
+                },
+                loadMore:true,
             }
         },
         components:{
@@ -91,10 +101,30 @@
                 var target = $(e.target).find('input');
                 this.getStoreList();
             },
+            getMore:function(){
+                this.loadMore = false;
+                this.pagenation.page++;
+                var wbpId = this.$route.params.wbpId;
+                Tool.get('getStore',{
+                    gpsLongitude:this.cityInfo.lng ||this.geolocation.point.lon,
+                    gpsLatitude:this.cityInfo.lat || this.geolocation.point.lat,
+                    storename:this.$children[0].$refs.search.value || '',
+                    area:this.isSelect ? this.cityInfo.code : '',
+                    flag:1,
+                    wbProduct:wbpId,
+                    page:this.pagenation.page,
+                    pageSize:this.pagenation.pageSize
+                },(data)=>{
+                    this.storelist = this.storelist.concat(data.data.data);
+                    this.pagenation.totalCount = data.data.totalCount;
+                    this.loadMore = true;
+                },{mask:false})
+            },
             getStoreList:function(name='',callback){
                 var self = this;
                 this.storelist = [];
                 var wbpId = this.$route.params.wbpId;
+                this.pagenation.page = 0;
                 Tool.get('getStore',{
                     gpsLongitude:this.cityInfo.lng ||self.geolocation.point.lon,
                     gpsLatitude:this.cityInfo.lat || self.geolocation.point.lat,
@@ -102,8 +132,11 @@
                     area:this.isSelect ? this.cityInfo.code : '',
                     flag:1,
                     wbProduct:wbpId,
+                    page:this.pagenation.page,
+                    pageSize:this.pagenation.pageSize
                 },(data)=>{
                     this.storelist = data.data.data;
+                    this.pagenation.totalCount = data.data.totalCount;
                     this.$nextTick(()=>{
                         if(this.$children.length > 0){
                             for(var i=0;i<this.$children.length;i++){
@@ -173,6 +206,15 @@
                 })
             }
         },
+        updated:function(){
+            if(this.$children.length > 0){
+                for(var i=0;i<this.$children.length;i++){
+                    if(this.$children[i].mySroller && this.$children[i].mySroller.scrollTo){
+                        this.$children[i].mySroller.scrollTo(0,this.$children[i].scrollerInfo.y);
+                    }
+                }
+            }
+        },
         activated:function(){
             this.getStoreList(() => {
                 var storeInfo = this.$store.getters.subscribeInfo.storeInfo;
@@ -195,6 +237,7 @@
             this.cityInfo.code = '';
             this.cityShow = false;
             this.isSelect = false;
+            this.pagenation.page = 0;
         },
         computed:{
             ...mapState([
@@ -246,6 +289,15 @@
                     flex-basis: 0;
                     .overflow-container{
                         overflow:hidden;
+                        .load-more{
+                            height:1.5rem;
+                            background-color:#fff;
+                            line-height:1.5rem;
+                            .start-load{
+                                width:100%;
+                                text-align:center
+                            }
+                        }
                     }
                 }
                 .down-list-mask{

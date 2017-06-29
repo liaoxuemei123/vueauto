@@ -19,7 +19,7 @@
                             <div class="store-item" v-for="(item, index) in storelist">
                                 <store-item :item="item" :onClick="selectItem.bind(this, index)" :active="index == select"/>
                             </div>
-                            <div class="load-more" flex="dir:top cross:center main:center" v-if="pagenation.page*pagenation.pageSize < pagenation.totalCount">
+                            <div class="load-more" flex="dir:top cross:center main:center" v-if="(pagenation.page + 1) * pagenation.pageSize < pagenation.totalCount">
                                 <div class="start-load" v-tap="getMore" v-if="loadMore">加载更多</div>
                                 <div flex="dir:left cross:center" v-else="loadMore">加载中<mt-spinner type="fading-circle" :size="12" color="#6b6b6b"></mt-spinner></div>
                             </div>
@@ -112,11 +112,14 @@
             getMore:function(){
                 this.loadMore = false;
                 this.pagenation.page++;
-                Tool.get('getStoreList',{
+                var wbpId = this.$route.params.wbpId;
+                Tool.get('getStore',{
                     gpsLongitude:this.cityInfo.lng ||this.geolocation.point.lon,
                     gpsLatitude:this.cityInfo.lat || this.geolocation.point.lat,
                     storename:this.$children[0].$refs.search.value || '',
-                    area:this.cityInfo.code || '',
+                    area:this.isSelect ? this.cityInfo.code : '',
+                    flag:1,
+                    wbProduct:wbpId,
                     page:this.pagenation.page,
                     pageSize:this.pagenation.pageSize
                 },(data)=>{
@@ -129,6 +132,7 @@
                 var self = this;
                 this.storelist = [];
                 var wbpId = this.$route.params.wbpId;
+                this.pagenation.page = 0;
                 if(this.$store.getters.prepage.name == 'setdetail' || this.$store.getters.prepage.name == 'referee'){
                     Tool.get('getStore',{
                         gpsLongitude:this.cityInfo.lng ||self.geolocation.point.lon,
@@ -137,8 +141,11 @@
                         area:this.isSelect ? this.cityInfo.code : '',
                         flag:1,
                         wbProduct:wbpId,
+                        page:this.pagenation.page,
+                        pageSize:this.pagenation.pageSize
                     },(data)=>{
                         this.storelist = data.data.data;
+                        this.pagenation.totalCount = data.data.totalCount;
                         this.$nextTick(()=>{
                             if(this.$children.length > 0){
                                 for(var i=0;i<this.$children.length;i++){
@@ -320,10 +327,11 @@
             this.cityInfo.code = '';
             this.cityShow = false;
             this.isSelect = false;
+            this.pagenation.page = 0;
         },
         created:function(){
             if($.isEmptyObject(this.modelInfo)) {
-                this.$router.push({name:'home'});
+                this.$router.push({name:'maintainset'});
             }
         },
         computed:{

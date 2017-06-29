@@ -351,9 +351,9 @@
             },
             customBack:function(){
                 var prepage = this.$store.getters.prepage;
-                if(!prepage || (prepage.name != 'home' && prepage.name != 'usercenter')){//这里的逻辑智能保证按正常的后退键管用。
-                    this.$store.commit('INSERT_PAGE',{path:'/home',index:0,name:'home'});
-                    this.$router.push({name:'home'})
+                if(!prepage || (prepage.name != 'maintainset' && prepage.name != 'usercenter')){//这里的逻辑智能保证按正常的后退键管用。
+                    this.$store.commit('INSERT_PAGE',{path:'/maintainset',index:0,name:'maintainset'});
+                    this.$router.push({name:'maintainset'})
                 }else{
                     this.$router.back();
                 }

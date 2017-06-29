@@ -328,7 +328,7 @@
         },
         created:function(){
             if($.isEmptyObject(this.modelInfo)) {
-                this.$router.push({name:'home'});
+                this.$router.push({name:'maintainset'});
             }
         },
         activated:function(){

@@ -18,10 +18,10 @@
                         <div class="label"><span>性别</span></div>
                         <div class="value">{{userInfo.sex | sexFilter}}</div>
                     </div>-->
-                    <div class="info-control" flex="dir:left box:first">
+                    <!--<div class="info-control" flex="dir:left box:first">
                         <div class="label"><span>手机号</span></div>
                         <div class="value">{{userInfo.mobile | phoneFilter}}</div>
-                    </div>
+                    </div>-->
                 </div>
                 <div class="logout-button" @click="logout">
                     退出

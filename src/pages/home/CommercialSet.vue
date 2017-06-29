@@ -1,10 +1,10 @@
 <template>
     <div class="sub-page" key="commercialset">
-        <div class="before-online">
+        <!--<div class="before-online">
             <img src="../../assets/sorry.png" alt="">
             <div>主人，我将于7月1日上线，期待您将我打包回家……</div>
-        </div>
-        <!--<div class="select-car" v-tap="toggleShow">
+        </div>-->
+        <div class="select-car" v-tap="toggleShow">
             <div class="label">{{modelInfo.pickerModel | modelFilter}}</div>
         </div>
         <transition name="fade">
@@ -40,7 +40,7 @@
                     </div>
                 </div>
             </transition>
-        </scroller>-->
+        </scroller>
     </div>
 </template>
 <style lang="less" scoped>
@@ -315,13 +315,13 @@
             }
         },
         created:function(){
-            // this.getCarList();
+            this.getCarList();
         },
         activated:function(){
-            // this.getPackageList(this.modelInfo.id);
-            // this.reset(true);
-            // this.setStoreInfo({});
-            // this.updateUserInfo({refereeType:'',referee:''})
+            this.getPackageList(this.modelInfo.id);
+            this.reset(true);
+            this.setStoreInfo({});
+            this.updateUserInfo({refereeType:'',referee:''})
         },
         deactivated:function(){
             this.carShow = false;
