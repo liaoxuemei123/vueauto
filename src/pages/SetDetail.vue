@@ -226,7 +226,7 @@
                 }else{
                     end = today.substring(0,4) - 0 + validate + today.substring(4,10);
                 }
-                this.setDetail.validate = end;
+                this.setDetail.validate = end + ' 18:00';
             },
             getPackageDetail:function(id=1){
                 Tool.get('wbinterface/getWbProduct',{id},data => {

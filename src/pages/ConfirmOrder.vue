@@ -209,6 +209,7 @@
                     mileage:this.userInfo.mileage,
                     orderType:this.modelInfo.vehicleType - 0,
                     referee:this.userInfo.referee,
+                    refereeId:this.userInfo.refereeId || '',
                     refereeType:this.userInfo.refereeType,
                 },(data)=>{
                     if(data.code == 200){

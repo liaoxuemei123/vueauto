@@ -17,7 +17,7 @@
                     <span class="store-address">{{item.address}}</span>
                 </div>
                 <div class="line" flex="dir:left cross:center">
-                    <span class="store-phone">联系电话：{{item.tel}}</span>
+                    <span class="store-phone">联系电话：{{item.tel | telFilter}}</span>
                 </div>
             </div>
         </div>
@@ -50,6 +50,10 @@
             distanceFilter:function(val){
                 return (val/1000).toFixed(1) + 'km';
             },
+            telFilter:function(val){
+                if(!val) return '暂无';
+                return val;
+            }
         }
     }
 </script>

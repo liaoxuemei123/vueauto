@@ -48,6 +48,7 @@
 				this.$router.push({name:'register',params:this.$route.params});
 			},
 			login:function(){
+				this.tel = this.tel.replace(/\s/g,'');
 				if(!this.tel){
 					Toast({
 						duration:1000,

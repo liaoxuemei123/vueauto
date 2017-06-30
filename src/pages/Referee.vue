@@ -82,9 +82,11 @@
         activated:function(){
             if(this.refereeStore.storeName){
                 this.storeName = this.refereeStore.storeName;
+                this.storeId = this.refereeStore.storeId;
             }else{
                 if(this.storeInfo.storeName){
                     this.storeName = this.storeInfo.storeName;
+                    this.storeId = this.storeInfo.storeId;
                 }else{
                     this.storeName = '';
                 }
@@ -97,9 +99,9 @@
             },
             submitReferee:function(){
                 if(this.refereeType == 0){
-                    this.setUserInfo({refereeType:this.refereeType,referee:this.storeName})
+                    this.setUserInfo({refereeType:this.refereeType,referee:this.storeName,refereeId:this.storeId})
                 }else{
-                    this.setUserInfo({refereeType:this.refereeType,referee:this.refereePhone})
+                    this.setUserInfo({refereeType:this.refereeType,referee:this.refereePhone,refereeId:''})
                 }
                 this.$router.back();
             },

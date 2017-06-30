@@ -191,6 +191,7 @@
                         data.id = this.storelist[this.select].id;
                         data.storeName = this.storelist[this.select].storeName;
                         data.photoUrl = this.storelist[this.select].photoUrl;
+                        data.storeId = this.storelist[this.select].id;
                         this.setPackageStoreInfo(data);
                         this.$router.back();
                     })
