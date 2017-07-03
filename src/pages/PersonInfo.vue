@@ -368,7 +368,7 @@
                             $(this.$refs.residueTime).text(60);
                             $(this.$refs.getValiCode).show();
                             $(this.$refs.onValiCode).hide();
-							clearInterval(a);
+							clearInterval(this.interval);
 						}
 					},1000)
 				})

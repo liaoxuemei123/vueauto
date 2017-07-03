@@ -33,7 +33,7 @@
                         </div>
                         <div class="explain-item" flex="dir:left cross:top box:first">
                             <div class="validate title">使用范围：</div>
-                            <div>{{setInfo.wbpSfqgty|universalFilter}}</div>
+                            <div>{{storeInfo.id == '111111' ? storeInfo.id : setInfo.wbpSfqgty | universalFilter}}</div>
                         </div>
                         <div class="explain-item" flex="dir:left cross:top box:first">
                             <div class="VIN title">到期时间：</div>
@@ -254,6 +254,8 @@
         },
         filters:{
             universalFilter:function(val){
+                if(val == '111111')
+                    return '任意服务门店'
                 if(val == 1){
                     return '全国服务门店使用'
                 }else{

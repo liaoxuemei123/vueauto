@@ -29,7 +29,7 @@
                         </div>
                         <div class="user-center" @click="userCenter"><i class="iconfont icon-usercenter"></i></div>
                     </div>
-                    <div class="consult-tel">咨询时间：9:00-22:00&nbsp;&nbsp;&nbsp;&nbsp;电话：<a href="tel:023-67595966">023-67595966</a> </div>
+                    <div class="consult-tel">咨询时间：9:00-21:00&nbsp;&nbsp;&nbsp;&nbsp;电话：<a href="tel:023-67595966">023-67595966</a> </div>
                 </div>
             </div>
         </div>
