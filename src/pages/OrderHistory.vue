@@ -89,7 +89,7 @@
                 totalCount:0,
                 page:1,
                 pageSize:5,
-                reservationState:0,
+                reservationState:'',
                 mobile:'',
             }
         },
