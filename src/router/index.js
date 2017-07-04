@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Index from 'pages/Index';
 import Store from 'pages/Store';
+import StoreOrder from 'pages/StoreOrder';
 import SetDetail from 'pages/SetDetail';
 import PersonInfo from 'pages/PersonInfo';
 import ConfirmOrder from "pages/ConfirmOrder";
@@ -55,6 +56,11 @@ export default new Router({
       path:'/store',
       name:'store',
       component:Store,
+    },
+    {
+      path:'/storeorder',
+      name:'storeorder',
+      component:StoreOrder,
     },
     {
       path:'/viewstore',

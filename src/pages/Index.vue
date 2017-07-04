@@ -215,7 +215,7 @@
         },
         methods:{
             goStore:function(){
-                this.$router.push({name:'store'});
+                this.$router.push({name:'storeorder'});
             },
             selectTime:function(){
                 this.$refs.datepicker.open();
