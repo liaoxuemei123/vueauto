@@ -195,7 +195,7 @@
             },
             getCityList:function(callback){
                 var id = this.$route.params.wbpId;
-                Tool.get("queryCity",{wbProduct:id},(data)=>{
+                Tool.get("queryArea",{},(data)=>{
                     var provinceList = [];
                     for(var i=0;i<data.data.length;i++){
                         provinceList.push({name:data.data[i].province,index:i})
