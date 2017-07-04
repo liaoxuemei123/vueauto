@@ -152,9 +152,11 @@
             'endHour':function(){
                 return 18;
             },
-            ...mapState([
-                'subscribeInfo',
-            ])
+            ...mapState({
+                subscribeInfo:({
+                    subscribe
+                }) => subscribe,
+            })
         },
         filters:{
             mileFilter:function(val){
