@@ -2,7 +2,7 @@
     <div class="page-container">
         <div class="store-page page" flex="dir:top box:first">
             <search 
-                placeholder="搜索服务门店"
+                placeholder="搜索4S店"
                 :search="search.bind(this)"
             />
             <div class="page-content" flex="dir:top box:first">
@@ -19,7 +19,7 @@
                             <div class="store-item" v-for="(item, index) in storelist">
                                 <store-item :item="item" :onClick="selectItem.bind(this, index)" :active="index == select"/>
                             </div>
-                            <div class="load-more" flex="dir:top cross:center main:center" v-if="(pagenation.page + 1) * pagenation.pageSize < pagenation.totalCount">
+                            <div class="load-more" flex="dir:top cross:center main:center" v-if="pagenation.page*pagenation.pageSize < pagenation.totalCount">
                                 <div class="start-load" v-tap="getMore" v-if="loadMore">加载更多</div>
                                 <div flex="dir:left cross:center" v-else="loadMore">加载中<mt-spinner type="fading-circle" :size="12" color="#6b6b6b"></mt-spinner></div>
                             </div>
@@ -92,7 +92,7 @@
                     totalCount:0,
                 },
                 loadMore:true,
-                isSelect:false
+                isSelect:false,
             }
         },
         components:{
@@ -112,14 +112,11 @@
             getMore:function(){
                 this.loadMore = false;
                 this.pagenation.page++;
-                var wbpId = this.$route.params.wbpId;
                 Tool.get('getStoreList',{
                     gpsLongitude:this.cityInfo.lng ||this.geolocation.point.lon,
                     gpsLatitude:this.cityInfo.lat || this.geolocation.point.lat,
                     storename:this.$children[0].$refs.search.value || '',
-                    area:this.isSelect ? this.cityInfo.code : '',
-                    flag:1,
-                    wbProduct:wbpId,
+                    area:this.cityInfo.code || '',
                     page:this.pagenation.page,
                     pageSize:this.pagenation.pageSize
                 },(data)=>{
@@ -131,16 +128,13 @@
             getStoreList:function(callback){
                 var self = this;
                 this.storelist = [];
-                var wbpId = this.$route.params.wbpId;
-                this.pagenation.page = 0;
                 Tool.get('getStoreList',{
                     gpsLongitude:this.cityInfo.lng ||self.geolocation.point.lon,
                     gpsLatitude:this.cityInfo.lat || self.geolocation.point.lat,
                     storename:this.$children[0].$refs.search.value || '',
                     area:this.isSelect ? this.cityInfo.code : '',
                     page:1,
-                    pageSize:this.pagenation.pageSize,
-                    wbProduct:wbpId,
+                    pageSize:this.pagenation.pageSize
                 },(data)=>{
                     this.storelist = data.data.data;
                     this.pagenation.totalCount = data.data.totalCount;
@@ -158,7 +152,7 @@
                 })
             },
             submitStore:function(){
-                setTimeout(()=>{
+                this.$nextTick(()=>{
                     var data = {};
                     data.id = this.storelist[this.select].id;
                     data.storeName = this.storelist[this.select].storeName;
@@ -194,7 +188,6 @@
                 this.getStoreList();
             },
             getCityList:function(callback){
-                var id = this.$route.params.wbpId;
                 Tool.get("queryArea",{},(data)=>{
                     var provinceList = [];
                     for(var i=0;i<data.data.length;i++){
@@ -204,7 +197,7 @@
                     for(var i=0;i<data.data.length;i++){
                         cityList[i] = [];
                         for(var j=0;j<data.data[i].city.length;j++){
-                            cityList[i].push({name:data.data[i].city[j][1],id:data.data[i].city[j][0]})
+                            cityList[i].push({name:data.data[i].city[j].regionName,id:data.data[i].city[j].id})
                         }
                     }
                     var param = {
@@ -216,8 +209,6 @@
                 })
             },
             ...mapMutations({
-                setPackageStoreInfo: 'SET_STORE_INFO',
-                setRefereeStoreInfo: 'SET_REFEREE_STOREINFO',
                 setSubscribeStoreInfo: 'SET_STOREINFO',
             })
         },
@@ -232,65 +223,56 @@
         },
         activated:function(){
             var $container = $(this.$refs.$storeList).parent();
-            var $button = $container.find(".btn-com");
+            var $button = $container.find('.btn-com');
             var height = Number($container.css("height").replace('px','')) - Number($button.css("height").replace('px',''));
             $(this.$refs.$storeList).css('height',height);
-            if(this.$store.getters.prepage.name == 'setdetail' || this.$store.getters.prepage.name == 'referee'){
-                this.getStoreList(() => {
-                    if(this.select == 0){
-                        if(this.storelist[0].id == '111111')
-                            this.select = 1;
-                    }
-                });
+            new Promise((res,rej)=>{
                 this.getCityList(()=>{
                     this.citylist[0].values = this.cityData.provinces;
                     this.citylist[2].values = this.cityData.citys[0];
+                    res();
                 });
                 this.cityInfo = {};
                 this.selectedCity = '';
                 this.defaultLocation = this.geolocation.address.province + ' ' + this.geolocation.address.city;
-            }else{
-                new Promise((res,rej)=>{
-                    this.getCityList(()=>{
-                        this.citylist[0].values = this.cityData.provinces;
-                        this.citylist[2].values = this.cityData.citys[0];
+            }).then(()=>{
+                return new Promise((res,rej)=>{
+                    if(!this.geolocation.address.city || this.geolocation.address.city == '失败') {
+                        this.cityInfo.code = '';
                         res();
-                    });
-                    this.cityInfo = {};
-                    this.selectedCity = '';
-                    this.defaultLocation = this.geolocation.address.province + ' ' + this.geolocation.address.city;
-                }).then(()=>{
-                    return new Promise((res,rej)=>{
-                        if(!this.geolocation.address.city || this.geolocation.address.city == '失败') {
-                            this.cityInfo.code = '';
-                            res();
+                    }
+                    Tool.get('getRegionCode',{city:this.geolocation.address.city},(data)=>{
+                        if(data.data.length > 0){
+                            this.cityInfo.code = data.data[0]
                         }
-                        Tool.get('getRegionCode',{city:this.geolocation.address.city},(data)=>{
-                            if(data.data.length > 0){
-                                this.cityInfo.code = data.data[0]
-                            }
-                            res();
-                        })  
-                    })
-                }).then(()=>{
-                    this.getStoreList();
+                        res();
+                    })  
                 })
-            }
+            }).then(()=>{
+                this.getStoreList(() => {
+                    var storeInfo = this.storeInfo;
+                    for(var i=0;i<this.storelist.length;i++){
+                        if(storeInfo.id == this.storelist[i].id){
+                            this.select = i;
+                            return;
+                        }
+                    }
+                });
+            })
         },
         deactivated:function(){
             this.cityInfo.code = '';
             this.cityShow = false;
             this.isSelect = false;
-            this.pagenation.page = 0;
         },
         computed:{
             ...mapState({
                 geolocation: ({
                     geolocation
                 }) => geolocation,
-                modelInfo: ({
-                    packageinfo
-                }) => packageinfo.modelInfo
+                storeInfo: ({
+                    subscribe
+                }) => subscribe.storeInfo
             })
         }
     }
@@ -310,11 +292,9 @@
                 line-height:1.8rem;
                 background-color:#fff;
                 margin-bottom:1px;
-                z-index: 1000;
                 .input-control{
                     width:100%;
                     height:1.8rem;
-                    border-bottom:1px solid #ccc;
                     input{
                         outline:none;
                         border:none;
@@ -333,7 +313,7 @@
                 background:transparent;
                 .store-list{
                     overflow:hidden;
-                    height:20rem;
+                    height:15rem;
                     .load-more{
                         height:1.5rem;
                         background-color:#fff;
