@@ -224,7 +224,7 @@
                 data.vin = this.ownList[this.active].vin;
                 data.lqsq = this.ownList[this.active].lqsq;
                 data.mileage = this.ownList[this.active].mileage;
-                this.$store.commit('SET_SUBCARINFO',data);
+                this.$store.commit('SET_CARINFO',data);
                 this.$router.back();
             }
         },
