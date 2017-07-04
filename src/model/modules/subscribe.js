@@ -31,13 +31,21 @@ const state = {
 
 const mutations = {
     SET_CARINFO:function(state,param){//设置车辆信息
-        for(var props in param){
-            state.carInfo[props] = param;
+        if($.isEmptyObject( param )){
+            state.storeInfo = {};
+        }else{
+            for(var props in param){
+                state.carInfo[props] = param[props];
+            }
         }
     },
     SET_STOREINFO:function(state,param){//设置店铺信息
-        for(var props in param){
-            state.storeInfo[props] = param;
+        if($.isEmptyObject( param )){
+            state.storeInfo = {};
+        }else{
+            for(var props in param){
+                state.storeInfo[props] = param[props];
+            }
         }
     },
     RESET_ALL:function(state){//重置所有的信息

@@ -93,6 +93,7 @@
                 },
                 loadMore:true,
                 isSelect:false,
+                wbProduct:'93d73fa8-5c6e-11e7-8995-3464a93301f7',
             }
         },
         components:{
@@ -112,13 +113,14 @@
             getMore:function(){
                 this.loadMore = false;
                 this.pagenation.page++;
-                Tool.get('getStoreList',{
+                Tool.get('getStore',{
                     gpsLongitude:this.cityInfo.lng ||this.geolocation.point.lon,
                     gpsLatitude:this.cityInfo.lat || this.geolocation.point.lat,
                     storename:this.$children[0].$refs.search.value || '',
                     area:this.cityInfo.code || '',
                     page:this.pagenation.page,
-                    pageSize:this.pagenation.pageSize
+                    pageSize:this.pagenation.pageSize,
+                    wbProduct:this.wbProduct,
                 },(data)=>{
                     this.storelist = this.storelist.concat(data.data.data);
                     this.pagenation.totalCount = data.data.totalCount;
@@ -128,13 +130,14 @@
             getStoreList:function(callback){
                 var self = this;
                 this.storelist = [];
-                Tool.get('getStoreList',{
+                Tool.get('getStore',{
                     gpsLongitude:this.cityInfo.lng ||self.geolocation.point.lon,
                     gpsLatitude:this.cityInfo.lat || self.geolocation.point.lat,
                     storename:this.$children[0].$refs.search.value || '',
                     area:this.isSelect ? this.cityInfo.code : '',
                     page:1,
-                    pageSize:this.pagenation.pageSize
+                    pageSize:this.pagenation.pageSize,
+                    wbProduct:this.wbProduct,
                 },(data)=>{
                     this.storelist = data.data.data;
                     this.pagenation.totalCount = data.data.totalCount;
@@ -188,7 +191,7 @@
                 this.getStoreList();
             },
             getCityList:function(callback){
-                Tool.get("queryArea",{},(data)=>{
+                Tool.get("queryCity",{wbProduct:this.wbProduct},(data)=>{
                     var provinceList = [];
                     for(var i=0;i<data.data.length;i++){
                         provinceList.push({name:data.data[i].province,index:i})
@@ -197,7 +200,7 @@
                     for(var i=0;i<data.data.length;i++){
                         cityList[i] = [];
                         for(var j=0;j<data.data[i].city.length;j++){
-                            cityList[i].push({name:data.data[i].city[j].regionName,id:data.data[i].city[j].id})
+                            cityList[i].push({name:data.data[i].city[j][1],id:data.data[i].city[j][0]})
                         }
                     }
                     var param = {
