@@ -93,7 +93,7 @@
                 },
                 loadMore:true,
                 isSelect:false,
-                wbProduct:'93d73fa8-5c6e-11e7-8995-3464a93301f7',
+                wbProduct:'reservation',
             }
         },
         components:{
