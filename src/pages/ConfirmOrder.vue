@@ -208,8 +208,8 @@
                     engineNo:this.userInfo.engineNo,
                     mileage:this.userInfo.mileage,
                     orderType:this.modelInfo.vehicleType - 0,
-                    referee:this.userInfo.referee,
-                    refereeId:this.userInfo.refereeId || '',
+                    referee:this.userInfo.referee ? ( this.userInfo.refereeId == '111111' ? '' : this.userInfo.referee ) : '',
+                    refereeId:this.userInfo.refereeId ? ( this.userInfo.refereeId == '111111' ? '' : this.userInfo.refereeId ) : '',
                     refereeType:this.userInfo.refereeType,
                 },(data)=>{
                     if(data.code == 200){
