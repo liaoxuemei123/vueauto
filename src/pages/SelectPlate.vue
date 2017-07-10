@@ -238,7 +238,7 @@
                 this.userToken = JSON.parse(Tool.localItem('userCache')).userToken;
                 this.getCarList(()=>{
                     for(var i=0;i<this.ownList.length;i++){
-                        if(this.$store.getters.subscribeInfo.carInfo.vehicleTypeId == this.ownList[i].vehicle_type_id){
+                        if(this.carInfo.plate == this.ownList[i].plate_no){
                             this.active = i;
                             break;
                         }
@@ -249,7 +249,12 @@
         computed:{
             itemHeight:function(){
                 return (document.documentElement.style.fontSize.replace("px",'') - 0) * 1.5;
-            }
+            },
+            ...mapState({
+                carInfo:({
+                    subscribe
+                }) => subscribe.carInfo,
+            })
         }
     }
 </script>
