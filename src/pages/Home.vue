@@ -33,6 +33,11 @@
                 </div>
             </div>
         </div>
+        <!--<advert>
+            <div class="advert">
+                <img src="../assets/sorry.png" alt="">
+            </div>
+        </advert>-->
     </div>
 </template>
 <script>
@@ -45,6 +50,7 @@
     import CommercialSet from './home/CommercialSet';
     import Subscribe from './home/Subscribe';
     import { mapMutations } from 'vuex';
+    import Advert from '../components/Advert';
     const BISINESS_CONST = [
         {
             wbyId:'wcby',
@@ -78,7 +84,8 @@
             Swiper,
             CommercialSet,
             MinniSet,
-            Subscribe
+            Subscribe,
+            Advert
         },
         methods:{
             changeActive:function(index, reset) {
