@@ -109,12 +109,20 @@
                 this.$router.push({name:'usercenter'});
             },
             getBisinessList:function() {
+                const qd = this.$route.query.wbyQd;
+                this.setQd(qd);
                 Tool.get('wbinterface/getWbYwpzList',{flg:1},data => {
                     data.data.map( (v,i) => {
                         BISINESS_CONST.map((sv) => {
-                            if(v.wbyId === sv.wbyId) {
-                                sv = Object.assign(sv,v);
-                                this.bisinessItems.push(sv);
+                            if(v.wbyId.indexOf(sv.wbyId) > -1) {
+                                var wbArr = v.wbyId.split('-');
+                                if(wbArr.length > 1 && wbArr[1] == qd && qd){
+                                    sv = Object.assign(sv,v);
+                                    this.bisinessItems.push(sv);
+                                }else if(wbArr.length == 1){
+                                    sv = Object.assign(sv,v);
+                                    this.bisinessItems.push(sv);
+                                }
                             }
                             this.$nextTick(()=>{
                                 this.broadcast('xscroller','init');
@@ -122,6 +130,7 @@
                             })
                         })
                     })
+                    console.log(this.bisinessItems);
                     this.setBisinessConfig(data.data);
                 })
             },
@@ -132,6 +141,7 @@
                 updateUserInfo: 'UPDATE_USER_INFO',
                 setRefereeStoreInfo: 'SET_REFEREE_STOREINFO',
                 setModuleInfo: 'SET_MODULE_INFO',
+                setQd:'SET_QD',
             })
         },
         created:function(){

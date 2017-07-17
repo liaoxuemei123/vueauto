@@ -88,7 +88,7 @@
                 defaultLocation:'',
                 pagenation:{
                     page:1,
-                    pageSize:100,
+                    pageSize:200,
                     totalCount:0,
                 },
                 loadMore:true,
@@ -121,6 +121,7 @@
                     page:this.pagenation.page,
                     pageSize:this.pagenation.pageSize,
                     wbProduct:this.wbProduct,
+                    city:this.geolocation.address.province,
                 },(data)=>{
                     this.storelist = this.storelist.concat(data.data.data);
                     this.pagenation.totalCount = data.data.totalCount;
@@ -138,6 +139,7 @@
                     page:1,
                     pageSize:this.pagenation.pageSize,
                     wbProduct:this.wbProduct,
+                    city:this.geolocation.address.province,
                 },(data)=>{
                     this.storelist = data.data.data;
                     this.pagenation.totalCount = data.data.totalCount;

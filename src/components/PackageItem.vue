@@ -52,6 +52,7 @@
         },
         methods:{
             viewDetail:function(){
+                console.log(this.modelInfo);
                 var item = this.item;
                 const bisiness = this.$parent.$parent.$parent.bisinessItems[this.$parent.$parent.$parent.activeBusiness].wbyId;
                 for(var props in this.allConfig){

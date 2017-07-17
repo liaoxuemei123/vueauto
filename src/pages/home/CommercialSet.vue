@@ -244,6 +244,7 @@
                                 module[i][j].push({
                                     name:vss[2],
                                     id:vss[0],
+                                    code:vss[3],
                                 })
                             })
                         })
@@ -268,6 +269,7 @@
                     this.carModel.vehicleType = values[1].type;
                     this.carModel.typeName = values[0].name;
                     this.carModel.id = values[2].id;
+                    this.carModel.code = values[2].code,
                     this.carModel.pickerModel = this.carModel.vehicleModel + ' ' + this.carModel.displacement;
                 }else if(values[1] && values[2]){
                     picker.setSlotValues(1,this.carList.serise[0]);
@@ -277,6 +279,7 @@
                     this.carModel.vehicleType = values[1].type;
                     this.carModel.typeName = values[0].name;
                     this.carModel.id = values[2].id;
+                    this.carModel.code = values[2].code,
                     this.carModel.pickerModel = this.carModel.vehicleModel + ' ' + this.carModel.displacement;
                 }
             },
@@ -286,6 +289,7 @@
                 }else{
                     this.carModel.displacement = this.carList.module[0][0][0].name;
                     this.carModel.id = this.carList.module[0][0][0].id;
+                    this.carModel.code = this.carList.module[0][0][0].code;
                     this.carModel.vehicleModel = this.carList.serise[0][0].name;
                     this.carModel.vehicleType = this.carList.serise[0][0].type;
                     this.carModel.pickerModel = this.carModel.vehicleModel + ' ' + this.carModel.displacement;

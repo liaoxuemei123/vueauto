@@ -185,6 +185,7 @@
                             engineNo:this.userInfo.motorId,
                             isMiniCar:this.modelInfo.vehicleType,
                             carSeriesName:this.modelInfo.vehicleModel,
+                            carSeriesCode:this.modelInfo.code,
                         },(data)=>{
                             if(data.code == 1){
                                 res(data);

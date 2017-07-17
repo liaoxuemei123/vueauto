@@ -6,6 +6,7 @@ const state = {
     setting:[],//页面设置
     config:{},//业务配置
     currentBis:{},//选中的业务
+    qd:'',//渠道
 }
 
 const mutations = {
@@ -18,6 +19,9 @@ const mutations = {
         for(var props in params) {
             state.currentBis[props] = params[props];
         }
+    },
+    SET_QD:function(state,param){//设置渠道
+        state.qd = param
     }
 }
 

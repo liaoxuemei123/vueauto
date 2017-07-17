@@ -176,6 +176,9 @@
                 pageSetting: ({
                     pageconfig
                 }) => pageconfig.currentBis,
+                qd: ({
+                    pageconfig
+                }) => pageconfig.qd,
             })
         },
         components:{
@@ -211,6 +214,7 @@
                     referee:this.userInfo.referee ? ( this.userInfo.refereeId == '111111' ? '' : this.userInfo.referee ) : '',
                     refereeId:this.userInfo.refereeId ? ( this.userInfo.refereeId == '111111' ? '' : this.userInfo.refereeId ) : '',
                     refereeType:this.userInfo.refereeType,
+                    qd:this.qd || '',
                 },(data)=>{
                     if(data.code == 200){
                         this.$router.push({path:'/orderpay/'+data.data});

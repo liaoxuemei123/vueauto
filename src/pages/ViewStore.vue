@@ -84,7 +84,7 @@
                 isSelect:false,
                 pagenation:{
                     page:1,
-                    pageSize:100,
+                    pageSize:200,
                     totalCount:0,
                 },
                 loadMore:true,
@@ -111,6 +111,7 @@
                     storename:this.$children[0].$refs.search.value || '',
                     area:this.isSelect ? this.cityInfo.code : '',
                     flag:1,
+                    city:this.geolocation.address.province,
                     wbProduct:wbpId,
                     page:this.pagenation.page,
                     pageSize:this.pagenation.pageSize
@@ -131,6 +132,7 @@
                     storename:this.$children[0].$refs.search.value || '',
                     area:this.isSelect ? this.cityInfo.code : '',
                     flag:1,
+                    city:this.geolocation.address.province,
                     wbProduct:wbpId,
                     page:this.pagenation.page,
                     pageSize:this.pagenation.pageSize

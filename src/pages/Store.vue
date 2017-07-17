@@ -88,7 +88,7 @@
                 defaultLocation:'',
                 pagenation:{
                     page:1,
-                    pageSize:100,
+                    pageSize:200,
                     totalCount:0,
                 },
                 loadMore:true,
@@ -119,6 +119,7 @@
                     storename:this.$children[0].$refs.search.value || '',
                     area:this.isSelect ? this.cityInfo.code : '',
                     flag:1,
+                    city:this.geolocation.address.province,
                     wbProduct:wbpId,
                     page:this.pagenation.page,
                     pageSize:this.pagenation.pageSize
@@ -139,6 +140,7 @@
                         gpsLatitude:this.cityInfo.lat || self.geolocation.point.lat,
                         storename:this.$children[0].$refs.search.value || '',
                         area:this.isSelect ? this.cityInfo.code : '',
+                        city:this.geolocation.address.province,
                         flag:1,
                         wbProduct:wbpId,
                         page:this.pagenation.page,
@@ -164,6 +166,7 @@
                         gpsLatitude:this.cityInfo.lat || self.geolocation.point.lat,
                         storename:this.$children[0].$refs.search.value || '',
                         area:this.isSelect ? this.cityInfo.code : '',
+                        city:this.geolocation.address.province,
                         page:1,
                         pageSize:this.pagenation.pageSize,
                         wbProduct:wbpId,
