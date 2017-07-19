@@ -52,7 +52,6 @@
         },
         methods:{
             viewDetail:function(){
-                console.log(this.modelInfo);
                 var item = this.item;
                 const bisiness = this.$parent.$parent.$parent.bisinessItems[this.$parent.$parent.$parent.activeBusiness].wbyId;
                 for(var props in this.allConfig){
@@ -77,11 +76,7 @@
                     Tool.localItem('modelInfo',this.modelInfo);
                     Tool.post('packagecount',{packageId:item.wbpId,packageName:item.wbpName,isUniversal:item.wbpSfqgty},(data)=>{})
                 }else{
-                    Toast({
-                        message:"请选择车型",
-                        duration:1000,
-                    });
-                    $('.select-bar input').focus();
+                    this.$parent.$parent.carShow = true;
                 }
             },
             ...mapMutations({
