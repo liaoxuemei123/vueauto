@@ -33,11 +33,6 @@
                 </div>
             </div>
         </div>
-        <!--<advert>
-            <div class="advert">
-                <img src="../assets/sorry.png" alt="">
-            </div>
-        </advert>-->
     </div>
 </template>
 <script>
@@ -130,7 +125,6 @@
                             })
                         })
                     })
-                    console.log(this.bisinessItems);
                     this.setBisinessConfig(data.data);
                 })
             },

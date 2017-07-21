@@ -57,7 +57,7 @@ const Tap = {
             if(typeof value === 'function'){
                 value.call(this,value);
             }else{
-                console.error('v-tap only support function params now')
+                console.error('v-tap only support function params now but this will do not influenced')
             }
         }
         if(Util.isPc()){
