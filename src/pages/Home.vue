@@ -111,9 +111,11 @@
                         BISINESS_CONST.map((sv) => {
                             if(v.wbyId.indexOf(sv.wbyId) > -1) {
                                 var wbArr = v.wbyId.split('-');
-                                if(wbArr.length > 1 && wbArr[1] == qd && qd){
-                                    sv = Object.assign(sv,v);
-                                    this.bisinessItems.push(sv);
+                                if(qd){
+                                    if(wbArr.length > 1 && wbArr[1] == qd && qd){
+                                        sv = Object.assign(sv,v);
+                                        this.bisinessItems.push(sv);
+                                    }
                                 }else if(wbArr.length == 1){
                                     sv = Object.assign(sv,v);
                                     this.bisinessItems.push(sv);

@@ -15,10 +15,11 @@
                                     </div>
                                 </swiper>
                             </div>
-                            <div class="set-detail" flex="dir:top box:mean">
+                            <div class="set-detail">
                                 <div class="line" flex="dir:left cross:center">
-                                    <span class="car-type">{{modelInfo.seriesName}}</span>
                                     <span class="des1">{{setInfo.wbpName}}</span>
+                                </div>
+                                <div class="line" flex="dir:left cross:center">
                                     <span class="des2">{{setResource.ad}}</span>
                                 </div>
                                 <div class="line" flex="dir:left cross:center">
@@ -490,18 +491,18 @@
                         }
                     }
                     .set-detail{
-                        height:2.4rem;
                         padding:0.4rem 0.5rem;
                         font-size:0.51rem;
-                        .car-type,.des1{
-                            font-size:0.57rem;
+                        height:auto;
+                        .des1{
+                            font-size:0.64rem;
                             color:#333333;
                             font-weight:bold;
                             margin-right:0.2rem;
                         }
                         .des2{
                             color:#fd3c2d;
-                            font-size:0.57rem;
+                            font-size:0.51rem;
                             padding:0.1rem;
                         }
                         .set-content{
