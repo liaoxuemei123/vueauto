@@ -63,7 +63,8 @@
 </template>
 <script>
     import NavBar from '../components/NavBar';
-    import Tool from '../utils/Tool'
+    import Tool from '../utils/Tool';
+    import { mapState, mapMutations } from 'vuex';
     export default {
         data () {
             return{
@@ -142,10 +143,19 @@
                 }else{
                     this.$router.back();
                 }
-            }
+            },
+            ...mapMutations({
+                setQd:'SET_QD',
+            })
         },
         beforeRouteEnter:(to,from,next)=>{
-            Tool.routerEnter(to,from,next)
+            Tool.routerEnter(to,from,next);
+        },
+        created:function(){
+            const qd = this.$route.query.wbyQd;
+            if(qd != 'undefined' && !!qd){
+                this.setQd(qd);
+            }
         },
         activated:function(){
             this.getOrderDetail(this.$route.params.id)

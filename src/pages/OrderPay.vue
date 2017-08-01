@@ -84,9 +84,11 @@
             }
         },
         computed:{
-            ...mapState([
-                'packageInfo'
-            ])
+            ...mapState({
+                qd: ({
+                    pageconfig
+                }) => pageconfig.qd,
+            })
         },
         filters:{
             priceFilter:function(val){
@@ -96,7 +98,7 @@
         methods:{
             pay:function(){
                 if(this.paymentMode == 1){
-                    window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx22b47ca6974f3e71&redirect_uri=https://cloud.mall.changan.com.cn%2Fmaintainpackage%2F%23%2Forderpay%2F" + this.orderNo + "&response_type=code&scope=snsapi_base&state=" + this.orderNo + ',' + this.orderInfo.packageName + "#wechat_redirect";
+                    window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx22b47ca6974f3e71&redirect_uri=https://cloud.mall.changan.com.cn%2Fmaintainpackage%2F%23%2Forderpay%2F" + this.orderNo + "&response_type=code&scope=snsapi_base&state=" + this.orderNo + ',' + this.orderInfo.packageName + ',' + this.qd + "#wechat_redirect";
                 }else{
                     //let href = "http://service.mall.changan.com.cn/maintenance-plug/unionPay/frontConsume?orderId="+this.orderNo;
                     //this.$router.push({path:'/unionpay',query:{href,orderNo:this.orderNo}})
@@ -116,6 +118,7 @@
                     var code = '';
                     var orderNo = '';
                     var packageName = '';
+                    var qd = '';
                     for(var i=0;i<items.length;i++){
                         var key = items[i].split("=")[0];
                         var value = items[i].split("=")[1];
@@ -127,6 +130,7 @@
                                 var temp =  str.split(',')
                                 orderNo = temp[0];
                                 packageName = temp[1];
+                                qd = temp[2];
                                 if(orderNo && packageName){
                                     new Promise((res,rej)=>{
                                         Tool.get('AaPackageOrderDetail',{orderNo},(data)=>{
@@ -193,14 +197,24 @@
                                                                 message:'支付被取消',
                                                                 duration:1000,
                                                             })
-                                                            self.$router.push({name:'maintainset'});
+                                                            if(qd != 'undefined'){
+                                                                self.$router.push({path:'/maintainset',query:{wbyQd:qd}});
+                                                            }else{
+                                                                self.$router.push({name:'maintainset'});
+                                                            }
+                                                            
                                                         }else{
                                                             rej();
                                                             Toast({
                                                                 message:'支付出错',
                                                                 duration:1000,
                                                             })
-                                                            self.$router.push({name:'maintainset'});
+                                                            if(qd != 'undefined'){
+                                                                self.$router.push({path:'/maintainset',query:{wbyQd:qd}});
+                                                            }else{
+                                                                self.$router.push({name:'maintainset'});
+                                                            }
+                                                            
                                                         }
                                                     }
                                                 );
@@ -223,7 +237,7 @@
                                                     message:'支付成功',
                                                     duration:1000,
                                                 })
-                                                self.$router.push({path:'/orderdetail/'+orderNo});
+                                                self.$router.push({path:'/orderdetail/'+orderNo,query:{wbyQd:qd}});
                                             }
                                         })
                                     })

@@ -44,7 +44,7 @@
     import MinniSet from './home/MiniSet';
     import CommercialSet from './home/CommercialSet';
     import Subscribe from './home/Subscribe';
-    import { mapMutations } from 'vuex';
+    import { mapMutations, mapState } from 'vuex';
     import Advert from '../components/Advert';
     const BISINESS_CONST = [
         {
@@ -82,6 +82,13 @@
             Subscribe,
             Advert
         },
+        computed:{
+            ...mapState({
+                wbyQd: ({
+                    pageconfig
+                }) => pageconfig.qd,
+            })
+        },
         methods:{
             changeActive:function(index, reset) {
                 const oldVal = this.activeBusiness;
@@ -105,14 +112,16 @@
             },
             getBisinessList:function() {
                 const qd = this.$route.query.wbyQd;
-                this.setQd(qd);
+                if(qd != 'undefined' && !!qd){
+                    this.setQd(qd);
+                }
                 Tool.get('wbinterface/getWbYwpzList',{flg:1},data => {
                     data.data.map( (v,i) => {
                         BISINESS_CONST.map((sv) => {
                             if(v.wbyId.indexOf(sv.wbyId) > -1) {
                                 var wbArr = v.wbyId.split('-');
-                                if(qd){
-                                    if(wbArr.length > 1 && wbArr[1] == qd && qd){
+                                if(this.wbyQd){
+                                    if(wbArr.length > 1 && wbArr[1] == this.wbyQd && this.wbyQd){
                                         sv = Object.assign(sv,v);
                                         this.bisinessItems.push(sv);
                                     }

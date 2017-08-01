@@ -20,6 +20,7 @@ import { mapState, mapMutations } from 'vuex';
 import Tool from './utils/Tool';
 import En from './utils/Encryption';
 import Advert from './components/Advert';
+import { MessageBox } from 'mint-ui';
 export default {
 	data () {
 		return {
@@ -29,29 +30,42 @@ export default {
 		}
 	},
 	components:{
-		Advert
+		Advert,
+		MessageBox
 	},
 	computed:{
 		...mapState({
 			mode:({
 				routes
-			}) => routes.mode
+			}) => routes.mode,
+			wbyQd: ({
+				pageconfig
+			}) => pageconfig.qd,
 		})
 	},
 	created:function(){
-		var timeLine = [1500551400000,1500566400000];
-		this.timer = setInterval(()=>{
-			timeLine = [1500561180000,1500561240000];
-			if(new Date().getTime() > timeLine[0]){
-				this.timeLineSHow =  true;
-				if(new Date().getTime() > timeLine[1]){
-					this.timeLineSHow = false;
-					clearInterval(this.timer);
-				}
-			}
-			this.time = Tool.getCurrentDate('fulltime');
-		},1000)
 		const qd = this.$route.query.wbyQd;
+		var timeLine = [1501462800000,1501516860000];
+		var img = require('./assets/dsj.png');
+		if(qd == 'DSJZX' || this.wbyQd == 'DSJZX'){
+			this.timer = setInterval(()=>{
+				if(new Date().getTime() > timeLine[0]){
+					if(new Date().getTime() > timeLine[1]){
+						this.timeLineSHow = false;
+						clearInterval(this.timer);
+					}else{
+						MessageBox({
+							title:"消息",
+							message:`<img src=${img} style="width:150px;height:80px;"></img><br>8月1日~8月28日期间购买长安爱车节专享套餐即赠送150元长安商城精品立减券，敬请期待！`,
+							closeOnClickModal:false
+						},() => {
+							clearInterval(this.timer);
+						})
+					}
+				}
+				this.time = Tool.getCurrentDate('fulltime');
+			},1000)
+		}
 		if(this.$route.name != 'index'){
 			Tool.post("linkcount",{qdCode:qd || ''},(data)=>{});
 		}

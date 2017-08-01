@@ -308,3 +308,10 @@ body,html{
     font-size: 0.68rem;
 }
 
+.mint-msgbox-header{
+    display: none;
+}
+
+.mint-msgbox-content .mint-msgbox-message{
+    font-size:0.64rem;
+}
