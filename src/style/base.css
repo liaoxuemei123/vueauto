@@ -315,3 +315,44 @@ body,html{
 .mint-msgbox-content .mint-msgbox-message{
     font-size:0.64rem;
 }
+
+/*introjs 样式修改*/
+
+.introjs-tooltip.float-bottom{
+    transform:translate3d(0,110%,0);
+}
+
+.introjs-tooltip.float-bottom::after{
+    content:"";
+    display:inherit;
+    position: absolute;
+    border:5px solid white;
+    top:-12px;
+    right: 50%;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: #000;
+    border-left-color: transparent;
+}
+
+.introjs-tooltip .introjs-arrow.right{
+    border-left-color:#000;
+    right:-12px;
+}
+
+.introjs-tooltip .introjs-tooltipbuttons{
+    display: none;
+}
+.introjs-tooltipReferenceLayer .introjs-tooltip{
+    background-color: rgba(0,0,0,0.4);
+    border:2px solid #000;
+}
+div.introjs-tooltipReferenceLayer{
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.introjs-tooltip .introjs-tooltiptext{
+    font-size:0.68rem;
+    color:#fff;
+}

@@ -27,10 +27,15 @@
                                 <div class="swiper-slide" flex="dir:left cross:center main:left"><a href="http://mp.weixin.qq.com/s/okvpE8rTOLhfLwIO-rNMmw">学会这几招，雨天行车心不慌！</a></div>
                             </swiper>
                         </div>
-                        <div class="user-center" @click="userCenter"><i class="iconfont icon-usercenter"></i></div>
+                        <div class="user-center" @click="userCenter" data-intro="订单可在个人中心查看"><i class="iconfont icon-usercenter"></i></div>
                     </div>
                     <div class="consult-tel">咨询时间：9:00-21:00&nbsp;&nbsp;&nbsp;&nbsp;电话：<a href="tel:023-67595966">023-67595966</a> </div>
                 </div>
+            </div>
+        </div>
+        <div class="first-animate" v-if="firstAnimate">
+            <div class="animate-mask">
+
             </div>
         </div>
     </div>
@@ -70,6 +75,7 @@
                 activeBusiness:0,
                 mode:'push',
                 currentView:'',
+                firstAnimate: false,
             }
         },
         mixins: [emmiter],
@@ -111,9 +117,15 @@
                 this.$router.push({name:'usercenter'});
             },
             getBisinessList:function() {
-                const qd = this.$route.query.wbyQd;
+                var qd = this.$route.query.wbyQd;
                 if(qd != 'undefined' && !!qd){
                     this.setQd(qd);
+                    Tool.localItem('wbyQd',qd);
+                }else{
+                    qd = Tool.localItem('wbyQd');
+                    if(qd){
+                        this.setQd(qd);
+                    }
                 }
                 Tool.get('wbinterface/getWbYwpzList',{flg:1},data => {
                     data.data.map( (v,i) => {
@@ -167,6 +179,20 @@
             this.bisinessItems.map((v,i)=>{
                 v.route ? (this.$route.path == v.route ? this.activeBusiness = i : '') : '';
             })
+        },
+        beforeRouteEnter: (to, from, next) => {
+            if(to.query.wbyQd){
+                next();
+            }else{
+                if(to.query.hasOwnProperty('wbyQd')){
+                    Tool.localItem('wbyQd','');
+                }
+                if(Tool.localItem('wbyQd')){
+                    next({path:'/maintainset',query:{wbyQd:Tool.localItem('wbyQd')}});
+                }else{
+                    next();
+                }
+            }  
         }
     }
 </script>
@@ -175,6 +201,22 @@
         height:100%;
         position:absolute;
         width:100%;  
+        .first-animate{
+            position:absolute;
+            top:0;
+            left:0;
+            right:0;
+            bottom:0;
+            z-index:9999;
+            .animate-mask{
+                position:absolute;
+                top:0;
+                left:0;
+                right:0;
+                bottom:0;
+                background-color:rgba(0,0,0,0.3);
+            }
+        }
     }
     .page{
         height:100%;
@@ -224,22 +266,18 @@
                 margin-top:1px;
                 border-top:1px solid #ccc;
                 z-index:10;
-                width:94%;
-                padding:0 3%;
+                width:97%;
+                padding:0 0 0 3%;
                 overflow:hidden;
                 .user-center{
-                    height:1.6rem;
-                    width:1.6rem;
-                    border-radius:0.8rem;
+                    height:1.9rem;
+                    width:1.9rem;
                     background-color:#54d2fc;
+                    line-height:1.9rem;
+                    text-align:center;
                     i.iconfont{
                         font-size:1rem;
                         color:#fff;
-                        &:before{
-                            padding:0.3rem;
-                            position:relative;
-                            top:0.15rem;
-                        }
                     }
                 }
                 .banner{

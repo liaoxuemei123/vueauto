@@ -35,7 +35,7 @@
                 <div class="pay" v-if="item.status == 1" v-tap="goPay.bind(this,item.orderNo)">去支付</div>
                 <div class="cancel" v-if="item.status == 2 && new Date().getTime() - item.paySuccessDate < 604800000 && !item.isOrderDetail" v-tap="refund.bind(this,item.orderNo)">退款</div>
                 <!--<div class="evaluate" @click="goEvaluate" v-if="item.status == 4">去评价</div>-->
-                <div class="detail" v-tap="viewDetail.bind(this,item.orderNo)" v-if="item.status != 1">查看详情</div>
+                <div class="detail" v-tap="viewDetail.bind(this,item.orderNo)">查看详情</div>
             </div>
         </div>
     </div>

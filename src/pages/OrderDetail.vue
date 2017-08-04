@@ -20,14 +20,16 @@
                         <div class="oil">机油：{{orderInfo.engineOil}}</div>
                         <div class="VIN">VIN：{{orderInfo.vin}}</div>
                         <div class="pay-time" v-if='orderInfo.status == 2'>支付时间：{{orderInfo.payDate}}</div>
-                        <div class="price">总额：{{orderInfo.orderPrice}}</div>
                     </div>
-                    <div class="section" v-if="orderInfo.status == 2">
-                        <div class="times">使用次数/总次数：{{orderInfo.useNumber}}/{{orderInfo.allNumber}}</div>
+                    <div class="section" v-if="orderInfo.status == 2 || orderInfo.status == 1">
+                        <div class="times" v-if="orderInfo.status == 2">使用次数/总次数：{{orderInfo.useNumber}}/{{orderInfo.allNumber}}</div>
+                        <div class="package-item">保养项目：{{orderInfo.wbpByxm}}</div>
                         <div class="rangs">使用范围：{{orderInfo.storeName | storeNameFilter}}</div>
                         <div class="deadline">
                             <span>到期时间：{{orderInfo.expirationDate | expirationFilter}}</span>
                         </div>
+                        <div class="user-phone">电话号码：{{orderInfo.phone}}</div>
+                        <div class="price">总额：{{orderInfo.orderPrice}}</div>
                     </div>
                     <div class="bottom" flex="dir:left cross:center" v-if="orderInfo.status == 2">
                         使用方法：到店保养前告知服务顾问已购买套餐即可使用
@@ -115,6 +117,7 @@
                 },(data)=>{
                     if(data.code == 200){
                         this.orderInfo = data.data.PackageOrder;
+                        this.orderInfo.wbpByxm = data.data.Package.wbpByxm;
                         this.useList = data.data.PackageOrderDetail;
                     }
                 })

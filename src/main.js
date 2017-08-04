@@ -9,6 +9,7 @@ import 'flex.css';//主要使用flex.css布局，避免各种滚动条的计算
 import 'normalize.css';
 import './style/base.css';
 import './style/iconfont.less';
+import 'intro.js/introjs.css';
 import Tool from './utils/Tool';
 import './utils/Tap';
 const FastClick = require('fastclick')
@@ -63,7 +64,7 @@ function goFoward(to,from,next){
 }
 
 function getIndex (list,path){
-  if(path == '/' || path == '/home' || !path){
+  if(path == '/' || path == '/maintainset' || !path){
     return -2;
   }
   for(var i = 0; i < list.length; i++){

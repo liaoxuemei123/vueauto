@@ -1,6 +1,6 @@
 <template>
     <div class="sub-page" key="miniset">
-        <div class="select-car" v-tap="toggleShow">
+        <div class="select-car" v-tap="toggleShow" data-intro="点击选择车辆" data-position="bottom" data-tooltipClass="float-bottom">
             <div class="label">{{modelInfo.pickerModel | modelFilter}}</div>
         </div>
         <transition name="fade">
@@ -40,6 +40,9 @@
     </div>
 </template>
 <style lang="less" scoped>
+    .float-bottom{
+        top:80%;
+    }
     .sub-page{
         position: absolute;
         width:100%;
@@ -133,6 +136,7 @@
     import Tool from '../../utils/Tool';
     import { mapState, mapMutations } from 'vuex';
     import { Toast } from 'mint-ui';
+    import { introJs } from 'intro';
     export default {
         data () {
             return {
@@ -171,6 +175,7 @@
                     values:[],
                     className:'moudle',
                 }],
+                intro:null,
             }
         },
         computed:{
@@ -295,6 +300,16 @@
             toggleShow:function(){
                 this.carShow = !this.carShow;
             },
+            initIntro:function(){//初始化导航js
+                this.intro = new introJs();
+                this.intro.setOption("doneLabel", '退出');
+                this.intro.setOption("skipLabel", '跳过');
+                this.intro.setOption("nextLabel", '继续');
+                this.intro.setOption("prevLabel", '后退');
+                this.intro.setOption("showStepNumbers", false);
+                this.intro.setOption("showBullets", false);
+                this.intro.setOption("hideNext", true);
+            },
             ...mapMutations({
                 reset: 'UPDATE_RESET',
                 setStoreInfo: 'SET_STORE_INFO',
@@ -309,8 +324,32 @@
                 return val;
             }
         },
+        mounted:function(){
+            this.$nextTick(()=>{
+                if(this.intro)
+                    this.intro.start();
+                    Tool.localItem("wy_version",Tool.version);
+                    $(".introjs-overlay").on("touchstart", event => {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        this.intro.nextStep();
+                        return false;
+                    });
+            })
+        },
         created:function(){
             this.getCarList();
+            var recordVersion = Tool.localItem("wy_version");
+            if(!recordVersion){
+                this.initIntro();
+            }else{
+                var currentVersion = Tool.version;
+                if(recordVersion != currentVersion || true){
+                    this.initIntro();
+                    Tool.localItem("wy_version",'');
+                }
+            }
+            
         },
         activated:function(){
             this.getPackageList(this.modelInfo.id);

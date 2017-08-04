@@ -16,6 +16,7 @@ const CLOSE_NETWORK = false;//在本地调试时关闭网络，只调整静态�
 var requestPool = [];//请求池
 Tool.target = target;
 Tool.imagePath = imagePath;
+Tool.version = "2.0.2";//增加版本号
 
 Tool.ajax = function(mySetting){
     var setting = {
@@ -349,6 +350,17 @@ Tool.routerEnter = function(to,from,next){//确定用户是否已经登陆
         next({name:'login',params:{to:to.path}});
     }
 }
+Tool.isWeChat = function(){
+    var ua = navigator.userAgent.toLowerCase();
+    if(ua.match(/MicroMessenger/i) == "micromessenger") {
+        return true;
+    } else {
+        return false;
+    }
+}
+/**
+ * URLdecode
+ */
 Tool.urldecode = function(str, charset, callback) {
     var script = document.createElement('script');
     script.id = '_urlDecodeFn_';

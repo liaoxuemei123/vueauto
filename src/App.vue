@@ -45,7 +45,7 @@ export default {
 	},
 	created:function(){
 		const qd = this.$route.query.wbyQd;
-		var timeLine = [1501462800000,1501516860000];
+		var timeLine = [1501462800000,0];
 		var img = require('./assets/dsj.png');
 		if(qd == 'DSJZX' || this.wbyQd == 'DSJZX'){
 			this.timer = setInterval(()=>{
