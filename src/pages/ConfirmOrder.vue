@@ -179,6 +179,9 @@
                 qd: ({
                     pageconfig
                 }) => pageconfig.qd,
+                orderUnPayCount: ({
+                    mixin
+                }) => mixin.orderUnPayCount,
             })
         },
         components:{
@@ -218,6 +221,8 @@
                 },(data)=>{
                     if(data.code == 200){
                         this.$router.push({path:'/orderpay/'+data.data});
+                        Tool.localItem('orderUnPay',{count:this.orderUnPayCount + 1,lastUpdateTime:new Date()});
+                        this.setOrderUnPayCount(this.orderUnPayCount + 1);
                     }else{
                         Toast({
                             duration:1000,
@@ -244,7 +249,10 @@
             gmJudge:function(filed){
                 const index = this.GmConfig.fileds.indexOf(filed);
                 return !!this.GmConfig.tags[index]
-            }
+            },
+            ...mapMutations({
+                setOrderUnPayCount: 'UPDATE_ORDERCOUNT',
+            })
         },
         activated:function(){
             var wbProduct = this.$route.params.id;

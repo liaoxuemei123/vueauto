@@ -8,9 +8,8 @@ import store from '../model';
 
 const Tool = {};
 // const target = 'http://47.92.32.44:8091/maintenance-plug/app/';//本地测试环境
-// const target = 'http://10.17.5.162:8080/maintenance-plug/app/';//本地测试环境
-const target = 'https://cloud.mall.changan.com.cn/maintenance-plug/app/';//服务器后端目录
-// const target = 'http://192.168.191.3:8080/baoyang/app/'
+const target = 'http://10.17.5.162:9990/maintenance-plug/app/';//本地测试环境
+// const target = 'https://cloud.mall.changan.com.cn/maintenance-plug/app/';//服务器后端目录
 const imagePath = 'http://service.mall.changan.com.cn/static/';//静态文件目录
 const CLOSE_NETWORK = false;//在本地调试时关闭网络，只调整静态页面
 var requestPool = [];//请求池
@@ -231,7 +230,7 @@ Tool.clearRequestPool =function(){
  * @param {str} String,Date,timeTemp
  * @param type String 'date,tiem,onlytime,fulltime' 
  */
-Tool.formatDate = function(str,type='date'){
+Tool.formatDate = function(str,type='date',gutter="-"){
     var date = new Date(str);
     var y = date.getFullYear();
     var m = date.getMonth() + 1;
@@ -245,23 +244,23 @@ Tool.formatDate = function(str,type='date'){
     s = s < 10 ? ( "0" +s ) : s; 
     switch(type){
         case 'date':
-            return y + '-' + m + '-' + d;
+            return y + gutter + m + gutter + d;
             break;
         case 'time':
-            return y + '-' + m + '-' + d + ' ' + h + ':' + min;
+            return y + gutter + m + gutter + d + ' ' + h + ':' + min;
         case 'onlytime':
             return h + ':' + min;
         case 'fulltime':
-            return y + '-' + m + '-' + d + ' ' + h + ':' + min + ':' + s;
+            return y + gutter + m + gutter + d + ' ' + h + ':' + min + ':' + s;
     }   
 }
 /**
  * 获取今天的日期 XXXX-XX-XX;
  * @param {type} String 'date,time,onlytime'
  */
-Tool.getCurrentDate = function(type='date'){
+Tool.getCurrentDate = function(type='date',gutter="-"){
     var now = new Date();
-    return this.formatDate(now,type);
+    return this.formatDate(now,type,gutter);
 }
 
 

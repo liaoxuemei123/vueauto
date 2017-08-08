@@ -344,7 +344,7 @@
                 this.initIntro();
             }else{
                 var currentVersion = Tool.version;
-                if(recordVersion != currentVersion || true){
+                if(recordVersion != currentVersion){
                     this.initIntro();
                     Tool.localItem("wy_version",'');
                 }

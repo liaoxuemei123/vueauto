@@ -47,6 +47,7 @@ export default {
 		const qd = this.$route.query.wbyQd;
 		var timeLine = [1501462800000,0];
 		var img = require('./assets/dsj.png');
+		this.getOrderUnpay();
 		if(qd == 'DSJZX' || this.wbyQd == 'DSJZX'){
 			this.timer = setInterval(()=>{
 				if(new Date().getTime() > timeLine[0]){
@@ -85,8 +86,27 @@ export default {
 		clearInterval(this.timer);
 	},
 	methods:{
+		getOrderUnpay:function(){
+			var orderUnpay = Tool.localItem("orderUnPay") ? JSON.parse(Tool.localItem("orderUnPay")) : false;
+			if(orderUnpay){
+				var lastDate = Tool.formatDate(orderUnpay.lastUpdateTime,'date','') - 0;
+				var currentDate = Tool.getCurrentDate('date','') - 0;
+				console.log(lastDate , currentDate);
+				if( currentDate - lastDate > 0 ){
+					Tool.localItem("orderUnPay",{
+						lastUpdateTime: new Date(),
+						count: 0,
+					})
+				}else{
+					this.setOrderUnPayCount(orderUnpay.count);
+				}
+			}else{
+				this.setOrderUnPayCount(0);
+			}
+		},
 		...mapMutations({
-			setLocation: 'SET_LOCATION'
+			setLocation: 'SET_LOCATION',
+			setOrderUnPayCount: 'UPDATE_ORDERCOUNT'
 		})
 	}
 }

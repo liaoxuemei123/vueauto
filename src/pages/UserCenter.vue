@@ -7,7 +7,10 @@
             <div class="page-content" flex="dir:top box:last">
                 <div class="user-info">
                     <div class="info-control" @click="myorder" flex="dir:left box:first">
-                        <div class="label"><span>我的订单</span></div>
+                        <div class="label">
+                            <span>我的订单</span>
+                            <span class="unpay-order" v-if="orderUnPayCount > 0">{{orderUnPayCount > 9 ? orderUnPayCount : orderUnPayCount}}</span>
+                        </div>
                         <div class="value">查看全部订单<i class="iconfont icon-go"></i></div>
                     </div>
                     <!--<div class="info-control" flex="dir:left box:first">
@@ -34,6 +37,7 @@
     import NavBar from '../components/NavBar';
     import Xscroller from '../components/Xscroller';
     import Tool from '../utils/Tool';
+    import { mapState } from 'vuex';
     export default{
         data () {
             return {
@@ -43,6 +47,13 @@
                     mobile:'',
                 },
             }
+        },
+        computed:{
+            ...mapState({
+                orderUnPayCount: ({
+                    mixin
+                }) => mixin.orderUnPayCount,
+            })
         },
         components:{
             NavBar,
@@ -121,6 +132,18 @@
                 margin-bottom:1px;
                 .label{
                     width:3rem;
+                    position:relative;
+                    .unpay-order{
+                        position:absolute;
+                        color:#fff;
+                        background-color:#ed3f14;
+                        line-height:1.3em;
+                        padding:0 0.3em;
+                        right:0.2rem;
+                        top:0.2rem;
+                        border-radius:1.2em;
+                        font-size:0.47rem;
+                    }
                 }
                 .value{
                     text-align:right;

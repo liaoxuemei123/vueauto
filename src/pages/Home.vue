@@ -27,7 +27,10 @@
                                 <div class="swiper-slide" flex="dir:left cross:center main:left"><a href="http://mp.weixin.qq.com/s/okvpE8rTOLhfLwIO-rNMmw">学会这几招，雨天行车心不慌！</a></div>
                             </swiper>
                         </div>
-                        <div class="user-center" @click="userCenter" data-intro="订单可在个人中心查看"><i class="iconfont icon-usercenter"></i></div>
+                        <div class="user-center" @click="userCenter" data-intro="订单可在个人中心查看">
+                            <i class="iconfont icon-usercenter"></i>
+                            <span class="unpay-order" v-if="orderUnPayCount > 0">{{orderUnPayCount > 9 ? orderUnPayCount : orderUnPayCount}}</span>
+                        </div>
                     </div>
                     <div class="consult-tel">咨询时间：9:00-21:00&nbsp;&nbsp;&nbsp;&nbsp;电话：<a href="tel:023-67595966">023-67595966</a> </div>
                 </div>
@@ -93,6 +96,9 @@
                 wbyQd: ({
                     pageconfig
                 }) => pageconfig.qd,
+                orderUnPayCount: ({
+                    mixin
+                }) => mixin.orderUnPayCount,
             })
         },
         methods:{
@@ -272,12 +278,24 @@
                 .user-center{
                     height:1.9rem;
                     width:1.9rem;
-                    background-color:#54d2fc;
+                    background-color:#fff;
                     line-height:1.9rem;
                     text-align:center;
+                    position:relative;
                     i.iconfont{
                         font-size:1rem;
+                        color:#54d2fc;
+                    }
+                    .unpay-order{
+                        position:absolute;
                         color:#fff;
+                        background-color:#ed3f14;
+                        line-height:1.3em;
+                        padding:0 0.3em;
+                        right:0.2rem;
+                        top:0.2rem;
+                        border-radius:1.2em;
+                        font-size:0.47rem;
                     }
                 }
                 .banner{

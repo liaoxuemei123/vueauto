@@ -10,7 +10,10 @@
                     <div class="tab-container">
                         <div class="tab-item-container" flex="dir:left box:mean">
                             <div class="tab-item" @click="activeTab = index" v-for="(item, index) in tabs" flex="dir:left cross:center main:center" :class="{'active':index==activeTab}">
-                                {{item.label}}
+                                <span>
+                                    {{item.label}}
+                                    <span v-if="item.value == 1 &&  orderUnPayCount > 0" class="unpay-order">{{orderUnPayCount > 9 ? orderUnPayCount : orderUnPayCount}}</span>
+                                </span>
                             </div>
                         </div>
                         <div class="after" :style="{'left':( activeTab * 25 ) + 4 + '%'}"></div>
@@ -90,6 +93,7 @@
     import Tool from '../utils/Tool';
     import Scroller from '../components/Scroller';
     import { Toast } from 'mint-ui';
+    import { mapState, mapMutations } from 'vuex';
     export default {
         data () {
             return {
@@ -124,6 +128,13 @@
             NavBar,
             OrderItem,
             Scroller
+        },
+        computed:{
+            ...mapState({
+                orderUnPayCount: ({
+                    mixin
+                }) => mixin.orderUnPayCount,
+            })
         },
         watch:{
             'activeTab':function(newdata,old){
@@ -198,6 +209,11 @@
                     if(data.code == 200){
                         this.unpaidList = data.data.data;
                         this.totalCountUnpaid = data.data.totalCount;
+                        this.setOrderUnPayCount(0);
+                        Tool.localItem('orderUnPay',{
+                            count: 0,
+                            lastUpdateTime: new Date()
+                        })
                         this.$nextTick(()=>{
                             this.$children[1].$children[1].mySroller.scrollTo(0,0);
                             this.$children[1].$children[1].mySroller.y = 0;
@@ -372,6 +388,9 @@
                 this.pagePaid = 1;
                 this.pageRefund = 1;
             },
+            ...mapMutations({
+                setOrderUnPayCount: 'UPDATE_ORDERCOUNT'
+            })
         },
         updated:function(){
             if(this.$children[1] && this.$children[1].$children.length > 0){
@@ -426,6 +445,22 @@
                         height:100%;
                         .tab-item.active{
                             color:#379df2;
+                        }
+                        .tab-item{
+                            span{
+                                position:relative;
+                                .unpay-order{
+                                    position:absolute;
+                                    color:#fff;
+                                    background-color:#ed3f14;
+                                    line-height:1.3em;
+                                    padding:0 0.3em;
+                                    right:-0.3rem;
+                                    top:-0.3rem;
+                                    border-radius:1.2em;
+                                    font-size:0.47rem;
+                                }
+                            }
                         }
                     }
                 }
