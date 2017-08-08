@@ -336,16 +336,20 @@ body,html{
 }
 
 .introjs-tooltip .introjs-arrow.right{
-    border-left-color:#000;
-    right:-12px;
+    border-left-color:#fff;
+    right:-15px;
 }
-
+.introjs-tooltip .introjs-arrow{
+    border: 7px solid white;
+    content: '';
+    position: absolute;
+}
 .introjs-tooltip .introjs-tooltipbuttons{
     display: none;
 }
 .introjs-tooltipReferenceLayer .introjs-tooltip{
     background-color: rgba(0,0,0,0.4);
-    border:2px solid #000;
+    border:2px solid #fff;
 }
 div.introjs-tooltipReferenceLayer{
     visibility: visible;

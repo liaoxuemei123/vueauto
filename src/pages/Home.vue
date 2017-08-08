@@ -27,7 +27,7 @@
                                 <div class="swiper-slide" flex="dir:left cross:center main:left"><a href="http://mp.weixin.qq.com/s/okvpE8rTOLhfLwIO-rNMmw">学会这几招，雨天行车心不慌！</a></div>
                             </swiper>
                         </div>
-                        <div class="user-center" @click="userCenter" data-intro="订单可在个人中心查看">
+                        <div class="user-center" @click="userCenter" data-intro="点击图标查询订单详情">
                             <i class="iconfont icon-usercenter"></i>
                             <span class="unpay-order" v-if="orderUnPayCount > 0">{{orderUnPayCount > 9 ? orderUnPayCount : orderUnPayCount}}</span>
                         </div>
@@ -283,8 +283,11 @@
                     text-align:center;
                     position:relative;
                     i.iconfont{
-                        font-size:1rem;
-                        color:#54d2fc;
+                        font-size: 1.2rem;
+                        border-radius: 1.6rem;
+                        color: #fff;
+                        padding: 0.2rem;
+                        background-color:#00bffe;
                     }
                     .unpay-order{
                         position:absolute;

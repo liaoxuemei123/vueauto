@@ -1,6 +1,6 @@
 <template>
     <div class="sub-page" key="miniset">
-        <div class="select-car" v-tap="toggleShow" data-intro="点击选择车辆" data-position="bottom" data-tooltipClass="float-bottom">
+        <div class="select-car" v-tap="toggleShow">
             <div class="label">{{modelInfo.pickerModel | modelFilter}}</div>
         </div>
         <transition name="fade">
@@ -332,6 +332,10 @@
                     $(".introjs-overlay").on("touchstart", event => {
                         event.preventDefault();
                         event.stopPropagation();
+                        this.intro.nextStep();
+                        return false;
+                    });
+                    $(".introjs-tooltipReferenceLayer").on("touchstart", event => {
                         this.intro.nextStep();
                         return false;
                     });

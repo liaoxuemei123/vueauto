@@ -29,7 +29,7 @@
                             <span>到期时间：{{orderInfo.expirationDate | expirationFilter}}</span>
                         </div>
                         <div class="user-phone">电话号码：{{orderInfo.phone}}</div>
-                        <div class="price">总额：{{orderInfo.orderPrice}}</div>
+                        <div class="price">总额：{{orderInfo.orderPrice | priceFilter}}</div>
                     </div>
                     <div class="bottom" flex="dir:left cross:center" v-if="orderInfo.status == 2">
                         使用方法：到店保养前告知服务顾问已购买套餐即可使用
@@ -108,6 +108,9 @@
                 if(val == '全国通用')
                     return '全国'
                 return val;
+            },
+            priceFilter:function(val){
+                return `￥${val}.00`;
             }
         },
         methods:{

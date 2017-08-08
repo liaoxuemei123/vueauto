@@ -162,11 +162,12 @@
                     margin-right:0.2rem;
                 }
                 .buy-it{
-                    background-color:#00bffe;
-                    color:#fff;
+                    background-color:#fff;
+                    color:#00bffe;
                     padding:0.2rem 0.5rem;
                     border-radius:0.2rem;
                     position:absolute;
+                    border:1px solid #cfcfcf;
                     right:0;
                 }
             }
