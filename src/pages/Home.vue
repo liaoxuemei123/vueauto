@@ -22,7 +22,9 @@
                     <div class="bottom-banner" flex="dir:left box:last cross:center">
                         <div class="banner">
                             <swiper>
-                                <div class="swiper-slide" flex="dir:left cross:center main:left"><a href="http://mp.weixin.qq.com/s/KkjnWh9CEmtkgqn5Plp1zQ">爱车保养 | 立夏保养的正确方式是...</a></div>
+                                <div class="swiper-slide" flex="dir:left cross:center main:left">
+                                <a :href="`http://mss.mall.changan.com.cn:81/jeecms/eoeLuckDraw/main/index.html?token=`+token">8.18抽奖活动</a>
+                                </div>
                                 <div class="swiper-slide" flex="dir:left cross:center main:left"><a href="http://mp.weixin.qq.com/s/GRSRXtl4w9T4Ky13uelWtQ">你的油耗总比别人高，问题出在这儿！</a></div>
                                 <div class="swiper-slide" flex="dir:left cross:center main:left"><a href="http://mp.weixin.qq.com/s/okvpE8rTOLhfLwIO-rNMmw">学会这几招，雨天行车心不慌！</a></div>
                             </swiper>
@@ -79,6 +81,7 @@
                 mode:'push',
                 currentView:'',
                 firstAnimate: false,
+                token:''
             }
         },
         mixins: [emmiter],
@@ -180,6 +183,7 @@
             this.setStoreInfo({});
             this.updateUserInfo({refereeType:'',referee:''});
             this.setRefereeStoreInfo({});
+            this.token = Tool.localItem('userInfo') ? JSON.parse(Tool.localItem('userInfo')).token :'';
         },
         mounted:function(){
             this.bisinessItems.map((v,i)=>{

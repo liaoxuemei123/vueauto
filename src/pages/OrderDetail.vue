@@ -15,6 +15,9 @@
                             {{orderInfo.status | stateFilter}}
                         </div>
                     </div>
+                    <div class="section dsjzs" v-if="">
+                        <a :href="'http://mss.mall.changan.com.cn:81/jeecms/eoeLuckDraw/main/index.html?orderId='+orderInfo.orderNo+'&token='+token">参加抽奖</a>
+                    </div>
                     <div class="section">
                         <div class="car">车型：{{orderInfo.carType}}</div>
                         <div class="oil">机油：{{orderInfo.engineOil}}</div>
@@ -70,9 +73,10 @@
     export default {
         data () {
             return{
-                orderInfo:{},
-                useList:[],
-                popupVisible:true
+                orderInfo: {},
+                useList: [],
+                popupVisible: true,
+                token:''
             }
         },
         components:{
@@ -110,7 +114,7 @@
                 return val;
             },
             priceFilter:function(val){
-                val = val.toFixed(2);
+                val = (val-0).toFixed(2);
                 return `￥${val}`;
             }
         },
@@ -165,7 +169,8 @@
             }
         },
         activated:function(){
-            this.getOrderDetail(this.$route.params.id)
+            this.getOrderDetail(this.$route.params.id);
+            this.token = Tool.localItem('userInfo') ? JSON.parse(Tool.localItem('userInfo')).token :'';
         }
     }
 </script>
@@ -201,6 +206,16 @@
                     padding:0.4rem 0;
                     border-bottom:1px solid #efefef;
                     line-height:1.8em;
+                    &.dsjzs{
+                        margin:0 0;
+                        padding:0.4rem 3%;
+                        background-color:#ff3300;
+                        color:#fff;
+                        text-align:center;
+                        a{
+                            color:#fff;
+                        }
+                    }
                 }
                 .bottom{
                     padding:0 3%;
