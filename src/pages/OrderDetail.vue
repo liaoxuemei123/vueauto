@@ -15,7 +15,7 @@
                             {{orderInfo.status | stateFilter}}
                         </div>
                     </div>
-                    <div class="section dsjzs" v-if="">
+                    <div class="section dsjzs" v-if="orderInfo.status == 2">
                         <a :href="'http://mss.mall.changan.com.cn:81/jeecms/eoeLuckDraw/main/index.html?orderId='+orderInfo.orderNo+'&token='+token">参加抽奖</a>
                     </div>
                     <div class="section">
