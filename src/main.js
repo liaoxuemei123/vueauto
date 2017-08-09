@@ -29,6 +29,11 @@ router.beforeEach((to,from,next)=>{
   const toIndex = getIndex(pageStack, to.path);
   const toPath = to.path;
   const toName = to.name;
+  if(document.URL.indexOf('index.html?t') < 0){
+    let timestamp = (new Date()).valueOf()
+    window.location.href = document.URL.replace(/\/#/,`/index.html?t=${timestamp}/#`);//解决vueSPA在微信上得缓存问题
+    return false;
+  }
   Tool.clearRequestPool();//切换页面的时候把上一个页面的请求全部中断掉
   if(toIndex == -1){
     store.commit('SET_MODE','push');

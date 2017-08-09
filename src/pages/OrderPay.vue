@@ -231,15 +231,15 @@
                                             }
                                         })
                                     }).then((pData)=>{
-                                        Tool.get('payCallback',{"out_trade_no":orderNo,"result_code":"SUCCESS"},(data)=>{
-                                            if(data.code == 200){
-                                                Toast({
-                                                    message:'支付成功',
-                                                    duration:1000,
-                                                })
-                                                self.$router.push({path:'/orderdetail/'+orderNo,query:{wbyQd:qd}});
-                                            }
+                                        // Tool.get('payCallback',{"out_trade_no":orderNo,"result_code":"SUCCESS"},(data)=>{
+                                            // if(data.code == 200){
+                                        Toast({
+                                            message:'支付成功',
+                                            duration:1000,
                                         })
+                                        self.$router.push({path:'/orderdetail/'+orderNo,query:{wbyQd:qd}});
+                                            // }
+                                        // })
                                     })
                                 }
                             });

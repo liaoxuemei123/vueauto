@@ -110,7 +110,8 @@
                 return val;
             },
             priceFilter:function(val){
-                return `￥${val}.00`;
+                val = val.toFixed(2);
+                return `￥${val}`;
             }
         },
         methods:{
