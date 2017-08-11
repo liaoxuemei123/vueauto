@@ -91,7 +91,6 @@ export default {
 			if(orderUnpay){
 				var lastDate = Tool.formatDate(orderUnpay.lastUpdateTime,'date','') - 0;
 				var currentDate = Tool.getCurrentDate('date','') - 0;
-				console.log(lastDate , currentDate);
 				if( currentDate - lastDate > 0 ){
 					Tool.localItem("orderUnPay",{
 						lastUpdateTime: new Date(),
