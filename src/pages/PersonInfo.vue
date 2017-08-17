@@ -11,7 +11,7 @@
                     <div class="input-control" v-if="item == 'vin' && pageConfig.tags[index] == '1'">
                         <inp-com title="车架号" :value="userInfo.vin" placeholder="输入车架号(不限大小写)" maxlength='17' :onBlur="updateVIN.bind(this)"/>
                     </div>
-                    <div class="input-control" v-if="item == 'motorId' && pageConfig.tags[index] == '1'">
+                    <div class="input-control" v-if="item == 'motorId' && pageConfig.tags[index] == '1' && needVerify">
                         <inp-com title="发动机号" :value="userInfo.motorId" placeholder="输入发动机号后6位" :onBlur="updateMotorId.bind(this)" maxlength='6'/>
                     </div>
                     <div class="input-control" v-if="item == 'contact' && pageConfig.tags[index] == '1'">
@@ -84,7 +84,8 @@
                     tags:[],
                     fileds:[],
                 },
-                interval:'',//计时器
+                interval: '',//计时器
+                needVerify: true,
             }
         },
         components:{
@@ -106,6 +107,9 @@
                 pageSetting: ({
                     pageconfig
                 }) => pageconfig.currentBis,
+                userVehicle: ({
+                    packageinfo
+                }) => packageinfo.userVehicle
             })
         },
         activated:function(){
@@ -120,6 +124,9 @@
             $(this.$refs.getValiCode).show();
             var mobile = Tool.getUserInfo('telephone');
             this.getPageConfig();
+            if(this.userVehicle.length <= 0){
+                this.getMemberVehicleInfo();
+            }
             Tool.get('findLoginTimestamp',{mobile},(data)=>{
                 if(data.code == 200){
                     this.isValidate = false;
@@ -148,12 +155,16 @@
                     });
                     return false;
                 }
-                if(!this.userInfo.motorId && this.pageConfig.tags[this.pageConfig.fileds.indexOf('motorId')] == '1'){
-                    Toast({
-                        message:'请输入发动机号',
-                        duration:1000,
-                    });
-                    return false;
+                if(this.userVehicle.length > 0 && this.userVehicle[0].vehilceSeries == this.modelInfo.code){
+                    
+                }else{
+                    if(!this.userInfo.motorId && this.pageConfig.tags[this.pageConfig.fileds.indexOf('motorId')] == '1'){
+                        Toast({
+                            message:'请输入发动机号',
+                            duration:1000,
+                        });
+                        return false;
+                    }
                 }
                 if(!this.userInfo.contact && this.pageConfig.tags[this.pageConfig.fileds.indexOf('contact')] == '1'){
                     Toast({
@@ -180,22 +191,31 @@
                 this.userInfo.motorId = this.userInfo.motorId.toLocaleUpperCase();
                 if(this.pageConfig.tags[this.pageConfig.fileds.indexOf('motorId')] == '1'){
                     new Promise((res,rej)=>{
-                        Tool.get('queryVehicleInfo',{
-                            vin:this.userInfo.vin,
-                            engineNo:this.userInfo.motorId,
-                            isMiniCar:this.modelInfo.vehicleType,
-                            carSeriesName:this.modelInfo.vehicleModel,
-                            carSeriesCode:this.modelInfo.code,
-                        },(data)=>{
-                            if(data.code == 1){
-                                res(data);
-                            }else{
-                                Toast({
-                                    message:data.msg,
-                                    duration:1000,
-                                })
-                            }
-                        })
+                        if(this.userVehicle.length > 0 && this.userVehicle[0].vehilceSeries == this.modelInfo.code){
+                            res({
+                                data:{
+                                    buyCarDate: this.userVehicle[0].purchaseDate,
+                                    engineNo: ''
+                                }
+                            })
+                        }else{
+                            Tool.get('queryVehicleInfo',{
+                                vin:this.userInfo.vin,
+                                engineNo:this.userInfo.motorId,
+                                isMiniCar:this.modelInfo.vehicleType,
+                                carSeriesName:this.modelInfo.vehicleModel,
+                                carSeriesCode:this.modelInfo.code,
+                            },(data)=>{
+                                if(data.code == 1){
+                                    res(data);
+                                }else{
+                                    Toast({
+                                        message:data.msg,
+                                        duration:1000,
+                                    })
+                                }
+                            })
+                        }
                     }).then((pData)=>{
                         if(this.userInfo.tel != this.userMoblie || this.isValidate){
                             if(!this.code){
@@ -325,6 +345,11 @@
             },
             updateVIN:function(e){
                 this.userInfo.vin = $(e.target).val();
+                if(this.userVehicle.length > 0 && $(e.target).val() == this.userVehicle[0].vin){
+                    this.needVerify = false;
+                }else{
+                    this.needVerify = true;
+                }
             },
             updateMotorId:function(e){
                 this.userInfo.motorId = $(e.target).val();
@@ -374,8 +399,33 @@
 					},1000)
 				})
             },
+            getMemberVehicleInfo:function(){
+                var oid = Tool.getUserInfo('oid');
+                var userId = Tool.getUserInfo('userId');
+                // Tool.get('getMemberVehicleInfo',{
+                //     oid,userId
+                // },data => {
+                //     if(data.code == 200 && data.data && data.data.vehicleInfo){
+                //         this.addUservehicle(data.data.vehicleInfo);
+                //     }
+                //     if(this.userVehicle.length > 0){
+                //         this.userInfo.vin = this.userVehicle[0].vin;
+                //         this.userInfo.motorId = '';
+                //         if(this.userVehicle.length > 0 && this.userVehicle[0].vehilceSeries == this.modelInfo.code){
+                //             this.needVerify = false;
+                //         }else{
+                //             this.needVerify = true;
+                //             Toast({
+                //                 message:'所选车型不符，请重新选择车型或手动录入vin和发动机号',
+                //                 duration:3000,
+                //             });
+                //         }
+                //     }
+                // })
+            },
             ...mapMutations({
-                updateUserInfon: 'UPDATE_USER_INFO'
+                updateUserInfon: 'UPDATE_USER_INFO',
+                addUservehicle: 'ADD_USERVEHICLE'
             })
         },
         beforeRouteEnter:(to,from,next)=>{

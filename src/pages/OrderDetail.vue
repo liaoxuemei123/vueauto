@@ -15,8 +15,8 @@
                             {{orderInfo.status | stateFilter}}
                         </div>
                     </div>
-                    <div class="section dsjzs" v-if="orderInfo.status == 2">
-                        <a :href="'http://mss.mall.changan.com.cn:81/jeecms/eoeLuckDraw/main/index.html?orderId='+orderInfo.orderNo+'&token='+token">参加抽奖</a>
+                    <div class="section dsjzs" v-if="orderInfo.status == 2 && new Date().getTime() > 1502985600000">
+                        <a :href="'https://cms.changan.com.cn/jeecms/eoeLuckDraw/main/index.html?orderId='+orderInfo.orderNo+'&token='+token">参加抽奖</a>
                     </div>
                     <div class="section">
                         <div class="car">车型：{{orderInfo.carType}}</div>

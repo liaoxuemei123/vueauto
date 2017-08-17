@@ -19,9 +19,9 @@ $(function(){
 	FastClick.attach(document.body)//移动端添加fastClick支持
 })
 
-document.documentElement.style.fontSize = document.documentElement.clientWidth/640*40+"px";
+document.documentElement.style.fontSize = document.documentElement.clientWidth/640*38+"px";
 $(window).on("resize",function(){//当窗口发生变化时更新基础字体大小
-  document.documentElement.style.fontSize = document.documentElement.clientWidth/640*40+"px";
+  document.documentElement.style.fontSize = document.documentElement.clientWidth/640*38+"px";
 })
 
 router.beforeEach((to,from,next)=>{
@@ -29,11 +29,6 @@ router.beforeEach((to,from,next)=>{
   const toIndex = getIndex(pageStack, to.path);
   const toPath = to.path;
   const toName = to.name;
-  if(document.URL.indexOf('index.html?t') < 0){
-    let timestamp = (new Date()).valueOf()
-    window.location.href = document.URL.replace(/\/#/,`/index.html?t=${timestamp}/#`);//解决vueSPA在微信上得缓存问题
-    return false;
-  }
   Tool.clearRequestPool();//切换页面的时候把上一个页面的请求全部中断掉
   if(toIndex == -1){
     store.commit('SET_MODE','push');

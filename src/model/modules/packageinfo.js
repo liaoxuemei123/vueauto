@@ -9,6 +9,7 @@ const state = {
     userInfo: {},               //用户信息
     carList: {},                //车辆列表
     refereeStore: {},           //推荐店铺信息
+    userVehicle: [],            //用户的车架号
 }
 
 const mutations = {
@@ -68,6 +69,9 @@ const mutations = {
                 state.refereeStore[props] = params[props];
             }
         }
+    },
+    ADD_USERVEHICLE:function( state, params ) {
+        state.userVehicle = state.userVehicle.concat(params);
     }
 }
 

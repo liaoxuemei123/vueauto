@@ -50,10 +50,10 @@
                         name:"服务门店",
                         value:0,
                     },
-                    {
-                        name:"个人",
-                        value:1
-                    }
+                    // {
+                    //     name:"个人",
+                    //     value:1
+                    // }
                 ],
                 storeName:"",
                 refereePhone:""
