@@ -136,20 +136,12 @@
                         this.setQd(qd);
                     }
                 }
-                Tool.get('wbinterface/getWbYwpzList',{flg:1},data => {
+                Tool.get('wbinterface/getWbYwpzList',{flg:1,Qd:this.wbyQd},data => {
                     data.data.map( (v,i) => {
                         BISINESS_CONST.map((sv) => {
                             if(v.wbyId.indexOf(sv.wbyId) > -1) {
-                                var wbArr = v.wbyId.split('-');
-                                if(this.wbyQd){
-                                    if(wbArr.length > 1 && wbArr[1] == this.wbyQd && this.wbyQd){
-                                        sv = Object.assign(sv,v);
-                                        this.bisinessItems.push(sv);
-                                    }
-                                }else if(wbArr.length == 1){
-                                    sv = Object.assign(sv,v);
-                                    this.bisinessItems.push(sv);
-                                }
+                                sv = Object.assign(sv,v);
+                                this.bisinessItems.push(sv);
                             }
                             this.$nextTick(()=>{
                                 this.broadcast('xscroller','init');

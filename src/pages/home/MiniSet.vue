@@ -186,6 +186,9 @@
                 modelInfo:({
                     packageinfo
                 }) => packageinfo.modelInfo,
+                wbyQd: ({
+                    pageconfig
+                }) => pageconfig.qd,
             })
         },
         components:{
@@ -198,7 +201,7 @@
             },
             getPackageList:function(wbplCx){
                 const id = this.$parent.bisinessItems[this.$parent.activeBusiness].wbyId;
-                Tool.get('wbinterface/getWbpkindList',{id,wbplCx:wbplCx?wbplCx:''},(data)=>{
+                Tool.get('wbinterface/getWbpkindList',{id,Qd:this.wbyQd,wbplCx:wbplCx?wbplCx:''},(data)=>{
                     if(data.code == 200){
                         this.products = [];
                         if(!data.data) return;

@@ -116,9 +116,15 @@
             if(this.$route.params.code) this.code = '';
             var vehicleInfo = JSON.parse(Tool.localItem('vehicleInfo'));
             if(vehicleInfo){
-                this.userInfo.vin = vehicleInfo.vin;
-                this.userInfo.motorId = vehicleInfo.engineNo;
-                this.userInfo.contact = vehicleInfo.userName;
+                if(!this.userInfo.vin){
+                    this.userInfo.vin = vehicleInfo.vin;
+                }
+                if(!this.userInfo.motorId){
+                    this.userInfo.motorId = vehicleInfo.engineNo;
+                }
+                if(!this.userInfo.contact){
+                    this.userInfo.contact = vehicleInfo.userName;
+                }
             }
             $(this.$refs.onValiCode).hide();
             $(this.$refs.getValiCode).show();

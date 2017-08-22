@@ -207,7 +207,7 @@
                                                                 duration:1000,
                                                             })
                                                             if(qd != 'undefined'){
-                                                                self.$router.push({path:'/maintainset',query:{wbyQd:qd}});
+                                                                self.$router.push({name:'maintainset'});
                                                             }else{
                                                                 self.$router.push({name:'maintainset'});
                                                             }
