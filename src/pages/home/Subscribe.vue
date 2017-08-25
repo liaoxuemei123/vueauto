@@ -1,3 +1,4 @@
+<!--准备挂在首页tab栏，暂时没用上-->
 <template>
     <div class="sub-page" key="subscribe" flex="dir:top box:last">
         <div class="page-content">

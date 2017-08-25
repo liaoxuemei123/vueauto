@@ -60,7 +60,7 @@ const Tap = {
                 console.error('v-tap only support function params now but this will do not influenced')
             }
         }
-        if(Util.isPc()){
+        if(Util.isPc()){//判断目前处于pc还是移动端
             el.addEventListener('click',function(e){
                 if (binding.modifiers.stop)
                     e.stopPropagation();
@@ -87,11 +87,11 @@ const Tap = {
             },false);
         }
     },
-    unbind:function(el){
+    unbind:function(el){//卸载组件事件
         el.handler = function(){}
         el.addEventListener('touchstart',function(){},false);
         el.addEventListener('touchend',function(){},false);
     }
 }
 
-Vue.directive('tap',Tap);
+Vue.directive('tap',Tap);//注册指令

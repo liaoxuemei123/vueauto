@@ -8,14 +8,14 @@ import store from '../model';
 
 const Tool = {};
 // const target = 'http://47.92.32.44:8091/maintenance-plug/app/';//本地测试环境
-const target = 'http://10.17.5.162:8089/maintenance-plug/app/';//本地测试环境
-// const target = 'https://cloud.mall.changan.com.cn/maintenance-plug/app/';//服务器后端目录
+// const target = 'http://10.17.5.162:8089/maintenance-plug/app/';//本地测试环境
+const target = 'https://cloud.mall.changan.com.cn/maintenance-plug/app/';//服务器后端目录
 const imagePath = 'http://service.mall.changan.com.cn/static/';//静态文件目录
 const CLOSE_NETWORK = false;//在本地调试时关闭网络，只调整静态页面
 var requestPool = [];//请求池
 Tool.target = target;
 Tool.imagePath = imagePath;
-Tool.version = "2.0.1";//增加版本号
+Tool.version = "2.0.1";//增加版本号,现在主要控制引导页的显示，每次更新版本手动更新下这个版本号。
 
 Tool.ajax = function(mySetting){
     var setting = {
@@ -135,7 +135,7 @@ Tool.ajax = function(mySetting){
                 },50);
             }
         }
-        if(requestPool.length < 1){//当所有发出的请求都完成的时候才取消遮罩层
+        if(requestPool.length < 1){//当所有发出的请求都完成的时候才取消遮罩层，这里可以优化
             Indicator.close();
         }
     }

@@ -2,7 +2,9 @@ import Crypto from '../js/aes'
 import '../js/rsa';
 import Tool from './Tool';
 const En = {};
-
+/**
+ * 密码加密
+ */
 En.createPassword = function(password){
     return new Promise((res,rej) => {
         Tool.get('generatePublicKey',{},(data)=>{
