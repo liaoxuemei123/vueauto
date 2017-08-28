@@ -20,6 +20,30 @@
                     <div class="input-control" v-if="item == 'tel' && pageConfig.tags[index] == '1'">
                         <inp-com title="手机号" :value="userInfo.tel" placeholder="输入手机号" :onBlur="updateTel.bind(this)" />
                     </div>
+                    <div class="referee-control" v-if="item == 'referee' && pageConfig.tags[index] == '1'" flex="dir:left box:first">
+                        <div class="label">推荐类型</div>
+                        <div class="select-item" v-for="item in referees" @click="refereeType = item.value">
+                            <i class="iconfont" :class="refereeType == item.value ?'icon-select' : 'icon-circle'"></i>{{item.name}}
+                        </div>
+                    </div>
+                    <div class="input-control" v-if="refereeType == 1 && item == 'referee' && pageConfig.tags[index] == '1'">
+                        <inp-com
+                            title="推荐人"
+                            placeholder="填写推荐人手机号"
+                            :value="refereePhone"
+                            :onBlur="updatePhone.bind(this)"
+                        />
+                    </div>
+                    <div class="input-control" v-if="refereeType == 0 && item == 'referee' && pageConfig.tags[index] == '1'">
+                        <inp-com
+                            title="推荐服务门店"
+                            placeholder="请选择服务门店"
+                            :rightArrow="true"
+                            :readonly="true"
+                            :onClick="goStore.bind(this)"
+                            :value="storeName"
+                        />
+                    </div>
                     <div class="input-control-custom" v-if="item == 'tel' && pageConfig.tags[index] == '1'" flex="dir:left cross:center box:justify" v-show="userInfo.tel != userMoblie || isValidate">
                         <div class="label">验证码</div>
                         <input type="text" v-model="code">
@@ -27,9 +51,6 @@
                             <span ref="onValiCode"><span ref="residueTime">60</span>秒后重发</span>
                             <span v-tap="sendSmsCode" ref="getValiCode">获取验证码</span>
                         </div>
-                    </div>
-                    <div class="input-control" v-if="item == 'referee' && pageConfig.tags[index] == '1'">
-                        <inp-com title="推荐人" :onClick="goReferee.bind(this)" :value="pUserInfo.referee" placeholder="可选填" :rightArrow="true" :readonly="true"/>
                     </div>
                     <div class="input-control" v-if="item == 'message' && pageConfig.tags[index] == '1'">
                         <div class="text-control" flex="dir:top">
@@ -67,15 +88,23 @@
                     engineNo:'',
                     buyCarDate:'',
                 },
-                refereeArry:[
+                refereeType:-1,//默认不选择
+                referees:[
                     {
-                        label: '个人',
-                        value: '0'
-                    },{
-                        label: '服务门店',
-                        value: '1'
+                        name:"服务门店",
+                        value:0,
+                    },
+                    // {
+                    //     name:"个人",
+                    //     value:1
+                    // }
+                    {
+                        name: "无",
+                        value: 2
                     }
                 ],
+                storeName:"",
+                refereePhone:"",
                 userMoblie:'',
                 residueTime:60,
                 code:'',
@@ -109,7 +138,13 @@
                 }) => pageconfig.currentBis,
                 userVehicle: ({
                     packageinfo
-                }) => packageinfo.userVehicle
+                }) => packageinfo.userVehicle,
+                refereeStore: ({
+                    packageinfo
+                }) => packageinfo.refereeStore,
+                storeInfo: ({
+                    packageinfo
+                }) => packageinfo.storeInfo
             })
         },
         activated:function(){
@@ -124,6 +159,17 @@
                 }
                 if(!this.userInfo.contact){
                     this.userInfo.contact = vehicleInfo.userName;
+                }
+            }
+            if(this.refereeStore && this.refereeStore.storeName){
+                this.storeName = this.refereeStore.storeName;
+                this.storeId = this.refereeStore.storeId;
+            }else{
+                if(this.storeInfo.storeName){
+                    this.storeName = this.storeInfo.storeName;
+                    this.storeId = this.storeInfo.storeId;
+                }else{
+                    this.storeName = '';
                 }
             }
             $(this.$refs.onValiCode).hide();
@@ -189,6 +235,13 @@
                 if(!(/^1[34578]\d{9}$/.test(this.userInfo.tel))){
                     Toast({
                         message:'手机号有误',
+                        duration:1000,
+                    });
+                    return false;
+                }
+                if(this.refereeType == -1){
+                    Toast({
+                        message:'请选择推荐人',
                         duration:1000,
                     });
                     return false;
@@ -342,6 +395,7 @@
                         })
                     }
                 }
+                this.submitReferee();
             },
             goHome:function(){
                 this.$router.go(-2)
@@ -365,9 +419,6 @@
             },
             updateTel:function(e){
                 this.userInfo.tel = $(e.target).val();
-            },
-            goReferee:function(e){
-                this.$router.push({name:'referee'});
             },
             getPageConfig:function(e){
                 this.pageConfig.tags = this.pageSetting.wbPageDetail['GM_PAGE'].wbpdFtag.split(',');
@@ -408,30 +459,44 @@
             getMemberVehicleInfo:function(){
                 var oid = Tool.getUserInfo('oid');
                 var userId = Tool.getUserInfo('userId');
-                // Tool.get('getMemberVehicleInfo',{
-                //     oid,userId
-                // },data => {
-                //     if(data.code == 200 && data.data && data.data.vehicleInfo){
-                //         this.addUservehicle(data.data.vehicleInfo);
-                //     }
-                //     if(this.userVehicle.length > 0){
-                //         this.userInfo.vin = this.userVehicle[0].vin;
-                //         this.userInfo.motorId = '';
-                //         if(this.userVehicle.length > 0 && this.userVehicle[0].vehilceSeries == this.modelInfo.code){
-                //             this.needVerify = false;
-                //         }else{
-                //             this.needVerify = true;
-                //             Toast({
-                //                 message:'所选车型不符，请重新选择车型或手动录入vin和发动机号',
-                //                 duration:3000,
-                //             });
-                //         }
-                //     }
-                // })
+                Tool.get('getMemberVehicleInfo',{
+                    oid,userId
+                },data => {
+                    if(data.code == 200 && data.data && data.data.vehicleInfo){
+                        this.addUservehicle(data.data.vehicleInfo);
+                    }
+                    if(this.userVehicle.length > 0){
+                        this.userInfo.vin = this.userVehicle[0].vin;
+                        this.userInfo.motorId = '';
+                        if(this.userVehicle.length > 0 && this.userVehicle[0].vehilceSeries == this.modelInfo.code){
+                            this.needVerify = false;
+                        }else{
+                            this.needVerify = true;
+                            Toast({
+                                message:'所选车型不符，请重新选择车型或手动录入vin和发动机号',
+                                duration:3000,
+                            });
+                        }
+                    }
+                })
+            },
+            goStore:function(){
+                const wbpId = this.pageSetting.wbpId;
+                this.$router.push({name:'store',params:{wbpId}});
+            },
+            submitReferee:function(){
+                if(this.refereeType == 0){
+                    this.setUserInfo({refereeType:this.refereeType,referee:this.storeName,refereeId:this.storeId})
+                }else if(this.refereeType == 1){
+                    this.setUserInfo({refereeType:this.refereeType,referee:this.refereePhone,refereeId:''})
+                }else{
+                    this.setUserInfo({refereeType:this.refereeType,referee:'',refereeId:''})
+                }
             },
             ...mapMutations({
                 updateUserInfon: 'UPDATE_USER_INFO',
-                addUservehicle: 'ADD_USERVEHICLE'
+                addUservehicle: 'ADD_USERVEHICLE',
+                setUserInfo:'UPDATE_USER_INFO',
             })
         },
         beforeRouteEnter:(to,from,next)=>{
@@ -480,6 +545,27 @@
                             right:0.43rem;
                             font-size:0.51rem;
                             color:#08a9ef;
+                        }
+                    }
+                }
+                .referee-control{
+                    height:1.8rem;
+                    line-height:1.8rem;
+                    background-color:#fff;
+                    padding:0 3%;
+                    margin-bottom:1px;
+                    .label{
+                        width:40%;
+                        font-size:0.68rem;
+                    }
+                    .select-item{
+                        width:3rem;
+                        .iconfont{
+                            color:#ccc;
+                            margin-right:0.1rem;
+                        }
+                        .icon-select{
+                            color:#fc4c1d;
                         }
                     }
                 }

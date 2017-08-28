@@ -1,3 +1,4 @@
+<!--预约保养使用的店铺选择页面 -->
 <template>
     <div class="page-container">
         <div class="store-page page" flex="dir:top box:first">

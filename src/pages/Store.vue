@@ -134,7 +134,7 @@
                 this.storelist = [];
                 var wbpId = this.$route.params.wbpId;
                 this.pagenation.page = 0;
-                if(this.$store.getters.prepage.name == 'setdetail' || this.$store.getters.prepage.name == 'referee'){
+                if(this.$store.getters.prepage.name == 'setdetail' || this.$store.getters.prepage.name == 'personinfo'){
                     Tool.get('getStore',{
                         gpsLongitude:this.cityInfo.lng ||self.geolocation.point.lon,
                         gpsLatitude:this.cityInfo.lat || self.geolocation.point.lat,
@@ -198,7 +198,7 @@
                         this.setPackageStoreInfo(data);
                         this.$router.back();
                     })
-                }else if(this.$store.getters.prepage.name == 'referee'){
+                }else if(this.$store.getters.prepage.name == 'personinfo'){
                     this.$nextTick(()=>{
                         var data = {};
                         data.storeId = this.storelist[this.select].id;
@@ -285,7 +285,7 @@
             var $button = $container.find(".btn-com");
             var height = Number($container.css("height").replace('px','')) - Number($button.css("height").replace('px',''));
             $(this.$refs.$storeList).css('height',height);
-            if(this.$store.getters.prepage.name == 'setdetail' || this.$store.getters.prepage.name == 'referee'){
+            if(this.$store.getters.prepage.name == 'setdetail' || this.$store.getters.prepage.name == 'personinfo'){
                 this.getStoreList(() => {
                     if(this.select == 0){
                         if(this.storelist[0].id == '111111')

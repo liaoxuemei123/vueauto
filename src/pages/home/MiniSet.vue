@@ -1,3 +1,4 @@
+<!--module是保留字，以后可能不能使用-->
 <template>
     <div class="sub-page" key="miniset">
         <div class="select-car" v-tap="toggleShow">
