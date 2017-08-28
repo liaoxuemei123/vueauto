@@ -178,6 +178,18 @@
             this.getPageConfig();
             if(this.userVehicle.length <= 0){
                 this.getMemberVehicleInfo();
+            }else{
+                this.userInfo.vin = this.userVehicle[0].vin;
+                this.userInfo.motorId = '';
+                if(this.userVehicle.length > 0 && this.userVehicle[0].vehilceSeries == this.modelInfo.code){
+                    this.needVerify = false;
+                }else{
+                    this.needVerify = true;
+                    Toast({
+                        message:'所选车型不符，请重新选择车型或手动录入vin和发动机号',
+                        duration:3000,
+                    });
+                }
             }
             Tool.get('findLoginTimestamp',{mobile},(data)=>{
                 if(data.code == 200){
