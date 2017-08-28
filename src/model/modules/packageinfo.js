@@ -71,7 +71,11 @@ const mutations = {
         }
     },
     ADD_USERVEHICLE:function( state, params ) {
-        state.userVehicle = state.userVehicle.concat(params);
+        if($.isEmptyObject( params )){
+            state.userVehicle = [];
+        }else{
+            state.userVehicle = state.userVehicle.concat(params);
+        }
     }
 }
 

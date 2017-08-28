@@ -141,15 +141,8 @@
                         BISINESS_CONST.map((sv) => {
                             if(v.wbyId.indexOf(sv.wbyId) > -1) {
                                 var wbArr = v.wbyId.split('-');
-                                if(this.wbyQd){
-                                    if(wbArr.length > 1 && wbArr[1] == this.wbyQd && this.wbyQd){//过滤业务配置
-                                        sv = Object.assign(sv,v);
-                                        this.bisinessItems.push(sv);
-                                    }
-                                }else if(wbArr.length == 1){
-                                    sv = Object.assign(sv,v);
-                                    this.bisinessItems.push(sv);
-                                }
+                                sv = Object.assign(sv,v);
+                                this.bisinessItems.push(sv);
                             }
                             this.$nextTick(()=>{
                                 this.broadcast('xscroller','init');

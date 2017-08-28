@@ -150,7 +150,7 @@
         activated:function(){
             if(this.$route.params.code) this.code = '';
             var vehicleInfo = JSON.parse(Tool.localItem('vehicleInfo'));
-            if(vehicleInfo){
+            if(vehicleInfo && !this.userInfo.motorId){
                 if(!this.userInfo.vin){
                     this.userInfo.vin = vehicleInfo.vin;
                 }
@@ -176,19 +176,23 @@
             $(this.$refs.getValiCode).show();
             var mobile = Tool.getUserInfo('telephone');
             this.getPageConfig();
-            if(this.userVehicle.length <= 0){
+            if(this.userVehicle.length <= 0 || !this.userInfo.motorId){
                 this.getMemberVehicleInfo();
             }else{
-                this.userInfo.vin = this.userVehicle[0].vin;
-                this.userInfo.motorId = '';
-                if(this.userVehicle.length > 0 && this.userVehicle[0].vehilceSeries == this.modelInfo.code){
-                    this.needVerify = false;
+                if(this.userInfo.motorId){
+
                 }else{
-                    this.needVerify = true;
-                    Toast({
-                        message:'所选车型不符，请重新选择车型或手动录入vin和发动机号',
-                        duration:3000,
-                    });
+                    this.userInfo.vin = this.userVehicle[0].vin;
+                    this.userInfo.motorId = '';
+                    if(this.userVehicle.length > 0 && this.userVehicle[0].vehilceSeries == this.modelInfo.code){
+                        this.needVerify = false;
+                    }else{
+                        this.needVerify = true;
+                        Toast({
+                            message:'所选车型不符，请重新选择车型或手动录入vin和发动机号',
+                            duration:3000,
+                        });
+                    }
                 }
             }
             Tool.get('findLoginTimestamp',{mobile},(data)=>{
@@ -219,7 +223,7 @@
                     });
                     return false;
                 }
-                if(this.userVehicle.length > 0 && this.userVehicle[0].vehilceSeries == this.modelInfo.code){
+                if(this.userVehicle.length > 0 && this.userVehicle[0].vehilceSeries == this.modelInfo.code && this.userInfo.vin == this.userVehicle[0].vin){
                     
                 }else{
                     if(!this.userInfo.motorId && this.pageConfig.tags[this.pageConfig.fileds.indexOf('motorId')] == '1'){
@@ -262,7 +266,7 @@
                 this.userInfo.motorId = this.userInfo.motorId.toLocaleUpperCase();
                 if(this.pageConfig.tags[this.pageConfig.fileds.indexOf('motorId')] == '1'){
                     new Promise((res,rej)=>{
-                        if(this.userVehicle.length > 0 && this.userVehicle[0].vehilceSeries == this.modelInfo.code){
+                        if(this.userVehicle.length > 0 && this.userVehicle[0].vehilceSeries == this.modelInfo.code && this.userInfo.vin == this.userVehicle[0].vin){
                             res({
                                 data:{
                                     buyCarDate: this.userVehicle[0].purchaseDate,

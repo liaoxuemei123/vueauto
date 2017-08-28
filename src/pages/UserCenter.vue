@@ -37,7 +37,7 @@
     import NavBar from '../components/NavBar';
     import Xscroller from '../components/Xscroller';
     import Tool from '../utils/Tool';
-    import { mapState } from 'vuex';
+    import { mapState, mapMutations } from 'vuex';
     export default{
         data () {
             return {
@@ -81,10 +81,14 @@
                 Tool.removeLocalItem('userInfo');
                 Tool.removeLocalItem('modelInfo');
                 this.$router.push({name:'login'});
+                this.addUservehicle({});
             },
             myorder:function(){
                 this.$router.push({name:'myorder'});
-            }
+            },
+            ...mapMutations({
+                addUservehicle: 'ADD_USERVEHICLE'
+            })
         },
         filters: {
             phoneFilter:function(val) {
