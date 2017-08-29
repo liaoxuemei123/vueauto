@@ -22,9 +22,6 @@
                     <div class="bottom-banner" flex="dir:left box:last cross:center">
                         <div class="banner">
                             <swiper>
-                                <div class="swiper-slide" flex="dir:left cross:center main:left">
-                                <a :href="`https://cms.changan.com.cn/jeecms/eoeLuckDraw/main/index.html?token=`+token">长安商城|下单转好礼，品质车生活</a>
-                                </div>
                                 <div class="swiper-slide" flex="dir:left cross:center main:left"><a href="http://mp.weixin.qq.com/s/GRSRXtl4w9T4Ky13uelWtQ">你的油耗总比别人高，问题出在这儿！</a></div>
                                 <div class="swiper-slide" flex="dir:left cross:center main:left"><a href="http://mp.weixin.qq.com/s/okvpE8rTOLhfLwIO-rNMmw">学会这几招，雨天行车心不慌！</a></div>
                             </swiper>
