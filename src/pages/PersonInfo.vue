@@ -478,7 +478,7 @@
                 Tool.get('getMemberVehicleInfo',{
                     oid,userId
                 },data => {
-                    if(data.code == 200 && data.data && data.data.vehicleInfo){
+                    if(data.code == 200 && data.data && data.data.vehicleInfo && data.data.vehicleInfo.length > 0){
                         this.addUservehicle(data.data.vehicleInfo);
                     }
                     if(this.userVehicle.length > 0){

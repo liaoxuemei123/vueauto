@@ -53,6 +53,9 @@
                 orderUnPayCount: ({
                     mixin
                 }) => mixin.orderUnPayCount,
+                userVehicle:({
+                    packageinfo
+                }) => packageinfo.userVehicle,
             })
         },
         components:{
@@ -60,6 +63,7 @@
             Xscroller
         },
         activated:function(){
+            console.log(this.userVehicle);
             const userData = JSON.parse(Tool.localItem('userData'));
             if(userData){
                 this.userInfo = userData;
