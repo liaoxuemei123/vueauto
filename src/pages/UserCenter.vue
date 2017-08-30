@@ -86,12 +86,14 @@
                 Tool.removeLocalItem('modelInfo');
                 this.$router.push({name:'login'});
                 this.addUservehicle({});
+                this.hasgetedViheche(false);
             },
             myorder:function(){
                 this.$router.push({name:'myorder'});
             },
             ...mapMutations({
-                addUservehicle: 'ADD_USERVEHICLE'
+                addUservehicle: 'ADD_USERVEHICLE',
+                hasgetedViheche: 'UPDATE_GETEDVEHICHE',
             })
         },
         filters: {

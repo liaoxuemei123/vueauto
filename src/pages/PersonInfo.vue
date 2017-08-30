@@ -144,7 +144,10 @@
                 }) => packageinfo.refereeStore,
                 storeInfo: ({
                     packageinfo
-                }) => packageinfo.storeInfo
+                }) => packageinfo.storeInfo,
+                getedVehiche: ({
+                    mixin
+                }) => mixin.getedVehiche
             })
         },
         activated:function(){
@@ -176,7 +179,7 @@
             $(this.$refs.getValiCode).show();
             var mobile = Tool.getUserInfo('telephone');
             this.getPageConfig();
-            if(this.userVehicle.length <= 0 || !this.userInfo.motorId){
+            if(this.userVehicle.length <= 0 && !this.getedVehiche){
                 this.getMemberVehicleInfo();
             }else{
                 if(this.userInfo.motorId){
@@ -262,6 +265,13 @@
                     });
                     return false;
                 }
+                if(this.refereeType == 0 && !this.storeName){
+                    Toast({
+                        message:'请选择服务门店',
+                        duration:1000,
+                    });
+                    return false;
+                }
                 this.userInfo.vin = this.userInfo.vin.toLocaleUpperCase();
                 this.userInfo.motorId = this.userInfo.motorId.toLocaleUpperCase();
                 if(this.pageConfig.tags[this.pageConfig.fileds.indexOf('motorId')] == '1'){
@@ -286,7 +296,7 @@
                                 }else{
                                     Toast({
                                         message:data.msg,
-                                        duration:1000,
+                                        duration:3000,
                                     })
                                 }
                             })
@@ -481,6 +491,7 @@
                     if(data.code == 200 && data.data && data.data.vehicleInfo && data.data.vehicleInfo.length > 0){
                         this.addUservehicle(data.data.vehicleInfo);
                     }
+                    this.hasgetedViheche(true);
                     if(this.userVehicle.length > 0){
                         this.userInfo.vin = this.userVehicle[0].vin;
                         this.userInfo.motorId = '';
@@ -489,7 +500,7 @@
                         }else{
                             this.needVerify = true;
                             Toast({
-                                message:'所选车型不符，请重新选择车型或手动录入vin和发动机号',
+                                message:'车架号和所选车型不匹配',
                                 duration:3000,
                             });
                         }
@@ -513,6 +524,7 @@
                 updateUserInfon: 'UPDATE_USER_INFO',
                 addUservehicle: 'ADD_USERVEHICLE',
                 setUserInfo:'UPDATE_USER_INFO',
+                hasgetedViheche: 'UPDATE_GETEDVEHICHE',
             })
         },
         beforeRouteEnter:(to,from,next)=>{

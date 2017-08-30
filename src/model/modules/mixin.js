@@ -5,6 +5,7 @@ const state = {
     reset: true,
     load: false,
     orderUnPayCount: 0,//未支付订单的数量
+    getedVehiche: false,
 }
 
 const mutations = {
@@ -13,6 +14,9 @@ const mutations = {
     },
     UPDATE_ORDERCOUNT: function(state,count) {
         state.orderUnPayCount = count;
+    },
+    UPDATE_GETEDVEHICHE: function(state,bool) {//是否获取过默认车辆
+        state.getedVehiche = bool;
     }
 }
 
