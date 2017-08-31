@@ -66,27 +66,48 @@
 </style>
 <script>
     import NavBar from '../components/NavBar';
+    import Tool  from '../utils/Tool';
+    import { mapState } from 'vuex';
     export default {
         data () {
             return {
                 orderNo:'',
+                timmer:''
             }
         },
         components:{
             NavBar
+        },
+        computed:{
+            ...mapState({
+                qd:({
+                    pageconfig
+                }) => pageconfig.qd
+            })
         },
         methods:{
             backToHome:function(e){
                 this.$router.push({name:'maintainset'});
             },
             viewOrderDetail:function(e){
-                const id = 
                 this.$router.push({path:'orderdetail/'+this.orderNo});
             },
-            
+            checkState:function(){
+                this.timmer = setInterval(() => {
+                    Tool.get('checkState',{orderNo:this.orderNo},data => {
+                        if(data.data.code == 200 && data.data.state == 2){
+                            clearInterval(this.timmer);
+                            this.$router.push({path:'/orderdetail/'+orderNo,query:{wbyQd:this.qd}});
+                        }
+                    })
+                },5000)
+            }
         },
         activated:function(){
             this.orderNo = this.$route.query.orderNo;
         },
+        deactivated:function(){
+            clearInterval(this.timmer);
+        }
     }
 </script>
