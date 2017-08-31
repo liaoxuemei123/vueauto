@@ -21,21 +21,18 @@ import TestSwiper from 'pages/TestSwiper';
 import Home from 'pages/Home';
 import UserCenter from 'pages/UserCenter';
 import Referee from 'pages/Referee';
+import WechatH5 from 'pages/WechatH5';
 
 Vue.use(Router)
 
 const scrollBehavior = (to, from, savedPosition) => {
   if (savedPosition) {
-    // savedPosition is only available for popstate navigations.
     return savedPosition
   } else {
     const position = {}
-    // new navigation.
-    // scroll to anchor by returning the selector
     if (to.hash) {
       position.selector = to.hash
     }
-    // check if any matched route config has meta that requires scrolling to top
     if (to.matched.some(m => m.meta.scrollToTop)) {
       position.x = 0
       position.y = 0
@@ -48,109 +45,114 @@ export default new Router({
   scrollBehavior,
   routes: [
     {
-      path: '/',
+      path: '/',//预约-首页
       name: 'index',
       component: Index
     },
     {
-      path:'/store',
+      path:'/store',//保养-选择4S店
       name:'store',
       component:Store,
     },
     {
-      path:'/storeorder',
+      path:'/storeorder',//预约-选择4S店
       name:'storeorder',
       component:StoreOrder,
     },
     {
-      path:'/viewstore',
+      path:'/viewstore',//保养-查看4S店
       name:'viewstore',
       component:ViewStore,
     },
     {
-      path:'/setdetail/:id',
+      path:'/setdetail/:id',//保养-套餐详情
       name:'setdetail',
       component:SetDetail,
     },
     {
-      path:'/personinfo',
+      path:'/personinfo',//保养-用户信息
       name:'personinfo',
       component:PersonInfo,
     },
     {
-      path:'/confirmorder',
+      path:'/confirmorder',//保养-套餐购买确认
       name:'confirmorder',
       component:ConfirmOrder,
     },
     {
-      path:'/orderpay/:id',
+      path:'/orderpay/:id',//保养-订单支付
       name:'orderpay',
       component:OrderPay,
     },
     {
-      path:'/myorder',
+      path:'/myorder',//保养-我的订单
       name:'myorder',
       component:MyOrder,
     },
     {
-      path:'/orderdetail/:id',
+      path:'/orderdetail/:id',//保养-订单详情
       name:'orderdetail',
       component:OrderDetail,
     },
     {
-      path:'/selectplate',
+      path:'/selectplate',//预约-选择车牌
       name:'selectplate',
       component:SelectPlate,
     },
     {
-      path:'/orderhistory',
+      path:'/orderhistory',//预约-预约历史
       name:'orderhistory',
       component:OrderHistory,
     },
     {
-      path:'/evaluate',
+      path:'/evaluate',//保养-评价
       name:'evaluate',
       component:Evaluate,
     },
     {
-      path:'/evaluatedetail',
+      path:'/evaluatedetail',//保养-查看评价
       name:'evaluatedetail',
       component:EvaluateDetail,
     },
     {
-      path:'/register',
+      path:'/register',//保养-注册
       name:'register',
       component:Register,
     },
     {
-      path:'/login',
+      path:'/login',//保养-登录
       name:'login',
       component:Login,
     },
     {
-      path:'/refund/:id',
+      path:'/refund/:id',//保养-退款
       name:'refund',
       component:Refund,
     },
     {
-      path:'/testswiper',
+      path:'/testswiper',//测试页面
       name:'testswiper',
       component:TestSwiper,
     },
     {
-      path:'/usercenter',
+      path:'/usercenter',//保养-用户中心
       name:'usercenter',
       component:UserCenter
     },
     {
-      path:'/maintainset',
+      path:'/maintainset',//保养-首页
       name:'maintainset',
       component:Home
     },
     {
-      path:'/referee',
+      path:'/referee',//保养-推荐人
       name:'referee',
       component:Referee
+    },
+    {
+      path:'/wechath5',//保养-h5支付
+      name:'wechath5',
+      component: WechatH5,
     }
   ]
 })

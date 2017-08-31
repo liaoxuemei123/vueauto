@@ -119,7 +119,13 @@
                 })
             },
             weChatH5:function(){
-                
+                const total_fee = ( this.orderInfo.orderPrice - 0 ) * 100,
+                    body = '111',
+                    orderNo = this.orderNo,
+                    ip = userAddress,
+                    redirect_url = `https://cloud.mall.changan.com.cn/maintainpackage/#/wechath5?orderNo=${orderNo}`;
+                const url = `${Tool.target}weixinH5pay?total_fee=${total_fee}&body=${body}&OutTradeNo=${orderNo}&ip=${ip}&redirect_url=${redirect_url}`;
+                window.location.href = url;
             },
             goBack:function(){
                 this.$router.back();
@@ -138,10 +144,10 @@
                     for(var i=0;i<items.length;i++){
                         var key = items[i].split("=")[0];
                         var value = items[i].split("=")[1];
-                        if(key == "code"){
+                        if(key == "code"){//获取微信认证返回的code
                             code = value;
                         }
-                        if(key == "state"){
+                        if(key == "state"){//获取状态
                             Tool.urldecode(value,'utf-8',(str)=>{
                                 var temp =  str.split(',')
                                 orderNo = temp[0];
@@ -149,7 +155,7 @@
                                 qd = temp[2];
                                 if(orderNo && packageName){
                                     new Promise((res,rej)=>{
-                                        Tool.get('AaPackageOrderDetail',{orderNo},(data)=>{
+                                        Tool.get('AaPackageOrderDetail',{orderNo},(data)=>{//获取订单详情
                                             if(data.code == 200){
                                                 self.orderInfo = data.data.PackageOrder;
                                                 self.orderInfo.packageName = packageName;
@@ -161,7 +167,7 @@
                                     }).then((pData)=>{
                                         return new Promise((res,rej)=>{
                                             if(code){
-                                                Tool.get('getOpenId',{code},(data) => {
+                                                Tool.get('getOpenId',{code},(data) => {//调起支付
                                                     if(data.code == 200){
                                                         var openid = data.data.accessToken.openid;
                                                         var payData = {
@@ -181,7 +187,7 @@
                                         })
                                     }).then((pData)=>{
                                         return new Promise((res,rej)=>{
-                                            Tool.get('packageOrderPay',pData,(data)=>{
+                                            Tool.get('packageOrderPay',pData,(data)=>{//
                                                 if(data.code == 200){
                                                     res(data.data);
                                                 }else{
@@ -194,7 +200,7 @@
                                         })
                                     }).then((pData)=>{
                                         return new Promise((res,rej)=>{
-                                            function onBridgeReady(){
+                                            function onBridgeReady(){//微信调起支付
                                                 WeixinJSBridge.invoke(
                                                 'getBrandWCPayRequest', {
                                                         "appId":pData.payRequestVo.appId,

@@ -57,6 +57,10 @@ function goBack(to,from,next){
   }else{
     next();
   }
+  // if(to.name == 'wechath5' && from.name == 'orderdetail'){
+  //   router.push({name:'maintainset'})
+  //   next();
+  // }
 }
 
 function goFoward(to,from,next){

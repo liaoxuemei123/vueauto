@@ -12,7 +12,7 @@ module.exports = {
     app: './src/main.js'
   },
   externals: {
-   "BMap": "BMap" 
+   "BMap": "BMap" ,
   }, 
   output: {
     path: config.build.assetsRoot,
