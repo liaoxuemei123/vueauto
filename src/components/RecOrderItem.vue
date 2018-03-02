@@ -2,46 +2,36 @@
     <div class="order-container">
         <div class="header" flex="dir:left cross:center main:justify">
             <div class="order-time">
-                {{item.createDate}} 
+                {{item.create_date | dateFilter}}
             </div>
             <div class="order-state">
-                {{item.status | stateFilter}}
+                {{item.STATUS | stateFilter}}
             </div>
         </div>
         <div class="body">
             <div class="order-info" flex="dir:top box:mean">
-                <div class="order-name" flex="dir:left cross:center">
+               <!--  <div class="order-name" flex="dir:left cross:center">
                     <span class="package-name">{{item.packageName}}</span>
-                </div>
-                <div class="car-info" flex="dir:left cross:center">
+                </div> -->
+                <!-- <div class="car-info" flex="dir:left cross:center">
                     <span class="car-type">车型：{{item.carType}}</span>
                     <span class="engine-oil">机油：{{item.engineOil}}</span>
+                </div> -->
+                <div class="car-info" flex="dir:left cross:center">
+                    <span class="car-type">订单号：{{item.orderNo}}</span>
+                    <span class="engine-oil">购买人：{{item.linkMan}}</span>
                 </div>
             </div>
-            <div class="price-info" flex="dir:left main:right cross:center">
+            <!-- <div class="price-info" flex="dir:left main:right cross:center">
                 <div class="order-total" flex="dir:left">
                     <div class="title">合计:￥</div>
                     <div class="label">{{item.orderPrice}}</div>
                 </div>
-                <div class="order-price" flex="dir:left" v-if="item.status != 1">
+                <div class="order-price" flex="dir:left" v-if="item.STATUS != 1">
                     <div class="title">实付:￥</div>
                     <div class="label">{{item.orderPrice}}</div>
                 </div>
-            </div>
-            
-        </div>
-        <div class="footer">
-            <div class="reamrkb" flex="dir:left cross:center" v-if="item.status == 5 && !!item.alterReamrk">
-                <span class="" >{{item.alterReamrk}}</span>
-            </div>
-            <div class="oprater" flex="dir:left cross:center main:right">
-
-                <div class="pay" v-if="item.status == 1" v-tap="goPay.bind(this,item.orderNo)">去支付</div>
-                <div class="cancel" v-if="item.status == 2 && new Date().getTime() - item.paySuccessDate < 604800000 && !item.isOrderDetail" v-tap="refund.bind(this,item.orderNo)">退款</div>
-                <div class="goReceipt" v-tap="goReceipt.bind(this,item.orderNo)" v-if="item.isOpen=='Y'">我要发票</div>
-                <!--<div class="evaluate" @click="goEvaluate" v-if="item.status == 4">去评价</div>-->
-                <div class="detail" v-tap="viewDetail.bind(this,item.orderNo)">查看详情</div>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>
@@ -88,28 +78,13 @@
                 }else{
                     return '指定服务门店使用'
                 }
-            }
+            },
+            dateFilter:function(val){
+                return Tool.formatDate(new Date(val),'time');
+            },
         },
         methods:{
-            viewDetail:function(id){
-                this.$router.push({path:'orderdetail/'+id});
-            },
-            goEvaluate:function(){
-                this.$router.push({path:'evaluate'});
-            },
-            goPay:function(orderNo){
-                this.$router.push({path:'/orderpay/'+orderNo});
-            },
-            refund:function(orderNo){
-                this.$router.push({path:'/refund/'+orderNo})
-            },
-            goReceipt:function(orderNo){
-                // this.$router.push({name:'personreceipt',params:{needReceipt:this.userInfo.needReceipt,selectTitle:this.userInfo.selectTitle}});
-                // needReceipt:'1', //1默认不要发票 selectTitle:'0', // 0代表个人
-
-                // this.setReceiptInfo({needReceipt:1,selectTitle:'0',receiver:'',receMobile:'',zip:'',selectAddr:'',addressCont:'',comName:'',receiptCode:''}); //是否要清空
-                this.$router.push({name:'personreceipt',params:{needReceipt:1,selectTitle:1,orderNo:orderNo}});
-            },
+           
         }
     }
 </script>
@@ -133,7 +108,7 @@
             font-size:0.67rem;
             .order-info{
                 padding:0.2rem 0;
-                height:2.6rem;
+                height:2rem;
                 border-bottom:1px solid #efefef;
                 .order-name{
                     .package-range{
@@ -143,12 +118,11 @@
                     }
                 }
                 .car-info{
-                    font-size:0.57rem;
+                    font-size:0.625rem;
                     .car-type{
                         margin-right:0.4rem;
                     }
                     .engine-oil{
-                        font-size:0.51rem;
                         color:#888;
                     }
                 }
@@ -160,29 +134,6 @@
                 .order-price{
                     margin-left:0.5rem;
                 }
-            }
-        }
-        .footer{
-            position: relative;
-            font-size:0.51rem;
-            color:#4b4b4b;
-            .oprater{
-                height:1.5rem;
-                
-                &>div{
-                    margin-left:0.5rem;
-                }
-                &>div{
-                    padding:0.05rem 0.5rem;
-                    border:1px solid #aaa;
-                    border-radius:0.2rem;
-                }
-            }
-            .reamrkb{
-                position:absolute;
-                color:red;
-                height: 1.5rem;
-                width: 75%;
             }
         }
     }

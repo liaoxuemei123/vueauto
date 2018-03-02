@@ -111,6 +111,13 @@ export default {
 }
 </script>
 <style>
+body{
+	 position: relative;
+	    margin: 0 auto!important;
+	    width: 100%;
+	    height: 100%;
+	    background-color: #f5f5f5;
+}
 #pagecontainer{
 	position:relative;
 }

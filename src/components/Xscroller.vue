@@ -45,8 +45,10 @@
                     totalWidth += Number($(this).css('width').replace('px',''))
                 })
                 this.scrollerInfo.width = totalWidth;
+                console.log(totalWidth);
                 this.scrollerInfo.itemNum = $xscroller.find('.x-item').length;
-                $xscroller.css('width',`${totalWidth}px`);
+                // $xscroller.css('width',`${totalWidth}px`);
+                $xscroller.css('width',"100%");
                 this.mySroller = new IScroll(this.$el,{
                     scrollX: true,  
                     scrollY: false, 

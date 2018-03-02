@@ -68,7 +68,7 @@
                     });
                     return false;
 				}
-				if(!(/^1[34578]\d{9}$/.test(this.tel))){
+				if(!(/^1\d{10}$/.test(this.tel))){
                     Toast({
                         message:'手机号有误',
                         duration:1000,
@@ -108,7 +108,7 @@
 				})
 			},
 			inputPhone:function(){
-				if(!(/^1[34578]\d{9}$/.test(this.tel))){
+				if(!(/^1\d{10}$/.test(this.tel))){
                     return false;
                 }else{
 					this.getImageCode();
@@ -122,7 +122,7 @@
                     });
                     return false;
 				}
-				if(!(/^1[34578]\d{9}$/.test(this.tel))){
+				if(!(/^1\d{10}$/.test(this.tel))){
                     Toast({
                         message:'手机号有误',
                         duration:1000,

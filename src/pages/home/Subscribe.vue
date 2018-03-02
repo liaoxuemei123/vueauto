@@ -56,7 +56,7 @@
                 <inp-com title="联系人" type="text" icon="icon-contact" placeholder="请输入联系人" :onBlur="updateContact.bind(this)" :value="subscribeInfo.contact"/>
             </div>
             <div class="input-control">
-                <inp-com title="联系电话" type="number" icon="icon-phone" placeholder="请输入联系电话" :onBlur="updatePhone.bind(this)" :value="subscribeInfo.phone"/>
+                <inp-com title="联系电话" type="tel" icon="icon-phone" placeholder="请输入联系电话" :onBlur="updatePhone.bind(this)" :value="subscribeInfo.phone"/>
             </div>
             <div class="input-control" flex="dir:top">
                 <inp-com title="预约描述" :onClick="expandDes" type="text" icon="icon-comment" :readonly='true'/>
@@ -255,10 +255,10 @@
                 Tool.get('queryUserInfo',{
                     userToken
                 },(data) => {
-                    data = JSON.parse(JSON.parse(data));
+                    // data = JSON.parse(JSON.parse(data));
                     if(data.result != -1){
                         var userInfo = data.data;
-                        userInfo.userToken = userToken;
+                        userInfo.userToken = token;
                         Tool.localItem('userCache',userInfo);
                     }else{
                         Toast({
@@ -439,7 +439,7 @@
                     });
                     return false;
                 }
-                if(!(/^1[34578]\d{9}$/.test(data.mobilePhone))){
+                if(!(/^1\d{10}$/.test(data.mobilePhone))){
                     Toast({
                         message:'手机号码不正确',
                         position:'bottom',

@@ -8,14 +8,16 @@ import store from '../model';
 
 const Tool = {};
 // const target = 'http://47.92.32.44:8091/maintenance-plug/app/';//本地测试环境
-// const target = 'http://10.17.5.162:9991/maintenance-plug/app/';//本地测试环境
+// const target = 'http://10.17.5.162:8080/maintenance-plug/app/';//本地测试环境
+// const target = 'http://47.92.32.44:9990/maintenance-plug/app/';//本地测试环境
+// const target = 'https://ssl.mall.changan.com.cn/maintenance-plug/app/';
 const target = 'https://cloud.mall.changan.com.cn/maintenance-plug/app/';//服务器后端目录
 const imagePath = 'http://service.mall.changan.com.cn/static/';//静态文件目录
 const CLOSE_NETWORK = false;//在本地调试时关闭网络，只调整静态页面
 var requestPool = [];//请求池
 Tool.target = target;
 Tool.imagePath = imagePath;
-Tool.version = "2.0.1";//增加版本号,现在主要控制引导页的显示，每次更新版本手动更新下这个版本号。
+Tool.version = "2.0.6";//增加版本号,现在主要控制引导页的显示，每次更新版本手动更新下这个版本号。
 
 Tool.ajax = function(mySetting){
     var setting = {
@@ -53,7 +55,8 @@ Tool.ajax = function(mySetting){
     try{
         if ( setting.type === 'GET' || setting === 'get') {
             sData = setting.url + '?' + sData;
-            xhr.open(setting.type, sData + '&_t=' + new Date().getTime(), setting.async);
+            // xhr.open(setting.type, sData + '&_t=' + new Date().getTime(), setting.async);
+            xhr.open(setting.type, sData, setting.async);
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded;charset=UTF-8");
             xhr.timeout = setting.timeout;
             xhr.ontimeout  = () => {
@@ -146,6 +149,12 @@ Tool.ajax = function(mySetting){
 
     function filter(str) { //特殊字符转义
         str += ''; //隐式转换
+        // var strExp = /&_t=\d{13}/;
+        // str = str.replace(strExp,'');
+
+        // var strExp2 = /%26_t%3D\d{13}/;
+        // str = str.replace(strExp2,'');
+
         str = str.replace(/%/g, '%25');
         str = str.replace(/\+/g, '%2B');
         str = str.replace(/ /g, '%20');

@@ -33,7 +33,7 @@
         <transition name="slide-up">
             <div class="refund-notice" v-if="noticeShow" flex="dir:top box:last">
                 <div class="content">
-                    本套餐在购买7日之内未使用可申请退款。套餐金额将在提出申请10个工作日内退回客户当初购买套餐所使用账户中。
+                    本套餐在购买7日之内未使用可申请退款。满足退款条件的订单，退款将在提出申请后5个工作日内原路退回至用户支付账户，具体到账时间以各第三方平台及银行规定为准。
                 </div>
                 <div class="confirm-button" @click="submitRefund">
                     确定

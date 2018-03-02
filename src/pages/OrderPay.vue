@@ -43,7 +43,7 @@
                             <i class="iconfont icon-circle" v-else="paymentMode==2"></i>
                         </div>
                     </div>
-                    <!--<div class="payment-item" flex="dir:left cross:center box:justify" @click="paymentMode=3">
+                    <!-- <div class="payment-item" flex="dir:left cross:center box:justify" @click="paymentMode=3">
                         <div class="pay-url">
                             <img src="../assets/payment-alipay.jpg" alt="">
                         </div>
@@ -55,7 +55,7 @@
                             <i class="iconfont icon-select" v-if="paymentMode==3"></i>
                             <i class="iconfont icon-circle" v-else="paymentMode==3"></i>
                         </div>
-                    </div>-->
+                    </div> -->
                 </div>
             </div>
             <div class="button-control">
@@ -76,6 +76,7 @@
             return {
                 paymentMode:1,
                 orderNo:'',
+                orderType:'',
                 orderInfo:{
                     packageName:'',
                     orderPrice:'',
@@ -97,15 +98,27 @@
         },
         methods:{
             pay:function(){
+                var self = this;
                 Tool.get('checkOrder',{orderId:this.orderNo,total_fee:this.orderInfo.orderPrice},data => {
                     if(data.code == 200){
                         if(this.paymentMode == 1){
                             if(!Tool.isWeChat()) {
                                 this.weChatH5();
                             }else{
-                                window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx22b47ca6974f3e71&redirect_uri=https://cloud.mall.changan.com.cn%2Fmaintainpackage%2F%23%2Forderpay%2F" + this.orderNo + "&response_type=code&scope=snsapi_base&state=" + this.orderNo + ',' + this.orderInfo.packageName + ',' + this.qd + "#wechat_redirect";
+                                // 访问  https://cloud.mall.changan.com.cn/wx_authorize/    就等于访问：https://open.weixin.qq.com/connect/oauth2/authorize
+                                window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx22b47ca6974f3e71&redirect_uri=https://cloud.mall.changan.com.cn%2Fmaintainpackage%2F%23%2Forderpay%2F" + self.orderNo + "&response_type=code&scope=snsapi_base&state=" + self.orderNo + ',' + self.orderInfo.packageName + ',' + self.qd + "#wechat_redirect";
                             }
-                        }else{
+                        }
+                        else if(this.paymentMode == 3){
+                            if(Tool.isWeChat()) {
+                                var alipayUrl = encodeURIComponent(Tool.target+"aliPay?out_trade_no="+this.orderNo+"&total_amount="+this.orderInfo.orderPrice+"&subject="+this.orderInfo.packageName+"");
+                                this.$router.push({path:'/alipaytip',query:{goto:alipayUrl}});
+                                // 在微信中打开支付宝支付
+                            }else{
+                                window.location.href = Tool.target+"aliPay?out_trade_no="+this.orderNo+"&total_amount="+this.orderInfo.orderPrice+"&subject="+this.orderInfo.packageName+"";
+                            }
+                        }
+                        else{
                             //let href = "http://service.mall.changan.com.cn/maintenance-plug/unionPay/frontConsume?orderId="+this.orderNo;
                             //this.$router.push({path:'/unionpay',query:{href,orderNo:this.orderNo}})
                             window.location.href = "https://cloud.mall.changan.com.cn/maintenance-plug/unionPay/frontConsume?orderId="+this.orderNo;
@@ -120,15 +133,16 @@
             },
             weChatH5:function(){
                 const total_fee = ( this.orderInfo.orderPrice - 0 ) * 100,
-                    body = '111',
+                    body = this.orderInfo.packageName,
                     orderNo = this.orderNo,
                     ip = userAddress,
-                    redirect_url = `https://cloud.mall.changan.com.cn/maintainpackage/#/wechath5?orderNo=${orderNo}`;
+                    redirect_url = encodeURIComponent("https://cloud.mall.changan.com.cn/maintainpackage/#/wechath5?orderNo="+this.orderNo+"&total_fee="+total_fee);
                 const url = `${Tool.target}weixinH5pay?total_fee=${total_fee}&body=${body}&OutTradeNo=${orderNo}&ip=${ip}&redirect_url=${redirect_url}`;
-                window.location.href = url;
+                // window.location.href = url;
+                window.open(url, '_self', 'location=no');
             },
             goBack:function(){
-                this.$router.back();
+                this.$router.go(-1);
                 this.isBack = true;
             },
             startPay:function(){
@@ -288,14 +302,14 @@
         created:function(){
             this.startPay();//支付界面只有在第一次进入的时候才触发支付，否则不做操作
         },
-        beforeRouteLeave:function(to,from,next){
-            if(this.isBack){
-                if(to.name == 'confirmorder' || to.path == '/confirmorder'){
-                    next({name:'maintainset'});//防止2次下单
-                }
-            }
-            next();
-        },
+        // beforeRouteLeave:function(to,from,next){
+        //     if(this.isBack){
+        //         if(to.name == 'confirmorder' || to.path == '/confirmorder'){
+        //             next({name:'maintainset'});//防止2次下单
+        //         }
+        //     }
+        //     next();
+        // },
         beforeRouteEnter:(to,from,next)=>{
             Tool.routerEnter(to,from,next)
         },

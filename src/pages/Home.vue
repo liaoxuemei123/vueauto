@@ -32,7 +32,7 @@
                             <span class="unpay-order" v-if="orderUnPayCount > 0">{{orderUnPayCount > 9 ? orderUnPayCount : orderUnPayCount}}</span>
                         </div>
                     </div>
-                    <div class="consult-tel">咨询时间：9:00-21:00&nbsp;&nbsp;&nbsp;&nbsp;电话：<a href="tel:023-67595966">023-67595966</a> </div>
+                    <div class="consult-tel" tel="tel:023-67595966" @click="stopPropagationA">咨询时间：9:00-21:00&nbsp;&nbsp;&nbsp;&nbsp;电话：<span class="    telnum" >023-67595966</span> </div>
                 </div>
             </div>
         </div>
@@ -52,8 +52,10 @@
     import MinniSet from './home/MiniSet';
     import CommercialSet from './home/CommercialSet';
     import Subscribe from './home/Subscribe';
+    import { Toast, MessageBox } from 'mint-ui';
     import { mapMutations, mapState } from 'vuex';
     import Advert from '../components/Advert';
+    import store from '../model';
     const BISINESS_CONST = [
         {
             wbyId:'wcby',
@@ -79,7 +81,8 @@
                 mode:'push',
                 currentView:'',
                 firstAnimate: false,
-                token:''
+                token:'',
+                defauleCache:true,
             }
         },
         mixins: [emmiter],
@@ -100,9 +103,19 @@
                 orderUnPayCount: ({
                     mixin
                 }) => mixin.orderUnPayCount,
+                config:({
+                    packageinfo
+                }) => packageinfo.config,
+
             })
         },
         methods:{
+            stopPropagationA:function (event) {
+                event.stopPropagation();
+                // window.open(event.currentTarget.href);
+                
+                window.open(event.currentTarget.getAttribute("tel"), '_self');
+            },
             changeActive:function(index, reset) {
                 const oldVal = this.activeBusiness;
                 this.activeBusiness = index;
@@ -149,51 +162,309 @@
                         })
                     })
                     this.setBisinessConfig(data.data);
+                    this.$nextTick(()=>{
+                        if (this.manmodel.id) {
+                            if(this.bisinessItems.length==1){
+                                // if((this.bisinessItems[0].view=='CommercialSet' && this.manmodel.typeName == this.manmodel.typeName == '长安汽车') || (this.bisinessItems[0].view=='MinniSet' && this.manmodel.typeName == this.manmodel.typeName != '长安汽车')){
+                                //     this.setModuleInfo({});
+                                //     return;
+                                // }else{
+                                //     this.changeActive(0,false);
+                                //     this.broadcast('xscroller','page',{oldVal:0,newVal:0});
+                                // }
+                            }
+                            else if(this.manmodel.typeName != '长安汽车'){
+                                this.changeActive(1,false);
+                            }
+                            else if(this.manmodel.typeName == '长安汽车'){
+                                this.changeActive(0,false);
+                            }
+                        }
+                    })
                 })
             },
             ...mapMutations({
                 setBisinessConfig: 'SET_CONFIG',
                 reset: 'UPDATE_RESET',
+                proSure: 'UPDATE_SURE',
                 setStoreInfo: 'SET_STORE_INFO',
                 updateUserInfo: 'UPDATE_USER_INFO',
                 setRefereeStoreInfo: 'SET_REFEREE_STOREINFO',
                 setModuleInfo: 'SET_MODULE_INFO',
                 setQd:'SET_QD',
+                addUservehicle: 'ADD_USERVEHICLE',
+                hasgetedViheche: 'UPDATE_GETEDVEHICHE',
+                updateOrderTip: 'UPDATE_ORDERTIP',
+                setReceiptInfo: 'SET_RECEIPT_INFO',
+                updateTwoTags:'UPDATE_TWOTAGS',
             })
         },
         created:function(){
             this.getBisinessList();
-            this.$nextTick(()=>{
-                this.broadcast('swiper','init',{
-                    direction : 'vertical',
-                })
-            })
+            // this.$nextTick(()=>{
+            //     this.broadcast('swiper','init',{
+            //         direction : 'vertical',
+            //     })
+            // })
+            if($.isEmptyObject(this.modelInfo)) {
+                this.manmodel = Tool.localItem('manmodel') ? JSON.parse(Tool.localItem('manmodel')):'';
+                if((this.$route.query.wbyQd =="oushang"&& this.manmodel.typeName == '长安汽车') || (this.$route.query.wbyQd =="QJJFCJ"&&this.manmodel.typeName != '长安汽车')){
+                    return;
+                }
+                if (this.manmodel.id) {
+                    this.setModuleInfo(this.manmodel);
+                }
+            }
+            // this.$nextTick(()=>{
+            //     if(!Tool.localItem('agentLogo')&&Tool.localItem('wbyQd') && Tool.localItem('wbyQd')=='JJRFX'){
+            //         MessageBox({
+            //           title: '提示',
+            //           message: '该推荐二维码已失效，但仍可正常购买，本订单视为无效推荐。'
+            //         });
+            //     }
+            // })
         },
         activated:function(){
+            if(Tool.localItem('isUserCenterBack')){
+                this.manmodel = Tool.localItem('manmodel') ? JSON.parse(Tool.localItem('manmodel')):'';
+                if(this.bisinessItems.length==1){
+                    if (this.manmodel.id) {
+                        if ((this.bisinessItems[0].view=='CommercialSet' && this.manmodel.typeName == '长安汽车') || (this.bisinessItems[0].view=='MinniSet' && this.manmodel.typeName != '长安汽车')) {
+                            Tool.removeLocalItem('manmodel');
+                        }
+                        else{
+                            this.setModuleInfo(this.manmodel);
+                        }
+                    }                    
+                    // 不匹配就直接删除
+                }
+                else {
+                    this.defauleCache = true;
+                    this.manmodel = Tool.localItem('manmodel') ? JSON.parse(Tool.localItem('manmodel')):'';
+                    if (this.manmodel.id) {
+                        this.setModuleInfo(this.manmodel);
+                    }
+                }
+                
+            }
+            this.manmodel = Tool.localItem('manmodel') ? JSON.parse(Tool.localItem('manmodel')):'';
+            if (this.firstCache && Tool.localItem('isUserCenterBack')){
+                this.$nextTick(()=>{
+                    if (this.manmodel.id) {
+                        if(this.bisinessItems.length==1){
+                            // if((this.bisinessItems[0].view=='CommercialSet' && this.manmodel.typeName == this.manmodel.typeName == '长安汽车') || (this.bisinessItems[0].view=='MinniSet' && this.manmodel.typeName == this.manmodel.typeName != '长安汽车')){
+                            //     this.setModuleInfo({});
+                            //     return;
+                            // }else{
+                            //     this.changeActive(0,false);
+                            //     this.broadcast('xscroller','page',{oldVal:0,newVal:0});
+                            // }
+                        }
+                        else if(this.manmodel.typeName != '长安汽车'){
+                            this.changeActive(1,false);
+                        }
+                        else if(this.manmodel.typeName == '长安汽车'){
+                            this.changeActive(0,false);
+                        }
+                    }
+                })
+            }
+            else if(!this.firstCache){
+                // this.getBisinessList();
+                this.$nextTick(()=>{
+                    this.firstCache = true;
+                    this.broadcast('swiper','init',{
+                        direction : 'vertical',
+                    })
+                })
+            }
             this.reset(true);
+            this.proSure(false);
             this.setStoreInfo({});
             this.updateUserInfo({refereeType:'',referee:''});
             this.setRefereeStoreInfo({});
+            Tool.removeLocalItem('selectCarData');
+            Tool.removeLocalItem('isUserCenterBack');
+            Tool.removeLocalItem('vehicleInfo');
+            Tool.removeLocalItem('isSelectCarBack');
+            this.hasgetedViheche(false);
+            this.updateOrderTip(true);
+            this.updateTwoTags(false);
+            this.addUservehicle({});
+            // this.setReceiptInfo({needReceipt:1,selectTitle:'0',receiver:'',receMobile:'',zip:'',selectAddr:'',addressCont:'',comName:'',receiptCode:''});
             this.token = Tool.localItem('userInfo') ? JSON.parse(Tool.localItem('userInfo')).token :'';
+
+
         },
         mounted:function(){
             this.bisinessItems.map((v,i)=>{
                 v.route ? (this.$route.path == v.route ? this.activeBusiness = i : '') : '';
             })
+            // 有则存，无则清空确保不会残留数据
+            // if(this.$route.query.agentLogo){
+            //     // this.setAgentLogo(this.$route.query.agentLogo);
+            // }
+            // // else this.setAgentLogo('');
+            // console.log('mountedhhhhhhhhhhhhhhhhhhh');
+
+            // if(this.$route.query.agentLogo){
+            //     Tool.localItem('agentLogo',this.$route.query.agentLogo);
+            // }
+            // else Tool.removeLocalItem('agentLogo');
+            // 不能随便删除
         },
         beforeRouteEnter: (to, from, next) => {
-            if(to.query.wbyQd){
-                next();
-            }else{
-                if(to.query.hasOwnProperty('wbyQd')){
-                    Tool.localItem('wbyQd','');
-                }
-                if(Tool.localItem('wbyQd')){
-                    next({path:'/maintainset',query:{wbyQd:Tool.localItem('wbyQd')}});
+            var preTrue = false;
+            if (to.query.tel) {
+
+                // Tool.removeLocalItem('modelInfo');
+                Tool.removeLocalItem('receiverInfo');
+                Tool.removeLocalItem('selectCarData');
+                Tool.removeLocalItem('vehicleInfo');
+                Tool.removeLocalItem('manModelName');
+                Tool.removeLocalItem('manModel');
+                Tool.removeLocalItem('manmodelName');
+                Tool.removeLocalItem('manmodel');
+                Tool.removeLocalItem('userData');
+
+                Tool.removeLocalItem('userInfo');
+                var tel = to.query.tel;
+                var vin = to.query.vin;
+                var motorId = to.query.motorId;
+                Tool.get('queryUserInfo',{
+                    tel:tel
+                },(data) => {
+                    if(data.result != -1){
+                        var userInfo = data.data;
+                        userInfo.token = data.data.token;
+                        Tool.localItem('userInfo',userInfo);
+                        // next({path:'/maintainset'});
+                        // var wbyQdtwo = 'weixin';
+                        // next({path:'/maintainset', query:{wbyQd:String(wbyQdtwo)}});
+                        if(to.query.wbyQd){
+                            next({path:'/maintainset', query:{wbyQd:String(to.query.wbyQd)}});
+                        }else{
+                            if(to.query.hasOwnProperty('wbyQd')){
+                                Tool.localItem('wbyQd','');
+                            }
+                            if(Tool.localItem('wbyQd')){
+                                next({path:'/maintainset',query:{wbyQd:Tool.localItem('wbyQd')}});
+                            }else{
+                                next({path:'/maintainset'});
+                            }
+                        }  
+                    }else{
+                        Toast({
+                            message:"用户登录过期了",
+                            duration:1000,
+                        })
+                        Tool.localItem('wbyQd',to.query.wbyQd);
+                        store.commit('POP_PAGE',1);//在进入login之前把已进栈但是没有被访问的页面清理出栈\
+                        // next({name:'login',params:{to:to.path}});
+                        next({name:'login'});
+                    }
+                });
+            }
+            else if (to.query.token) {   // have token 
+                Tool.removeLocalItem('userInfo');
+                // Tool.removeLocalItem('modelInfo');
+                Tool.removeLocalItem('receiverInfo');
+                Tool.removeLocalItem('selectCarData');
+                Tool.removeLocalItem('vehicleInfo');
+                Tool.removeLocalItem('manModelName');
+                Tool.removeLocalItem('manModel');
+                Tool.removeLocalItem('manmodelName');
+                Tool.removeLocalItem('manmodel');
+                Tool.removeLocalItem('userData');
+                // this.addUservehicle({}); 
+                // this.hasgetedViheche(false); //是否获取过默认车辆，置为初值
+                // 这时候获取不到this
+
+                var preToken = to.query.token; 
+                var preOid = to.query.oid?to.query.oid:''; //if have oid
+                Tool.get('queryUserInfo',{
+                    userToken:preToken,oid:preOid
+                },(data) => {
+                    if(data.result != -1){
+                        var userInfo = data.data;
+                        userInfo.token = data.data.token;
+                        Tool.localItem('userInfo',userInfo);
+                        // next({path:'/maintainset'});
+                        // var wbyQdtwo = 'weixin';
+                        // next({path:'/maintainset', query:{wbyQd:String(wbyQdtwo)}});
+                        if(to.query.wbyQd){
+                            next({path:'/maintainset', query:{wbyQd:String(to.query.wbyQd)}});
+                             // next(); 
+                        }else{
+                            if(to.query.hasOwnProperty('wbyQd')){
+                                Tool.localItem('wbyQd','');
+                            }
+                            if(Tool.localItem('wbyQd')){
+                                next({path:'/maintainset',query:{wbyQd:Tool.localItem('wbyQd')}});
+                            }else{
+                                next({path:'/maintainset'});
+                            }
+                        }  
+                    }else{
+                        Toast({
+                            message:"用户登录过期了",
+                            duration:1000,
+                        })
+                        Tool.localItem('wbyQd',to.query.wbyQd);
+                        store.commit('POP_PAGE',1);//在进入login之前把已进栈但是没有被访问的页面清理出栈\
+                        // next({name:'login',params:{to:to.path}});
+                        next({name:'login'});
+                    }
+                });
+            }
+            else{
+                if(to.query.wbyQd){
+                    // create的时候渠道存在了本地
+                    if (to.query.wbyQd == 'JJRFX'&&to.query.agentLogo) {
+                        Tool.get('agentStatusQuery',{
+                            oid:to.query.agentLogo
+                        },(data) => {
+                            if (data.code==0) { // 依旧有效
+                                Tool.localItem('agentLogo',to.query.agentLogo);
+                                next({path:'/maintainset',query:{wbyQd:String(to.query.wbyQd)}});
+
+                            }
+                            else{  // 二维码已失效
+                                Tool.removeLocalItem('agentLogo');
+                                MessageBox({
+                                  title: '提示',
+                                  message: '该推荐二维码已失效，但仍可正常购买，本订单视为无效推荐。'
+                                });
+                                next({path:'/maintainset',query:{wbyQd:String(to.query.wbyQd)}});
+
+                                // MessageBox({
+                                //   title: '提示',
+                                //   message: '该经纪人的二维码已失效，无法获得推荐订单，不影响用户下单'
+                                // });
+                                // Toast({
+                                //     message:"该经纪人的二维码已失效，无法获得推荐订单，不影响用户下单",
+                                //     duration:2000,
+                                // })
+                            }
+                        });
+                    }
+                    else if(to.query.wbyQd != 'JJRFX') {
+                        Tool.removeLocalItem('agentLogo');
+                        next();
+                    }
+                    else next();
                 }else{
-                    next();
-                }
-            }  
+                    if(to.query.hasOwnProperty('wbyQd')){
+                        Tool.localItem('wbyQd','');
+                    }
+                    if(Tool.localItem('wbyQd')){
+                        next({path:'/maintainset',query:{wbyQd:Tool.localItem('wbyQd')}});
+                    }else{
+                        next();
+                    }
+                }  
+            }
+            
         }
     }
 </script>
@@ -237,7 +508,7 @@
                 line-height:1.5rem;
                 background-color:#fff;
                 .bisiness-item{
-                    width:8rem;
+                    width:50%;
                     float:left;
                     color:#333;
                     &.active{
@@ -260,6 +531,11 @@
                 padding:0rem 3%;
                 border-top:1px solid #efefef;
                 text-align:left;
+                .telnum{
+                    display:inline-block;
+                    color:blue;
+                    text-decoration:underline;
+                }
             }
             .bottom-banner{
                 height:1.9rem;

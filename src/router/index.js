@@ -22,7 +22,19 @@ import Home from 'pages/Home';
 import UserCenter from 'pages/UserCenter';
 import Referee from 'pages/Referee';
 import WechatH5 from 'pages/WechatH5';
+import PersonReceipt from 'pages/PersonReceipt';
+import ForgetPassword from 'pages/ForgetPassword';
+import CarManagement from 'pages/CarManagement';
+import ForgetPasswordTwo from 'pages/ForgetPasswordTwo';
+import AlipayTip from 'pages/AlipayTip';
+import FindPwdConfirm from 'pages/FindPwdConfirm';
+import AgentCertification from 'pages/AgentCertification';
+import MyRecOrder from 'pages/MyRecOrder';
+import AgentExplain from 'pages/AgentExplain';
+import WcbyStore from 'pages/WcbyStore';
+import ScbyStore from 'pages/ScbyStore';
 
+ 
 Vue.use(Router)
 
 const scrollBehavior = (to, from, savedPosition) => {
@@ -153,6 +165,62 @@ export default new Router({
       path:'/wechath5',//保养-h5支付
       name:'wechath5',
       component: WechatH5,
+    },
+    {
+      path:'/personreceipt',//发票
+      name:'personreceipt',
+      component: PersonReceipt,
+    },
+    {
+      path:'/forgetpassword',//找回密码1
+      name:'forgetpassword',
+      component: ForgetPassword,
+    },
+    {
+      path:'/carmanagement',//车辆管理
+      name:'carmanagement',
+      component: CarManagement,
+    },
+    {
+      path:'/forgetpasswordtwo',//找回密码2
+      name:'forgetpasswordtwo',
+      component: ForgetPasswordTwo,
+    },
+    {
+      path:'/alipaytip',//找回密码2
+      name:'alipaytip',
+      component: AlipayTip,
+    },
+    {
+      path:'/findpwdconfirm',//找回密码2
+      name:'findpwdconfirm',
+      component: FindPwdConfirm,
+    },
+    {
+      path:'/agentcertification',
+      name:'agentcertification',
+      component: AgentCertification,
+    },
+    {
+      path:'/myrecorder',
+      name:'myrecorder',
+      component: MyRecOrder,
+    },
+    {
+      path:'/agentexplain',
+      name:'agentexplain',
+      component: AgentExplain,
+    },
+    {
+      path:'/wcbystore',
+      name:'wcbystore',
+      component: WcbyStore,
+    },
+    {
+      path:'/scbystore',
+      name:'scbystore',
+      component: ScbyStore,
     }
+
   ]
 })

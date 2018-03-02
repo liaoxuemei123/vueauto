@@ -12,7 +12,7 @@
                 <mt-datetime-picker
                     ref="datepicker"
                     type="datetime"
-                    v-model="pickerValue"
+                    v-model="pickerV"
                     @confirm="onDateConfirm"
                     month-format="{value}月"
                     date-format="{value}日"
@@ -63,7 +63,7 @@
                     <inp-com title="联系人" type="text" icon="icon-contact" placeholder="请输入联系人" :onBlur="updateContact.bind(this)" :value="subscribeInfo.contact"/>
                 </div>
                 <div class="input-control">
-                    <inp-com title="联系电话" type="number" icon="icon-phone" placeholder="请输入联系电话" :onBlur="updatePhone.bind(this)" :value="subscribeInfo.phone"/>
+                    <inp-com title="联系电话" type="tel" icon="icon-phone" placeholder="请输入联系电话" :onBlur="updatePhone.bind(this)" :value="subscribeInfo.phone"/>
                 </div>
                 <div class="input-control" flex="dir:top">
                     <inp-com title="预约描述" :onClick="expandDes" type="text" icon="icon-comment" :readonly='true'/>
@@ -109,7 +109,7 @@
     import InpCom from '../components/InpCom';
     import { mapMutations, mapState } from 'vuex';
     import Tool from '../utils/Tool';
-    import { Toast } from 'mint-ui';
+    import { Picker, Toast } from 'mint-ui';
     export default{
         data () {
             return {
@@ -122,25 +122,31 @@
                 desExpand:false,
                 mobile:'',
                 confirmShow:false,
-                submitData:''
+                submitData:'',
+                pickerValue:''
             }
         },
         computed:{
             'startDate':function(){
                 var now = new Date();
-                if((now.getHours() >= 17 && now.getMinutes()) > 30 || now.getHours() > 17){
-                    var tomorrow = new Date(new Date(Tool.formatDate(now)).getTime() + 25 * 1000 * 60 * 60);
-                    return tomorrow;
-                }
-                return new Date(now.getTime() + 1000 * 60 * 60 * 2);
+                // if((now.getHours() >= 17 && now.getMinutes()) > 30 || now.getHours() > 17){
+                    // var tomorrow = new Date(new Date(Tool.formatDate(now)).getTime() + 25 * 1000 * 60 * 60);
+                    // return tomorrow;
+                var tomorrow = new Date(new Date(Tool.formatDate(now)).getTime() + 25 * 1000 * 60 * 60);
+                return tomorrow;
             },
-            'pickerValue':function(){
-                var now = new Date();
-                if((now.getHours() >= 17 && now.getMinutes()) > 30 || now.getHours() > 17){
-                    var tomorrow = new Date(new Date(Tool.formatDate(now)).getTime() + 25 * 1000 * 60 * 60);
-                    return Tool.formatDate(tomorrow,'time');
+            'pickerV': {
+                get: function(){
+                    var now = new Date();
+                    if((now.getHours() >= 17 && now.getMinutes()) > 30 || now.getHours() > 17){
+                        var tomorrow = new Date(new Date(Tool.formatDate(now)).getTime() + 25 * 1000 * 60 * 60);
+                        return Tool.formatDate(tomorrow,'time');
+                    }
+                    return Tool.getCurrentDate('time');
+                },
+                set: function (newValue) {
+                  this.pickerValue = newValue
                 }
-                return Tool.getCurrentDate('time');
             },
             'endDate':function(){
                 var year = new Date().getFullYear();
@@ -174,12 +180,13 @@
                 Tool.get('queryUserInfo',{
                     userToken
                 },(data) => {
-                    data = JSON.parse(JSON.parse(data));
+                    // data = JSON.parse(JSON.parse(data));
                     if(data.result != -1){
                         var userInfo = data.data;
-                        userInfo.userToken = userToken;
+                        // userInfo.userToken = data.data.token;
                         Tool.localItem('userCache',userInfo);
                     }else{
+                        Tool.removeLocalItem('userCache');
                         Toast({
                             message:"用户登录过期了",
                             duration:1000,
@@ -189,6 +196,7 @@
             }
         },
         activated:function(){
+            
             if(Tool.localItem('userCache')){
                 this.mobile = JSON.parse(Tool.localItem('userCache')).mobile;	
                 if(JSON.parse(Tool.localItem('userCache')).nickName)
@@ -262,6 +270,40 @@
                 this.desExpand = true;
             },
             onDateConfirm:function(val){
+                var now = new Date();
+                var nowDate = now.getDate();//获取当前日
+                var nowHour = now.getHours();
+                var minute = now.getMinutes();
+                // debugger
+                // if (now.getFullYear()==new Date(val).getFullYear() && now.getMonth()==new Date(val).getMonth() && new Date(val).getDate()<=nowDate || now.getFullYear()>new Date(val).getFullYear() || now.getMonth()>new Date(val).getMonth()) {
+                //     Toast({
+                //         message:'只能预约第二天之后的时间',
+                //         duration:1000
+                //     })
+                //     return false;
+                // };
+
+                // if (nowHour < 17 || (nowHour == 17 && minute<=30)) {
+                //     // 当天17:30前客户只能预约第二天9:00后的时间保养；
+                //     if (new Date(val).getDate()) {}
+                // }else{
+                //     // 当天17:30—24:00客户只能预约第二天14:00后的时间保养；
+                // }
+                var torrTime = new Date(new Date(Tool.formatDate(now)).getTime() + 30 * 1000 * 60 * 60);
+                // torrTime = torrTime.getTime();
+                // console.log(torrTime+' xx ');
+                // console.log(new Date(val).getTime()+' xx ');
+
+                if (nowHour>17 || (nowHour==17 && minute>30)) {
+                    // if(new Date(val).getHours() < 14){
+                    if (new Date(val).getTime()<torrTime) {
+                        Toast({
+                            message:'预约时间不能小于14:00',
+                            duration:1000
+                        })
+                        return false;
+                    }
+                }
                 if((new Date(val).getHours() >= 17 && new Date(val).getMinutes() > 30) || (new Date(val).getHours() >= 18)){
                     Toast({
                         message:'预约时间不能大于17:30',
@@ -292,7 +334,7 @@
                         message:'您已成功提交预约申请',
                         duration:1000,
                     });
-                    this.$store.commit('RESET_SUBSCRIBE');
+                    // this.$store.commit('RESET_ALL');
                     this.submitData = '';
                 })
             },
@@ -357,7 +399,7 @@
                     });
                     return false;
                 }
-                if(!(/^1[34578]\d{9}$/.test(data.mobilePhone))){
+                if(!(/^1\d{10}$/.test(data.mobilePhone))){
                     Toast({
                         message:'手机号码不正确',
                         position:'bottom',
@@ -374,6 +416,18 @@
             ...mapMutations([
                 'updateSubscribeInfo',
             ])
+        },
+        beforeRouteLeave:function(to,from,next){
+            if(!Tool.localItem('userCache')&&(to.name == 'orderhistory' || to.path == '/orderhistory' || to.name == 'selectplate' || to.path == '/selectplate' ||to.name == 'storeorder' || to.path == '/storeorder')){
+                Toast({
+                    message:'用户登录过期了',
+                    duration:1000,
+                });
+                return;
+            }
+            else{
+                next();
+            }
         },
         components:{
             NavBar,

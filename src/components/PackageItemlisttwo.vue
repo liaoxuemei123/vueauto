@@ -1,18 +1,18 @@
 <template>
-    <div class="set-container" v-tap="viewDetail.bind(this)" flex="dir:top">
+    <div class="set-container" v-tap="viewDetail.bind(this)" flex="dir:left box:first">
         <div class="set-image">
             <div class="image-container">
                 <img v-lazy="item.wbResource.wbrIndeximg1?item.wbResource.wbrIndeximg1:''" v-if="item.wbResource">
             </div>
         </div>
-        <div class="set-info" flex="dir:top">
-            <div class="line" flex="">
+        <div class="set-info" flex="dir:top cross:top box:mean">
+            <div class="line" flex="dir:left cross:center">
                 <span class="package-name">{{item.wbpName}}</span>
             </div>
-            <div class="line" flex="">
+            <div class="line" flex="dir:left cross:center">
                 <span class="description">{{item.wbpPdesc | descFilter}}</span>
             </div>
-            <div class="line" flex="dir:left cross:center" style="height: 1.25rem;">
+            <div class="line" flex="dir:left cross:center main:left">
                 <span class="sall" v-if="item.wbpYhzk">{{item.wbpYhzk}}折</span>
                 <span class="price">{{item.wbpPrice}}</span>
                 <span class="buy-it">产品详情</span>
@@ -100,14 +100,13 @@
         width:94%;
         position:relative;
         background-color:#fff;
-        padding:0.5rem 3% 0 3%;
+        padding:0.5rem 3%;
         .set-image{
             background-color:#ccc;
-            width:100%;
-            margin-bottom: 0.25rem;
+            width:6rem;
             .image-container{
+                height:4rem;
                 width:100%;
-                height: 6rem;
                 position:relative;
                 img{
                     width:100%;
@@ -132,11 +131,11 @@
             }
         }
         .set-info{
+            margin-left:0.5rem;
             background-color:#fff;
             .line{
                 width:100%;
                 position:relative;
-                margin-bottom: 0.25rem;
                 .sall{
                     font-size:0.51rem;
                     color:#fff;
@@ -158,7 +157,9 @@
                     color:#fc4c1d;
                 }
                 .description{
+                    font-size:0.64rem;
                     color:#888;
+                    margin-right:0.2rem;
                 }
                 .buy-it{
                     background-color:#fff;

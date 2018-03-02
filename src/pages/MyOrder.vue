@@ -4,6 +4,7 @@
             <nav-bar
                 title="我的订单"
                 :goBack="customBack.bind(this)"
+                v-show="!hasToken"
             />
             <div class="page-content" flex="dir:top box:first">
                 <div class="tab">
@@ -94,9 +95,11 @@
     import Scroller from '../components/Scroller';
     import { Toast } from 'mint-ui';
     import { mapState, mapMutations } from 'vuex';
+    import store from '../model';
     export default {
         data () {
             return {
+                hasToken: false,
                 tabs:[
                     {value:0, label:'全部'},
                     {value:1, label:'待支付'},
@@ -367,7 +370,10 @@
             },
             customBack:function(){
                 var prepage = this.$store.getters.prepage;
-                if(!prepage || (prepage.name != 'maintainset' && prepage.name != 'usercenter')){//这里的逻辑智能保证按正常的后退键管用。
+                if (this.$route.query.token) {
+                    this.$router.go(-2);
+                }
+                else if(!prepage || (prepage.name != 'maintainset' && prepage.name != 'usercenter')){//这里的逻辑智能保证按正常的后退键管用。
                     this.$store.commit('INSERT_PAGE',{path:'/maintainset',index:0,name:'maintainset'});
                     this.$router.push({name:'maintainset'})
                 }else{
@@ -402,6 +408,12 @@
             }
         },
         activated:function(){
+            if (this.$route.query.token) {
+                this.hasToken = true;
+            }
+            else {
+                this.hasToken = false;
+            }
             this.resetData();
             if(this.activeTab == 0){
                 this.orderQueryAll();
@@ -414,7 +426,40 @@
             }
         },
         beforeRouteEnter:(to,from,next)=>{
-            Tool.routerEnter(to,from,next)
+            if (to.query.token) {
+                if (from.name == 'orderpay' || from.name == 'orderdetail') {
+                    next();
+                }
+                else {
+                    // Tool.removeLocalItem('userData');
+                    // Tool.removeLocalItem('userInfo');
+                    
+                    var preCtoken = to.query.token;
+                    Tool.localItem('fromOuterPage',preCtoken);
+                    Tool.get('queryUserInfo',{
+                        userToken:preCtoken
+                    },(data) => {
+                        if(data.result != -1){
+                            var userInfo = data.data;
+                            userInfo.token = data.data.token;
+                            Tool.localItem('userInfo',userInfo);
+                            next();
+                        }else{
+                            Toast({
+                                message:"用户登录过期了",
+                                duration:1000,
+                            })
+                            store.commit('POP_PAGE',1);//在进入login之前把已进栈但是没有被访问的页面清理出栈\
+                            next({name:'login',params:{to:to.path,preCtoken:'true'}});
+                            // next({name:'login'});
+                        }
+                    });
+                }
+            }
+            else {
+                Tool.removeLocalItem('fromOuterPage');
+                Tool.routerEnter(to,from,next)
+            }
         },
     }
 </script>

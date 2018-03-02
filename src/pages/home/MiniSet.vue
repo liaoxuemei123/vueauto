@@ -25,13 +25,16 @@
         <scroller>
             <transition name="fade">
                 <div class="show-content">
-                    <div class="product-class" v-for="( item , index ) in products" v-if="item.wbpkName">
+                 <!-- <i class="iconfont icon-circle active" @click="listSwicth=!listSwicth"></i> -->
+                    <i class="iconfont active" :class="listSwicth?'icon-weibiaoti2010102-copy':'icon-liebiaoqiehuan2'" v-tap="swicthList.bind(this)" style="width:2rem;text-align:center;font-size: 0.71rem;"></i>
+                    <div class="product-class" flex="dir:top" v-for="( item , index ) in products" v-if="item.wbpkName">
                         <div class="up-title title">
                             <span>{{item.wbpkName}}</span>
                         </div>
                         <div class="up">
-                            <div class="set-item" v-for="(sitem, sindex) in item.wbProducts">
-                                <package-item :item="sitem"/>
+                            <div class="set-item" :class="listSwicth?'list1':'list2'" flex="dir:left box:mean" v-for="(sitem, sindex) in item.wbProducts">
+                                <package-itemlisttwo :item="sitem" v-if="listSwicth" />
+                                <package-item :item="sitem" v-else="listSwicth" />
                             </div>
                         </div>
                     </div>
@@ -97,10 +100,15 @@
                 }
             }
         }
+        i{
+            position: absolute;
+            right:1rem;
+            top: 1.85rem;
+            z-index: 999
+        }
         .show-content{
             padding-top:1.5rem;
             .title{
-                height:1.5rem;
                 line-height:1.5rem;
                 width:94%;
                 padding:0 3%;
@@ -125,15 +133,22 @@
                     right:-1.1rem;
                 }
             }
-            .set-item{
+            .set-item.list1{
                 border-bottom:1px solid #efefef;
             }
+            .set-item.list2{
+                border-bottom:1px solid #efefef;
+                width:50%;
+                float: left;
+            }
+            
         }
     }
 </style>
 <script>
     import Scroller from '../../components/Scroller';
     import PackageItem from '../../components/PackageItem';
+    import PackageItemlisttwo from '../../components/PackageItemlisttwo';
     import Tool from '../../utils/Tool';
     import { mapState, mapMutations } from 'vuex';
     import { Toast } from 'mint-ui';
@@ -153,6 +168,7 @@
                         ],
                     }
                 ],
+                listSwicth:true,
                 carModel:{},
                 carShow: false,
                 carData:{},
@@ -194,29 +210,56 @@
         },
         components:{
             Scroller,
+            PackageItemlisttwo,
             PackageItem
         },
         methods:{
+            swicthList:function(){
+                this.listSwicth=!this.listSwicth;
+            },
             closeDialog:function(){
                 this.carShow = false;
             },
             getPackageList:function(wbplCx){
-                const id = this.$parent.bisinessItems[this.$parent.activeBusiness].wbyId;
-                Tool.get('wbinterface/getWbpkindList',{id,Qd:this.wbyQd,wbplCx:wbplCx?wbplCx:''},(data)=>{
+                var tid = this.$parent.bisinessItems[this.$parent.activeBusiness].wbyId;
+                if (this.modelInfo.vehicleType == 0) {
+                    tid='wcby';
+                }
+                if (this.modelInfo.vehicleType == 1) {
+                    tid='scby';
+                }
+                Tool.get('wbinterface/getWbpkindList',{id:tid,Qd:this.wbyQd,wbplCx:wbplCx?wbplCx:''},(data)=>{
                     if(data.code == 200){
                         this.products = [];
                         if(!data.data) return;
                         data.data.map( v => {
                             if(v.wbProducts.length > 0 && v.wbpkName){
                                 this.products.push(v);
+                                // this.$parent.activeBusiness=(tid=='wcby'?0:1,false);
+                                // this.$parent.changeActive(1,false);
                             }
                         })
                     }
                 })
             },
-            getCarList:function(){
+            getCarList:function(text){
                 Tool.get('queryCar',{},pData => {
-                    const data = pData.data;
+                    var realData = [];
+
+                    if(text.length < 2 && text[0].view == 'MinniSet'){
+                        for (var i=0;i<= pData.data.length - 1; i++) {
+                            if(pData.data[i].typename=='长安汽车'){
+                                realData.length=0;
+                                console.log(realData)
+                                realData.push(pData.data[i]);
+                                break;
+                            }
+                        }
+                    }else{
+                        realData = pData.data;
+                    }
+                    
+                    const data = realData;
                     var type = [];
                     var serise = [];
                     var module = [];
@@ -281,6 +324,14 @@
             },
             submitModelInfo:function(){
                 if(this.carModel.displacement){
+
+                    // if(this.$parent.bisinessItems.length < 2 && this.$parent.bisinessItems[0].view == 'MinniSet' && this.carModel.typeName !='长安汽车'){
+                    //     Toast({
+                    //         message:"该车型没有套餐",
+                    //         duration:1000,
+                    //     })
+                    //     return;
+                    // }
                      this.setModuleInfo(this.carModel);
                 }else{
                     this.carModel.displacement = this.carList.module[0][0][0].name;
@@ -346,7 +397,7 @@
             })
         },
         created:function(){
-            this.getCarList();
+            this.getCarList(this.$parent.bisinessItems);
             var recordVersion = Tool.localItem("wy_version");
             if(!recordVersion){
                 this.initIntro();
@@ -363,7 +414,14 @@
             this.getPackageList(this.modelInfo.id);
             this.reset(true);
             this.setStoreInfo({});
-            this.updateUserInfo({refereeType:'',referee:''})
+            this.updateUserInfo({refereeType:'',referee:''});
+            this.manmodel = Tool.localItem('manmodel') ? JSON.parse(Tool.localItem('manmodel')):'';
+            if (this.manmodel.id) {
+                if(this.manmodel.typeName === '长安汽车'){
+                    this.setModuleInfo(this.manmodel);
+                    return;
+                }
+            }
         },
         deactivated:function(){
             this.carShow = false;

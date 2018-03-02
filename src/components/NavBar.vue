@@ -8,7 +8,7 @@
         </div>
         <div class="right-button button" @click="onRight" :class="{'other':otherClass}" :style="{width:buttonWidth * 100 + '%'}">
             <i class="iconfont" v-if="rightIcon" :class="rightIcon"></i>
-            {{rightContent}}
+            <span>{{rightContent}}</span>
         </div>
     </div>
 </template>
@@ -68,6 +68,10 @@
                 margin-left:0.3rem;
                 font-size:0.8rem;
             }
+        }
+        span{
+            display: inline-block;
+            margin-right:0.6rem;
         }
         .right-button{
             text-align:right;

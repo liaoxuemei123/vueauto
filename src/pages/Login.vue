@@ -63,6 +63,7 @@
 					})
 					return false;
 				}
+				var self = this;
 				En.createPassword(this.password).then((pData)=>{
 					Tool.post('loginCode',{
 						mobile:this.tel,
@@ -83,18 +84,23 @@
 									message:'登录成功'
 								})
 							}
+							// self.$router.go(-2);
 							Tool.localItem("userInfo",data.data);
-							if(this.$route.params.to){
-								this.$router.push({path:this.$route.params.to});
+							Tool.removeLocalItem('oid');
+							if(self.$route.params.to){
+								if (self.$route.params.preCtoken) {
+									self.$router.push({path:self.$route.params.to, query:{token:data.data.token}});
+								}
+								else self.$router.push({path:self.$route.params.to});
 							}else{
-								this.$router.push({name:'maintainset'});
+								self.$router.push({name:'maintainset'});
 							}
 						}else{
 							Toast({
 								duration:1000,
 								message:'账号密码错误'
 							})
-							this.forgetPassword = true;
+							self.forgetPassword = true;
 						}
 					})
 				})

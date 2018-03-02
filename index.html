@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta http-equiv="Access-Control-Allow-Origin" content="*">
     <meta name="format-detection" content="telephone=no">
-    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data:">
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data:"> -->
     <!--不启用缓存-->
     <meta http-equiv="pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -28,9 +28,36 @@
     </script>
     <script src="https://api.map.baidu.com/api?v=2.0&ak=V5qLiGqxsGZZpRt8nqUERSpA2A18MLjk"></script> 
     <script src="https://pv.sohu.com/cityjson?ie=utf-8"></script>  
+    <!-- <script type="text/javascript" src='https://res.wx.qq.com/open/js/jweixin-1.2.0.js'></script> -->
     <script type="text/javascript">  
       var userAddress = returnCitySN.cip;
+      // var userAddress = '127.0.0.1';
     </script> 
+    <script>
+        // function getParam(key){
+        //     if (window.location.search) {
+        //         var params = window.location.search.replace("?","").split("&");
+        //     }
+
+        //     // var params = window.location.search.replace("?","").split("&");
+        //     else if (!window.location.hash.split("?")[1]) {return 'none'}
+        //     else {var params = window.location.hash.split("?")[1].split("&")};
+        //     var hasTime = '';
+        //     for(var i = 0; i < params.length; i++){
+        //         params[i].replace(/(\w*)=(.*)/,(value,$1,$2)=>{
+        //             if(key == $1){
+        //                 hasTime = $2;
+        //             }
+        //         })
+        //     }
+        //     return hasTime;
+        // }
+
+        // var timeInclude = getParam("_t");
+        // if (timeInclude=='none') {window.location.href = window.location.href + "?_t=" + new Date().getTime()}
+        // else{!timeInclude ? window.location.href = window.location.href + "&_t=" + new Date().getTime() : "" ;}
+    </script>
+
     <title>长安保养</title>
   </head>
   <body>

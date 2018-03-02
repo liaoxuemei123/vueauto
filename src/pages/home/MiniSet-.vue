@@ -1,10 +1,6 @@
 <!--module是保留字，以后可能不能使用-->
 <template>
-    <div class="sub-page" key="commercialset">
-        <!--<div class="before-online">
-            <img src="../../assets/sorry.png" alt="">
-            <div>主人，我将于7月1日上线，期待您将我打包回家……</div>
-        </div>-->
+    <div class="sub-page" key="miniset">
         <div class="select-car" v-tap="toggleShow">
             <div class="label">{{modelInfo.pickerModel | modelFilter}}</div>
         </div>
@@ -29,15 +25,13 @@
         <scroller>
             <transition name="fade">
                 <div class="show-content">
-                <i class="iconfont active" :class="listSwicth?'icon-weibiaoti2010102-copy':'icon-liebiaoqiehuan2'" v-tap="swicthList.bind(this)" style="width:2rem;text-align:center;font-size: 0.71rem;"></i>
-                    <div class="product-class" flex="dir:top" v-for="( item , index ) in products" v-if="item.wbpkName">
+                    <div class="product-class" v-for="( item , index ) in products" v-if="item.wbpkName">
                         <div class="up-title title">
                             <span>{{item.wbpkName}}</span>
                         </div>
                         <div class="up">
-                            <div class="set-item" :class="listSwicth?'list1':'list2'" flex="dir:left box:mean" v-for="(sitem, sindex) in item.wbProducts">
-                                <package-itemlisttwo :item="sitem" v-if="listSwicth" />
-                                <package-item :item="sitem" v-else="listSwicth" />
+                            <div class="set-item" v-for="(sitem, sindex) in item.wbProducts">
+                                <package-item :item="sitem"/>
                             </div>
                         </div>
                     </div>
@@ -47,19 +41,13 @@
     </div>
 </template>
 <style lang="less" scoped>
+    .float-bottom{
+        top:80%;
+    }
     .sub-page{
         position: absolute;
         width:100%;
         height:100%;
-        .before-online{
-            img{
-                width:8rem;
-                height:8rem;
-            }
-            white-space:normal;
-            text-align:center;
-            margin-top:4rem;
-        }
         .select-car{
             position:absolute;
             top:0;
@@ -109,12 +97,6 @@
                 }
             }
         }
-        i{
-            position: absolute;
-            right:1rem;
-            top: 1.85rem;
-            z-index: 999
-        }
         .show-content{
             padding-top:1.5rem;
             .title{
@@ -143,13 +125,8 @@
                     right:-1.1rem;
                 }
             }
-            .set-item.list1{
+            .set-item{
                 border-bottom:1px solid #efefef;
-            }
-            .set-item.list2{
-                border-bottom:1px solid #efefef;
-                width:50%;
-                float: left;
             }
         }
     }
@@ -157,10 +134,10 @@
 <script>
     import Scroller from '../../components/Scroller';
     import PackageItem from '../../components/PackageItem';
-    import PackageItemlisttwo from '../../components/PackageItemlisttwo';
     import Tool from '../../utils/Tool';
     import { mapState, mapMutations } from 'vuex';
     import { Toast } from 'mint-ui';
+    import { introJs } from 'intro';
     export default {
         data () {
             return {
@@ -176,7 +153,6 @@
                         ],
                     }
                 ],
-                listSwicth:true,
                 carModel:{},
                 carShow: false,
                 carData:{},
@@ -200,6 +176,7 @@
                     values:[],
                     className:'moudle',
                 }],
+                intro:null,
             }
         },
         computed:{
@@ -217,13 +194,9 @@
         },
         components:{
             Scroller,
-            PackageItemlisttwo,
             PackageItem
         },
         methods:{
-            swicthList:function(){
-                this.listSwicth=!this.listSwicth;
-            },
             closeDialog:function(){
                 this.carShow = false;
             },
@@ -242,30 +215,15 @@
                         data.data.map( v => {
                             if(v.wbProducts.length > 0 && v.wbpkName){
                                 this.products.push(v);
-                                // this.$parent.activeBusiness=(tid=='wcby'?0:1,false);
-                                // this.$parent.changeActive(0,false);
+                                this.$parent.changeActive(tid=='wcby'?0:1,false);
                             }
                         })
                     }
                 })
             },
-            getCarList:function(text){
+            getCarList:function(){
                 Tool.get('queryCar',{},pData => {
-                    var realData = [];
-
-                    if(text.length < 2 && text[0].view == 'CommercialSet'){
-                        for (var i=0;i<= pData.data.length - 1; i++) {
-                            if(pData.data[i].typename=='长安欧尚'){
-                                realData.length=0;
-                                realData.push(pData.data[i]);
-                                break;
-                            }
-                        }
-                    }else{
-                        realData = pData.data;
-                    }
-                    
-                    const data = realData;
+                    const data = pData.data;
                     var type = [];
                     var serise = [];
                     var module = [];
@@ -314,7 +272,7 @@
                     this.carModel.vehicleType = values[1].type;
                     this.carModel.typeName = values[0].name;
                     this.carModel.id = values[2].id;
-                    this.carModel.code = values[2].code,
+                    this.carModel.code = values[2].code;
                     this.carModel.pickerModel = this.carModel.vehicleModel + ' ' + this.carModel.displacement;
                 }else if(values[1] && values[2]){
                     picker.setSlotValues(1,this.carList.serise[0]);
@@ -324,19 +282,12 @@
                     this.carModel.vehicleType = values[1].type;
                     this.carModel.typeName = values[0].name;
                     this.carModel.id = values[2].id;
-                    this.carModel.code = values[2].code,
+                    this.carModel.code = values[2].code;
                     this.carModel.pickerModel = this.carModel.vehicleModel + ' ' + this.carModel.displacement;
                 }
             },
             submitModelInfo:function(){
                 if(this.carModel.displacement){
-                    // if(this.$parent.bisinessItems.length < 2 && this.$parent.bisinessItems[0].view == 'CommercialSet' && this.carModel.typeName =='长安汽车'){
-                    //     Toast({
-                    //         message:"该车型没有套餐",
-                    //         duration:1000,
-                    //     })
-                    //     return;
-                    // }
                      this.setModuleInfo(this.carModel);
                 }else{
                     this.carModel.displacement = this.carList.module[0][0][0].name;
@@ -349,16 +300,26 @@
                 }
                 this.carShow = false;
                 this.getPackageList(this.carModel.id);
-                if(this.carModel.typeName === '长安汽车'){
+                if(this.carModel.typeName === '长安欧尚'){
                     if(this.$parent.bisinessItems.length < 2){
 
                     }else{
-                        this.$parent.changeActive(0,false);
+                        this.$parent.changeActive(1,false);
                     }
                 }
             },
             toggleShow:function(){
                 this.carShow = !this.carShow;
+            },
+            initIntro:function(){//初始化导航js
+                this.intro = new introJs();
+                this.intro.setOption("doneLabel", '退出');
+                this.intro.setOption("skipLabel", '跳过');
+                this.intro.setOption("nextLabel", '继续');
+                this.intro.setOption("prevLabel", '后退');
+                this.intro.setOption("showStepNumbers", false);
+                this.intro.setOption("showBullets", false);
+                this.intro.setOption("hideNext", true);
             },
             ...mapMutations({
                 reset: 'UPDATE_RESET',
@@ -374,21 +335,42 @@
                 return val;
             }
         },
+        mounted:function(){
+            this.$nextTick(()=>{
+                if(this.intro)
+                    this.intro.start();
+                    Tool.localItem("wy_version",Tool.version);
+                    $(".introjs-overlay").on("touchstart", event => {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        this.intro.nextStep();
+                        return false;
+                    });
+                    $(".introjs-tooltipReferenceLayer").on("touchstart", event => {
+                        this.intro.nextStep();
+                        return false;
+                    });
+            })
+        },
         created:function(){
-            this.getCarList(this.$parent.bisinessItems);
+            this.getCarList();
+            var recordVersion = Tool.localItem("wy_version");
+            if(!recordVersion){
+                this.initIntro();
+            }else{
+                var currentVersion = Tool.version;
+                if(recordVersion != currentVersion){
+                    this.initIntro();
+                    Tool.localItem("wy_version",'');
+                }
+            }
+            
         },
         activated:function(){
             this.getPackageList(this.modelInfo.id);
             this.reset(true);
             this.setStoreInfo({});
-            this.updateUserInfo({refereeType:'',referee:''});
-            this.manmodel = Tool.localItem('manmodel') ? JSON.parse(Tool.localItem('manmodel')):'';
-            if (this.manmodel.id) {
-                if(this.manmodel.typeName != '长安汽车'){
-                    this.setModuleInfo(this.manmodel);
-                    return;
-                }
-            }
+            this.updateUserInfo({refereeType:'',referee:''})
         },
         deactivated:function(){
             this.carShow = false;

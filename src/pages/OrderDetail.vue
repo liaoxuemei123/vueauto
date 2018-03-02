@@ -15,6 +15,8 @@
                             {{orderInfo.status | stateFilter}}
                         </div>
                     </div>
+                    <!--   -->
+                    <div class="lotteryDraw"  v-if="choujTime==true && this.ordSt == 2" @click="lotteryDraw">新&nbsp;&nbsp;&nbsp;年&nbsp;&nbsp;&nbsp;抽&nbsp;&nbsp;&nbsp;奖</div>
                     <div class="section">
                         <div class="car">车型：{{orderInfo.carType}}</div>
                         <div class="oil">机油：{{orderInfo.engineOil}}</div>
@@ -67,14 +69,28 @@
     import NavBar from '../components/NavBar';
     import Tool from '../utils/Tool';
     import { mapState, mapMutations } from 'vuex';
+    import { Toast } from 'mint-ui';
     export default {
         data () {
             return{
                 orderInfo: {},
                 useList: [],
                 popupVisible: true,
-                token:''
+                token:'',
+                oid:'',
+                first:'',
+                choujTime:false,
+                startTime : 1516928400000, //'2017/11/01 00:00:00'1516928400
+                endTime : 1519833599000, //'2017/11/30 23:59:59'
+                ordSt:-1,
             }
+        },
+        computed:{
+            ...mapState({
+                modelInfo: ({
+                    packageinfo
+                }) => packageinfo.modelInfo,
+            })
         },
         components:{
             NavBar,
@@ -121,9 +137,15 @@
                     orderNo:id
                 },(data)=>{
                     if(data.code == 200){
+                        // this.$nextTick(()=>{
+                        //     this.goChouJ(data.data.PackageOrder.qd, data.data.PackageOrder.orderType,data.data.PackageOrder.status);
+                        // })
                         this.orderInfo = data.data.PackageOrder;
                         this.orderInfo.wbpByxm = data.data.Package.wbpByxm;
                         this.useList = data.data.PackageOrderDetail;
+                        this.$nextTick(()=>{
+                            this.ordSt = this.orderInfo.status
+                        })
                     }
                 })
             },
@@ -143,11 +165,53 @@
                     id:this.useList[index].id,
                 }})
             },
+            goChouJ: function(qd, orderType, status){
+                var self = this;
+                if (orderType == 0 &&window.first == '1' && status == '2') {
+                    // self.$router.push({path:'/orderdetail/'+orderNo,query:{wbyQd:qd}});
+                    const oid = this.oid;
+                    // const url = `http://wx91660942fa7be4c2.wx1.cdh5.cn/test/4215/orderList.php?token=${oid}`;
+                    // const url = `http://wx.cdh5.cn/4215/orderList.php?token=${oid}`;
+                    const url = `http://wx.cdh5.cn/4215/orderList.php`;
+                    // var token = {:2}
+                    var form = $("<form method='post'></form>");
+                    form.attr({"action":'http://wx.cdh5.cn/4215/orderList.php'});
+                    var input = $("<input type='hidden'>");
+                    input.attr({"name":'token'});
+                    input.val(oid);
+                    form.append(input);
+                    $(document.body).append(form);
+                    form.submit();
+                    // 将oid作为token传过去
+                    // window.location.href = url;
+                } //轿车
+            },
+            lotteryDraw:function(){
+                var nowDate = new Date();
+                nowDate = nowDate.getTime();
+                if(nowDate>=this.startTime && nowDate<=this.endTime) {
+                    this.choujTime = true;
+                    // https://cms.changan.com.cn/jeecms/newYearLuckDraw/main/index.html 
+                    // window.location.href = "https://cms.changan.com.cn/jeecms/deLuckDraw/main/index.html?biz=4&src=23"
+                    window.location.href = "https://cms.changan.com.cn/jeecms/newYearLuckDraw/main/index.html"
+                }
+                else {
+                    Toast({
+                        message:"抽奖已于2018-02-28 23:59:59结束",
+                        duration:3000,
+                    })
+                    this.choujTime = false;
+                }
+
+            },
             customBack:function(){
                 var prepage = this.$store.getters.prepage;
                 if(!prepage || prepage.name != 'myorder'){
                     this.$store.commit('INSERT_PAGE',{path:'/myorder',index:prepage?prepage.index+1:1,name:'myorder'});
-                    this.$router.push({name:'myorder'})
+                    if (Tool.localItem('fromOuterPage')) {
+                        this.$router.push({name:'myorder', query:{token:Tool.localItem('fromOuterPage')}})
+                    }
+                    else this.$router.push({name:'myorder'})
                 }else{
                     this.$router.back();
                 }
@@ -156,7 +220,12 @@
                 setQd:'SET_QD',
             })
         },
-        beforeRouteEnter:(to,from,next)=>{
+        beforeRouteEnter:function(to,from,next){
+            if(from.name == 'myorder' || from.path == '/myorder' || !from.name){
+                window.first = '';
+            }else{
+                window.first = '1';
+            }
             Tool.routerEnter(to,from,next);
         },
         created:function(){
@@ -164,10 +233,16 @@
             if(qd != 'undefined' && !!qd){
                 this.setQd(qd);
             }
+            // this.getOrderDetail(this.$route.params.id);
         },
         activated:function(){
             this.getOrderDetail(this.$route.params.id);
             this.token = Tool.localItem('userInfo') ? JSON.parse(Tool.localItem('userInfo')).token :'';
+            this.oid = Tool.localItem('userInfo') ? JSON.parse(Tool.localItem('userInfo')).oid :'';
+            var nowDate = new Date();
+            nowDate = nowDate.getTime();
+            if(nowDate>=this.startTime && nowDate<=this.endTime) this.choujTime = true;
+            else this.choujTime = false;
         }
     }
 </script>
@@ -197,6 +272,15 @@
                     .state{
                         color:#389cf1;
                     }
+                }
+                .lotteryDraw{
+                    padding: 0.2rem 0;
+                    color:white;
+                    background-color:red;
+                    text-align: center;
+                    font-size: 0.67rem;
+                    height:1.7rem;
+                    line-height: 1.92rem;
                 }
                 .section{
                     margin:0 3%;

@@ -25,13 +25,13 @@
                             </div>
                         </scroller>
                     </div>
-                    <div class="button-control">
+                 <!--    <div class="button-control">
                         <btn-com
                             title="确定"
                             background="#00bffe"
                             :onClick="submitStore"
                         />
-                    </div>
+                    </div> -->
                     <transition name="fade">
                         <div class="down-list-mask" v-if="cityShow" @click="cityShow=false"></div>
                     </transition>
@@ -65,7 +65,7 @@
         data () {
             return {
                 storelist:[],
-                select:0,
+                select:-1,
                 cityShow:false,
                 citylist:[
                     {
@@ -104,6 +104,7 @@
         methods:{
             selectItem:function(id){
                 this.select = id;
+                this.submitStore();
             },
             search:function(e){
                 var target = $(e.target).find('input');
@@ -196,7 +197,7 @@
                         data.photoUrl = this.storelist[this.select].photoUrl;
                         data.storeId = this.storelist[this.select].id;
                         this.setPackageStoreInfo(data);
-                        this.$router.back();
+                        // this.$router.back();
                     })
                 }else if(this.$store.getters.prepage.name == 'personinfo'){
                     this.$nextTick(()=>{
@@ -204,7 +205,7 @@
                         data.storeId = this.storelist[this.select].id;
                         data.storeName = this.storelist[this.select].storeName;
                         this.setRefereeStoreInfo(data);
-                        this.$router.back();
+                        // this.$router.back();
                     })
                 }else{
                     setTimeout(()=>{
@@ -213,7 +214,7 @@
                         data.storeName = this.storelist[this.select].storeName;
                         data.photoUrl = this.storelist[this.select].photoUrl;
                         this.setSubscribeStoreInfo(data);
-                        this.$router.back();
+                        // this.$router.back();
                     })
                 }
             },
@@ -282,15 +283,16 @@
         },
         activated:function(){
             var $container = $(this.$refs.$storeList).parent();
-            var $button = $container.find(".btn-com");
-            var height = Number($container.css("height").replace('px','')) - Number($button.css("height").replace('px',''));
+            // var $button = $container.find(".btn-com");
+            var height = Number($container.css("height").replace('px',''));
             $(this.$refs.$storeList).css('height',height);
+            this.select=-1;
             if(this.$store.getters.prepage.name == 'setdetail' || this.$store.getters.prepage.name == 'personinfo'){
                 this.getStoreList(() => {
-                    if(this.select == 0){
-                        if(this.storelist[0].id == '111111')
-                            this.select = 1;
-                    }
+                    // if(this.select == 0){
+                    //     if(this.storelist[0].id == '111111')
+                    //         this.select = 1;
+                    // }
                 });
                 this.getCityList(()=>{
                     this.citylist[0].values = this.cityData.provinces;
@@ -428,7 +430,7 @@
         .button-control{
             background-color:#efefef;
             color:#fff;
-            font-size:0.77rem;
+            font-size:0rem;
             overflow:hidden;
         }
     }

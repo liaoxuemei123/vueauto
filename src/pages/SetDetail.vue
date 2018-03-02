@@ -311,7 +311,7 @@
                 })
             },
             goStore:function(){
-                this.setReset(false);
+                this.setReset(false); 
                 if(this.isSelectStore){
                     this.$router.push({name:'store',params:{wbpId:this.setInfo.wbpId}});
                 }else{

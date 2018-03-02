@@ -14,7 +14,7 @@
                             <div class="car-plate">{{item.plate_no}}</div>
                             <div class="car-vin">{{item.vin}}</div>
                         </div>
-                        <!--<div class="add-car">
+                        <div class="add-car">
                             <div class="default-show" flex="dir:left cross:center" @click="active = -1">
                                 <i class="iconfont icon-select active" v-if="active == -1"></i>
                                 <i class="iconfont icon-circle" v-else="active == -1"></i>
@@ -32,7 +32,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>-->
+                        </div>
                     </div>
                 </div>
                 <div class="button-control">
@@ -66,7 +66,7 @@
                 </div>
                 <div class="button-group">
                     <div class="button cancel-button" @click="dailogShow=false">取消</div>
-                    <div class="button sure-button" @click="addCarNumber">确定</div>
+                    <div class="button sure-button" @click="updateCarNumber">确定</div>
                 </div>
             </div>
         </transition>
@@ -146,8 +146,8 @@
                 var target = $(e.target);
                 this.addInfo.plate = target.val();
             },
-            addCarNumber:function(e){
-                const {vin,mileage,seriesCode,modelCode,confCode,vehicle_type} = this.ownList[this.active]
+            updateCarNumber:function(e){
+                const {vin,mileage,seriesCode,modelCode,confCode,vehicle_type,id} = this.ownList[this.active]
                 var plate_no = this.$refs.dialogCarPlate.value;
                 if(!plate_no){
                     Toast({
@@ -164,18 +164,18 @@
                     });
                     return false;
                 } 
-                Tool.post("AaUserVehicleAdd",{
-                    user_id:this.mobile,
+                Tool.post("AaUserVehicleUpdate",{
+                    id,
                     vin,
-                    mileage,
-                    seriesCode,
-                    modelCode,
-                    confCode,
                     plate_no,
                     vehicle_type
                 },(data)=>{
                     this.getCarList();
                     this.dailogShow = false;
+                    Toast({
+                        ssage:'车牌号更新成功',
+                        duration:1000,
+                    });
                 })
             },
             addCar:function(){
@@ -213,7 +213,14 @@
                 })
             },
             submitCarInfo:function(){
-                if(!this.ownList[this.active] || !this.ownList[this.active].plate_no) {
+                if (this.active==-1) {
+                    Toast({
+                    message:"请选择车辆",
+                    duration:1000,
+                })
+                    return false
+                }
+                if(!this.ownList[this.active].plate_no) {
                     this.dailogShow = true;
                     return false
                 }

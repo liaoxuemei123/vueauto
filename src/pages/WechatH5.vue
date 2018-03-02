@@ -4,10 +4,15 @@
         <div class="wechat-page page" flex="dir:top box:first">
             <nav-bar
                 title="支付结果"
+                :goBack="backToHome"
             />
             <div class="page-content">
                 <div class="please-wait" flex="dir:left cross:center">
                     订单正在处理中，请耐心等待结果
+                </div>
+                <div class="detail-box">
+                    <div class="order-no">订单编号：{{orderNo}}</div>
+                    <div class="total_fee">支付金额：{{total_fee | total_feeFilter}}</div>
                 </div>
                 <div class="operation" flex="dir:left cross:center box:mean">
                     <div class="backto-continue">
@@ -21,7 +26,7 @@
         </div>
     </div>
 </template>
-<style lang="less">
+<style lang="less" scoped>
     .page-container{
         height:100%;
         position:absolute;
@@ -43,6 +48,14 @@
                 color:#eee;
                 font-size:0.8rem;
                 line-height:1.5em;
+            }
+            .detail-box{
+                margin-top:1rem;
+                padding-left:0.4rem;
+                font-size:0.685rem;
+                .order-no{
+                    margin-bottom: 0.3rem;
+                }
             }
             .operation{
                 line-height:2.1rem;
@@ -72,7 +85,8 @@
         data () {
             return {
                 orderNo:'',
-                timmer:''
+                total_fee:'',
+                timmer:'',
             }
         },
         components:{
@@ -90,21 +104,32 @@
                 this.$router.push({name:'maintainset'});
             },
             viewOrderDetail:function(e){
-                this.$router.push({path:'orderdetail/'+this.orderNo});
+                this.$router.push({path:'orderdetail/'+this.orderNo,query:{wbyQd:this.qd}});
             },
             checkState:function(){
                 this.timmer = setInterval(() => {
-                    Tool.get('checkState',{orderNo:this.orderNo},data => {
-                        if(data.data.code == 200 && data.data.state == 2){
+                    Tool.get('queryOrderStatus',{orderNo:this.orderNo},data => {
+                        if(data.code == 200){
                             clearInterval(this.timmer);
-                            this.$router.push({path:'/orderdetail/'+orderNo,query:{wbyQd:this.qd}});
+                            this.$router.push({path:'/orderdetail/'+this.orderNo,query:{wbyQd:this.qd}});
                         }
                     })
                 },5000)
             }
         },
+        filters:{
+            total_feeFilter:function(val){
+                val = (val?val:0)/100;
+                return (val - 0).toFixed(2);
+            },
+        },
         activated:function(){
+            // no 14968694018682809 y 14938697383862809
             this.orderNo = this.$route.query.orderNo;
+            this.total_fee = this.$route.query.total_fee;
+            // this.total_fee = (this.total_fee?this.total_fee:0)/100;
+            // this.total_fee = (this.total_fee - 0).toFixed(2);
+            this.checkState();
         },
         deactivated:function(){
             clearInterval(this.timmer);

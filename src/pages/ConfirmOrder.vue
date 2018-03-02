@@ -100,30 +100,38 @@
         </transition>
         <transition name="slide-up">
             <div class="user-license" v-if="licenseShow" flex="dir:top box:justify">
-                <h5>长安汽车基础保养套餐服务协议</h5>
+                <div v-show="pageConfig.fileds.length" v-for="(item,index) in pageConfig.fileds">
+                    <h5 v-if="item == 'wcxy' && pageConfig.tags[index] == 1">长安汽车基础保养套餐服务协议</h5>
+                    <h5 v-if="item == 'scxy' && pageConfig.tags[index] == 1">长安欧尚基础保养套餐服务协议</h5>
+                </div>
                 <div class="container">
-                    <span class="attention">重要须知：重庆长安汽车股份有限公司在此特别提醒您仔细阅读本协议中的各个条款，您有权选择同意或者不同意本协议。</span>
+                    <span class="attention">重要须知：重庆长安车联科技有限公司在此特别提醒您仔细阅读本协议中的各项条款，您有权选择同意或者不同意本协议。</span>
                     <div class="license-choose" v-show="pageConfig.fileds.length" v-for="(item,index) in pageConfig.fileds">
                         <ul v-if="item == 'wcxy' && pageConfig.tags[index] == 1">
                             <li>1.本套餐内容包括：更换机油、机油滤清器的零件费用及对应工时费，转向、驻车、制动等系统专项检查工时费。</li>
-                            <li>2.本套餐使用时，如需增加其它项目，客户需自行承担增加的零件和工时费用。</li>
-                            <li>3.本套餐仅适用于签订协议时所登记的车辆（以VIN码为准），车辆所有权发生转移不影响维保套餐的使用。</li>
-                            <li>4.本套餐在购买7日之内未使用可申请退款。套餐金额将在提出申请10个工作日内退回客户当初购买套餐所使用账户中。</li>
-                            <li>5.本套餐规定的保养次数使用完毕或协议有效期满时，本协议终止。</li>
+                            <li>2.本套餐使用时，如需增加其它项目或使用更高级别机油，客户需自行承担增加的零件和工时费用。</li>
+                            <li>3.本套餐仅适用于购买保养套餐时所填写的车辆（以车架号为准），车辆所有权发生转移不影响本套餐的使用。</li>
+                            <li>4.购买本套餐时，请登录本人所注册的长安账号，如授权他人代买，代买人的所有操作视同为本人行为。</li>
+                            <li>5.本套餐在购买7日之内未使用可申请退款。如在购买本套餐时，有赠送权益，申请退款后，所赠送权益需退回，如已使用赠送权益，需支付相应权益价值金额后才能退款。满足退款条件的订单，退款将在提出申请后5个工作日内原路退回至用户支付账户，具体到账时间以各第三方平台及银行规定为准。</li>
+                            <li>6.如购买套餐时所指定服务门店发生退出长安服务网络等特殊情况，为保障车主权益，套餐使用范围将升级为“全国服务门店”。</li>
+                            <li>7.本套餐中“全国服务门店”指使用服务门店选项中可查询到的当前最新的所有服务门店。</li>
+                            <li>8.本套餐规定的保养次数使用完毕或保养套餐到期时，本协议终止。</li>
                         </ul>
                         <ul v-if="item == 'scxy' && pageConfig.tags[index] == 1">
                             <li>1.本套餐内容包括：更换机油、机油滤清器的零件费用及对应工时费。</li>
-                            <li>2.本套餐使用时，如需增加保养项目或使用更高级别机油，客户需自行承担增加的零件和工时费用。</li>
-                            <li>3.本套餐仅适用于签订协议时所登记的车辆（以VIN码为准），车辆所有权发生转移不影响维保套餐的使用。</li>
-                            <li>4.本套餐在购买7日之内未使用可申请退款。套餐金额将在提出申请10个工作日内退回客户当初购买套餐所使用账户中。</li>
-                            <li>5.本套餐服务门店选项中“任意服务门店”仅指提供保养套餐服务的门店，即服务商门店中可查询到的店。</li>
-                            <li>6.本套餐规定的保养次数使用完毕或协议有效期满时，本协议终止。</li>
+                            <li>2.本套餐使用时，如需增加其它项目或使用更高级别机油，客户需自行承担增加的零件和工时费用。</li>
+                            <li>3.本套餐仅适用于购买保养套餐时所填写的车辆（以车架号为准），车辆所有权发生转移不影响本套餐的使用。</li>
+                            <li>4.购买本套餐时，请登录本人所注册的长安账号，如授权他人代买，代买人的所有操作视同为本人行为。</li>
+                            <li>5.本套餐在购买7日之内未使用可申请退款。如在购买本套餐时，有赠送权益，申请退款后，所赠送权益需退回，如已使用赠送权益，需支付相应权益价值金额后才能退款。满足退款条件的订单，退款将在提出申请后5个工作日内原路退回至用户支付账户，具体到账时间以各第三方平台及银行规定为准。</li>
+                            <li>6.如购买套餐时所指定服务门店发生退出长安服务网络等特殊情况，为保障车主权益，套餐使用范围将升级为“任意服务门店”。</li>
+                            <li>7.本套餐中“任意服务门店”指使用服务门店选项中可查询到的当前最新的所有服务门店。</li>
+                            <li>8.本套餐规定的保养次数使用完毕或保养套餐到期时，本协议终止。</li>
                         </ul>
                     </div>
                     <footer v-show="pageConfig.fileds.length" v-for="(item,index) in pageConfig.fileds">
-                        <div>重庆长安汽车股份有限公司</div>
-                        <div v-if="item == 'scxy' && pageConfig.tags[index] == 1">2017年7月1日</div>
-                        <div v-if="item == 'wcxy' && pageConfig.tags[index] == 1">2017年4月1日</div>
+                        <div>重庆长安车联科技有限公司</div>
+                        <!-- <div v-if="item == 'scxy' && pageConfig.tags[index] == 1">2017年7月1日</div> -->
+                        <!-- <div v-if="item == 'wcxy' && pageConfig.tags[index] == 1">2017年4月1日</div> -->
                     </footer>
                 </div>
                 <div class="toolbar" flex="dir:left box:mean">
@@ -139,17 +147,18 @@
     import InpCom from "../components/InpCom";
     import { mapMutations, mapState } from 'vuex';
     import Tool from '../utils/Tool';
-    import { Toast } from 'mint-ui';
+    import { Picker, Toast, MessageBox } from 'mint-ui';
     export default {
         data () {
             return {
-                sure:true,
+                sure:false,
                 licenseShow:false,
                 wbpId:'',
                 pageConfig:{
                     fileds:[],
                     tags:[]
                 },
+                agentLogo:'',
                 GmConfig:{
                     fileds:[],
                     tags:[]
@@ -182,6 +191,9 @@
                 orderUnPayCount: ({
                     mixin
                 }) => mixin.orderUnPayCount,
+                protocolSure: ({
+                    packageinfo
+                }) => packageinfo.protocolSure,
             })
         },
         components:{
@@ -190,14 +202,42 @@
         },
         methods:{
             goPay:function(){
-                if(!this.sure){
-                    Toast('请阅读并同意《用户服务协议》');
-                    return false;
-                }
-                this.submitOrder();
+                // MessageBox.confirm('是否确认立即支付？').then(action => {
+                    if(!this.sure){
+                    Toast('请阅读并勾选《用户服务协议》');
+                        return false;
+                    }
+                    this.proSure(true);
+                    if(Tool.localItem('wbyQd') && Tool.localItem('wbyQd')=='JJRFX' && Tool.localItem('agentLogo')) {
+                        this.agentLogo = Tool.localItem('agentLogo');
+                        var oid = Tool.getUserInfo('oid');
+                        Tool.get('agentIdentQuery',{
+                            oid:oid
+                        },(data) => {
+                            if(data.code == 0){
+                             // 未认证
+
+                            }else{
+                                if(data.data == this.agentLogo){
+                                    this.agentLogo = ''; // 用户不能使用自己的推荐码
+                                }else{
+
+                                }
+                                
+                            }
+                            this.submitOrder();
+                        });
+                    }
+                    else {
+                        this.agentLogo = '';
+                        this.submitOrder();
+                    }
+                // },() => {});
             },
             submitOrder:function(){
                 const expiredTime = new Date(this.setDetail.validate).getTime();
+                console.log(this.setInfo.wbpId);
+                // return;
                 Tool.post('AaPackageOrder',{
                     userId:Tool.getUserInfo('userId'),
                     allNumber:this.setDetail.number,
@@ -217,7 +257,9 @@
                     referee:this.userInfo.referee ? ( this.userInfo.refereeId == '111111' ? '' : this.userInfo.referee ) : '',
                     refereeId:this.userInfo.refereeId ? ( this.userInfo.refereeId == '111111' ? '' : this.userInfo.refereeId ) : '',
                     refereeType:this.userInfo.refereeType,
+                    refereeCode:this.agentLogo?this.agentLogo:'',
                     qd:this.qd || '',
+                    
                 },(data)=>{
                     if(data.code == 200){
                         this.$router.push({path:'/orderpay/'+data.data});
@@ -244,7 +286,6 @@
                 this.pageConfig.fileds = this.pageSetting.wbPageDetail['XY_PAGE'].wbpdName.split(',');
                 this.GmConfig.tags = this.pageSetting.wbPageDetail['GM_PAGE'].wbpdFtag.split(',');
                 this.GmConfig.fileds = this.pageSetting.wbPageDetail['GM_PAGE'].wbpdName.split(',');
-                
             },
             gmJudge:function(filed){
                 const index = this.GmConfig.fileds.indexOf(filed);
@@ -252,16 +293,19 @@
             },
             ...mapMutations({
                 setOrderUnPayCount: 'UPDATE_ORDERCOUNT',
+                proSure: 'UPDATE_SURE',
             })
         },
         activated:function(){
+            this.sure = this.protocolSure;
             var wbProduct = this.$route.params.id;
             wbProduct ? this.wbpId = wbProduct : wbProduct = this.wbpId;
+            console.log(this.setInfo);
             this.getPageConfig();
         },
         created:function(){
             if($.isEmptyObject(this.modelInfo)) {
-                this.$router.push({name:'home'});
+                this.$router.push({name:'maintainset'});
             }
         },
         filters:{
@@ -439,7 +483,7 @@
                     line-height:1.7em;
                     .title{
                         font-weight:600;
-                        width:3rem;
+                        width:3.2rem;
                     }
                 }
                 .bottom{
